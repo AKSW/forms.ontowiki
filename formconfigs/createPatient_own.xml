@@ -1,0 +1,31 @@
+<!-- Create a new patient. With own changes ... -->
+<form> 
+	<headline>Neuen Patient anlegen</headline>
+	<introduceText>Hier können Sie einen neuen supertollen Patienten anlegen. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</introduceText>
+	<trigger>dispedia:Patient</trigger> 
+	<sections>
+		<item id="1">
+			<caption>Daten des Patienten</caption> 								
+			<predicate target="dispedia:Patient" mandatory="1" type="simpletext">architecture:firstName</predicate> 
+			<predicate target="dispedia:Patient" mandatory="1" type="simpletext">architecture:lastName</predicate> 
+			<predicate target="dispedia:Patient" mandatory="1" type="simpletext">architecture:Address</predicate> 
+			<predicate target="dispedia:Patient" mandatory="1" type="date">architecture:birthdate</predicate> 
+			<predicate target="dispedia:Patient" mandatory="1" type="date">architecture:age</predicate> 
+			<predicate target="dispedia:Patient" mandatory="1" type="gender">architecture:gender</predicate> 
+			<predicate target="dispedia:Patient" mandatory="0" multiple="1" type="simpletext">architecture:knows</predicate>  
+			<predicate target="dispedia:Patient" mandatory="0" multiple="1" type="simpletext">architecture:isFriendOf</predicate>  
+			<predicate target="dispedia:Patient" mandatory="0" multiple="1" type="simpletext">architecture:isMemberOf</predicate> 
+		</item>
+		<item id="2">
+			<caption>Hausarzt angeben bzw. anlegen</caption>
+			<predicate target="dispedia:Patient" mandatory="0" type="simpletext">architecture:isSupervisedBy</predicate> 
+			</item>
+		<item id="3">
+			<caption>Daten zur Person</caption>
+			<predicate target="dispedia:Person" mandatory="1" type="simpletext">architecture:firstName</predicate> 			
+			<predicate target="dispedia:Person" mandatory="0" type="simpletext">architecture:lastName</predicate>
+			<constraint sourcegroup="2" type="xor" targetgroup="3" /> 
+			<constraint sourcegroup="3" type="pred" targetgroup="1" predicate="dispedia:isDoctorOf" /> 
+		</item> 
+	</sections>
+</form>

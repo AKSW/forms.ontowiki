@@ -18,7 +18,7 @@
   <!ENTITY pdexample "http://als.dispedia.info/pdExample/i/20110504/">
 ]>
 
-<rdf:RDF xml:base="http://als.dispedia.info"
+<rdf:RDF xml:base="http://als.dispedia.info/"
   xmlns:foaf="&foaf;"
   xmlns:owl="&owl;"
   xmlns:rdf="&rdf;"

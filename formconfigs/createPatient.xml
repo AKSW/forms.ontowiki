@@ -1,0 +1,20 @@
+<!-- Create a new patient. -->
+<form> 
+	<trigger>dispedia:Patient</trigger> 
+	<caption>Patient anlegen</caption> 
+	<predicate group="1" target="dispedia:Patient" mandatory="1">dispedia:firstName</predicate> 
+	<predicate group="1" target="dispedia:Patient" mandatory="1">dispedia:lastName</predicate> 
+	<predicate group="1" target="dispedia:Patient" mandatory="1">dispedia:age</predicate> 
+	<predicate group="1" target="dispedia:Patient" mandatory="1">dispedia:gender</predicate> 
+	<predicate group="1" target="dispedia:Patient" mandatory="0" multiple="1">dispedia:knows</predicate>  
+	<predicate group="1" target="dispedia:Patient" mandatory="0" multiple="1">dispedia:isFriendOf</predicate>  
+	<predicate group="1" target="dispedia:Patient" mandatory="0" multiple="1">dispedia:isMemberOf</predicate>  
+	
+	<caption>Hausarzt angeben bzw. anlegen</caption>
+	<predicate group="2" target="dispedia:Patient" mandatory="0">dispedia:isDoctorOf</predicate> 
+	<predicate group="3" target="dispedia:Person" mandatory="0">dispedia:firstName</predicate> 
+	<predicate group="3" target="dispedia:Person" mandatory="0">dispedia:lastName</predicate> 
+	
+	<constraint sourcegroup="2" type="xor" targetgroup="3" /> 
+	<constraint sourcegroup="3" type="pred" targetgroup="1" predicate="dispedia:isDoctorOf" /> 
+</form>

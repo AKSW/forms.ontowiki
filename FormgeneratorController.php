@@ -23,10 +23,102 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_forward('get', 'files');
     }
     
-    
     public function overviewAction()
     {
+	}
+	    
+    
+    public function formAction()
+    {
+        require 'classes/Form.php';		
         
+        // Get model
+        $m = $this->_owApp->selectedModel;
+        $mUrl = (string) $this->_owApp->selectedModel;
+
+		$exampleForm = new Form ( $m );
+
+		// Load XML Config
+		$exampleForm->loadConfig ( realpath(dirname(__FILE__)) . '/formconfigs/createPatient_own.xml' );
+
+		echo "<h2>". $exampleForm -> headline ."</h2>";
+
+		echo "<b>". $exampleForm -> introduceText .'</b><br><br><div align="center">';
+
+		foreach ( $exampleForm -> sections as $section )
+		{
+			echo 
+			'<table border="0" cellspacing="0" cellpadding="0" width="30%">
+				<tr>
+					<td bgcolor="#660000">
+						<table border="0" cellspacing="1" cellpadding="4" width="100%">
+							<tr>
+								<td bgcolor="#FFFFCC" colspan="2">';
+			
+			echo '<h3>'. $section ['caption'] .'</h3>';
+			
+			echo 			   '</td>
+							</tr>';
+				
+			foreach ( $section ['fields'] as $field )
+			{
+				echo '<tr>';
+				
+				switch ( $field ['type'] )
+				{
+					case 'date':
+						
+						echo '<script>
+								$(function() {
+									$( "#datepicker" ).datepicker();
+								});
+							  </script>';
+						
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						
+						if ( 1 == $field ['mandatory'] )
+							echo ' *';
+						
+						echo '</td>';
+						echo '<td bgcolor="#FFFFCC"><input type="text" id="datepicker"></td>';
+					
+						break;
+						
+					case 'gender':
+									
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						
+						if ( 1 == $field ['mandatory'] )
+							echo ' *';
+						
+						echo '</td>';
+						echo '<td bgcolor="#FFFFCC"><select><option>- bitte w&auml;hlen -</option><option>m&auml;nnlich</option><option>weiblich</option></select></td>';
+					
+						break;
+						
+					default:
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						
+						if ( 1 == $field ['mandatory'] )
+							echo ' *';
+						
+						echo '</td>';
+						echo '<td bgcolor="#FFFFCC"><input type="text" name="foobar" /></td>';
+						break;
+				}
+				
+				echo '</tr>';
+			}
+			
+			echo				'</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table><br>';
+		}
+
+		echo "</div></body></html>";
     }
 }
 

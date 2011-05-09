@@ -9,6 +9,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
     public function __construct()
     {
         $owApp = OntoWiki::getInstance();
+        
         // if a model has been selected
         if ($owApp->selectedModel != null) {
             // register with extras menu
@@ -26,11 +27,21 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
             
             // Add entry in tab list
             OntoWiki_Navigation::register(
-                'formgenerator', 
+                'formgenerator_overview', 
                 array(
-                    'controller' => 'Formgenerator', 
+                    'controller' => 'formgenerator', 
                     'action'     => 'overview', 
                     'name'       => 'Formgenerator'
+                )
+            );
+            
+            // Add entry in tab list
+            OntoWiki_Navigation::register(
+                'formgenerator_form', 
+                array(
+                    'controller' => 'formgenerator', 
+                    'action'     => 'form', 
+                    'name'       => 'Example Form'
                 )
             );
         }
