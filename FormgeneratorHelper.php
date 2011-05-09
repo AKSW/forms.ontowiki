@@ -2,7 +2,7 @@
 
 /**
  * @category   OntoWiki
- * @package    OntoWiki_extensions_components_files
+ * @package    OntoWiki_extensions_formgenerator
  */
 class FormgeneratorHelper extends OntoWiki_Component_Helper
 {
@@ -13,9 +13,26 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
         if ($owApp->selectedModel != null) {
             // register with extras menu
             $translate  = $owApp->translate;
-            $url        = new OntoWiki_Url(array('controller' => 'files', 'action' => 'manage'));
-            $extrasMenu = OntoWiki_Menu_Registry::getInstance()->getMenu('application')->getSubMenu('Extras');
+            $url        = new OntoWiki_Url(
+                            array('controller' => 'formgenerator', 
+                                  'action' => 'overview')
+                          );
+            
+            // Add entry in Extras menu
+            $extrasMenu = OntoWiki_Menu_Registry::getInstance()
+                          ->getMenu('application')
+                          ->getSubMenu('Extras');
             $extrasMenu->setEntry($translate->_('Formgenerator'), (string) $url);
+            
+            // Add entry in tab list
+            OntoWiki_Navigation::register(
+                'formgenerator', 
+                array(
+                    'controller' => 'Formgenerator', 
+                    'action'     => 'overview', 
+                    'name'       => 'Formgenerator'
+                )
+            );
         }
     }
 }
