@@ -60,19 +60,32 @@ class Form
 							foreach ( $predicate->attributes() as $attr => $val )
 							{ 
 								$a [ $attr ] = $val;
+                                
+                              //  echo $attr .' ' . $val .'<br>';
 							}
+                            //echo '<br>';
 							
 							$p = $this->replaceNamespaces ( (string) $predicate [0] );
 							
 							$titleHelper = new OntoWiki_Model_TitleHelper ( $this->model );
 							$titleHelper->addResource( $p );
-							
+                            
+                            //echo 'SELECT ?subject WHERE {?subject <' . $p . '> ?o.}<pre>';
+                            
+                            //var_dump($this->model->sparqlQuery('SELECT ?subject WHERE {?subject <' . $p . '> ?o.}'));
+							//echo '</pre>';
 							// echo '<br> > '. (string) $predicate [0] .' => ' . $p . ' ( '. $titleHelper->getTitle( $p ) .' )';
+                            
+                            
+                            
 							
 							$newSection ['fields'] [] = array ( 'type' 		=> (string) $a ['type'],
 															    'caption'	=> $titleHelper->getTitle( $p ), 
 															    'mandatory' => (int) 	$a ['mandatory'],
-																'name' 		=> (string) $predicate [0] );
+																'name' 		=> (string) $predicate [0],
+                                                                'target'    => $this->replaceNamespaces ((string) $a ['target'] ));
+                                                                
+
 						}
 						
 						$this->sections [] = $newSection;
@@ -87,7 +100,7 @@ class Form
 	}
 	
 	public function replaceNamespaces ( $s )
-	{
+	{                                        
 		$s = str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
 		
 		return $s;

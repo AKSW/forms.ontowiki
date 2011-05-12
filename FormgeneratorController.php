@@ -31,6 +31,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function formAction()
     {
         require 'classes/Form.php';		
+        require realpath(dirname(__FILE__)) . '/../resourcecreationuri/classes/ResourceUriGenerator.php';
+        
+        $foo = new ResourceUriGenerator($this->_owApp->selectedModel, null, $this->_owApp);
+        var_dump( $foo->generateUri('http://als.dispedia.info/pdExample/i/20110325/'));
         
         // Get model
         $m = $this->_owApp->selectedModel;
@@ -44,6 +48,20 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 		echo "<h2>". $exampleForm -> headline ."</h2>";
 
 		echo "<b>". $exampleForm -> introduceText .'</b><br><br><div align="center">';
+        
+               // TODO: $this->model->getStore()->addStatement ()    siehe WIKI > Erfurt > Working with Erfurt
+        
+        $name = 'Meyer';
+        $firstName = 'Hans';
+        $instanz = $exampleForm->sections[0] ['fields'][0]['target']
+                 . '/' . $name . '/' . $firstName
+                 . '/' . md5($name . $firstName);
+        
+        echo $instanz;
+        $m->getStore()->addStatement( (string) $m, 
+                                                $instanz,
+                                                'a', 
+                                                array ( 'value' => $exampleForm->sections[0] ['fields'][0]['target'], 'type' => 'uri' ));
 
 		foreach ( $exampleForm -> sections as $section )
 		{
@@ -74,7 +92,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 								});
 							  </script>';
 						
-						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption']. '(' . $field ['target'] . ')';
 						
 						if ( 1 == $field ['mandatory'] )
 							echo ' *';
@@ -86,7 +104,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 						
 					case 'gender':
 									
-						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'] . '(' . $field ['target'] . ')';
 						
 						if ( 1 == $field ['mandatory'] )
 							echo ' *';
@@ -97,7 +115,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 						break;
 						
 					default:
-						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'] . '(' . $field ['target'] . ')';
 						
 						if ( 1 == $field ['mandatory'] )
 							echo ' *';

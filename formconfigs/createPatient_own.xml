@@ -6,24 +6,24 @@
 	<sections>
 		<item id="1">
 			<caption>Daten des Patienten</caption> 								
-			<predicate target="dispedia:Patient" mandatory="1" type="simpletext">architecture:firstName</predicate> 
-			<predicate target="dispedia:Patient" mandatory="1" type="simpletext">architecture:lastName</predicate> 
-			<predicate target="dispedia:Patient" mandatory="1" type="simpletext">architecture:Address</predicate> 
-			<predicate target="dispedia:Patient" mandatory="1" type="date">architecture:birthdate</predicate> 
-			<predicate target="dispedia:Patient" mandatory="1" type="date">architecture:age</predicate> 
-			<predicate target="dispedia:Patient" mandatory="1" type="gender">architecture:gender</predicate> 
-			<predicate target="dispedia:Patient" mandatory="0" multiple="1" type="simpletext">architecture:knows</predicate>  
-			<predicate target="dispedia:Patient" mandatory="0" multiple="1" type="simpletext">architecture:isFriendOf</predicate>  
-			<predicate target="dispedia:Patient" mandatory="0" multiple="1" type="simpletext">architecture:isMemberOf</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:firstName</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:lastName</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:Address</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="date">architecture:birthdate</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="date">architecture:age</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="gender">architecture:gender</predicate> 
+			<predicate target="architecture:Patient" mandatory="0" multiple="1" type="simpletext">architecture:knows</predicate>  
+			<predicate target="architecture:Patient" mandatory="0" multiple="1" type="simpletext">architecture:isFriendOf</predicate>  
+			<predicate target="architecture:Patient" mandatory="0" multiple="1" type="simpletext">architecture:isMemberOf</predicate> 
 		</item>
 		<item id="2">
 			<caption>Hausarzt angeben bzw. anlegen</caption>
-			<predicate target="dispedia:Patient" mandatory="0" type="simpletext">architecture:isSupervisedBy</predicate> 
+			<predicate target="architecture:Patient" mandatory="0" type="simpletext">architecture:isSupervisedBy</predicate> 
 			</item>
 		<item id="3">
 			<caption>Daten zur Person</caption>
-			<predicate target="dispedia:Person" mandatory="1" type="simpletext">architecture:firstName</predicate> 			
-			<predicate target="dispedia:Person" mandatory="0" type="simpletext">architecture:lastName</predicate>
+			<predicate target="architecture:Person" mandatory="1" type="simpletext">architecture:firstName</predicate> 			
+			<predicate target="architecture:Person" mandatory="0" type="simpletext">architecture:lastName</predicate>
 			<constraint sourcegroup="2" type="xor" targetgroup="3" /> 
 			<constraint sourcegroup="3" type="pred" targetgroup="1" predicate="dispedia:isDoctorOf" /> 
 		</item> 

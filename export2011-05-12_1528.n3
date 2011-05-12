@@ -1,0 +1,657 @@
+>>>>>>>>609# Exported with the Erfurt API - http://aksw.org/Projects/Erfurt
+
+@base <http://als.dispedia.info/formgenerator/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<http://als.dispedia.info/> a owl:AllDisjointProperties .
+
+<http://als.dispedia.info/architecture/c/20110317/> a owl:Ontology ;
+                                                    rdfs:comment "Dieses Schema beschreibt die drei grundsätzlichen Phasen der Erkrankung ALS mit einem Schwerpunkt auf den Behandlungs- und Informationsprozessen rund um den Patienten."@de, "This ontology describes the three major phases in the ALS disease with an outline of the processes."@en ;
+                                                    rdfs:label "Phasen der ALS-Erkrankung"@de, "Phases of ALS"@en ;
+                                                    owl:imports <http://als.dispedia.info/wrapperIcd/>, <http://als.dispedia.info/wrapperIcf/> ;
+                                                    owl:versionInfo "0.5.1" .
+
+<http://als.dispedia.info/architecture/c/20110317/Action> a owl:Class ;
+                                                          rdfs:label "Action"@en, "Handlung"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/Address> a owl:Class ;
+                                                           rdfs:label "Address"@en, "Adresse"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/Agent> a owl:Class ;
+                                                         rdfs:label "Agent"@en, "Akteur"@de ;
+                                                         rdfs:subClassOf <http://xmlns.com/foaf/0.1/Agent> .
+
+<http://als.dispedia.info/architecture/c/20110317/AssistiveProduct> a owl:Class ;
+                                                                    rdfs:label "Assistenzprodukt"@de, "Assistive product"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/CareRelation> a owl:Class ;
+                                                                rdfs:label "Care relation"@en, "Pflegebeziehung"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/Costs> a owl:Class ;
+                                                         rdfs:label "Costs"@en, "Kosten"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/Decision> a owl:Class ;
+                                                            rdfs:label "Decision"@en, "Entscheidung"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/DiseaseSection> a owl:Class ;
+                                                                  rdfs:label "Disease section"@en, "Krankheitsabschnitt"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/Formality> a owl:Class ;
+                                                             rdfs:label "Formality"@en, "Formalität"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/Information> a owl:Class ;
+                                                               rdfs:label "Information"@de, "Information"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/Patient> a owl:Class ;
+                                                           rdfs:label "Patient"@de, "Patient"@en ;
+                                                           rdfs:subClassOf <http://als.dispedia.info/architecture/c/20110317/Person> .
+
+<http://als.dispedia.info/architecture/c/20110317/PatientType> a owl:Class ;
+                                                               rdfs:label "Patient type"@en, "Patiententyp"@de ;
+                                                               rdfs:subClassOf <http://als.dispedia.info/architecture/c/20110317/Type> .
+
+<http://als.dispedia.info/architecture/c/20110317/Person> a owl:Class ;
+                                                          rdfs:label "Person"@de, "Person"@en ;
+                                                          rdfs:subClassOf <http://als.dispedia.info/architecture/c/20110317/Agent>, <http://xmlns.com/foaf/0.1/Person> .
+
+<http://als.dispedia.info/architecture/c/20110317/Proposal> a owl:Class ;
+                                                            rdfs:label "Proposal"@en, "Vorschlag"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/TherapistType> a owl:Class ;
+                                                                 rdfs:label "Therapeutentyp"@de, "Therapist type"@en ;
+                                                                 rdfs:subClassOf <http://als.dispedia.info/architecture/c/20110317/Type> .
+
+<http://als.dispedia.info/architecture/c/20110317/Type> a owl:Class ;
+                                                        rdfs:label "Typ"@de, "Type"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/accepts> a owl:ObjectProperty ;
+                                                           rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Decision> ;
+                                                           rdfs:label "accepts"@en, "akzeptiert"@de ;
+                                                           rdfs:range <http://als.dispedia.info/architecture/c/20110317/Proposal> ;
+                                                           owl:propertyDisjointWith <http://als.dispedia.info/architecture/c/20110317/denies> .
+
+<http://als.dispedia.info/architecture/c/20110317/addressDate> a owl:DatatypeProperty ;
+                                                               rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                               rdfs:label "Adressdatum"@de, "address date"@en ;
+                                                               rdfs:range <http://www.w3.org/2001/XMLSchema#dateTime> .
+
+<http://als.dispedia.info/architecture/c/20110317/adressText> a owl:DatatypeProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                              rdfs:label "Adresstext"@de, "address text"@en ;
+                                                              rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://als.dispedia.info/architecture/c/20110317/age> a owl:DatatypeProperty ;
+                                                       rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                       rdfs:label "Alter"@de, "age"@en ;
+                                                       rdfs:subPropertyOf <http://xmlns.com/foaf/0.1/age> .
+
+<http://als.dispedia.info/architecture/c/20110317/appropriateFor> a owl:ObjectProperty ;
+                                                                  rdfs:label "appropriate for"@en, "passend für"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/appropriateForProperties> a owl:ObjectProperty ;
+                                                                            rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Proposal> ;
+                                                                            rdfs:label "appropriate for properties"@en, "passend für Eigenschaften"@de ;
+                                                                            rdfs:range <http://als.dispedia.info/wrapperIcf/c/20110317/PropertySet> ;
+                                                                            rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/appropriateFor> .
+
+<http://als.dispedia.info/architecture/c/20110317/appropriateForSymptoms> a owl:ObjectProperty ;
+                                                                          rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Proposal> ;
+                                                                          rdfs:label "appropriate for symptoms"@en, "passend für Symptome"@de ;
+                                                                          rdfs:range <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                          rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/appropriateFor> .
+
+<http://als.dispedia.info/architecture/c/20110317/beginningDate> a owl:DatatypeProperty ;
+                                                                 rdfs:domain <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> ;
+                                                                 rdfs:label "Beginndatum"@de, "beginning date"@en ;
+                                                                 rdfs:range <http://www.w3.org/2001/XMLSchema#dateTime> .
+
+<http://als.dispedia.info/architecture/c/20110317/belongsToDiseaseSection> a owl:ObjectProperty ;
+                                                                           rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/HealthState> ;
+                                                                           rdfs:label "belongs to disease section"@en, "gehört zu Krankheitsabschnitt"@de ;
+                                                                           rdfs:range <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> .
+
+<http://als.dispedia.info/architecture/c/20110317/birthday> a owl:DatatypeProperty ;
+                                                            rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                            rdfs:label "Geburtstag"@de, "birthday"@en ;
+                                                            rdfs:subPropertyOf <http://xmlns.com/foaf/0.1/birthday> .
+
+<http://als.dispedia.info/architecture/c/20110317/careDuration> a owl:DatatypeProperty ;
+                                                                rdfs:domain <http://als.dispedia.info/architecture/c/20110317/CareRelation> ;
+                                                                rdfs:label "Care duration"@en, "Pflegedauer"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/carePercentage> a owl:DatatypeProperty ;
+                                                                  rdfs:domain <http://als.dispedia.info/architecture/c/20110317/CareRelation> ;
+                                                                  rdfs:label "Anteil der Pflegeleistung"@de, "Care percentage"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/careTask> a owl:DatatypeProperty ;
+                                                            rdfs:domain <http://als.dispedia.info/architecture/c/20110317/CareRelation> ;
+                                                            rdfs:label "Pflegeaufgabe"@de, "care task"@en ;
+                                                            rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://als.dispedia.info/architecture/c/20110317/careTimeEnd> a owl:DatatypeProperty ;
+                                                               rdfs:domain <http://als.dispedia.info/architecture/c/20110317/CareRelation> ;
+                                                               rdfs:label "End of care time"@en, "Ende der Pflegezeit"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/careTimeStart> a owl:DatatypeProperty ;
+                                                                 rdfs:domain <http://als.dispedia.info/architecture/c/20110317/CareRelation> ;
+                                                                 rdfs:label "Beginn der Pflegezeit"@de, "Start of care time"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/city> a owl:ObjectProperty ;
+                                                        rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                        rdfs:label "Stadt"@de, "city"@en ;
+                                                        rdfs:range <http://dbpedia.org/ontology/City> .
+
+<http://als.dispedia.info/architecture/c/20110317/comprises> a owl:ObjectProperty ;
+                                                             rdfs:domain <http://als.dispedia.info/wrapperIcd/c/20110317/Disease> ;
+                                                             rdfs:label "comprises"@en, "umfasst"@de ;
+                                                             rdfs:range <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> .
+
+<http://als.dispedia.info/architecture/c/20110317/contains> a owl:ObjectProperty ;
+                                                            rdfs:label "contains"@en, "enthält"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/containsAction> a owl:ObjectProperty ;
+                                                                  rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Proposal> ;
+                                                                  rdfs:label "contains action"@en, "enthält Aktion"@de ;
+                                                                  rdfs:range <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                  rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/contains> .
+
+<http://als.dispedia.info/architecture/c/20110317/containsCosts> a owl:ObjectProperty ;
+                                                                 rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                 rdfs:label "contains costs"@en, "enthält Kosten"@de ;
+                                                                 rdfs:range <http://als.dispedia.info/architecture/c/20110317/Costs> ;
+                                                                 rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/contains> .
+
+<http://als.dispedia.info/architecture/c/20110317/containsFormality> a owl:ObjectProperty ;
+                                                                     rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                     rdfs:label "contains formality"@en, "enthält Formalität"@de ;
+                                                                     rdfs:range <http://als.dispedia.info/architecture/c/20110317/Formality> ;
+                                                                     rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/contains> .
+
+<http://als.dispedia.info/architecture/c/20110317/containsHealthState> a owl:ObjectProperty ;
+                                                                       rdfs:domain <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> ;
+                                                                       rdfs:label "contains health state"@en, "enthält Gesundheitsstatus"@de ;
+                                                                       rdfs:range <http://als.dispedia.info/wrapperIcf/c/20110317/HealthState> ;
+                                                                       rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/contains> .
+
+<http://als.dispedia.info/architecture/c/20110317/containsProduct> a owl:ObjectProperty ;
+                                                                   rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                   rdfs:label "contains product"@en, "enthält Assistenzprodukt"@de ;
+                                                                   rdfs:range <http://als.dispedia.info/architecture/c/20110317/AssistiveProduct> ;
+                                                                   rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/contains> .
+
+<http://als.dispedia.info/architecture/c/20110317/content> a owl:DatatypeProperty ;
+                                                           rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                           rdfs:label "Inhalt"@de, "content"@en ;
+                                                           rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://als.dispedia.info/architecture/c/20110317/country> a owl:ObjectProperty ;
+                                                           rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                           rdfs:label "Land"@de, "country"@en ;
+                                                           rdfs:range <http://dbpedia.org/ontology/Country> .
+
+<http://als.dispedia.info/architecture/c/20110317/denies> a owl:ObjectProperty ;
+                                                          rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Decision> ;
+                                                          rdfs:label "denies"@en, "lehnt ab"@de ;
+                                                          rdfs:range <http://als.dispedia.info/architecture/c/20110317/Proposal> .
+
+<http://als.dispedia.info/architecture/c/20110317/endingDate> a owl:DatatypeProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> ;
+                                                              rdfs:label "Enddatum"@de, "ending date"@en ;
+                                                              rdfs:range <http://www.w3.org/2001/XMLSchema#dateTime> .
+
+<http://als.dispedia.info/architecture/c/20110317/executedBy> a owl:ObjectProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                              rdfs:label "executed by"@en, "wird ausgeführt von"@de ;
+                                                              rdfs:range <http://als.dispedia.info/architecture/c/20110317/Agent> .
+
+<http://als.dispedia.info/architecture/c/20110317/executes> a owl:ObjectProperty ;
+                                                            rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                            rdfs:label "executes"@en, "führt aus"@de ;
+                                                            rdfs:range <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                            owl:inverseOf <http://als.dispedia.info/architecture/c/20110317/executedBy> .
+
+<http://als.dispedia.info/architecture/c/20110317/firstName> a owl:DatatypeProperty ;
+                                                             rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                             rdfs:label "Vorname"@de, "first name"@en ;
+                                                             rdfs:subPropertyOf <http://xmlns.com/foaf/0.1/firstName> .
+
+<http://als.dispedia.info/architecture/c/20110317/gender> a owl:DatatypeProperty ;
+                                                          rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                          rdfs:label "Geschlecht"@de, "gender"@en ;
+                                                          rdfs:subPropertyOf <http://xmlns.com/foaf/0.1/gender> .
+
+<http://als.dispedia.info/architecture/c/20110317/has> a owl:ObjectProperty ;
+                                                       rdfs:label "has"@en, "hat"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/hasAddress> a owl:ObjectProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                              rdfs:label "has address"@en, "hat Adresse"@de ;
+                                                              rdfs:range <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                              rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/has> .
+
+<http://als.dispedia.info/architecture/c/20110317/hasDiseaseSection> a owl:ObjectProperty ;
+                                                                     rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Patient> ;
+                                                                     rdfs:label "has disease section"@en, "hat Krankheitsabschnitt"@de ;
+                                                                     rdfs:range <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> ;
+                                                                     rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/has> .
+
+<http://als.dispedia.info/architecture/c/20110317/hasInformation> a owl:ObjectProperty ;
+                                                                  rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                                  rdfs:label "has information"@en, "hat Information"@de ;
+                                                                  rdfs:range <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                                  rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/has> .
+
+<http://als.dispedia.info/architecture/c/20110317/hasPatientType> a owl:ObjectProperty ;
+                                                                  rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Patient> ;
+                                                                  rdfs:label "has patient type"@en, "hat Patiententyp"@de ;
+                                                                  rdfs:range <http://als.dispedia.info/architecture/c/20110317/PatientType> ;
+                                                                  rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/has> .
+
+<http://als.dispedia.info/architecture/c/20110317/hasTherapistType> a owl:ObjectProperty ;
+                                                                    rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                                    rdfs:label "has therapist type"@en, "hat Therapeutentyp"@de ;
+                                                                    rdfs:range <http://als.dispedia.info/architecture/c/20110317/TherapistType> ;
+                                                                    rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/has> .
+
+<http://als.dispedia.info/architecture/c/20110317/isActiveIn> a owl:ObjectProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                              rdfs:label "is in active role in"@en, "ist in aktiver Rolle in"@de ;
+                                                              rdfs:range <http://als.dispedia.info/architecture/c/20110317/CareRelation> .
+
+<http://als.dispedia.info/architecture/c/20110317/isDoctorOf> a owl:ObjectProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                              rdfs:label "is doctor of"@en, "ist Arzt von"@de ;
+                                                              rdfs:range <http://als.dispedia.info/architecture/c/20110317/Person> .
+
+<http://als.dispedia.info/architecture/c/20110317/isFriendOf> a owl:IrreflexiveProperty, owl:ObjectProperty, owl:SymmetricProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                              rdfs:label "is friend of"@en, "ist befreundet mit"@de ;
+                                                              rdfs:range <http://als.dispedia.info/architecture/c/20110317/Person> .
+
+<http://als.dispedia.info/architecture/c/20110317/isMemberOf> a owl:DatatypeProperty ;
+                                                              rdfs:label "is member of"@en, "ist Mitglied von"@de .
+
+<http://als.dispedia.info/architecture/c/20110317/isPassiveIn> a owl:ObjectProperty ;
+                                                               rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                               rdfs:label "is in passive role in"@en, "ist in passiver Rolle in"@de ;
+                                                               rdfs:range <http://als.dispedia.info/architecture/c/20110317/CareRelation> .
+
+<http://als.dispedia.info/architecture/c/20110317/isRelatedTo> a owl:ObjectProperty ;
+                                                               rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                               rdfs:label "is related to"@en, "ist verwandt mit"@de ;
+                                                               rdfs:range <http://als.dispedia.info/architecture/c/20110317/Person> .
+
+<http://als.dispedia.info/architecture/c/20110317/knows> a owl:ObjectProperty ;
+                                                         rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                         rdfs:label "kennt"@de, "knows"@en ;
+                                                         rdfs:range <http://als.dispedia.info/architecture/c/20110317/Person> .
+
+<http://als.dispedia.info/architecture/c/20110317/lastName> a owl:DatatypeProperty ;
+                                                            rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                            rdfs:label "Nachname"@de, "last name"@en ;
+                                                            rdfs:subPropertyOf <http://xmlns.com/foaf/0.1/lastName> .
+
+<http://als.dispedia.info/architecture/c/20110317/linkedTo> a owl:ObjectProperty ;
+                                                            rdfs:label "linked to"@en, "verbunden mit"@de ;
+                                                            rdfs:range <http://als.dispedia.info/architecture/c/20110317/Information> .
+
+<http://als.dispedia.info/architecture/c/20110317/linkedToActionInfo> a owl:ObjectProperty ;
+                                                                      rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                      rdfs:label "linked to action information"@en, "verbunden mit Aktionsinformation"@de ;
+                                                                      rdfs:range <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                                      rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/linkedTo> .
+
+<http://als.dispedia.info/architecture/c/20110317/linkedToProposalInfo> a owl:ObjectProperty ;
+                                                                        rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Proposal> ;
+                                                                        rdfs:label "linked to proposal information"@en, "verbunden mit Behandlungsinformation"@de ;
+                                                                        rdfs:range <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                                        rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/linkedTo> .
+
+<http://als.dispedia.info/architecture/c/20110317/makes> a owl:ObjectProperty ;
+                                                         rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Patient> ;
+                                                         rdfs:label "makes"@en, "trifft Entscheidung"@de ;
+                                                         rdfs:range <http://als.dispedia.info/architecture/c/20110317/Decision> .
+
+<http://als.dispedia.info/architecture/c/20110317/needs> a owl:ObjectProperty ;
+                                                         rdfs:label "benötigt"@de, "needs"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/needsInformation> a owl:ObjectProperty ;
+                                                                    rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                                    rdfs:label "benötigt Information"@de, "needs information"@en ;
+                                                                    rdfs:range <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                                    rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/needs> .
+
+<http://als.dispedia.info/architecture/c/20110317/needsProposal> a owl:ObjectProperty ;
+                                                                 rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Person> ;
+                                                                 rdfs:label "benötigt Behandlungsvorschlag"@de, "needs proposal"@en ;
+                                                                 rdfs:range <http://als.dispedia.info/architecture/c/20110317/Proposal> ;
+                                                                 rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/needs> .
+
+<http://als.dispedia.info/architecture/c/20110317/originator> a owl:DatatypeProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                              rdfs:label "Vermittler"@de, "originator"@en ;
+                                                              rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://als.dispedia.info/architecture/c/20110317/pays> a owl:ObjectProperty ;
+                                                        rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                        rdfs:label "pays"@en, "zahlt"@de ;
+                                                        rdfs:range <http://als.dispedia.info/architecture/c/20110317/Costs> ;
+                                                        owl:propertyDisjointWith <http://als.dispedia.info/architecture/c/20110317/refuses> .
+
+<http://als.dispedia.info/architecture/c/20110317/providedBy> a owl:ObjectProperty ;
+                                                              rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                              rdfs:label "bereitgestellt von"@de, "provided by"@en ;
+                                                              rdfs:range <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                              owl:inverseOf <http://als.dispedia.info/architecture/c/20110317/hasInformation> .
+
+<http://als.dispedia.info/architecture/c/20110317/recipient> a owl:DatatypeProperty ;
+                                                             rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                             rdfs:label "Empfänger"@de, "recipient"@en ;
+                                                             rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://als.dispedia.info/architecture/c/20110317/refersTo> a owl:ObjectProperty ;
+                                                            rdfs:domain <http://als.dispedia.info/architecture/c/20110317/CareRelation> ;
+                                                            rdfs:label "bezieht sich auf"@de, "refers to"@en ;
+                                                            rdfs:range <http://als.dispedia.info/architecture/c/20110317/Proposal> .
+
+<http://als.dispedia.info/architecture/c/20110317/refuses> a owl:ObjectProperty ;
+                                                           rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Agent> ;
+                                                           rdfs:label "lehnt ab"@de, "refuses"@en ;
+                                                           rdfs:range <http://als.dispedia.info/architecture/c/20110317/Costs> .
+
+<http://als.dispedia.info/architecture/c/20110317/street> a owl:DatatypeProperty ;
+                                                          rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                          rdfs:label "Straße"@de, "street"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/subject> a owl:DatatypeProperty ;
+                                                           rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                           rdfs:label "Thema"@de, "subject"@en ;
+                                                           rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<http://als.dispedia.info/architecture/c/20110317/successorOf> a owl:ObjectProperty ;
+                                                               rdfs:label "Nachfolger von"@de, "successor of"@en .
+
+<http://als.dispedia.info/architecture/c/20110317/successorOfAction> a owl:ObjectProperty ;
+                                                                     rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                     rdfs:label "Nachfolger der Handlung"@de, "successor of action"@en ;
+                                                                     rdfs:range <http://als.dispedia.info/architecture/c/20110317/Action> ;
+                                                                     rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/successorOf> .
+
+<http://als.dispedia.info/architecture/c/20110317/successorOfAddress> a owl:ObjectProperty ;
+                                                                      rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                                      rdfs:label "Nachfolger der Adresse"@de, "successor of address"@en ;
+                                                                      rdfs:range <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                                      rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/successorOf> .
+
+<http://als.dispedia.info/architecture/c/20110317/successorOfDiseaseSection> a owl:ObjectProperty ;
+                                                                             rdfs:domain <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> ;
+                                                                             rdfs:label "Nachfolger des Krankheitsabschnitts"@de, "successor of disease section"@en ;
+                                                                             rdfs:range <http://als.dispedia.info/architecture/c/20110317/DiseaseSection> ;
+                                                                             rdfs:subPropertyOf <http://als.dispedia.info/architecture/c/20110317/successorOf> .
+
+<http://als.dispedia.info/architecture/c/20110317/suitableFor> a owl:ObjectProperty ;
+                                                               rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                               rdfs:label "geeignet für"@de, "suitable for"@en ;
+                                                               rdfs:range <http://als.dispedia.info/architecture/c/20110317/PatientType> .
+
+<http://als.dispedia.info/architecture/c/20110317/usefulFor> a owl:ObjectProperty ;
+                                                             rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Information> ;
+                                                             rdfs:label "nützlich für"@de, "useful for"@en ;
+                                                             rdfs:range <http://als.dispedia.info/architecture/c/20110317/TherapistType> .
+
+<http://als.dispedia.info/architecture/c/20110317/zipCode> a owl:DatatypeProperty ;
+                                                           rdfs:domain <http://als.dispedia.info/architecture/c/20110317/Address> ;
+                                                           rdfs:label "Postleitzahl"@de, "zip code"@en .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/> a owl:Ontology ;
+                                                   rdfs:comment "Expert Knowledge Base: Proposals and related information"@en, "Expertenwissen: Vorschläge und damit zusammenhängende Informationen"@de ;
+                                                   rdfs:label "EKB Proposal and related knowledge"@en, "EKB Vorschläge und damit verbundenes Wissen"@de ;
+                                                   owl:imports <http://als.dispedia.info/architecture/> ;
+                                                   owl:versionInfo "0.1" .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Active> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/ApplyForSHP> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Doctor> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/DurationHouseHunting> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/DurationSHPApplying> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/HandlingDiagnosisShock> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/HouseHunting> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Logo> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/LogoTherapy> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Move> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Occupational> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/OccupationalTherapy> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/PhysicalTherapy> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Physio> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/QuitWork> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Rehabilitation> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Sensitive> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/SeverelyHandicappedPass> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/Social> a owl:NamedIndividual .
+
+<http://als.dispedia.info/ekbProposal/i/20110325/SupportGroup> a owl:NamedIndividual .
+
+<> a owl:Ontology .
+
+<http://als.dispedia.info/pdExample/i/20110325/> a owl:Ontology ;
+                                                 rdfs:comment "Hypothetical patient data for testing of the als architecture vocabulary"@en, "Konstruierte Patientendaten zum Test der ALS architecture"@de ;
+                                                 rdfs:label "Patient data example"@en, "Patientendaten-Beispiel"@de ;
+                                                 owl:imports <http://als.dispedia.info/architecture/> ;
+                                                 owl:versionInfo "0.1" .
+
+<http://als.dispedia.info/pdExample/i/20110325/AddressLorenzDienst1> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/AddressLorenzDienst2> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/AxelKern> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/ClausThieme> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/FredElze> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/HeikoKlingner> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/JanikaHellmann> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/JensMartin> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/JoergSonnenberg> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/KyrillBoettcher> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/LorenzDienst> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/MartinGerstner> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/MartinStefan> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/MichaelBerger> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/MichaelTramp> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/MichaelZaveri> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/MohamedRiechert> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/PhilippErmilov> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/RomyGebauer> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/SebastianBuehmann> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/SoerenBecker> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/StefanHellmann> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/StefanLehmann> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/ThomasSchumacher> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/ThorstenAuer> a owl:NamedIndividual .
+
+<http://als.dispedia.info/pdExample/i/20110325/TimofeyFrischmuth> a owl:NamedIndividual .
+
+<http://als.dispedia.info/wrapperIcd/c/20110317/> a owl:Ontology ;
+                                                  rdfs:comment "Dieses Schema mappt die Codes der ICD-10-Klassifikation auf eine Krankheit."@de, "This ontology maps a disease to an ICD-10 classification code using the icd ontology."@en ;
+                                                  rdfs:label "A disease out of the ICD-10 classification"@en, "Krankheiten aus der ICD-10-Klassifikation"@de ;
+                                                  owl:versionInfo "0.1"^^rdf:PlainLiteral .
+
+<http://als.dispedia.info/wrapperIcd/c/20110317/Disease> a owl:Class ;
+                                                         rdfs:label "Disease"@en, "Krankheit"@de .
+
+<http://als.dispedia.info/wrapperIcd/c/20110317/hasICDCode> a owl:ObjectProperty ;
+                                                            rdfs:domain <http://als.dispedia.info/wrapperIcd/c/20110317/Disease> ;
+                                                            rdfs:label "has ICD code"@en, "hat ICD-Code"@de ;
+                                                            rdfs:range <http://www.owl-ontologies.com/icd10/#ICD10_Chapter> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/> a owl:Ontology ;
+                                                  rdfs:comment "Diese Ontologie bildet die verschiedenen Aspekte des Gesundheitszustandes einer Person auf einen bestimmten Zeitpunkt, den Gesundheitsstatus, ab. Grundlage dafür sind die Kategorien der ICF."@de, "This ontology is able to map the health conditions based on the different categories of the ICF ontology at a certain point of time into one object, the HealthState."@en ;
+                                                  rdfs:label "Gesundheitsstatus auf Basis der ICF"@de, "HealthState based on the ICF"@en ;
+                                                  owl:versionInfo "0.1"^^rdf:PlainLiteral .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/HealthState> a owl:Class ;
+                                                             rdfs:label "Gesundheitsstatus"@de, "Health state"@en .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/PropertySet> a owl:Class ;
+                                                             rdfs:label "Eigenschaftsmenge"@de, "Property set"@en .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> a owl:Class ;
+                                                            rdfs:label "Symptom set"@en, "Symptommenge"@de .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/affectedActivity> a owl:ObjectProperty ;
+                                                                  rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/PropertySet> ;
+                                                                  rdfs:label "affected activity"@en, "beeinträchtigte Aktivität"@de ;
+                                                                  rdfs:range <http://who.int/icf#d> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/affects> a owl:ObjectProperty ;
+                                                         rdfs:domain <http://who.int/icf#ICFCategory> ;
+                                                         rdfs:label "affects"@en, "beeinträchtigt"@de ;
+                                                         rdfs:range <http://who.int/icf#ICFCategory> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damaged> a owl:ObjectProperty ;
+                                                         rdfs:label "beschädigt"@de, "damaged"@en .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunction> a owl:ObjectProperty ;
+                                                                     rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                     rdfs:label "beschädigte Körperfunktion"@de, "damaged body function"@en ;
+                                                                     rdfs:range <http://who.int/icf#b> ;
+                                                                     rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damaged> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunctionStrength1> a owl:ObjectProperty ;
+                                                                              rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                              rdfs:label "beschädigte Körperfunktion Stärke 1"@de, "damaged body function strength 1"@en ;
+                                                                              rdfs:range <http://who.int/icf#b> ;
+                                                                              rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunction> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunctionStrength2> a owl:ObjectProperty ;
+                                                                              rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                              rdfs:label "beschädigte Körperfunktion Stärke 2"@de, "damaged body function strength 2"@en ;
+                                                                              rdfs:range <http://who.int/icf#b> ;
+                                                                              rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunction> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunctionStrength3> a owl:ObjectProperty ;
+                                                                              rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                              rdfs:label "beschädigte Körperfunktion Stärke 3"@de, "damaged body function strength 3"@en ;
+                                                                              rdfs:range <http://who.int/icf#b> ;
+                                                                              rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunction> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunctionStrength4> a owl:ObjectProperty ;
+                                                                              rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                              rdfs:label "beschädigte Körperfunktion Stärke 4"@de, "damaged body function strength 4"@en ;
+                                                                              rdfs:range <http://who.int/icf#b> ;
+                                                                              rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunction> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunctionStrength5> a owl:ObjectProperty ;
+                                                                              rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                              rdfs:label "beschädigte Körperfunktion Stärke 5"@de, "damaged body function strength 5"@en ;
+                                                                              rdfs:range <http://who.int/icf#b> ;
+                                                                              rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyFunction> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructure> a owl:ObjectProperty ;
+                                                                      rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                      rdfs:label "beschädigte Körperstruktur"@de, "damaged body structure"@en ;
+                                                                      rdfs:range <http://who.int/icf#s> ;
+                                                                      rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damaged> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructureStrength1> a owl:ObjectProperty ;
+                                                                               rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                               rdfs:label "beschädigte Körperstruktur Stärke 1"@de, "damaged body structure strength 1"@en ;
+                                                                               rdfs:range <http://who.int/icf#s> ;
+                                                                               rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructure> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructureStrength2> a owl:ObjectProperty ;
+                                                                               rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                               rdfs:label "beschädigte Körperstruktur Stärke 2"@de, "damaged body structure strength 2"@en ;
+                                                                               rdfs:range <http://who.int/icf#s> ;
+                                                                               rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructure> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructureStrength3> a owl:ObjectProperty ;
+                                                                               rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                               rdfs:label "beschädigte Körperstruktur Stärke 3"@de, "damaged body structure strength 3"@en ;
+                                                                               rdfs:range <http://who.int/icf#s> ;
+                                                                               rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructure> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructureStrength4> a owl:ObjectProperty ;
+                                                                               rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                               rdfs:label "beschädigte Körperstruktur Stärke 4"@de, "damaged body structure strength 4"@en ;
+                                                                               rdfs:range <http://who.int/icf#s> ;
+                                                                               rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructure> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructureStrength5> a owl:ObjectProperty ;
+                                                                               rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                               rdfs:label "beschädigte Körperstruktur Stärke 5"@de, "damaged body structure strength 5"@en ;
+                                                                               rdfs:range <http://who.int/icf#s> ;
+                                                                               rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/damagedBodyStructure> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/hasDate> a owl:DatatypeProperty ;
+                                                         rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/HealthState> ;
+                                                         rdfs:label "has date"@en, "hat Datum"@de ;
+                                                         rdfs:range <http://www.w3.org/2001/XMLSchema#dateTime> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/includes> a owl:ObjectProperty ;
+                                                          rdfs:label "beeinhaltet"@de, "includes"@en .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/includesAffectedProperties> a owl:ObjectProperty ;
+                                                                            rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/HealthState> ;
+                                                                            rdfs:label "beinhaltet beeinträchtigte Eigenschaften"@de, "includes affected properties"@en ;
+                                                                            rdfs:range <http://als.dispedia.info/wrapperIcf/c/20110317/PropertySet> ;
+                                                                            rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/includes> .
+
+<http://als.dispedia.info/wrapperIcf/c/20110317/includesSymptoms> a owl:ObjectProperty ;
+                                                                  rdfs:domain <http://als.dispedia.info/wrapperIcf/c/20110317/HealthState> ;
+                                                                  rdfs:label "beeinhaltet Symptome"@de, "includes affected symptoms"@en ;
+                                                                  rdfs:range <http://als.dispedia.info/wrapperIcf/c/20110317/SymptomSet> ;
+                                                                  rdfs:subPropertyOf <http://als.dispedia.info/wrapperIcf/c/20110317/includes> .
+
+rdfs:comment a owl:AnnotationProperty .
+
+rdfs:label a owl:AnnotationProperty .
+
+owl:versionInfo a owl:AnnotationProperty .
+
+<http://xmlns.com/foaf/0.1/Agent> <http://ns.ontowiki.net/SysOnt/hidden> "true" ;
+                                  a rdfs:Class, owl:Class ;
+                                  rdfs:comment "An agent (eg. person, group, software or physical artifact)." ;
+                                  rdfs:label "Agent" ;
+                                  owl:equivalentClass <http://purl.org/dc/terms/Agent> ;
+                                  <http://www.w3.org/2003/06/sw-vocab-status/ns#term_status> "stable" .
