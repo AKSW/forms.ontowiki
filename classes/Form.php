@@ -70,20 +70,24 @@ class Form
 							$titleHelper = new OntoWiki_Model_TitleHelper ( $this->model );
 							$titleHelper->addResource( $p );
                             
-                            //echo 'SELECT ?subject WHERE {?subject <' . $p . '> ?o.}<pre>';
                             
-                            //var_dump($this->model->sparqlQuery('SELECT ?subject WHERE {?subject <' . $p . '> ?o.}'));
+                            // ####### get range infos for predicate
+                            //echo 'SELECT ?object WHERE {<' . $p . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.}';
+                            $range = $this->model->sparqlQuery('SELECT ?object WHERE {<' . $p . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.}');
 							//echo '</pre>';
 							// echo '<br> > '. (string) $predicate [0] .' => ' . $p . ' ( '. $titleHelper->getTitle( $p ) .' )';
                             
-                            
+                            // ####### if no range info then range is string
+                            if (0 == count($range))
+                                $range[]['object'] = "range is empty => string";
                             
 							
 							$newSection ['fields'] [] = array ( 'type' 		=> (string) $a ['type'],
 															    'caption'	=> $titleHelper->getTitle( $p ), 
 															    'mandatory' => (int) 	$a ['mandatory'],
 																'name' 		=> (string) $predicate [0],
-                                                                'target'    => $this->replaceNamespaces ((string) $a ['target'] ));
+                                                                'target'    => $this->replaceNamespaces ((string) $a ['target']),
+                                                                'range'     => $range[0]['object']);
                                                                 
 
 						}

@@ -8,7 +8,7 @@
 			<caption>Daten des Patienten</caption> 								
 			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:firstName</predicate> 
 			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:lastName</predicate> 
-			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:Address</predicate> 
+			<predicate target="architecture:Patient" mandatory="1" type="simpletext">architecture:hasAddress</predicate> 
 			<predicate target="architecture:Patient" mandatory="1" type="date">architecture:birthdate</predicate> 
 			<predicate target="architecture:Patient" mandatory="1" type="date">architecture:age</predicate> 
 			<predicate target="architecture:Patient" mandatory="1" type="gender">architecture:gender</predicate> 

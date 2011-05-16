@@ -34,6 +34,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         require realpath(dirname(__FILE__)) . '/../resourcecreationuri/classes/ResourceUriGenerator.php';
         
         $foo = new ResourceUriGenerator($this->_owApp->selectedModel, null, $this->_owApp);
+        echo 'ResourceUriGenerator Test: ';
         var_dump( $foo->generateUri('http://als.dispedia.info/pdExample/i/20110325/'));
         
         // Get model
@@ -53,15 +54,18 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $name = 'Meyer';
         $firstName = 'Hans';
-        $instanz = $exampleForm->sections[0] ['fields'][0]['target']
+        $instance = $exampleForm->sections[0] ['fields'][0]['target']
                  . '/' . $name . '/' . $firstName
                  . '/' . md5($name . $firstName);
         
-        echo $instanz;
-        $m->getStore()->addStatement( (string) $m, 
-                                                $instanz,
-                                                'a', 
-                                                array ( 'value' => $exampleForm->sections[0] ['fields'][0]['target'], 'type' => 'uri' ));
+        
+        // addstatement
+        echo 'example addstatement:<br />';
+        echo $instance . ' a ' . $exampleForm->sections[0] ['fields'][0]['target'];
+        //$m->getStore()->addStatement( (string) $m, 
+        //                                        $instance,
+        //                                       'a', 
+        //                                        array ( 'value' => $exampleForm->sections[0] ['fields'][0]['target'], 'type' => 'uri' ));
 
 		foreach ( $exampleForm -> sections as $section )
 		{
@@ -92,11 +96,20 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 								});
 							  </script>';
 						
-						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption']. '(' . $field ['target'] . ')';
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
 						
 						if ( 1 == $field ['mandatory'] )
 							echo ' *';
 						
+						echo '<br />';
+						echo '(target: ' . $field ['target'] . ')';
+						echo '<br />';
+                        echo '(xml-type: ' . $field ['type'] . ')';
+						echo '<br />';
+                        echo '(range-type: ' . $field ['range'] . ')';
+						echo '<br />';
+                        
+						echo '<br />';
 						echo '</td>';
 						echo '<td bgcolor="#FFFFCC"><input type="text" id="datepicker"></td>';
 					
@@ -104,22 +117,40 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 						
 					case 'gender':
 									
-						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'] . '(' . $field ['target'] . ')';
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
 						
 						if ( 1 == $field ['mandatory'] )
 							echo ' *';
 						
+						echo '<br />';
+						echo '(target: ' . $field ['target'] . ')';
+						echo '<br />';
+                        echo '(xml-type: ' . $field ['type'] . ')';
+						echo '<br />';
+                        echo '(range-type: ' . $field ['range'] . ')';
+						echo '<br />';
+                        
+						echo '<br />';
 						echo '</td>';
 						echo '<td bgcolor="#FFFFCC"><select><option>- bitte w&auml;hlen -</option><option>m&auml;nnlich</option><option>weiblich</option></select></td>';
 					
 						break;
 						
 					default:
-						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'] . '(' . $field ['target'] . ')';
-						
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+                        
 						if ( 1 == $field ['mandatory'] )
 							echo ' *';
-						
+                        
+						echo '<br />';
+						echo '(target: ' . $field ['target'] . ')';
+						echo '<br />';
+                        echo '(xml-type: ' . $field ['type'] . ')';
+						echo '<br />';
+                        echo '(range-type: ' . $field ['range'] . ')';
+						echo '<br />';
+                        
+						echo '<br />';
 						echo '</td>';
 						echo '<td bgcolor="#FFFFCC"><input type="text" name="foobar" /></td>';
 						break;
