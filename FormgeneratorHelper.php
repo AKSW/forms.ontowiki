@@ -20,20 +20,11 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                           );
             
             // Add entry in Extras menu
-            $extrasMenu = OntoWiki_Menu_Registry::getInstance()
+            /*$extrasMenu = OntoWiki_Menu_Registry::getInstance()
                           ->getMenu('application')
                           ->getSubMenu('Extras');
             $extrasMenu->setEntry($translate->_('Formgenerator'), (string) $url);
-            
-            // Add entry in tab list
-            OntoWiki_Navigation::register(
-                'formgenerator_overview', 
-                array(
-                    'controller' => 'formgenerator', 
-                    'action'     => 'overview', 
-                    'name'       => 'Formgenerator'
-                )
-            );
+            */
             
             // Add entry in tab list
             OntoWiki_Navigation::register(
@@ -41,7 +32,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                 array(
                     'controller' => 'formgenerator', 
                     'action'     => 'form', 
-                    'name'       => 'Example Form'
+                    'name'       => 'Input Form'
                 )
             );
         }
