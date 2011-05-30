@@ -88,7 +88,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 				
 				switch ( $field ['type'] )
 				{
-					case 'date':
+					case 'XMLSchema#date':
 						
 						echo '<script>
 								$(function() {
@@ -106,12 +106,54 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 						echo '<br />';
                         echo '(xml-type: ' . $field ['type'] . ')';
 						echo '<br />';
-                        echo '(range-type: ' . $field ['range'] . ')';
-						echo '<br />';
                         
 						echo '<br />';
 						echo '</td>';
 						echo '<td bgcolor="#FFFFCC"><input type="text" id="datepicker"></td>';
+					
+						break;
+                        
+					case 'XMLSchema#dateTime':
+						
+						echo '<script>
+								$(function() {
+									$( "#datetimepicker" ).datepicker();
+								});
+							  </script>';
+						
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						
+						if ( 1 == $field ['mandatory'] )
+							echo ' *';
+						
+						echo '<br />';
+						echo '(target: ' . $field ['target'] . ')';
+						echo '<br />';
+                        echo '(xml-type: ' . $field ['type'] . ')';
+						echo '<br />';
+                        
+						echo '<br />';
+						echo '</td>';
+						echo '<td bgcolor="#FFFFCC"><input type="text" id="datetimepicker"><input type="text" value="23:34:34"></td>';
+					
+						break;
+                        
+					case 'birthdate':
+						
+						echo '<td bgcolor="#FFFFCC" width="45%">'. $field ['caption'];
+						
+						if ( 1 == $field ['mandatory'] )
+							echo ' *';
+						
+						echo '<br />';
+						echo '(target: ' . $field ['target'] . ')';
+						echo '<br />';
+                        echo '(xml-type: ' . $field ['type'] . ')';
+						echo '<br />';
+                        
+						echo '<br />';
+						echo '</td>';
+						echo '<td bgcolor="#FFFFCC"><input type="text" value="Tag"><input type="text" value="Monat"><input type="text" value="Jahr"></td>';
 					
 						break;
 						
@@ -126,8 +168,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 						echo '(target: ' . $field ['target'] . ')';
 						echo '<br />';
                         echo '(xml-type: ' . $field ['type'] . ')';
-						echo '<br />';
-                        echo '(range-type: ' . $field ['range'] . ')';
 						echo '<br />';
                         
 						echo '<br />';
@@ -146,8 +186,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 						echo '(target: ' . $field ['target'] . ')';
 						echo '<br />';
                         echo '(xml-type: ' . $field ['type'] . ')';
-						echo '<br />';
-                        echo '(range-type: ' . $field ['range'] . ')';
 						echo '<br />';
                         
 						echo '<br />';
