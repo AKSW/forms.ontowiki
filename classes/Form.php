@@ -109,5 +109,15 @@ class Form
 		
 		return $s;
 	}
+    
+    /**
+     * 
+     */
+    public function generateUniqueUri ( $classUri, $label )
+    {
+        $hash = substr ( md5 ( $label . $classUri . time ()), 0, 5 );        
+        
+        return $classUri .'/'. $hash .'/'. $label; 
+    }
 }
 

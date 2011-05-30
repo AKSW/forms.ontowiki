@@ -32,16 +32,23 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     {
         require 'classes/Form.php';		
         require realpath(dirname(__FILE__)) . '/../resourcecreationuri/classes/ResourceUriGenerator.php';
-        
-        $foo = new ResourceUriGenerator($this->_owApp->selectedModel, null, $this->_owApp);
-        echo 'ResourceUriGenerator Test: ';
-        var_dump( $foo->generateUri('http://als.dispedia.info/pdExample/i/20110325/'));
+        require realpath(dirname(__FILE__)) . '/../resourcecreationuri/ResourcecreationuriPlugin.php';
+
         
         // Get model
         $m = $this->_owApp->selectedModel;
         $mUrl = (string) $this->_owApp->selectedModel;
 
+
 		$exampleForm = new Form ( $m );
+        
+        
+// ####### Test URI generation
+
+        echo '<br />---------------------------------------->';
+        echo $exampleForm->generateUniqueUri ( "http://als.dispedia.info/architecture/c/20110504/Patient", "KarlHeinz" );
+
+
 
 		// Load XML Config
 		$exampleForm->loadConfig ( realpath(dirname(__FILE__)) . '/formconfigs/createPatient_own.xml' );
@@ -52,16 +59,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
                // TODO: $this->model->getStore()->addStatement ()    siehe WIKI > Erfurt > Working with Erfurt
         
-        $name = 'Meyer';
-        $firstName = 'Hans';
-        $instance = $exampleForm->sections[0] ['fields'][0]['target']
-                 . '/' . $name . '/' . $firstName
-                 . '/' . md5($name . $firstName);
-        
-        
         // addstatement
         echo 'example addstatement:<br />';
-        echo $instance . ' a ' . $exampleForm->sections[0] ['fields'][0]['target'];
+        echo $exampleForm->generateUniqueUri ( "http://als.dispedia.info/architecture/c/20110504/Patient", "KarlHeinz" ) . ' a ' . $exampleForm->sections[0] ['fields'][0]['target'];
         //$m->getStore()->addStatement( (string) $m, 
         //                                        $instance,
         //                                       'a', 
