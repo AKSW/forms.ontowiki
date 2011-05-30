@@ -77,17 +77,22 @@ class Form
 							//echo '</pre>';
 							// echo '<br> > '. (string) $predicate [0] .' => ' . $p . ' ( '. $titleHelper->getTitle( $p ) .' )';
                             
-                            // ####### if no range info then range is string
-                            if (0 == count($range))
-                                $range[]['object'] = "range is empty => string";
+                            $type = "xsd:string";
                             
+                            // If a range was defined
+                            if (0 != count($range) AND true == isset ( $range[0]['object'] ) )
+                                $type = substr ( $range[0]['object'],
+                                                 1+strrpos ( $range[0]['object'], '/' ) );
+                            
+                            // $a ['type']
+                            if (true == isset ( $a ['type'] ))
+                                $type = $a ['type'];
 							
-							$newSection ['fields'] [] = array ( 'type' 		=> (string) $a ['type'],
+							$newSection ['fields'] [] = array ( 'type' 		=> $type,
 															    'caption'	=> $titleHelper->getTitle( $p ), 
 															    'mandatory' => (int) 	$a ['mandatory'],
 																'name' 		=> (string) $predicate [0],
-                                                                'target'    => $this->replaceNamespaces ((string) $a ['target']),
-                                                                'range'     => $range[0]['object']);
+                                                                'target'    => $this->replaceNamespaces ((string) $a ['target']));
                                                                 
 
 						}
@@ -109,5 +114,15 @@ class Form
 		
 		return $s;
 	}
+    
+    /**
+     * 
+     */
+    public function generateUniqueUri ( $classUri, $label )
+    {
+        $hash = substr ( md5 ( $label . $classUri . time ()), 0, 5 );        
+        
+        return $classUri .'/'. $hash .'/'. $label; 
+    }
 }
 
