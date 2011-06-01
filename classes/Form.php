@@ -118,11 +118,15 @@ class Form
     /**
      * 
      */
-    public function generateUniqueUri ( $classUri, $label )
+    public function generateUniqueUri ( $modelUri, $className, $label )
     {
-        $hash = substr ( md5 ( $label . $classUri . time ()), 0, 5 );        
+		$time = time ();
         
-        return $classUri .'/'. $hash .'/'. $label; 
+        return $modelUri . 'i/' . 
+			   date ( 'Ymd', $time ) . '/' . 
+			   $className . '/' .
+			   substr ( md5 ($time), 0, 6 ) . '/' . 
+			   $label; 
     }
 }
 

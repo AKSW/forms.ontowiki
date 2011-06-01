@@ -45,7 +45,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 // ####### Test URI generation
 
         echo '<br />---------------------------------------->';
-        echo $exampleForm->generateUniqueUri ( "http://als.dispedia.info/architecture/c/20110504/Patient", "KarlHeinz" );
+        echo $exampleForm->generateUniqueUri ( $mUrl, 'Patient', 'KarlHeinz' );
 
 
 
