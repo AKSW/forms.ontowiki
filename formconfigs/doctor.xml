@@ -1,6 +1,6 @@
 <!-- Create a new doctor. With own changes ... -->
 <form> 
-    <class>architecture:Person</class>				
+    <targetclass>architecture:Person</targetclass>				
 	<headline>Doktor</headline>
 	<introduceText>Hier können Sie einen neuen supertollen Doktor anlegen.</introduceText>
 	<sections>

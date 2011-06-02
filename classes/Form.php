@@ -15,7 +15,7 @@ class Form
 	{
 		$this->headline = 'New form';
 		$this->introduceText = '';
-		$this->trigger = '';
+		$this->targetclass = '';
 		$this->sections = array ();
 		$this->model = $m;
 	}
@@ -40,8 +40,8 @@ class Form
 					$this->introduceText = $nodeValue [0];
 					break;
 					
-				case 'trigger':
-					$this->trigger = $nodeValue [0];
+				case 'targetclass':
+					$this->targetclass = $nodeValue [0];
 					break;
 					
 				case 'sections':					
@@ -52,50 +52,44 @@ class Form
 						
 						$newSection ['caption'] = $nodeValue->caption;
 						
+                        // Iterate over predicate entries.
 						foreach ( $nodeValue->predicate as $predicate )
-						{
-							// Collect attribute stuff
-							$a = array ();
-							
-							foreach ( $predicate->attributes() as $attr => $val )
-							{ 
-								$a [ $attr ] = $val;
-                                
-                              //  echo $attr .' ' . $val .'<br>';
-							}
-                            //echo '<br>';
-							
-							$p = $this->replaceNamespaces ( (string) $predicate [0] );
+						{	
+							$p = $this->replaceNamespaces ( $predicate->predicateuri );
 							
 							$titleHelper = new OntoWiki_Model_TitleHelper ( $this->model );
 							$titleHelper->addResource( $p );
                             
-                            
-                            // ####### get range infos for predicate
-                            //echo 'SELECT ?object WHERE {<' . $p . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.}';
-                            $range = $this->model->sparqlQuery('SELECT ?object WHERE {<' . $p . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.}');
-							//echo '</pre>';
-							// echo '<br> > '. (string) $predicate [0] .' => ' . $p . ' ( '. $titleHelper->getTitle( $p ) .' )';
-                            
-                            $type = "xsd:string";
-                            
-                            // If a range was defined
-                            if (0 != count($range) AND true == isset ( $range[0]['object'] ) )
-                                $type = substr ( $range[0]['object'],
-                                                 1+strrpos ( $range[0]['object'], '/' ) );
-                            
-                            // $a ['type']
-                            if (true == isset ( $a ['type'] ))
-                                $type = $a ['type'];
+                            // Get type of this field.
+                            $type = $this->getFieldType ( $p, $predicate->type );
 							
-							$newSection ['fields'] [] = array ( 'type' 		=> $type,
-															    'caption'	=> $titleHelper->getTitle( $p ), 
-															    'mandatory' => (int) 	$a ['mandatory'],
-																'name' 		=> (string) $predicate [0],
-                                                                'target'    => $this->replaceNamespaces ((string) $a ['target']));
-                                                                
-
+                            // Build an entry instance.
+                            $entry = array ( 'predicateuri' => $predicate->predicateuri,
+                                             'type' 		=> $type,
+                                             'caption'	    => $titleHelper->getTitle( $p ), 
+                                             'mandatory'    => (int) $predicate->mandatory );
+                            
+                            // Add entry to predicate array.
+							$newSection ['predicate'] [] = $entry;
 						}
+                         
+                        // Iterate over nestedconfig entries.                       
+						foreach ( $nodeValue->nestedconfig as $nestedconfig )
+						{                                             
+                            // Load XML Config
+                            $form = new Form ( $this->model );
+                            $form->loadConfig ( realpath(dirname(__FILE__)) . 
+                                                '/../formconfigs/' .
+                                                $nestedconfig->target  );
+                                                
+                            // Build an entry instance.
+                            $entry = array ( 'target'       => $nestedconfig->target,
+                                             'relations'    => $nestedconfig->relations,
+                                             'form'         => $form );
+                            
+                            // Add entry to nestedconfig array.
+                            $newSection ['nestedconfig'] [] = $entry;
+                        }
 						
 						$this->sections [] = $newSection;
 					}
@@ -107,6 +101,32 @@ class Form
 			}
 		}
 	}
+    
+    /**
+     * 
+     */
+    public function getFieldType ( $predicate, $t )
+    {
+        if (true == isset ( $t ))
+            return $t;
+        else
+        {
+            // Get range infos for predicate
+            $range = $this->model->sparqlQuery('SELECT ?object 
+                                                 WHERE {
+                                                     <' . $predicate . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.
+                                                 }');
+            
+            $type = 'xsd:string';
+            
+            // If a range was defined
+            if (0 != count($range) AND true == isset ( $range[0]['object'] ) )
+                $type = substr ( $range[0]['object'],
+                                 1+strrpos ( $range[0]['object'], '/' ) );
+                
+            return $type;
+        }
+    }
 	
 	public function replaceNamespaces ( $s )
 	{                                        
