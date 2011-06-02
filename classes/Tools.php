@@ -45,8 +45,6 @@ class Tools
                 {
                     // Set new class uri and go one step ahead in class tree.
                     $classUri = $newClassUri;
-                    echo "<br>Neue classUri = ". $classUri;
-                    echo "<br>nothing found";
                 }
                 
                 $i++;
@@ -57,7 +55,6 @@ class Tools
         
         // Load XML and read formular headline tag.
         $xmlConfig = simplexml_load_file ( realpath(dirname(__FILE__)) .'/../formconfigs/'. $xmlConfigName );
-        echo "====>". $xmlConfig->headline;
 	}
     
     /**

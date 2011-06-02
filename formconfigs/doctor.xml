@@ -1,0 +1,22 @@
+<!-- Create a new doctor. With own changes ... -->
+<form> 
+    <class>architecture:Person</class>				
+	<headline>Doktor</headline>
+	<introduceText>Hier können Sie einen neuen supertollen Doktor anlegen.</introduceText>
+	<sections>
+		<item>
+			<caption>Daten des Doktors</caption> 								
+
+            <predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+            
+		</item>
+	</sections>
+</form>

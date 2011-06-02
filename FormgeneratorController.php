@@ -41,36 +41,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 
 		$exampleForm = new Form ( $m );
         
-        
-// ####### Test URI generation
-
-        echo '<br />---------------------------------------->';
-        echo $exampleForm->generateUniqueUri ( $mUrl, 'Patient', 'KarlHeinz' );
-
-
-
 		// Load XML Config
 		$exampleForm->loadConfig ( realpath(dirname(__FILE__)) . '/formconfigs/createPatient_own.xml' );
 
 
         // -------------------------------------------------------------
-        $currentClass = 'http://als.dispedia.info/architecture/c/20110504/Patient';
-
-		echo '<br><br>Aktuelle Klasse > <b>'. $currentClass .'</b><br/><br/>';
         
-        // echo "<pre>"; var_dump ( $this->_privateConfig->patient ); echo "</pre>";
-                
+        $currentClass = 'http://als.dispedia.info/architecture/c/20110504/Patient';
+        
         $tools = new Tools ( $m, $this->_privateConfig );
         
-
-        // addstatement
-        echo 'example addstatement:<br />';
-        echo $exampleForm->generateUniqueUri ( "http://als.dispedia.info/architecture/c/20110504/Patient", "KarlHeinz" ) . ' a ' . $exampleForm->sections[0] ['fields'][0]['target'];
-        //$m->getStore()->addStatement( (string) $m, 
-        //                                        $instance,
-        //                                       'a', 
-        //                                        array ( 'value' => $exampleForm->sections[0] ['fields'][0]['target'], 'type' => 'uri' ));
-
         $tools->getClassXmlConfig ( $currentClass );
         
         // -------------------------------------------------------------
