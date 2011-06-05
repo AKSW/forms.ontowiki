@@ -54,15 +54,24 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             echo '<br><br>';
             echo '<h3>'. $section ['caption'] .'</h3>';
             
-            // Iterate about predicates, only if predicate was set
+            ## Iterate about predicates, only if predicate was set ##
             if ( true == isset ( $section ['predicate'] ) )
                 foreach ( $section ['predicate'] as $predicate )
-                    echo '<br>'. $predicate ['caption'];
-                
+                {
+                    echo '<br>'. $predicate ['caption'] . '('. $predicate ['type'] .'): ';
+
+                    // Output HTML code which belongs to this type    
+                    echo $this->getHtmlForType ( $predicate ['type'],
+                                                 $predicate ['typeparameter'], 
+                                                 $predicate ['predicateuri'],
+                                                 $exampleForm->targetclass );
+                }
+                            
             
-            // Iterate about nestedconfig, only if nestedconfig was set
+            ## Iterate about nestedconfig, only if nestedconfig was set ##
             if ( true == isset ( $section ['nestedconfig'] ) )
-            
+            {
+                
                 // Include formulas from nested configs
                 foreach ( $section ['nestedconfig'] as $nestedconfig )
                 {
@@ -71,10 +80,77 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         // Iterate about predicates, only if predicate was set
                         if ( true == isset ( $section ['predicate'] ) )
                             foreach ( $section ['predicate'] as $predicate )
-                                echo '<br>'. $predicate ['caption'];
-                                
+                            {
+                                echo '<br>'. $predicate ['caption'] . '('. $predicate ['type'] .'): ';
+
+                                // Output HTML code which belongs to this type    
+                                echo $this->getHtmlForType ( $predicate ['type'], 
+                                                             $predicate ['typeparameter'],  
+                                                             $predicate ['predicateuri'],
+                                                             $nestedconfig ['form']->targetclass );
+                            }
                     }
                 }
+                
+            }
+        }
+    }
+    
+    /**
+     * Interpret field type and build custom HTML code. The $name and $class 
+     * parameter will be used to build a HTML wide unique name for every textfield.
+     * @param $type Type of field.
+     * @param $name Name of the predicate.
+     * @param $class The class to which this field is belonged.
+     */
+    private function getHtmlForType ( $type, $typeparameter, $name, $class )
+    {
+        $fieldName = md5 ( $class . $name );
+        
+        switch ( $type )
+        {
+            // List 
+            case 'list':
+            
+                $s = '<select name="'. $fieldName .'">';
+                
+                foreach ( $typeparameter as $ele )
+                    $s .= '<option>'. $ele .'</option>';
+                
+                $s .= '</select>';
+            
+                return $s;
+            
+            
+            // Date - Birthdate 
+            case 'birthdate':
+            
+                $currentYear = date ( 'Y', time ());
+            
+                // Build day
+                $s = '<select name="'. $fieldName .'_day">';                
+                for ( $i = 1; $i < 32; ++$i ) $s .= '<option>'. $i .'</option>';
+                $s .= '</select> ';
+                
+                // Build month
+                $s .= '<select name="'. $fieldName .'_month">';                
+                for ( $i = 1; $i < 13; ++$i ) $s .= '<option>'. $i .'</option>';
+                $s .= '</select> ';
+                
+                // Build year
+                $s .= '<select name="'. $fieldName .'_year">';                
+                for ( $i = 1920; $i < $currentYear; ++$i ) $s .= '<option>'. $i .'</option>';
+                $s .= '</select>';
+                                                
+                return $s;
+            
+            
+            // Default: xsd:string ( A simple textfield ) 
+            default: 
+                
+                return '<input type="text" name="'. $fieldName .'">';
+            
+                break;
         }
     }
 }

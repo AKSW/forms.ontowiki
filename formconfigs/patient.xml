@@ -41,7 +41,12 @@
 			<predicate> 
 				<mandatory>0</mandatory>
 				<predicateuri>architecture:gender</predicateuri>
-				<type>gender</type>
+				<type>list</type>
+                <typeparameter>
+                    <item>- please select -</item>
+                    <item>female</item>
+                    <item>male</item>
+                </typeparameter>
 			</predicate>
 		
 		</item>

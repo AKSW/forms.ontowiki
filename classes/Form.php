@@ -62,10 +62,21 @@ class Form
                             
                             // Get type of this field.
                             $type = $this->getFieldType ( $p, $predicate->type );
+                            $typeparameter = array ();
+                            
+                            // If set, get type parameters
+                            if ( true == isset ( $predicate->typeparameter ) )
+                            {
+                                foreach ( $predicate->typeparameter->item as $parameter )
+                                {
+                                    $typeparameter [] = $parameter;
+                                }
+                            }                            
 							
                             // Build an entry instance.
                             $entry = array ( 'predicateuri' => $predicate->predicateuri,
                                              'type' 		=> $type,
+                                             'typeparameter'=> $typeparameter,
                                              'caption'	    => $titleHelper->getTitle( $p ), 
                                              'mandatory'    => (int) $predicate->mandatory );
                             
@@ -107,8 +118,11 @@ class Form
      */
     public function getFieldType ( $predicate, $t )
     {
-        if (true == isset ( $t ))
+        if (true == isset ( $t ) AND '' != $t )
+        {
             return $t;
+        }
+        
         else
         {
             // Get range infos for predicate
