@@ -21,12 +21,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function __call($action, $params)
     {
         $this->_forward('get', 'files');
-    }
-    
-    public function overviewAction()
-    {
-	}
-	    
+    }	    
     
     public function formAction()
     {
@@ -43,13 +38,44 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 		$exampleForm = new Form ( $m );
         $exampleForm->loadConfig ( realpath(dirname(__FILE__)) . '/formconfigs/patient.xml' );
 
+
+        ## Output XML content ##
         
-        echo '<pre>';
-        var_dump ( $exampleForm );
-        echo '</pre>';
+
+        // Content of "headline" tag
+        echo '<h1>'. $exampleForm->headline .'</h1>';
         
-        
-		echo "</div></body></html>";
+        // Content of "introduceText" tag
+        echo $exampleForm->introduceText;
+                
+        // Iterate about sections
+        foreach ( $exampleForm->sections as $section )
+        {
+            echo '<br><br>';
+            echo '<h3>'. $section ['caption'] .'</h3>';
+            
+            // Iterate about predicates, only if predicate was set
+            if ( true == isset ( $section ['predicate'] ) )
+                foreach ( $section ['predicate'] as $predicate )
+                    echo '<br>'. $predicate ['caption'];
+                
+            
+            // Iterate about nestedconfig, only if nestedconfig was set
+            if ( true == isset ( $section ['nestedconfig'] ) )
+            
+                // Include formulas from nested configs
+                foreach ( $section ['nestedconfig'] as $nestedconfig )
+                {
+                    foreach ( $nestedconfig ['form']->sections as $section )
+                    {                        
+                        // Iterate about predicates, only if predicate was set
+                        if ( true == isset ( $section ['predicate'] ) )
+                            foreach ( $section ['predicate'] as $predicate )
+                                echo '<br>'. $predicate ['caption'];
+                                
+                    }
+                }
+        }
     }
 }
 

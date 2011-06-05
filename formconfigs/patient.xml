@@ -1,29 +1,43 @@
 <!-- Create a new patient. With own changes ... -->
 <form> 
+
+    <!-- Related class to which all predicates are referenced -->
     <targetclass>architecture:Patient</targetclass>
-	<headline>Patient</headline>
-	<introduceText>Hier können Sie einen neuen supertollen Patienten anlegen. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</introduceText>
-	<sections>
+	
+    <!-- Headline of this formula -->
+    <headline>Patient</headline>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</introduceText>
+	
+    <sections>
+        
+        <!-- A new section -->
 		<item>
             
-			<caption>Daten des Patienten</caption> 	
-										
+            <!-- Caption of this section part -->
+			<caption>Patient information</caption> 	
+						
+            <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
 				<predicateuri>architecture:firstName</predicateuri>
 			</predicate>
 			
+            <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
 				<predicateuri>architecture:lastName</predicateuri>
 			</predicate>
 			
+            <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
 				<predicateuri>architecture:birthdate</predicateuri>
 				<type>birthdate</type>
 			</predicate>
-            			
+            	
+            <!-- Textfield -->		
 			<predicate> 
 				<mandatory>0</mandatory>
 				<predicateuri>architecture:gender</predicateuri>
@@ -32,8 +46,12 @@
 		
 		</item>
 		
+        <!-- Another section ... -->
 		<item>	
+        
+            <caption>Treating physician</caption>
 		
+            <!-- Include a XML file -->
 			<nestedconfig>
 				<target>doctor.xml</target>
 				<relations>

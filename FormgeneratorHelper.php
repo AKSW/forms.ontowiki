@@ -10,24 +10,11 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
     {
         $owApp = OntoWiki::getInstance();
         
-        // if a model has been selected
+        // If a model has been selected
         if ($owApp->selectedModel != null) {
-            // register with extras menu
-            $translate  = $owApp->translate;
-            $url        = new OntoWiki_Url(
-                            array('controller' => 'formgenerator', 
-                                  'action' => 'overview')
-                          );
-            
-            // Add entry in Extras menu
-            /*$extrasMenu = OntoWiki_Menu_Registry::getInstance()
-                          ->getMenu('application')
-                          ->getSubMenu('Extras');
-            $extrasMenu->setEntry($translate->_('Formgenerator'), (string) $url);
-            */
             
             // Add entry in tab list
-            OntoWiki_Navigation::register(
+            OntoWiki_Navigation::register (
                 'formgenerator_form', 
                 array(
                     'controller' => 'formgenerator', 

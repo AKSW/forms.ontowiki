@@ -120,7 +120,7 @@ class Form
             $type = 'xsd:string';
             
             // If a range was defined
-            if (0 != count($range) AND true == isset ( $range[0]['object'] ) )
+            if (0 < count($range) AND true == isset ( $range[0]['object'] ) )
                 $type = substr ( $range[0]['object'],
                                  1+strrpos ( $range[0]['object'], '/' ) );
                 
@@ -128,11 +128,12 @@ class Form
         }
     }
 	
+    /**
+     *
+     */
 	public function replaceNamespaces ( $s )
 	{                                        
-		$s = str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
-		
-		return $s;
+		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
 	}
     
     /**
@@ -146,7 +147,7 @@ class Form
 			   date ( 'Ymd', $time ) . '/' . 
 			   $className . '/' .
 			   substr ( md5 ($time), 0, 6 ) . '/' . 
-			   $label; 
+			   str_replace ( ' ', '', $label ); 
     }
 }
 
