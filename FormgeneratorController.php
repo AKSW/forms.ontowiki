@@ -1,5 +1,8 @@
 <?php
 
+require 'classes/Form.php';		
+require 'classes/Tools.php';
+
 /**
  * Controller for OntoWiki Filter Module
  *
@@ -21,28 +24,34 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function __call($action, $params)
     {
         $this->_forward('get', 'files');
-    }	    
-    
+    }	 
+     
+    /**
+     * 
+     */
     public function formAction()
-    {
-        require 'classes/Form.php';		
-        require 'classes/Tools.php';
-
+    {        
+        // TODO Implement stuff for showing unfilled mandatory fields.
         
-        // Get model
-        $m = $this->_owApp->selectedModel;
-        $mUrl = (string) $this->_owApp->selectedModel;
-
+        
+        // Build URL string for formula
+        $actionUrl = (string)   
+                     new OntoWiki_Url ( 
+                        array('controller' => 'formgenerator',
+                              'action' => 'sendform') 
+                     );
+                      
 
         // Load XML Config
-		$exampleForm = new Form ( $m );
-        $exampleForm->loadConfig ( realpath(dirname(__FILE__)) . '/formconfigs/patient.xml' );
+		$exampleForm = Tools::loadFormByXmlConfig ( 'patient.xml',
+                                                    $this->_owApp->selectedModel );
 
 
         ## Output XML content ##
         
 
         // Content of "headline" tag
+        echo '<form method="post" action="'. $actionUrl .'">';
         echo '<h1>'. $exampleForm->headline .'</h1>';
         
         // Content of "introduceText" tag
@@ -58,7 +67,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             if ( true == isset ( $section ['predicate'] ) )
                 foreach ( $section ['predicate'] as $predicate )
                 {
-                    echo '<br>'. $predicate ['caption'] . '('. $predicate ['type'] .'): ';
+                    echo '<br>'. $predicate ['caption'];
+                    
+                    echo '('. $predicate ['type'] .') ';
+                    
+                    echo '1' == $predicate ['mandatory']
+                         ? '* &nbsp;'
+                         : '';
 
                     // Output HTML code which belongs to this type    
                     echo $this->getHtmlForType ( $predicate ['type'],
@@ -68,7 +83,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 }
                             
             
-            ## Iterate about nestedconfig, only if nestedconfig was set ##
+            ## Iterate about nestedconfigs, only if nestedconfig was set ##
             if ( true == isset ( $section ['nestedconfig'] ) )
             {
                 
@@ -81,7 +96,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         if ( true == isset ( $section ['predicate'] ) )
                             foreach ( $section ['predicate'] as $predicate )
                             {
-                                echo '<br>'. $predicate ['caption'] . '('. $predicate ['type'] .'): ';
+                                echo '<br>'. $predicate ['caption'];
+                    
+                                echo '('. $predicate ['type'] .') ';
+                                
+                                echo '1' == $predicate ['mandatory']
+                                     ? '* &nbsp;'
+                                     : '';
 
                                 // Output HTML code which belongs to this type    
                                 echo $this->getHtmlForType ( $predicate ['type'], 
@@ -92,6 +113,84 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                     }
                 }
                 
+            }
+        }
+        
+        echo '<p><input type="submit" value="Send"/></p>';
+        echo '</form>';
+    }
+    
+    /**
+     * Will be called after a form was sent.
+     */
+    public function sendformAction ()
+    {
+        echo '<a href="'. (string)   
+                      new OntoWiki_Url ( 
+                        array('controller' => 'formgenerator',
+                              'action' => 'form') 
+                      ) .'">back</a>';
+                    
+                      
+        // Load XML config.
+        $checkingForm = Tools::loadFormByXmlConfig ( 'patient.xml',
+                                                     $this->_owApp->selectedModel );
+        
+        
+        // Make mapping between md5-fields and XML config.
+        $fieldMappings = Tools::getFieldMappings ( $checkingForm );
+        
+                
+        // Check field content (e.g. mandatory)
+        foreach ( $fieldMappings as $entry )
+        {
+            if ( '1' == $entry ['mandatory'] 
+                 AND 
+                 ( '' == trim ( $_REQUEST [$entry ['md5']] ) OR null == $_REQUEST [$entry ['md5']] ) )
+            {
+                echo '<br>'. $entry ['predicateuri'] .' => NOT SET!!!!!';
+                // TODO Output an error about unfilled mandatory fields!
+            }
+        }
+        
+        
+        // TODO Integrate $this->formAction (); !
+        
+        
+        // Collecting target classes.
+        $targetClasses = Tools::getTargetClasses ( $checkingForm );
+
+        
+        // TODO How to merge targetclasses and labelparts ?!
+        
+        
+        // Creating resources from target classes.
+        $resourceArray = array ();
+        
+        foreach ( $targetClasses as $targetClass ) 
+        {
+            $resourceArray [ $targetClass ] = Tools::generateUniqueUri ( 
+                (string) $this->_owApp->selectedModel, 
+                $targetClass, 
+                'foobar' // TODO Use labelparts!
+            );
+        }
+        
+        echo "<br>Create following triples:";
+        echo "<br>";
+        
+        foreach ( $targetClasses as $class )
+        {
+            foreach ( $fieldMappings as $entry )
+            {                
+                // Only take predicates from current selcted targetclass!
+                if ( $class == $entry ['targetclass'] )
+                {
+                    echo "<br>";
+                    echo "<br>Subject: " . $resourceArray [ $class ];
+                    echo "<br>Predicate: " . $entry ['predicateuri'];
+                    echo "<br>Object: " . $_REQUEST [$entry ['md5']];
+                }
             }
         }
     }

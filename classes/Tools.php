@@ -75,5 +75,143 @@ class Tools
             
         return $a [0] ['superclass'];
     }
+    
+    
+    /**
+     *
+     */
+	public static function replaceNamespaces ( $s )
+	{                                        
+		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
+	}
+    
+    /**
+     * 
+     */
+    public static function generateUniqueUri ( $modelUri, $className, $label )
+    {
+		$time = time ();
+        
+        return $modelUri . 'i/' . 
+			   date ( 'Ymd', $time ) . '/' . 
+			   $className . '/' .
+			   substr ( md5 ($time . $className), 0, 6 ) . '/' . 
+			   str_replace ( ' ', '', $label ); 
+    }
+    
+    /**
+     * Make mapping between md5-fields and XML config
+     * @param Form The form which should be interpreted.
+     * @return array Array with mappings.
+     */
+    public static function getFieldMappings ( &$form )
+    {
+        $mappingArray = array ();
+        
+        foreach ( $form->sections as $section )
+        {            
+            ## Iterate about predicates, only if predicate was set ##
+            if ( true == isset ( $section ['predicate'] ) )
+            {
+    
+                foreach ( $section ['predicate'] as $predicate )
+                {
+                    $mappingArray [] = array ( 
+                        'targetclass'   => substr ( (string) $form->targetclass,
+                                                    strpos ( (string) $form->targetclass, ':' ) + 1 ),
+                        'predicateuri'  => (string) $predicate ['predicateuri'],
+                        'md5'           => md5 ( $form->targetclass . $predicate ['predicateuri'] ),
+                        'mandatory'     => $predicate ['mandatory']
+                    );
+                }
+                
+            }
+            
+            ## Iterate about nestedconfigs, only if nestedconfig was set ##
+            if ( true == isset ( $section ['nestedconfig'] ) )
+            {
+                
+                // Include formulas from nested configs
+                foreach ( $section ['nestedconfig'] as $nestedconfig )
+                {                    
+                    foreach ( $nestedconfig ['form']->sections as $section )
+                    {                                            
+                        // Iterate about predicates, only if predicate was set
+                        if ( true == isset ( $section ['predicate'] ) )
+                            foreach ( $section ['predicate'] as $predicate )
+                            {
+                                $mappingArray [] = array ( 
+                                    'targetclass'   => substr ( (string) $nestedconfig ['form']->targetclass,
+                                                                strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 ),
+                                    'predicateuri'  => (string) $predicate ['predicateuri'],
+                                    'md5'           => md5 ( $nestedconfig ['form']->targetclass . $predicate ['predicateuri'] ),
+                                    'mandatory'     => $predicate ['mandatory']
+                                );
+                            }
+                    }
+                }
+                
+            }
+        }
+        
+        return $mappingArray;
+    }
+    
+    /**
+     * Extract target classes from form.
+     * @param $form Reference of form.
+     * @return array Target classes.
+     */
+    public static function getTargetClasses ( &$form )
+    {
+        $targetClasses = array ();
+        
+        // Level 0 target class
+        $targetClasses [] = substr ( (string) $form->targetclass,
+                                     strpos ( (string) $form->targetclass, ':' ) + 1 );
+        
+        foreach ( $form->sections as $section )
+        {            
+            ## Iterate about nestedconfigs, only if nestedconfig was set ##
+            if ( true == isset ( $section ['nestedconfig'] ) )
+            {
+                
+                // Include formulas from nested configs
+                foreach ( $section ['nestedconfig'] as $nestedconfig )
+                {                    
+                    $targetClasses [] = substr ( (string) $nestedconfig ['form']->targetclass,
+                                                 strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 );
+                }
+                
+            }
+        }
+        
+        return $targetClasses;
+    }
+    
+    /**
+     * Loads a specific XML config file and returns a Form instance
+     * which include all relevant stuff.
+     * @param $file Name of XML file.
+     * @return Form Instance of Form class.
+     */
+    public static function loadFormByXmlConfig ( $file, $m )
+    {        
+        // Load XML config.
+		$form = new Form ( $m );
+        $form->loadConfig ( realpath(dirname(__FILE__)) . '/../formconfigs/'. $file );
+        
+        return $form;
+    }
+    
+    /**
+     * 
+     */
+    public static function dumpIt ( $var )
+    {
+        echo '<pre>';
+        var_dump ( $var );
+        echo '</pre>';
+    }
 }
 

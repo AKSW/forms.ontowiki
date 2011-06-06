@@ -1,8 +1,14 @@
-<!-- Create a new patient. With own changes ... -->
+<!-- Create a new patient. -->
 <form> 
 
-    <!-- Related class to which all predicates are referenced -->
+    <!-- All used predicate-tags are related to this class. -->
     <targetclass>architecture:Patient</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
 	
     <!-- Headline of this formula -->
     <headline>Patient</headline>

@@ -1,9 +1,17 @@
-<!-- Create a new doctor. With own changes ... -->
+<!-- Create a new doctor. -->
 <form> 
     <targetclass>architecture:Person</targetclass>				
-	<headline>Doctor</headline>
+	
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+    
+    <headline>Doctor</headline>
+    
 	<introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</introduceText>
-	<sections>
+	
+    <sections>
 		<item>
 			<caption>Treating physician</caption> 								
 

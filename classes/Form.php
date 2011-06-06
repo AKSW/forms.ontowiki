@@ -7,16 +7,16 @@ class Form
 {
 	public $headline;
 	public $introduceText;
-	public $trigger;
 	public $sections;
 	public $model;
 	
-	public function __construct ( $m )
-	{
+	public function __construct ( &$m )
+	{   
 		$this->headline = 'New form';
 		$this->introduceText = '';
 		$this->targetclass = '';
 		$this->sections = array ();
+		$this->labelparts = array ();
 		$this->model = $m;
 	}
 	
@@ -32,18 +32,30 @@ class Form
 		{	
 			switch ( $nodeName )
 			{
+                
 				case 'headline':
 					$this->headline = $nodeValue [0];
 					break;
 					
+                    
 				case 'introduceText':
 					$this->introduceText = $nodeValue [0];
 					break;
 					
+                    
 				case 'targetclass':
 					$this->targetclass = $nodeValue [0];
 					break;
 					
+                    
+				case 'labelparts':
+                    
+                    foreach ( $xml->labelparts as $nodeValue )
+                        $this->labelparts [] = $nodeValue [0];
+                        
+					break;
+					
+                    
 				case 'sections':					
 				
 					foreach ( $xml->sections->item as $nodeValue ) 
@@ -55,7 +67,7 @@ class Form
                         // Iterate over predicate entries.
 						foreach ( $nodeValue->predicate as $predicate )
 						{	
-							$p = $this->replaceNamespaces ( $predicate->predicateuri );
+							$p = Tools::replaceNamespaces ( $predicate->predicateuri );
 							
 							$titleHelper = new OntoWiki_Model_TitleHelper ( $this->model );
 							$titleHelper->addResource( $p );
@@ -140,28 +152,6 @@ class Form
                 
             return $type;
         }
-    }
-	
-    /**
-     *
-     */
-	public function replaceNamespaces ( $s )
-	{                                        
-		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
-	}
-    
-    /**
-     * 
-     */
-    public function generateUniqueUri ( $modelUri, $className, $label )
-    {
-		$time = time ();
-        
-        return $modelUri . 'i/' . 
-			   date ( 'Ymd', $time ) . '/' . 
-			   $className . '/' .
-			   substr ( md5 ($time), 0, 6 ) . '/' . 
-			   str_replace ( ' ', '', $label ); 
     }
 }
 
