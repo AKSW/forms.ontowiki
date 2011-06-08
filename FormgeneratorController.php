@@ -129,7 +129,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                       new OntoWiki_Url ( 
                         array('controller' => 'formgenerator',
                               'action' => 'form') 
-                      ) .'">back</a>';
+                      ) .'">back</a><br>';
                     
                       
         // Load XML config.
@@ -163,7 +163,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // TODO How to merge targetclasses and labelparts ?!
         
-        
+               
         // Creating resources from target classes.
         $resourceArray = array ();
         
@@ -177,20 +177,40 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         
         echo "<br>Create following triples:";
-        echo "<br>";
         
         foreach ( $targetClasses as $class )
         {
             foreach ( $fieldMappings as $entry )
             {                
-                // Only take predicates from current selcted targetclass!
+                // Only take predicates from current selected targetclass!
                 if ( $class == $entry ['targetclass'] )
                 {
                     echo "<br>";
-                    echo "<br>Subject: " . $resourceArray [ $class ];
-                    echo "<br>Predicate: " . $entry ['predicateuri'];
-                    echo "<br>Object: " . $_REQUEST [$entry ['md5']];
+                    echo "<br><b>S</b> > " . $resourceArray [ $class ];
+                    echo "<br><b>P</b> > " . $entry ['predicateuri'];
+                    echo "<br><b>O</b> > " . $_REQUEST [$entry ['md5']];            
                 }
+            }
+        }        
+        
+        
+        // Get relations between main XML config and nestedconfig's
+        $relationsArray = Tools::getNestedConfigRelations ( $checkingForm );
+        
+        echo "<br><br><hr>";
+        
+        echo "<br>Create following relations between resources:";
+        
+        foreach ( $relationsArray as $entry )
+        {
+            foreach ( $entry ['relations'] as $relation )
+            {
+                echo "<br><br><b>S</b> > " . $resourceArray [ $targetClasses [0] ];
+                
+                // RELATION
+                echo "<br><b>Relation (P)</b> > " . $relation;
+                
+                echo "<br><b>O</b> > " . $resourceArray [ $entry ['targetclass'] ];
             }
         }
     }

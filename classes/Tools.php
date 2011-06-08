@@ -76,7 +76,6 @@ class Tools
         return $a [0] ['superclass'];
     }
     
-    
     /**
      *
      */
@@ -187,6 +186,49 @@ class Tools
         }
         
         return $targetClasses;
+    }
+    
+    /**
+     * Get all relations between a XML config and their nestedconfig's.
+     * 
+     * @return array Array with relations.
+     */
+    public static function getNestedConfigRelations ( &$form )
+    {
+        $relations = array ();
+        $entry = array ();
+        
+        foreach ( $form->sections as $section )
+        {              
+            ## Iterate about nestedconfigs, only if nestedconfig was set ##
+            if ( true == isset ( $section ['nestedconfig'] ) )
+            {                
+                // Include formulas from nested configs
+                foreach ( $section ['nestedconfig'] as $nestedconfig )
+                {                  
+                    $entry = array ();
+                    
+                    
+                    // Get targetclass from nestedconfig item.
+                    $entry ['targetclass'] = substr ( (string) $nestedconfig ['form']->targetclass,
+                                                      strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 );
+                     
+                                         
+                    // Get all relations between nestedconfig item.
+                    foreach ( $nestedconfig ['relations']->item as $relation )
+                    {
+                        $entry ['relations'] [] = Tools::replaceNamespaces ( (string) $relation );
+                    }
+                    
+                    
+                    // Add entry to relations list.
+                    $relations [] = $entry;
+                }
+                
+            }
+        }
+        
+        return $relations;
     }
     
     /**
