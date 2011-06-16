@@ -255,5 +255,31 @@ class Tools
         var_dump ( $var );
         echo '</pre>';
     }
+    
+    /**
+     * Read all XML files in formconfig folder and generate a list.
+     * @return array List of all XML config files.
+     */
+    public static function getConfigFileList ()
+    {
+        $dir = realpath(dirname(__FILE__)) .'/../formconfigs';
+        $handle = opendir($dir);
+        $fileList = array ();
+        
+        // Iterate over files in formconfig's folder.
+        while ($file = readdir ($handle)) {
+            
+            if( $file != '.' && $file != '..' 
+                && is_file ($dir.'/'.$file)
+                && false !== strpos ( $file, '.xml' ) ) {
+                    
+                    // Only add XML files.
+                    $fileList [] = array ( 'file' => $file,
+                                           'path' => $dir .'/'. $file );
+            }
+        }
+            
+        return $fileList;
+    }
 }
 

@@ -1,0 +1,20 @@
+<div align="right" class="messagebox">
+
+<form>
+
+        Select a template >
+
+        <select>
+
+<?php
+// Read all XML files in formconfig folder and generate a list.
+foreach ( Tools::getConfigFileList () as $file )
+{
+    echo '<option value="'. $file ['path'] .'">'. $file ['file'] .'</option>';
+}
+?>
+        </select>
+    
+    </div>
+
+</form>
