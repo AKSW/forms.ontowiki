@@ -13,15 +13,19 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
         // If a model has been selected
         if ($owApp->selectedModel != null) {
             
-            // Add entry in tab list
-            OntoWiki_Navigation::register (
-                'formgenerator_form', 
-                array(
-                    'controller' => 'formgenerator', 
-                    'action'     => 'form', 
-                    'name'       => 'Input Form'
-                )
-            );
+            // A class was selected
+            if ( -1 !== OntoWiki_Model_Instances::getSelectedClass () )
+            {
+                // Add entry in tab list
+                OntoWiki_Navigation::register (
+                    'formgenerator_form', 
+                    array(
+                        'controller' => 'formgenerator', 
+                        'action'     => 'form', 
+                        'name'       => 'New Instance'
+                    )
+                );
+            }
         }
     }
 }

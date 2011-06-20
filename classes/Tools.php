@@ -16,14 +16,20 @@ class Tools
 	/**
 	 *
 	 */
-	public function getClassXmlConfig ( $classUri )
+	public static function getClassRelevantConfigFile ( $classUri, &$m, &$c )
 	{
+        // TODO Handle classes which have a # at the end!
 		$className = substr ( $classUri, 1+strrpos ( $classUri, '/' ) );
+        
+        
+        // Set standard xml file, which will be loaded if no mapping is available.
+        $xmlConfigName = $c->mapping->standard .'.xml';
                 
+        
         // If mapping for current class was found
-        if ( '' != $this->_config->$className )
+        if ( '' != $c->mapping->$className )
         {
-            $xmlConfigName = $this->_config->$className .'.xml';
+            $xmlConfigName = $c->mapping->$className .'.xml';
         }
         else
         {
@@ -32,14 +38,14 @@ class Tools
             // Search class tree upper to find a class which have a xml config
             while ( true )
             {
-                $newClassUri = $this->getSuperClass ( $classUri );
+                $newClassUri = Tools::getSuperClass ( $classUri, $m );
                 
                 $className = substr ( $newClassUri, 1+strrpos ( $newClassUri, '/' ) );
                 
                 // If mapping for current class was found
-                if ( '' != $this->_config->$className )
+                if ( '' != $c->mapping->$className )
                 {
-                    $xmlConfigName = $this->_config->$className .'.xml';
+                    $xmlConfigName = $c->mapping->$className .'.xml';
                 }
                 else
                 {
@@ -47,14 +53,14 @@ class Tools
                     $classUri = $newClassUri;
                 }
                 
-                $i++;
+                ++$i;
                 
                 if ( $i == 2 ) break; 
             }
         }
         
-        // Load XML and read formular headline tag.
-        $xmlConfig = simplexml_load_file ( realpath(dirname(__FILE__)) .'/../formconfigs/'. $xmlConfigName );
+        // Returning name of xml config file.
+        return $xmlConfigName;
 	}
     
     /**
@@ -62,18 +68,20 @@ class Tools
      * 
      * @param $classUri Uri of childclass.
      */
-    public function getSuperClass ( $classUri )
+    public static function getSuperClass ( $classUri, &$m )
     {
         // TODO: Handle case if more than one superclass.
         
-        $a = $this->_model->sparqlQuery(
+        $a = $m->sparqlQuery(
             'SELECT ?superclass 
               WHERE {
                   <' . $classUri . '> <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?superclass.
               }'
         );
             
-        return $a [0] ['superclass'];
+        return isset ( $a [0] ['superclass'] )
+               ? $a [0] ['superclass'] 
+               : '';
     }
     
     /**
@@ -281,4 +289,3 @@ class Tools
         return $fileList;
     }
 }
-

@@ -15,9 +15,7 @@ require 'classes/Tools.php';
  * @version    $Id: FilesController.php 4090 2009-08-19 22:10:54Z christian.wuerker $
  */
 class FormgeneratorController extends OntoWiki_Controller_Component
-{
-    protected $_configModel;
-    
+{    
     /**
      * Default action. Forwards to get action.
      */
@@ -41,16 +39,29 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                               'action' => 'sendform') 
                      );
                      
-        // 
+        // If a template was selected.
         if ( true == isset ( $_REQUEST ['new_template'] ) )
             $template = $_REQUEST ['new_template'];
         else
-            $template = 'patient.xml';
+        {
+            // If a class in left menu was selected.
+            if ( -1 !== ( $selectedClass = OntoWiki_Model_Instances::getSelectedClass () ) )
+                $template = Tools::getClassRelevantConfigFile ( $selectedClass,
+                                                                $this->_owApp->selectedModel,
+                                                                $this->_privateConfig );
+                
+            // Default choice.
+            else
+                $template = 'patient.xml';
+        }
                       
 
         // Load XML Config
 		$exampleForm = Tools::loadFormByXmlConfig ( $template,
                                                     $this->_owApp->selectedModel );
+                                       
+        // Re-set $_REQUEST ['new_template']
+        $_REQUEST ['new_template'] = $template;
 
 
         ## Output XML content ##

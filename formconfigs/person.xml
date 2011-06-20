@@ -1,5 +1,60 @@
+<!-- Create a new person. -->
 <form> 
-	<headline>PERSON.XML</headline>
-	<introduceText>Hier können Sie einen neuen supertollen Patienten anlegen. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</introduceText>
-	<trigger>dispedia:Patient</trigger> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Person</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula -->
+    <headline>Person</headline>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</introduceText>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            
+            <!-- Caption of this section part -->
+			<caption>Person information</caption> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthdate</predicateuri>
+				<type>birthdate</type>
+			</predicate>
+            	
+            <!-- Textfield -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:gender</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>- please select -</item>
+                    <item>female</item>
+                    <item>male</item>
+                </typeparameter>
+			</predicate>
+		
+		</item>
+	</sections>
 </form>
