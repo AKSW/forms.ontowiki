@@ -274,8 +274,7 @@ class Tools
                 && false !== strpos ( $file, '.xml' ) ) {
                     
                     // Only add XML files.
-                    $fileList [] = array ( 'file' => $file,
-                                           'path' => $dir .'/'. $file );
+                    $fileList [] = $file;
             }
         }
             

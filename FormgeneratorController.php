@@ -40,10 +40,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         array('controller' => 'formgenerator',
                               'action' => 'sendform') 
                      );
+                     
+        // 
+        if ( true == isset ( $_REQUEST ['new_template'] ) )
+            $template = $_REQUEST ['new_template'];
+        else
+            $template = 'patient.xml';
                       
 
         // Load XML Config
-		$exampleForm = Tools::loadFormByXmlConfig ( 'patient.xml',
+		$exampleForm = Tools::loadFormByXmlConfig ( $template,
                                                     $this->_owApp->selectedModel );
 
 

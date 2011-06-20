@@ -1,19 +1,29 @@
 <div align="right" class="messagebox">
 
-<form>
+<form method="post" action="">
 
         Select a template >
 
-        <select>
+        <select name="new_template">
+            
+<?php 
+// If a template was selected, select it after reload.
+if ( true == isset ( $_REQUEST ['new_template'] ) ) {
+    echo '<option value="'. $_REQUEST ['new_template'] .'">'. $_REQUEST ['new_template'] .'</option>';
+}
+?>
+            
+            <option value="">- please select -</option>
 
 <?php
 // Read all XML files in formconfig folder and generate a list.
 foreach ( Tools::getConfigFileList () as $file )
 {
-    echo '<option value="'. $file ['path'] .'">'. $file ['file'] .'</option>';
+    echo '<option value="'. $file .'" label="'. $file .'">'. $file .'</option>';
 }
 ?>
         </select>
+        <input type="submit" value=">>"/>
     
     </div>
 
