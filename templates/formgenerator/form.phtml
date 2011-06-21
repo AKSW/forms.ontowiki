@@ -28,3 +28,78 @@ foreach ( Tools::getConfigFileList () as $file )
     </div>
 
 </form>
+
+
+<!-- Content of "headline" tag -->
+<form method="post" action="<?php echo $this->actionUrl; ?>">
+
+
+<!-- Content of "headline" tag -->
+<h1><?php echo $this->form->headline; ?></h1>
+        
+        
+<!-- Content of "introduceText" tag -->
+<?php echo $this->form->introduceText; ?>
+                
+                
+<!-- Iterate about sections -->
+<?php 
+foreach ( $this->form->sections as $section )
+{
+    echo '<br><br>';
+    echo '<h3>'. $section ['caption'] .'</h3>';
+    
+    ## Iterate about predicates, only if predicate was set ##
+    if ( true == isset ( $section ['predicate'] ) )
+        foreach ( $section ['predicate'] as $predicate )
+        {
+            echo '<br>'. $predicate ['caption'];
+            
+            echo '('. $predicate ['type'] .') ';
+            
+            echo '1' == $predicate ['mandatory']
+                 ? '* &nbsp;'
+                 : '';
+
+            // Output HTML code which belongs to this type    
+            echo FormgeneratorController::getHtmlForType (  $predicate ['type'],
+                                                            $predicate ['typeparameter'], 
+                                                            $predicate ['predicateuri'],
+                                                            $this->form->targetclass );
+        }
+                    
+    
+    ## Iterate about nestedconfigs, only if nestedconfig was set ##
+    if ( true == isset ( $section ['nestedconfig'] ) )
+    {
+        
+        // Include formulas from nested configs
+        foreach ( $section ['nestedconfig'] as $nestedconfig )
+        {
+            foreach ( $nestedconfig ['form']->sections as $section )
+            {                        
+                // Iterate about predicates, only if predicate was set
+                if ( true == isset ( $section ['predicate'] ) )
+                    foreach ( $section ['predicate'] as $predicate )
+                    {
+                        echo '<br>'. $predicate ['caption'];
+            
+                        echo '('. $predicate ['type'] .') ';
+                        
+                        echo '1' == $predicate ['mandatory']
+                             ? '* &nbsp;'
+                             : '';
+
+                        // Output HTML code which belongs to this type    
+                        echo FormgeneratorController::getHtmlForType ( $predicate ['type'], 
+                                                                       $predicate ['typeparameter'],  
+                                                                       $predicate ['predicateuri'],
+                                                                       $nestedconfig ['form']->targetclass );
+                    }
+            }
+        }
+    }
+}
+?>
+<p><input type="submit" value="Send"/></p>
+</form>

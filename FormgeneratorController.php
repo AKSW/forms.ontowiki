@@ -33,11 +33,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         
         // Build URL string for formula
-        $actionUrl = (string)   
-                     new OntoWiki_Url ( 
-                        array('controller' => 'formgenerator',
-                              'action' => 'sendform') 
-                     );
+        $this->view->actionUrl = (string)   
+                                 new OntoWiki_Url ( 
+                                    array('controller' => 'formgenerator',
+                                          'action' => 'sendform') 
+                                 );
+                     
                      
         // If a template was selected.
         if ( true == isset ( $_REQUEST ['new_template'] ) )
@@ -57,84 +58,11 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                       
 
         // Load XML Config
-		$exampleForm = Tools::loadFormByXmlConfig ( $template,
-                                                    $this->_owApp->selectedModel );
+		$this->view->form = Tools::loadFormByXmlConfig ( $template,
+                                                         $this->_owApp->selectedModel );
                                        
-        // Re-set $_REQUEST ['new_template']
-        $_REQUEST ['new_template'] = $template;
-
-
-        ## Output XML content ##
-        
-
-        // Content of "headline" tag
-        echo '<form method="post" action="'. $actionUrl .'">';
-        echo '<h1>'. $exampleForm->headline .'</h1>';
-        
-        // Content of "introduceText" tag
-        echo $exampleForm->introduceText;
-                
-        // Iterate about sections
-        foreach ( $exampleForm->sections as $section )
-        {
-            echo '<br><br>';
-            echo '<h3>'. $section ['caption'] .'</h3>';
-            
-            ## Iterate about predicates, only if predicate was set ##
-            if ( true == isset ( $section ['predicate'] ) )
-                foreach ( $section ['predicate'] as $predicate )
-                {
-                    echo '<br>'. $predicate ['caption'];
-                    
-                    echo '('. $predicate ['type'] .') ';
-                    
-                    echo '1' == $predicate ['mandatory']
-                         ? '* &nbsp;'
-                         : '';
-
-                    // Output HTML code which belongs to this type    
-                    echo $this->getHtmlForType ( $predicate ['type'],
-                                                 $predicate ['typeparameter'], 
-                                                 $predicate ['predicateuri'],
-                                                 $exampleForm->targetclass );
-                }
-                            
-            
-            ## Iterate about nestedconfigs, only if nestedconfig was set ##
-            if ( true == isset ( $section ['nestedconfig'] ) )
-            {
-                
-                // Include formulas from nested configs
-                foreach ( $section ['nestedconfig'] as $nestedconfig )
-                {
-                    foreach ( $nestedconfig ['form']->sections as $section )
-                    {                        
-                        // Iterate about predicates, only if predicate was set
-                        if ( true == isset ( $section ['predicate'] ) )
-                            foreach ( $section ['predicate'] as $predicate )
-                            {
-                                echo '<br>'. $predicate ['caption'];
-                    
-                                echo '('. $predicate ['type'] .') ';
-                                
-                                echo '1' == $predicate ['mandatory']
-                                     ? '* &nbsp;'
-                                     : '';
-
-                                // Output HTML code which belongs to this type    
-                                echo $this->getHtmlForType ( $predicate ['type'], 
-                                                             $predicate ['typeparameter'],  
-                                                             $predicate ['predicateuri'],
-                                                             $nestedconfig ['form']->targetclass );
-                            }
-                    }
-                }
-                
-            }
-        }
-        
-        echo '<p><input type="submit" value="Send"/></p>';
-        echo '</form>';
+                                       
+        $this->view->new_template = $template;
     }
     
     /**
@@ -239,7 +167,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      * @param $name Name of the predicate.
      * @param $class The class to which this field is belonged.
      */
-    private function getHtmlForType ( $type, $typeparameter, $name, $class )
+    public static function getHtmlForType ( $type, $typeparameter, $name, $class )
     {
         $fieldName = md5 ( $class . $name );
         
