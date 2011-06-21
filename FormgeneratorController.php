@@ -130,10 +130,26 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // Only take predicates from current selected targetclass!
                 if ( $class == $entry ['targetclass'] )
                 {
-                    echo "<br>";
-                    echo "<br><b>S</b> > " . $resourceArray [ $class ];
-                    echo "<br><b>P</b> > " . $entry ['predicateuri'];
-                    echo "<br><b>O</b> > " . $_REQUEST [$entry ['md5']];            
+                    if (isset($resourceArray [ $class ])
+                        && "" != $resourceArray [ $class ]
+                        && isset($entry ['predicateuri'])
+                        && "" != $entry ['predicateuri']
+                        && isset($_REQUEST [$entry ['md5']])
+                        && "" != $_REQUEST [$entry ['md5']]
+                    ) {
+                        echo "<br>";
+                        echo "<br><b>S</b> > " . $resourceArray [ $class ] . '#debug';
+                        echo "<br><b>P</b> > " . $entry ['predicateuri'];
+                        echo "<br><b>O</b> > " . $_REQUEST [$entry ['md5']];
+                        Erfurt_App::getInstance()
+                            ->getStore()
+                            ->addStatement (
+                                'http://als.dispedia.info/', 
+                                $resourceArray [ $class ] . '#debug',
+                                $entry ['predicateuri'], 
+                                array ( 'value' => $_REQUEST [$entry ['md5']], 'type' => '')
+                            );
+                    }
                 }
             }
         }        
@@ -150,12 +166,30 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         {
             foreach ( $entry ['relations'] as $relation )
             {
-                echo "<br><br><b>S</b> > " . $resourceArray [ $targetClasses [0] ];
+                if (isset($resourceArray [ $targetClasses [0] ])
+                    && "" != $resourceArray [ $targetClasses [0] ]
+                    && isset($relation)
+                    && "" != $relation
+                    && isset($resourceArray [ $entry ['targetclass'] ])
+                    && "" != $resourceArray [ $entry ['targetclass'] ]
+                ) {
                 
-                // RELATION
-                echo "<br><b>Relation (P)</b> > " . $relation;
-                
-                echo "<br><b>O</b> > " . $resourceArray [ $entry ['targetclass'] ];
+                    echo "<br><br><b>S</b> > " . $resourceArray [ $targetClasses [0] ] . '#debug';
+                    
+                    // RELATION
+                    echo "<br><b>Relation (P)</b> > " . $relation;
+                    
+                    echo "<br><b>O</b> > " . $resourceArray [ $entry ['targetclass'] ];
+                    
+                    Erfurt_App::getInstance()
+                    ->getStore()
+                    ->addStatement (
+                        'http://als.dispedia.info/',
+                        $resourceArray [ $targetClasses [0] ] . '#debug',
+                        $relation,
+                        array ( 'value' => $resourceArray [ $entry ['targetclass'] ], 'type' => 'uri' )
+                    );
+                }
             }
         }
     }
@@ -216,6 +250,35 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             
                 break;
         }
+    }
+    
+    /**
+     * Debug Action to delete new added triples
+     */
+    public function deletenewtriplesAction()
+    {
+        $result = $this->_owApp->selectedModel->sparqlQuery(
+            'SELECT * 
+              WHERE {
+                ?s ?p ?o.
+                 FILTER regex( ?s, ".*#debug", "i")
+              }'
+        );
+        
+        //Tools::dumpIt($result);
+        
+        $store = Erfurt_App::getInstance()->getStore();
+        $deletedTriples = 0;
+        foreach ($result as $triples) {
+            $deletedTriples += $store->deleteMatchingStatements (
+                (string) $this->_owApp->selectedModel,
+                $triples['s'],
+                null,
+                null,
+                null
+            );
+        }
+        echo $deletedTriples . ' triple(s) deleted';
     }
 }
 
