@@ -41,28 +41,28 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                      
                      
         // If a template was selected.
-        if ( true == isset ( $_REQUEST ['new_template'] ) )
-            $template = $_REQUEST ['new_template'];
+        if ( true == isset ( $_REQUEST ['newFormConfig'] ) )
+            $loadedFormConfig = $_REQUEST ['newFormConfig'];
         else
         {
             // If a class in left menu was selected.
             if ( -1 !== ( $selectedClass = OntoWiki_Model_Instances::getSelectedClass () ) )
-                $template = Tools::getClassRelevantConfigFile ( $selectedClass,
-                                                                $this->_owApp->selectedModel,
-                                                                $this->_privateConfig );
+                $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedClass,
+                                                                     $this->_owApp->selectedModel,
+                                                                     $this->_privateConfig );
                 
             // Default choice.
             else
-                $template = 'patient.xml';
+                $loadedFormConfig = 'patient.xml';
         }
                       
 
         // Load XML Config
-		$this->view->form = Tools::loadFormByXmlConfig ( $template,
+		$this->view->form = Tools::loadFormByXmlConfig ( $loadedFormConfig,
                                                          $this->_owApp->selectedModel );
                                        
                                        
-        $this->view->new_template = $template;
+        $this->view->loadedFormConfig = $loadedFormConfig;
     }
     
     /**
@@ -78,7 +78,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                     
                       
         // Load XML config.
-        $checkingForm = Tools::loadFormByXmlConfig ( 'patient.xml',
+        $checkingForm = Tools::loadFormByXmlConfig ( $_REQUEST ['loadedFormConfig'],
                                                      $this->_owApp->selectedModel );
         
         

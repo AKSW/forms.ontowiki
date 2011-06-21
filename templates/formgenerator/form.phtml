@@ -4,12 +4,12 @@
 
         Load a different template >
 
-        <select name="new_template">
+        <select name="newFormConfig">
             
 <?php 
 // If a template was selected, select it after reload.
-if ( true == isset ( $_REQUEST ['new_template'] ) ) {
-    echo '<option value="'. $_REQUEST ['new_template'] .'">'. $_REQUEST ['new_template'] .'</option>';
+if ( true == isset ( $this->loadedFormConfig ) ) {
+    echo '<option value="'. $this->loadedFormConfig .'">'. $this->loadedFormConfig .'</option>';
 }
 ?>
             
@@ -101,5 +101,7 @@ foreach ( $this->form->sections as $section )
     }
 }
 ?>
-<p><input type="submit" value="Send"/></p>
+    <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
+
+    <p><input type="submit" value="Send"/></p>
 </form>
