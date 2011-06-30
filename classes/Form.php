@@ -50,8 +50,8 @@ class Form
                     
 				case 'labelparts':
                     
-                    foreach ( $xml->labelparts as $nodeValue )
-                        $this->labelparts [] = $nodeValue [0];
+                    foreach ( $xml->labelparts->item as $nodeValue )
+                        $this->labelparts [] = (string) $nodeValue [0];
                         
 					break;
 					
