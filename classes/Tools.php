@@ -197,6 +197,55 @@ class Tools
     }
     
     /**
+     * Extract target classes from form.
+     * @param $form Reference of form.
+     * @return array Target classes.
+     */
+    public static function getLabelParts ( &$form )
+    {
+        $labelParts = array ();
+        
+        // Level 0 target class
+        $level0TargetClass = substr ( (string) $form->targetclass,
+                                       strpos ( (string) $form->targetclass, ':' ) + 1 );
+        
+        
+        // Saves level 0 target class as key and labelparts array as value.
+        // for example:
+        //      arr [ class0 ] = array ( 'http://.../firstname', 'http://.../lastname' );
+        foreach ( $form->labelparts as $part )
+        {
+            $labelParts [ $level0TargetClass ] [] = Tools::replaceNamespaces ( $part );
+        }
+        
+        
+        foreach ( $form->sections as $section )
+        {            
+            ## Iterate about nestedconfigs, only if nestedconfig was set ##
+            if ( true == isset ( $section ['nestedconfig'] ) )
+            {
+                
+                // Include formulas from nested configs
+                foreach ( $section ['nestedconfig'] as $nestedconfig )
+                {                    
+                    $class = substr ( (string) $nestedconfig ['form']->targetclass,
+                                      strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 );
+                    
+                    foreach ( $nestedconfig ['form']->labelparts as $part )
+                    {
+                        $labelParts [ $class ] [] = Tools::replaceNamespaces ( $part );
+                    }
+                                                 
+                    // TODO Extends this to a dynamic depth!
+                }
+                
+            }
+        }
+        
+        return $labelParts;
+    }
+    
+    /**
      * Get all relations between a XML config and their nestedconfig's.
      * 
      * @return array Array with relations.

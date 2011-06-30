@@ -107,6 +107,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 
         
         // TODO How to merge targetclasses and labelparts ?!
+        $labelParts = Tools::getLabelParts ( $checkingForm );
         
                
         // Creating resources from target classes.
@@ -130,12 +131,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // Only take predicates from current selected targetclass!
                 if ( $class == $entry ['targetclass'] )
                 {
-                    if (isset($resourceArray [ $class ])
-                        && "" != $resourceArray [ $class ]
-                        && isset($entry ['predicateuri'])
-                        && "" != $entry ['predicateuri']
-                        && isset($_REQUEST [$entry ['md5']])
-                        && "" != $_REQUEST [$entry ['md5']]
+                    if (isset($resourceArray [ $class ])     && '' != $resourceArray [ $class ]
+                        && isset($entry ['predicateuri'])    && '' != $entry ['predicateuri']
+                        && isset($_REQUEST [$entry ['md5']]) && '' != $_REQUEST [$entry ['md5']]
                     ) {
                         echo "<br>";
                         echo "<br><b>S</b> > " . $resourceArray [ $class ] . '#debug';
