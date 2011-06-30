@@ -31,7 +31,7 @@ foreach ( Tools::getConfigFileList () as $file )
 
 
 <!-- Content of "headline" tag -->
-<form method="post" action="<?php echo $this->actionUrl; ?>">
+<form id="mainform" method="post" action="<?php echo $this->actionUrl; ?>">
 
 
 <!-- Content of "headline" tag -->
@@ -102,6 +102,39 @@ foreach ( $this->form->sections as $section )
 }
 ?>
     <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
-
-    <p><input type="submit" value="Send"/></p>
+    <input type="hidden" name="resource" value=""/>
+    
+    <p><input id="addResource" class="button" type="button" value="Add New"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit"/></p>
 </form>
+<p id="test"></p>
+<script type="text/javascript">
+$('#addResource').click(function() {
+    $('#editResource').show();
+    response = jQuery.parseJSON($.ajax({
+			type: "POST",
+			url: "<?php echo (string) new OntoWiki_Url ( 
+                                    array('controller' => 'formgenerator',
+                                          'action' => 'checkform') 
+                                 ); ?>",
+			data: ($('#mainform').serializeArray()),
+			dataType: "json",
+			async:false
+		}).responseText);
+    var test = "";
+    if (null != response.notset)
+        for (var i=0;i<response.notset.length;i++){
+            $('#' + response.notset[i]).css("background-color", "red");
+        }
+    else
+    {
+        for (var i=0;i<response.triples.length;i++){
+            test += response.triples[i].S + '   ' + response.triples[i].P + '   ' + response.triples[i].O + '<br>';
+        }
+        test += '<br><br>';
+        for (var i=0;i<response.relations.length;i++){
+            test += response.relations[i].S + '   ' + response.relations[i].P + '   ' + response.relations[i].O + '<br>';
+        }
+        $('#test').html(test);
+    }
+});
+</script>

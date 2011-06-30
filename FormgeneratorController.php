@@ -28,7 +28,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      * 
      */
     public function formAction()
-    {        
+    {   
         // TODO Implement stuff for showing unfilled mandatory fields.
         
         
@@ -64,19 +64,15 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                                        
         $this->view->loadedFormConfig = $loadedFormConfig;
     }
-    
+
     /**
-     * Will be called after a form was sent.
+     * Check Form
      */
-    public function sendformAction ()
+    public function checkformAction ()
     {
-        echo '<a href="'. (string)   
-                      new OntoWiki_Url ( 
-                        array('controller' => 'formgenerator',
-                              'action' => 'form') 
-                      ) .'">back</a><br>';
-                    
-                      
+        $json = Array();
+        $json['notset'] = Array();
+             
         // Load XML config.
         $checkingForm = Tools::loadFormByXmlConfig ( $_REQUEST ['loadedFormConfig'],
                                                      $this->_owApp->selectedModel );
@@ -93,21 +89,35 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                  AND 
                  ( '' == trim ( $_REQUEST [$entry ['md5']] ) OR null == $_REQUEST [$entry ['md5']] ) )
             {
-                echo '<br>'. $entry ['predicateuri'] .' => NOT SET!!!!!';
-                // TODO Output an error about unfilled mandatory fields!
+                $json['notset'][] = $entry ['md5'];
             }
         }
         
-        
-        // TODO Integrate $this->formAction (); !
-        
-        
-        // Collecting target classes.
-        $targetClasses = Tools::getTargetClasses ( $checkingForm );
+        if (0 == count($json['notset']))
+        {
+            $encoded = $this->sendform ($checkingForm, $fieldMappings);
 
+        }
+        else
+        {
+            $encoded = json_encode($json);
+        }
+        
+        echo $encoded;
+    } 
+    
+    /**
+     * Will be called after a form was sent.
+     */
+    protected function sendform (&$checkingForm, $fieldMappings)
+    {              
+        $json = Array();
+        $json['triples'] = Array();
+        $json['relations'] = Array();
         
         // TODO How to merge targetclasses and labelparts ?!
         
+        $targetClasses = Tools::getTargetClasses ( $checkingForm );
                
         // Creating resources from target classes.
         $resourceArray = array ();
@@ -121,7 +131,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             );
         }
         
-        echo "<br>Create following triples:";
+        //echo "<br>Create following triples:";
+        
         
         foreach ( $targetClasses as $class )
         {
@@ -137,10 +148,11 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         && isset($_REQUEST [$entry ['md5']])
                         && "" != $_REQUEST [$entry ['md5']]
                     ) {
-                        echo "<br>";
-                        echo "<br><b>S</b> > " . $resourceArray [ $class ] . '#debug';
-                        echo "<br><b>P</b> > " . $entry ['predicateuri'];
-                        echo "<br><b>O</b> > " . $_REQUEST [$entry ['md5']];
+                        $triple = Array();
+                        $triple['S'] = $resourceArray [ $class ] . '#debug';
+                        $triple['P'] = $entry ['predicateuri'];
+                        $triple['O'] = $_REQUEST [$entry ['md5']];
+                        $json['triples'][] = $triple;
                         Erfurt_App::getInstance()
                             ->getStore()
                             ->addStatement (
@@ -158,9 +170,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // Get relations between main XML config and nestedconfig's
         $relationsArray = Tools::getNestedConfigRelations ( $checkingForm );
         
-        echo "<br><br><hr>";
+       // echo "<br><br><hr>";
         
-        echo "<br>Create following relations between resources:";
+       // echo "<br>Create following relations between resources:";
         
         foreach ( $relationsArray as $entry )
         {
@@ -173,15 +185,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                     && isset($resourceArray [ $entry ['targetclass'] ])
                     && "" != $resourceArray [ $entry ['targetclass'] ]
                 ) {
-                
-                    echo "<br><br><b>S</b> > " . $resourceArray [ $targetClasses [0] ] . '#debug';
+                    $relation_array = Array();
+                    $relation_array['S'] = $resourceArray [ $targetClasses [0] ] . '#debug';
+                    $relation_array['P'] = $relation;
+                    $relation_array['O'] = $resourceArray [ $entry ['targetclass'] ];
+                    $json['relations'][] = $relation_array;
                     
-                    // RELATION
-                    echo "<br><b>Relation (P)</b> > " . $relation;
-                    
-                    echo "<br><b>O</b> > " . $resourceArray [ $entry ['targetclass'] ];
-                    
-                    Erfurt_App::getInstance()
+                   Erfurt_App::getInstance()
                     ->getStore()
                     ->addStatement (
                         'http://als.dispedia.info/',
@@ -192,6 +202,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 }
             }
         }
+        $encoded = json_encode($json);
+        return $encoded;
     }
     
     /**
@@ -246,7 +258,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             // Default: xsd:string ( A simple textfield ) 
             default: 
                 
-                return '<input type="text" name="'. $fieldName .'">';
+                return '<input type="text" id="'. $fieldName .'" name="'. $fieldName .'">';
             
                 break;
         }
