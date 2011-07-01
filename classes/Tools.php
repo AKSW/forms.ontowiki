@@ -88,7 +88,8 @@ class Tools
      *
      */
 	public static function replaceNamespaces ( $s )
-	{                                        
+	{
+        //TODO: no use of fix Uri                                   
 		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
 	}
     

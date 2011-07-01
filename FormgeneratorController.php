@@ -150,6 +150,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         $triple['S'] = $resourceArray [ $class ] . '#debug';
                         $triple['P'] = $entry ['predicateuri'];
                         $triple['O'] = $_REQUEST [$entry ['md5']];
+                        $triple['md5'] = $entry ['md5'];
                         $json['triples'][] = $triple;
                         Erfurt_App::getInstance()
                             ->getStore()

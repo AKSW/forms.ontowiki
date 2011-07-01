@@ -1,5 +1,4 @@
 <div align="right" class="messagebox">
-
 <form method="post" action="">
 
         Load a different template >
@@ -29,6 +28,8 @@ foreach ( Tools::getConfigFileList () as $file )
 
 </form>
 
+
+<p class="messagebox info hidden" id="statusMessagebox"></p>
 
 <!-- Content of "headline" tag -->
 <form id="mainform" method="post" action="<?php echo $this->actionUrl; ?>">
@@ -102,14 +103,13 @@ foreach ( $this->form->sections as $section )
 }
 ?>
     <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
-    <input type="hidden" name="resource" value=""/>
+    <input type="hidden" id="resourceUriHiddenField" name="resourceUriHiddenField" value=""/>
     
     <p><input id="addResource" class="button" type="button" value="Add New"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit"/></p>
 </form>
 <p id="test"></p>
 <script type="text/javascript">
 $('#addResource').click(function() {
-    $('#editResource').show();
     response = jQuery.parseJSON($.ajax({
 			type: "POST",
 			url: "<?php echo (string) new OntoWiki_Url ( 
@@ -121,20 +121,53 @@ $('#addResource').click(function() {
 			async:false
 		}).responseText);
     var test = "";
+    
+    // if required fields are empty then
     if (null != response.notset)
+    {
+        // hide Edit Button
+        $('#editResource').hide();
+        
+        // fill messagebox with error message
+        $('#statusMessagebox').text('Requried fields are empty!');
+        $('#statusMessagebox').addClass('error');
+        $('#statusMessagebox').show();
+        
+        // paint all empty fields red 
         for (var i=0;i<response.notset.length;i++){
             $('#' + response.notset[i]).css("background-color", "red");
         }
+    }
     else
     {
+        // add resource URI to hidden input
+        $('#resourceUriHiddenField').val(response.triples[0].S);
+        
+        // fill messagebox with success message
+        $('#statusMessagebox').text('Resource added successfuly!');
+        $('#statusMessagebox').removeClass('error');
+        $('#statusMessagebox').show();
+        
+        // show Edit Button
+        $('#editResource').show();
+        
+        // show new triples
         for (var i=0;i<response.triples.length;i++){
-            test += response.triples[i].S + '   ' + response.triples[i].P + '   ' + response.triples[i].O + '<br>';
+            test += response.triples[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.triples[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.triples[i].O + '<br>';
+            // paint all inputs white
+            $('#' + response.triples[i].md5).css("background-color", "transparent");
         }
+        
         test += '<br><br>';
+        
+        // show new relations
         for (var i=0;i<response.relations.length;i++){
-            test += response.relations[i].S + '   ' + response.relations[i].P + '   ' + response.relations[i].O + '<br>';
+            test += response.relations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].O + '<br>';
         }
+        
+        // debug echo
         $('#test').html(test);
+        
     }
 });
 </script>
