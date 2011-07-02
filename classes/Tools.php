@@ -1,7 +1,12 @@
 <?php
 
 /**
- * Represents a form container.
+ * @category   OntoWiki
+ * @package    OntoWiki_extensions_formgenerator
+ * @author     Lars Eidam <larseidam@googlemail.com>
+ * @author     Konrad Abicht <konrad@inspirito.de>
+ * @copyright  Copyright (c) 2011
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 class Tools
 {
@@ -337,5 +342,18 @@ class Tools
         }
             
         return $fileList;
+    }
+    
+    
+    /**
+     * 
+     */
+    public static function switchOddEven ( $td, &$ref )
+    {
+        $ref = 'even' == $td 
+               ? 'odd' 
+               : 'even';
+               
+        echo $ref;
     }
 }

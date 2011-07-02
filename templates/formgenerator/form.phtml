@@ -22,7 +22,7 @@ foreach ( Tools::getConfigFileList () as $file )
 }
 ?>
         </select>
-        <input type="submit" value=">>"/>
+        <input type="submit" value=">>" class="button"/>
     
     </div>
 
@@ -36,76 +36,116 @@ foreach ( Tools::getConfigFileList () as $file )
 
 
 <!-- Content of "headline" tag -->
-<h1><?php echo $this->form->headline; ?></h1>
+<h2><?php echo $this->form->headline; ?></h2>
         
         
 <!-- Content of "introduceText" tag -->
-<?php echo $this->form->introduceText; ?>
-                
+<p class="info messagebox">
+    <?php echo $this->form->introduceText; ?>
+</p>
+      
+<br/>
+
+<table class="resource-list separated-vertical ui-droppable">
                 
 <!-- Iterate about sections -->
 <?php 
-foreach ( $this->form->sections as $section )
-{
-    echo '<br><br>';
-    echo '<h3>'. $section ['caption'] .'</h3>';
-    
-    ## Iterate about predicates, only if predicate was set ##
-    if ( true == isset ( $section ['predicate'] ) )
-        foreach ( $section ['predicate'] as $predicate )
-        {
-            echo '<br>'. $predicate ['caption'];
-            
-            echo '('. $predicate ['type'] .') ';
-            
-            echo '1' == $predicate ['mandatory']
-                 ? '* &nbsp;'
-                 : '';
+$td = 'even';
+foreach ( $this->form->sections as $section ) { ?>
 
-            // Output HTML code which belongs to this type    
-            echo FormgeneratorController::getHtmlForType (  $predicate ['type'],
-                                                            $predicate ['typeparameter'], 
-                                                            $predicate ['predicateuri'],
-                                                            $this->form->targetclass );
-        }
-                    
+    <tr>
+        <td colspan="2" class="even">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="odd">
+            <h3><?php echo $section ['caption']; ?></h3>
+        </td>
+    </tr>
     
-    ## Iterate about nestedconfigs, only if nestedconfig was set ##
-    if ( true == isset ( $section ['nestedconfig'] ) )
-    {
+<?php ## Iterate about predicates, only if predicate was set ##
+    if ( true == isset ( $section ['predicate'] ) ) {
         
-        // Include formulas from nested configs
-        foreach ( $section ['nestedconfig'] as $nestedconfig )
-        {
-            foreach ( $nestedconfig ['form']->sections as $section )
-            {                        
-                // Iterate about predicates, only if predicate was set
-                if ( true == isset ( $section ['predicate'] ) )
-                    foreach ( $section ['predicate'] as $predicate )
-                    {
-                        echo '<br>'. $predicate ['caption'];
-            
-                        echo '('. $predicate ['type'] .') ';
-                        
-                        echo '1' == $predicate ['mandatory']
-                             ? '* &nbsp;'
-                             : '';
+        foreach ( $section ['predicate'] as $predicate ) { ?>
+        
+            <tr>
+                <td class="<?php Tools::switchOddEven ( 'odd', $td ); ?>">
+                
+                    <!-- Caption of predicate -->
+                    <?php echo $predicate ['caption']; ?> 
+                
+                    <!-- * = mandatory, no * than not mandatory -->
+                    <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?>
+                 
+                </td>
+                <td class="<?php echo $td; ?>">
 
-                        // Output HTML code which belongs to this type    
-                        echo FormgeneratorController::getHtmlForType ( $predicate ['type'], 
-                                                                       $predicate ['typeparameter'],  
-                                                                       $predicate ['predicateuri'],
-                                                                       $nestedconfig ['form']->targetclass );
+                    <?php // Output HTML code which belongs to this type    
+                    Plugin::includePlugin ( $predicate ['type'],
+                                            $predicate ['typeparameter'], 
+                                            $predicate ['predicateuri'],
+                                            $this->form->targetclass ); ?>
+                                    
+                </td>
+            </tr>
+
+<?php
+        }
+    }
+
+   
+    ## Iterate about nestedconfigs, only if nestedconfig was set ##
+    if ( true == isset ( $section ['nestedconfig'] ) ) {
+                
+        // Include formulas from nested configs
+        foreach ( $section ['nestedconfig'] as $nestedconfig ) {
+            foreach ( $nestedconfig ['form']->sections as $section ) {                        
+                // Iterate about predicates, only if predicate was set
+                if ( true == isset ( $section ['predicate'] ) ) {
+                    foreach ( $section ['predicate'] as $predicate ) { ?>
+                    
+                    <tr>
+                    
+                        <td class="<?php Tools::switchOddEven ( 'even', $td ); ?>">
+                             
+                             <!-- Caption of predicate -->
+                            <?php echo $predicate ['caption']; ?> 
+                        
+                            <!-- * = mandatory, no * than not mandatory -->
+                            <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?>
+                             
+                        </td>
+
+                        <td class="<?php echo $td; ?>">
+
+                            <?php // Output HTML code which belongs to this type    
+                            Plugin::includePlugin ( $predicate ['type'],
+                                                    $predicate ['typeparameter'], 
+                                                    $predicate ['predicateuri'],
+                                                    $this->form->targetclass ); ?>
+                                            
+                        </td>
+                        
+                    </tr>
+                                                                       
+<?php
                     }
+                }
             }
         }
     }
 }
 ?>
-    <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
-    <input type="hidden" id="resourceUriHiddenField" name="resourceUriHiddenField" value=""/>
-    
-    <p><input id="addResource" class="button" type="button" value="Add New"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit"/></p>
+    <tr>
+        <td class="<?php echo $td; ?>" colspan="2">
+            <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
+            <input type="hidden" id="resourceUriHiddenField" name="resourceUriHiddenField" value=""/>
+            
+            <input id="addResource" class="button" type="button" value="Add New"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit"/>
+        </td>
+    </tr>
+</table>
 </form>
 <p id="test"></p>
 <script type="text/javascript">
