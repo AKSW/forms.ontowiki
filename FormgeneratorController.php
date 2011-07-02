@@ -2,17 +2,17 @@
 
 require 'classes/Form.php';		
 require 'classes/Tools.php';
+require 'classes/Plugin.php';
 
 /**
- * Controller for OntoWiki Filter Module
+ * Controller for Formgenerator.
  *
  * @category   OntoWiki
- * @package    OntoWiki_extensions_components_files
- * @author     Christoph Rieß <c.riess.dev@googlemail.com>
- * @author     Norman Heino <norman.heino@gmail.com>
- * @copyright  Copyright (c) 2008, {@link http://aksw.org AKSW}
+ * @package    OntoWiki_extensions_formgenerator
+ * @author     Lars Eidam <larseidam@googlemail.com>
+ * @author     Konrad Abicht <konrad@inspirito.de>
+ * @copyright  Copyright (c) 2011
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
- * @version    $Id: FilesController.php 4090 2009-08-19 22:10:54Z christian.wuerker $
  */
 class FormgeneratorController extends OntoWiki_Controller_Component
 {    
@@ -230,64 +230,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         $encoded = json_encode($json);
         return $encoded;
-    }
-    
-    /**
-     * Interpret field type and build custom HTML code. The $name and $class 
-     * parameter will be used to build a HTML wide unique name for every textfield.
-     * @param $type Type of field.
-     * @param $name Name of the predicate.
-     * @param $class The class to which this field is belonged.
-     */
-    public static function getHtmlForType ( $type, $typeparameter, $name, $class )
-    {
-        $fieldName = md5 ( $class . $name );
-        
-        switch ( $type )
-        {
-            // List 
-            case 'list':
-            
-                $s = '<select name="'. $fieldName .'">';
-                
-                foreach ( $typeparameter as $ele )
-                    $s .= '<option>'. $ele .'</option>';
-                
-                $s .= '</select>';
-            
-                return $s;
-            
-            
-            // Date - Birthdate 
-            case 'birthdate':
-            
-                $currentYear = date ( 'Y', time ());
-            
-                // Build day
-                $s = '<select name="'. $fieldName .'_day">';                
-                for ( $i = 1; $i < 32; ++$i ) $s .= '<option>'. $i .'</option>';
-                $s .= '</select> ';
-                
-                // Build month
-                $s .= '<select name="'. $fieldName .'_month">';                
-                for ( $i = 1; $i < 13; ++$i ) $s .= '<option>'. $i .'</option>';
-                $s .= '</select> ';
-                
-                // Build year
-                $s .= '<select name="'. $fieldName .'_year">';                
-                for ( $i = 1920; $i < $currentYear; ++$i ) $s .= '<option>'. $i .'</option>';
-                $s .= '</select>';
-                                                
-                return $s;
-            
-            
-            // Default: xsd:string ( A simple textfield ) 
-            default: 
-                
-                return '<input type="text" id="'. $fieldName .'" name="'. $fieldName .'" value="Test01">';
-            
-                break;
-        }
     }
     
     /**

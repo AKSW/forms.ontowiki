@@ -43,15 +43,20 @@
 				<type>birthdate</type>
 			</predicate>
             	
-            <!-- Textfield -->		
+            <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
 				<predicateuri>architecture:gender</predicateuri>
 				<type>list</type>
                 <typeparameter>
-                    <item>- please select -</item>
-                    <item>female</item>
-                    <item>male</item>
+                    <item>
+                        <label>female</label>
+                        <value>http://xmlns.com/foaf/0.1/gender#female</value>
+                    </item>
+                    <item>
+                        <label>male</label>
+                        <value>http://xmlns.com/foaf/0.1/gender#male</value>
+                    </item>
                 </typeparameter>
 			</predicate>
 		

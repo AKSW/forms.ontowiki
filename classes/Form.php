@@ -81,7 +81,8 @@ class Form
                             {
                                 foreach ( $predicate->typeparameter->item as $parameter )
                                 {
-                                    $typeparameter [] = $parameter;
+                                    $typeparameter [] = array ( 'label' => $parameter->label,
+                                                                'value' => $parameter->value );
                                 }
                             }                            
 							

@@ -49,7 +49,6 @@
 				<predicateuri>architecture:gender</predicateuri>
 				<type>list</type>
                 <typeparameter>
-                    <item>- please select -</item>
                     <item>female</item>
                     <item>male</item>
                 </typeparameter>
