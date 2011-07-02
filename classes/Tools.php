@@ -343,17 +343,4 @@ class Tools
             
         return $fileList;
     }
-    
-    
-    /**
-     * 
-     */
-    public static function switchOddEven ( $td, &$ref )
-    {
-        $ref = 'even' == $td 
-               ? 'odd' 
-               : 'even';
-               
-        echo $ref;
-    }
 }

@@ -1,10 +1,12 @@
 <select name="<?php echo $fieldName; ?>" class="text">
 
-    <option>- please select -</option>
+    <option value="">- please select -</option>
                 
 <?php foreach ( $typeparameter as $ele ) { ?>
 
-    <option><?php echo $ele; ?></option>
+    <option value="<?php echo $ele ['value']; ?>">
+        <?php echo $ele ['label']; ?>
+    </option>
 
 <?php } ?>
 

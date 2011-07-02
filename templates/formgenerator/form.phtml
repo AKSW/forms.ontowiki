@@ -70,16 +70,20 @@ foreach ( $this->form->sections as $section ) { ?>
         foreach ( $section ['predicate'] as $predicate ) { ?>
         
             <tr>
-                <td class="<?php Tools::switchOddEven ( 'odd', $td ); ?>">
+                <td width="15%" class="even">
+                    
+                    <div style="font-weight: bold;">
+                        
+                        <!-- Caption of predicate -->
+                        <?php echo $predicate ['caption']; ?>
                 
-                    <!-- Caption of predicate -->
-                    <?php echo $predicate ['caption']; ?> 
-                
-                    <!-- * = mandatory, no * than not mandatory -->
-                    <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?>
+                        <!-- * = mandatory, no * than not mandatory -->
+                        <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?> 
+                        
+                    </div>
                  
                 </td>
-                <td class="<?php echo $td; ?>">
+                <td width="85%" class="even">
 
                     <?php // Output HTML code which belongs to this type    
                     Plugin::includePlugin ( $predicate ['type'],
@@ -107,17 +111,21 @@ foreach ( $this->form->sections as $section ) { ?>
                     
                     <tr>
                     
-                        <td class="<?php Tools::switchOddEven ( 'even', $td ); ?>">
+                        <td class="even">
                              
-                             <!-- Caption of predicate -->
-                            <?php echo $predicate ['caption']; ?> 
+                            <div style="font-weight: bold;">
                         
-                            <!-- * = mandatory, no * than not mandatory -->
-                            <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?>
+                                <!-- Caption of predicate -->
+                                <?php echo $predicate ['caption']; ?>
+                        
+                                <!-- * = mandatory, no * than not mandatory -->
+                                <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?> 
+                                
+                            </div>
                              
                         </td>
 
-                        <td class="<?php echo $td; ?>">
+                        <td class="even">
 
                             <?php // Output HTML code which belongs to this type    
                             Plugin::includePlugin ( $predicate ['type'],
@@ -138,7 +146,12 @@ foreach ( $this->form->sections as $section ) { ?>
 }
 ?>
     <tr>
-        <td class="<?php echo $td; ?>" colspan="2">
+        <td colspan="2" class="even">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td class="even" colspan="2">
             <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
             <input type="hidden" id="resourceUriHiddenField" name="resourceUriHiddenField" value=""/>
             
