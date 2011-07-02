@@ -67,6 +67,7 @@ foreach ( $this->form->sections as $section )
                                                             $predicate ['typeparameter'], 
                                                             $predicate ['predicateuri'],
                                                             $this->form->targetclass );
+            echo "\n";
         }
                     
     
@@ -96,20 +97,30 @@ foreach ( $this->form->sections as $section )
                                                                        $predicate ['typeparameter'],  
                                                                        $predicate ['predicateuri'],
                                                                        $nestedconfig ['form']->targetclass );
+                        echo "\n";
                     }
             }
         }
     }
 }
 ?>
-    <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
-    <input type="hidden" id="resourceUriHiddenField" name="resourceUriHiddenField" value=""/>
-    
-    <p><input id="addResource" class="button" type="button" value="Add New"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit"/></p>
+    <div class="hidden" id="hiddenfield">
+        <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
+        <input type="hidden" class="hidden" id="isedit" name="isedit" value="false"/>
+    </div>
+    <p><input id="addResource" class="button" type="button" value="Add New" onclick="submitFunction(false)"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit" onclick="submitFunction(true)"/></p>
 </form>
 <p id="test"></p>
 <script type="text/javascript">
-$('#addResource').click(function() {
+
+function submitFunction(editResource) {
+    if (!editResource)
+    {
+        $('.hiddenfields').remove();
+    }
+    
+    $('#isedit').val(editResource);
+
     response = jQuery.parseJSON($.ajax({
 			type: "POST",
 			url: "<?php echo (string) new OntoWiki_Url ( 
@@ -124,10 +135,7 @@ $('#addResource').click(function() {
     
     // if required fields are empty then
     if (null != response.notset)
-    {
-        // hide Edit Button
-        $('#editResource').hide();
-        
+    {        
         // fill messagebox with error message
         $('#statusMessagebox').text('Requried fields are empty!');
         $('#statusMessagebox').addClass('error');
@@ -140,8 +148,11 @@ $('#addResource').click(function() {
     }
     else
     {
-        // add resource URI to hidden input
-        $('#resourceUriHiddenField').val(response.triples[0].S);
+        // add resource URIs to hidden input fields
+        if (!editResource)
+            jQuery.each(response.resources, function(i, val) {
+                $('<input type="hidden" class="hidden hiddenfields" id="' + i + '" name="' + i + '" value="' + val + '"/>').appendTo('#hiddenfield');
+            });
         
         // fill messagebox with success message
         $('#statusMessagebox').text('Resource added successfuly!');
@@ -169,5 +180,5 @@ $('#addResource').click(function() {
         $('#test').html(test);
         
     }
-});
+}
 </script>
