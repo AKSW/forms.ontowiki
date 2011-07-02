@@ -201,12 +201,20 @@ function submitFunction(editResource) {
     {
         // add resource URIs to hidden input fields
         if (!editResource)
+        {
             jQuery.each(response.resources, function(i, val) {
                 $('<input type="hidden" class="hidden hiddenfields" id="' + i + '" name="' + i + '" value="' + val + '"/>').appendTo('#hiddenfield');
             });
+            // fill messagebox with success message(added)
+            $('#statusMessagebox').text('Resource added successfuly!');
+        }
+        else
+        {
+            // fill messagebox with success message(edited)
+            $('#statusMessagebox').text('Resource edited successfuly!');
+        }
         
-        // fill messagebox with success message
-        $('#statusMessagebox').text('Resource added successfuly!');
+        // show messagebox and remove error message if there was one befor
         $('#statusMessagebox').removeClass('error');
         $('#statusMessagebox').show();
         
