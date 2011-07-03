@@ -272,25 +272,23 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         if ('edit' == $modus)
         {
             $deletedTriples = $store->deleteMatchingStatements (
-                    (string) $this->_owApp->selectedModel,
-                    $subjectUri,
-                    $predicateUri,
-                    null, //$oldObject,
-                    $options
+                (string) $this->_owApp->selectedModel,
+                $subjectUri,
+                $predicateUri,
+                null, //$oldObject,
+                $options
             );
             if (1 != $deletedTriples)
                 return false;
         }
         if (null != $newObject)
         {
-            $addedTriples = $store->addStatement (
+            $store->addStatement (
                 (string) $this->_owApp->selectedModel, 
                 $subjectUri,
                 $predicateUri, 
                 array ( 'value' => $newObject, 'type' => $type)
             );
-            if (1 != $addedTriples)
-                return false;
         }
         
         return true;
