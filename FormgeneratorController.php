@@ -169,10 +169,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         $triple['md5'] = $entry ['md5'];
                         $json['triples'][] = $triple;
                         
-                        if(!$this->editTriple(   $resourceArray [ $class ] . '#debug',
-                                                $entry ['predicateuri'],
+                        if(!$this->editTriple(  $triple['S'],
+                                                $triple['P'],
                                                 null,
-                                                $_REQUEST [$entry ['md5']],
+                                                $triple['O'],
                                                 'literal',
                                                 $modus))
                         {
@@ -184,6 +184,34 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         }
                     }
                 }
+            }
+            
+                    
+            // add relation from Resource to Class
+            
+            $rcrelation = Array();
+            $rcrelation['S'] = $resourceArray [ $class ] . '#debug';
+            $rcrelation['P'] = 'a';
+            // TODO: no use of fix URI, get architecture URI from ontology
+            // >other solution, is the following but it chance view name in the properties list, what is right or better? 
+            // $rcrelation['O'] = 'architecture:' . $class;
+            // also look at the Tools::replaceNamespaces function
+            $rcrelation['O'] = 'http://als.dispedia.info/architecture/c/20110504/' . $class;
+            
+            $json['rcrelations'][] = $rcrelation;
+            
+            if(!$this->editTriple(  $rcrelation['S'],
+                                    $rcrelation['P'],
+                                    null,
+                                    $rcrelation['O'],
+                                    'uri',
+                                    $modus))
+            {
+                $json['error'] = Array();
+                $json['error']['message'] = 'add/edit RC relation';
+                $json['error']['subject'] = $rcrelation['S'];
+                $json['error']['predicate'] = $rcrelation['P'];
+                $json['error']['object'] = $rcrelation['O'];
             }
         }        
         

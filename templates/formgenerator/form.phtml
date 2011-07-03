@@ -230,6 +230,13 @@ function submitFunction(editResource) {
         
         test += '<br><br>';
         
+        // show new Resource Class relations
+        for (var i=0;i<response.rcrelations.length;i++){
+            test += response.rcrelations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.rcrelations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.rcrelations[i].O + '<br>';
+        }
+        
+        test += '<br><br>';
+        
         // show new relations
         for (var i=0;i<response.relations.length;i++){
             test += response.relations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].O + '<br>';
