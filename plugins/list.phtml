@@ -4,7 +4,7 @@
                 
 <?php foreach ( $typeparameter as $ele ) { ?>
 
-    <option value="<?php echo $ele ['value']; ?>">
+    <option value="<?php echo $ele ['value']; ?>" <?php echo ($ele ['value'] == $resourceValue ? 'selected="selected"' : ''); ?>>
         <?php echo $ele ['label']; ?>
     </option>
 

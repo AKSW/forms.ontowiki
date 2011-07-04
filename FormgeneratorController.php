@@ -333,8 +333,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 null, //$oldObject,
                 $options
             );
-            if (1 != $deletedTriples)
-                return false;
         }
         if (null != $newObject)
         {

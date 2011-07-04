@@ -167,7 +167,7 @@ foreach ( $this->form->sections as $section ) { ?>
                 ?>
             </div>
             
-            <input id="addResource" class="button" type="button" value="Add New" onclick="submitFunction(false)"/>&nbsp;&nbsp;<input id="editResource" class="button<?php echo (0 < count($this->resourceArray) ? '' : ' hidden'); ?>" type="button" value="Save" onclick="submitFunction(true)"/>
+            <a id="addResource" class="button submit" onclick="submitFunction(false)"/><span>Add New</span></a>&nbsp;&nbsp;<a id="editResource" class="button submit<?php echo (0 < count($this->resourceArray) ? '' : ' hidden'); ?>" onclick="submitFunction(true)"/><span>Save</span></a>
         </td>
     </tr>
 </table>
@@ -176,11 +176,6 @@ foreach ( $this->form->sections as $section ) { ?>
 <script type="text/javascript">
 
 function submitFunction(editResource) {
-    if (!editResource)
-    {
-        $('.hiddenfields').remove();
-    }
-    
     $('#isedit').val(editResource);
 
     response = jQuery.parseJSON($.ajax({
@@ -205,7 +200,7 @@ function submitFunction(editResource) {
         
         // paint all empty fields red 
         for (var i=0;i<response.notset.length;i++){
-            $('#' + response.notset[i]).css("background-color", "red");
+            $('#' + response.notset[i]).css("background-color", "#FFBBBB");
         }
     }
     else
@@ -213,6 +208,7 @@ function submitFunction(editResource) {
         // add resource URIs to hidden input fields
         if (!editResource)
         {
+            $('.hiddenfields').remove();
             jQuery.each(response.resources, function(i, val) {
                 $('<input type="hidden" class="hidden hiddenfields" id="' + i + '" name="' + i + '" value="' + val + '"/>').appendTo('#hiddenfield');
             });
@@ -228,6 +224,9 @@ function submitFunction(editResource) {
         // show messagebox and remove error message if there was one befor
         $('#statusMessagebox').removeClass('error');
         $('#statusMessagebox').show();
+        setTimeout(function (){
+            $('#statusMessagebox').hide();
+        }, 5000);
         
         // show Edit Button
         $('#editResource').show();
@@ -254,7 +253,7 @@ function submitFunction(editResource) {
         }
         
         // debug echo
-        $('#test').html(test);
+        //$('#test').html(test);
         
     }
 }
