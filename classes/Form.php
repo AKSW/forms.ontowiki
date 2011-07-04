@@ -156,10 +156,13 @@ class Form
                 foreach ($section['nestedconfig'] as $nestedconfigKey => $nestedconfigProperties)
                 {
                     $firstRelation = Tools::replaceNamespaces ( (string) $nestedconfigProperties['relations']->item[0] );
-                    $nestedResource = array ();
-                    $nestedResource['uri'] = $resource['properties'][$firstRelation];
-                    $nestedResource['properties'] = Tools::getResourceProperties($nestedResource['uri'], $this->model);
-                    $nestedResourceArray = $this->loadResourceValues($nestedResource, $nestedconfigProperties['form']->sections);
+                    if ( isset ($resource['properties'][$firstRelation]) )
+                    {
+                        $nestedResource = array ();
+                        $nestedResource['uri'] = $resource['properties'][$firstRelation];
+                        $nestedResource['properties'] = Tools::getResourceProperties($nestedResource['uri'], $this->model);
+                        $nestedResourceArray = $this->loadResourceValues($nestedResource, $nestedconfigProperties['form']->sections);
+                    }
                 }
         }
         

@@ -59,9 +59,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 $selectedResource = array ();
                 $selectedResource['uri'] = (string) OntoWiki::getInstance()->session->selectedResource;
                 $selectedResource['properties'] = Tools::getResourceProperties($selectedResource['uri'], $this->_owApp->selectedModel);
-                $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedResource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'],
-                                                                        $this->_owApp->selectedModel,
-                                                                        $this->_privateConfig );
+                // if the selected resource has an class
+                if ( isset( $selectedResource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] ) )
+                    $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedResource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'],
+                                                                            $this->_owApp->selectedModel,
+                                                                            $this->_privateConfig );
+                else
+                {
+                    $selectedResource = null;
+                    $loadedFormConfig = $this->_privateConfig->mapping->standard .'.xml';
+                }
             }
             // Default choice.
             else
