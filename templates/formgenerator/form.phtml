@@ -156,9 +156,18 @@ foreach ( $this->form->sections as $section ) { ?>
             <div class="hidden" id="hiddenfield">
                 <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
                 <input type="hidden" class="hidden" id="isedit" name="isedit" value="false"/>
+                <?php
+                    foreach ($this->resourceArray as $className => $resourceUri)
+                    {
+                ?>
+                        <input type="hidden" class="hidden hiddenfields" id="<?php echo $className; ?>" name="<?php echo $className; ?>" value="<?php echo $resourceUri; ?>"/>
+                        
+                <?php
+                    }
+                ?>
             </div>
             
-            <input id="addResource" class="button" type="button" value="Add New" onclick="submitFunction(false)"/>&nbsp;&nbsp;<input id="editResource" class="button hidden" type="button" value="Edit" onclick="submitFunction(true)"/>
+            <input id="addResource" class="button" type="button" value="Add New" onclick="submitFunction(false)"/>&nbsp;&nbsp;<input id="editResource" class="button<?php echo (0 < count($this->resourceArray) ? '' : ' hidden'); ?>" type="button" value="Save" onclick="submitFunction(true)"/>
         </td>
     </tr>
 </table>
@@ -213,7 +222,7 @@ function submitFunction(editResource) {
         else
         {
             // fill messagebox with success message(edited)
-            $('#statusMessagebox').text('Resource edited successfuly!');
+            $('#statusMessagebox').text('Resource saved successfuly!');
         }
         
         // show messagebox and remove error message if there was one befor

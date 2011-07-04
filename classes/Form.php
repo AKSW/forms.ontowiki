@@ -9,7 +9,6 @@ class Form
 	public $introduceText;
 	public $sections;
 	public $model;
-    public $values;
 	
 	public function __construct ( &$m )
 	{   
@@ -19,7 +18,6 @@ class Form
 		$this->sections = array ();
 		$this->labelparts = array ();
 		$this->model = $m;
-		$this->values = array ();
 	}
 	
 	/**
@@ -138,6 +136,10 @@ class Form
     public function loadResourceValues($resource, &$formSections = null)
     {
         //Tools::dumpIt( $formSections );
+        $resourceArray = array ();
+        // TODO Handle classes which have a # at the end!
+		$className = substr ( $resource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'], 1+strrpos ( $resource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'], '/' ) );
+        $resourceArray[$className] = $resource['uri'];
         
         if (null == $formSections)
             $formSections = &$this->sections;
@@ -157,11 +159,16 @@ class Form
                     $nestedResource = array ();
                     $nestedResource['uri'] = $resource['properties'][$firstRelation];
                     $nestedResource['properties'] = Tools::getResourceProperties($nestedResource['uri'], $this->model);
-                    $this->loadResourceValues($nestedResource, $nestedconfigProperties['form']->sections);
+                    $nestedResourceArray = $this->loadResourceValues($nestedResource, $nestedconfigProperties['form']->sections);
                 }
         }
-        // TODO: return an resourceArray with classname => ResourceURI
-        return true;
+        
+        // TODO: attention double classnames were overwritten, if two nestedforms of same type one resource is lost
+        if ( isset($nestedResourceArray) AND 0 < count($nestedResourceArray) )
+            foreach ($nestedResourceArray as $classname => $resourceUri)
+                $resourceArray[$classname] = $resourceUri;
+        
+        return $resourceArray;
     }
     
     /**

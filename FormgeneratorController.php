@@ -49,12 +49,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         else
         {
             // If a class in left menu was selected.
-            if ( -1 !== ( $selectedClass = OntoWiki_Model_Instances::getSelectedClass () ) )
+            if ( -1 !== ( $selectedClass = OntoWiki_Model_Instances::getSelectedClass () ) AND 'instances' == OntoWiki::getInstance()->session->lastRoute )
                 $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedClass,
                                                                      $this->_owApp->selectedModel,
                                                                      $this->_privateConfig );
             // If a resources was selected.
-            else if ((String) $this->_owApp->selectedModel !== $selectedResource['uri'])
+            else if ((String) $this->_owApp->selectedModel !== $selectedResource['uri'] AND 'properties' == OntoWiki::getInstance()->session->lastRoute )
             {
                 $selectedResource = array ();
                 $selectedResource['uri'] = (string) OntoWiki::getInstance()->session->selectedResource;
@@ -75,11 +75,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $this->view->loadedFormConfig = $loadedFormConfig;
         
+        $resourceArray = array ();
+        
         if (null != $selectedResource)
         {
-            $this->view->form->loadResourceValues($selectedResource);
-            //Tools::dumpIt( $this->view->form->sections );
+            $resourceArray = $this->view->form->loadResourceValues($selectedResource);
         }
+        $this->view->resourceArray = $resourceArray;
     }
 
     /**
