@@ -9,6 +9,7 @@ class Form
 	public $introduceText;
 	public $sections;
 	public $model;
+    public $values;
 	
 	public function __construct ( &$m )
 	{   
@@ -18,6 +19,7 @@ class Form
 		$this->sections = array ();
 		$this->labelparts = array ();
 		$this->model = $m;
+		$this->values = array ();
 	}
 	
 	/**
@@ -87,11 +89,12 @@ class Form
                             }                            
 							
                             // Build an entry instance.
-                            $entry = array ( 'predicateuri' => $predicate->predicateuri,
+                            $entry = array ( 'predicateuri' => Tools::replaceNamespaces ( (string) $predicate->predicateuri ),
                                              'type' 		=> $type,
                                              'typeparameter'=> $typeparameter,
                                              'caption'	    => $titleHelper->getTitle( $p ), 
-                                             'mandatory'    => (int) $predicate->mandatory );
+                                             'mandatory'    => (int) $predicate->mandatory,
+                                             'resourcevalue'=> '' );
                             
                             // Add entry to predicate array.
 							$newSection ['predicate'] [] = $entry;
@@ -125,6 +128,41 @@ class Form
 			}
 		}
 	}
+    
+    /**
+     * Load value of an Resources to fill the Form for edit.
+     * 
+     * @param $resource Array with uri, properties, and values of the Resource
+     * @return true if Rresource prperties match the form properties, else false
+     */
+    public function loadResourceValues($resource, &$formSections = null)
+    {
+        //Tools::dumpIt( $formSections );
+        
+        if (null == $formSections)
+            $formSections = &$this->sections;
+        
+        foreach ($formSections as $sectionKey => $section)
+        {
+            if ( isset($section['predicate']) )
+                foreach ($section['predicate'] as $predicateKey => $predicateProperties)
+                {
+                    if ( isset($resource['properties'][$predicateProperties['predicateuri']]) )
+                        $formSections[$sectionKey]['predicate'][$predicateKey]['resourcevalue'] = $resource['properties'][$predicateProperties['predicateuri']];
+                }
+            if ( isset($section['nestedconfig']) )
+                foreach ($section['nestedconfig'] as $nestedconfigKey => $nestedconfigProperties)
+                {
+                    $firstRelation = Tools::replaceNamespaces ( (string) $nestedconfigProperties['relations']->item[0] );
+                    $nestedResource = array ();
+                    $nestedResource['uri'] = $resource['properties'][$firstRelation];
+                    $nestedResource['properties'] = Tools::getResourceProperties($nestedResource['uri'], $this->model);
+                    $this->loadResourceValues($nestedResource, $nestedconfigProperties['form']->sections);
+                }
+        }
+        // TODO: return an resourceArray with classname => ResourceURI
+        return true;
+    }
     
     /**
      * 

@@ -24,7 +24,7 @@ class Plugin
      * @param $name Name of the predicate.
      * @param $class The class to which this field is belonged.
      */
-    public static function includePlugin ( $type, $typeparameter, $name, $class )
+    public static function includePlugin ( $type, $typeparameter, $name, $class, $resourceValue )
     {
         $fieldName = md5 ( $class . $name );
         $path = dirname ( __FILE__ ) .'/../plugins';

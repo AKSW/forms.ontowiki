@@ -343,4 +343,29 @@ class Tools
             
         return $fileList;
     }
+    
+    /**
+     * Get all properties of a resource from store
+     * @param $resourceUri URI of the resource
+     * @return Array with property => value pairs
+     */
+     public static function getResourceProperties( $resourceUri, $model)
+     {
+         $properties = Array();
+         $results = $model->sparqlQuery(
+            'SELECT ?property ?value 
+              WHERE {
+                  <' . $resourceUri . '> ?property ?value.
+              }'
+        );
+        
+        foreach ($results as $result)
+        {
+            $properties[$result['property']] = $result['value'];
+        }
+        
+        return isset ( $properties )
+               ? $properties 
+               : -1;
+     }
 }

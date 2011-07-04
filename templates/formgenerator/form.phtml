@@ -88,7 +88,8 @@ foreach ( $this->form->sections as $section ) { ?>
                     Plugin::includePlugin ( $predicate ['type'],
                                             $predicate ['typeparameter'], 
                                             $predicate ['predicateuri'],
-                                            $this->form->targetclass ); ?>
+                                            $this->form->targetclass,
+                                            $predicate ['resourcevalue'] ); ?>
                                     
                 </td>
             </tr>
@@ -130,7 +131,8 @@ foreach ( $this->form->sections as $section ) { ?>
                             Plugin::includePlugin ( $predicate ['type'],
                                                     $predicate ['typeparameter'], 
                                                     $predicate ['predicateuri'],
-                                                    $nestedconfig ['form']->targetclass ); ?>
+                                                    $nestedconfig ['form']->targetclass,
+                                                    $predicate ['resourcevalue'] ); ?>
                                             
                         </td>
                         

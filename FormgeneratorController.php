@@ -1,7 +1,7 @@
 <?php
 
-require 'classes/Form.php';		
 require 'classes/Tools.php';
+require 'classes/Form.php';		
 require 'classes/Plugin.php';
 
 /**
@@ -38,7 +38,11 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                                           'action' => 'sendform') 
                                  );
                      
-                     
+        //echo 'Class: ' . OntoWiki_Model_Instances::getSelectedClass() . '<br>';
+        //echo 'Resource: ' . OntoWiki::getInstance()->session->selectedResource . '<br>';
+        
+        $selectedResource = null;
+        
         // If a template was selected.
         if ( true == isset ( $_REQUEST ['newFormConfig'] ) )
             $loadedFormConfig = $_REQUEST ['newFormConfig'];
@@ -49,19 +53,33 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedClass,
                                                                      $this->_owApp->selectedModel,
                                                                      $this->_privateConfig );
-                
+            // If a resources was selected.
+            else if ((String) $this->_owApp->selectedModel !== $selectedResource['uri'])
+            {
+                $selectedResource = array ();
+                $selectedResource['uri'] = (string) OntoWiki::getInstance()->session->selectedResource;
+                $selectedResource['properties'] = Tools::getResourceProperties($selectedResource['uri'], $this->_owApp->selectedModel);
+                $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedResource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'],
+                                                                        $this->_owApp->selectedModel,
+                                                                        $this->_privateConfig );
+            }
             // Default choice.
             else
-                $loadedFormConfig = 'patient.xml';
+                $loadedFormConfig = $this->_privateConfig->mapping->standard .'.xml';
         }
                       
 
         // Load XML Config
 		$this->view->form = Tools::loadFormByXmlConfig ( $loadedFormConfig,
                                                          $this->_owApp->selectedModel );
-                                       
-                                       
+        
         $this->view->loadedFormConfig = $loadedFormConfig;
+        
+        if (null != $selectedResource)
+        {
+            $this->view->form->loadResourceValues($selectedResource);
+            //Tools::dumpIt( $this->view->form->sections );
+        }
     }
 
     /**
@@ -69,8 +87,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      */
     public function checkformAction ()
     {
-        $json = Array();
-        $json['notset'] = Array();
+        $json = array ();
+        $json['notset'] = array ();
              
         // Load XML config.
         $checkingForm = Tools::loadFormByXmlConfig ( $_REQUEST ['loadedFormConfig'],
@@ -163,7 +181,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         && isset($_REQUEST [$entry ['md5']]) && '' != $_REQUEST [$entry ['md5']]
                     ) {
                         $triple = Array();
-                        $triple['S'] = $resourceArray [ $class ] . '#debug';
+                        $triple['S'] = $resourceArray [ $class ];
                         $triple['P'] = $entry ['predicateuri'];
                         $triple['O'] = $_REQUEST [$entry ['md5']];
                         $triple['md5'] = $entry ['md5'];
@@ -190,8 +208,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             // add relation from Resource to Class
             
             $rcrelation = Array();
-            $rcrelation['S'] = $resourceArray [ $class ] . '#debug';
-            $rcrelation['P'] = 'a';
+            $rcrelation['S'] = $resourceArray [ $class ];
+            $rcrelation['P'] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
             // TODO: no use of fix URI, get architecture URI from ontology
             // >other solution, is the following but it chance view name in the properties list, what is right or better? 
             // $rcrelation['O'] = 'architecture:' . $class;
@@ -235,7 +253,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                     && "" != $resourceArray [ $entry ['targetclass'] ]
                 ) {
                     $relation_array = Array();
-                    $relation_array['S'] = $resourceArray [ $targetClasses [0] ] . '#debug';
+                    $relation_array['S'] = $resourceArray [ $targetClasses [0] ];
                     $relation_array['P'] = $relation;
                     $relation_array['O'] = $resourceArray [ $entry ['targetclass'] ];
                     $json['relations'][] = $relation_array;
@@ -331,7 +349,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             'SELECT * 
               WHERE {
                 ?s ?p ?o.
-                 FILTER regex( ?s, ".*#debug", "i")
+                 FILTER regex( ?s, ".*foobar", "i")
               }'
         );
         
