@@ -133,14 +133,11 @@ foreach ( Tools::getConfigFileList () as $file )
                         
                     </tr>
                                                                        
-<?php
-                    }
-                }
-            }
-        }
-    }
-}
-?>
+<?php           } } } ?>
+            
+                <input type="hidden" name="<?php echo $nestedconfig ['form']->targetclasslabel .'_labelparts'; ?>" value="<?php echo implode ( ',', $nestedconfig ['form']->labelparts ); ?>"/>
+            
+<?php } } } ?>
     <tr>
         <td colspan="2" class="even">
             &nbsp;

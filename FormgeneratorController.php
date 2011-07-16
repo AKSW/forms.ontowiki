@@ -184,21 +184,48 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // Build label for resource uri.
                 $resourceLabel = '';
                 
-                if ( $checkingForm->targetclasslabel == $targetClass )
+                
+                // SUBFORM level > labelparts of a nested form
+                if ( true == isset ( $_REQUEST [ $targetClass .'_labelparts' ] ) AND
+                     '' != $_REQUEST [ $targetClass .'_labelparts' ] )
                 {
+                    $labelparts = array ();
+                    $reqParts = explode ( ',', $_REQUEST [ $targetClass .'_labelparts' ] );
+                    foreach ( $reqParts as $labelpart )
+                    {
+                        $labelparts [] = 'http://als.dispedia.info/architecture/c/20110504/'.
+                                         substr ( $labelpart, 
+                                                  strrpos ( $labelpart, ':' ) + 1 );
+                    }
+                    
                     foreach ( $labelparts as $part )
                     {
                         $resourceLabel .= Tools::extractValueOfMappedField ( 
-                            $fieldMappings, $checkingForm->targetclasslabel, $part
+                            $fieldMappings, $targetClass, $part
                         );
                     }
                 }
+                
+                // MAINFORM level > labelparts of main form
+                else
+                {
+                    if ( $checkingForm->targetclasslabel == $targetClass )
+                    {
+                        foreach ( $labelparts as $part )
+                        {
+                            $resourceLabel .= Tools::extractValueOfMappedField ( 
+                                $fieldMappings, $checkingForm->targetclasslabel, $part
+                            );
+                        }
+                    }
+                }                
+                
                 
                 // Generate and save resource uri                
                 $resourceArray [ $targetClass ] = Tools::generateUniqueUri ( 
                     (string) $this->_owApp->selectedModel, 
                     $targetClass, 
-                    $resourceLabel
+                    $resourceLabel 
                 );
             }
             $json['resources'] = $resourceArray;
