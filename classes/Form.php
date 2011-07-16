@@ -15,6 +15,7 @@ class Form
 		$this->headline = 'New form';
 		$this->introduceText = '';
 		$this->targetclass = '';
+		$this->targetclasslabel = '';
 		$this->sections = array ();
 		$this->labelparts = array ();
 		$this->model = $m;
@@ -45,6 +46,10 @@ class Form
                     
 				case 'targetclass':
 					$this->targetclass = $nodeValue [0];
+                    
+                    $this->targetclasslabel = substr ( $this->targetclass, 
+                                                       1+strrpos ( $this->targetclass, ':' ) );
+                    
 					break;
 					
                     

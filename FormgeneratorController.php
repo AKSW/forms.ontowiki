@@ -50,9 +50,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         {
             // If a class in left menu was selected.
             if ( -1 !== ( $selectedClass = OntoWiki_Model_Instances::getSelectedClass () ) AND 'instances' == OntoWiki::getInstance()->session->lastRoute )
+            {
                 $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedClass,
                                                                      $this->_owApp->selectedModel,
                                                                      $this->_privateConfig );
+            }
+            
             // If a resources was selected.
             else if ((String) $this->_owApp->selectedModel !== $selectedResource['uri'] AND 'properties' == OntoWiki::getInstance()->session->lastRoute )
             {
@@ -61,9 +64,11 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 $selectedResource['properties'] = Tools::getResourceProperties($selectedResource['uri'], $this->_owApp->selectedModel);
                 // if the selected resource has an class
                 if ( isset( $selectedResource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'] ) )
+                {
                     $loadedFormConfig = Tools::getClassRelevantConfigFile ( $selectedResource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'],
                                                                             $this->_owApp->selectedModel,
                                                                             $this->_privateConfig );
+                }
                 else
                 {
                     $selectedResource = null;
@@ -79,6 +84,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // Load XML Config
 		$this->view->form = Tools::loadFormByXmlConfig ( $loadedFormConfig,
                                                          $this->_owApp->selectedModel );
+        
         
         $this->view->loadedFormConfig = $loadedFormConfig;
         
@@ -144,9 +150,20 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $modus = 'add';
         
         // TODO How to merge targetclasses and labelparts ?!
-        $labelParts = Tools::getLabelParts ( $checkingForm );
+        // $labelParts = Tools::getLabelParts ( $checkingForm );
         
         $targetClasses = Tools::getTargetClasses ( $checkingForm );
+            
+                
+        // Labelparts
+        // TODO Use titlehelper > targetclass is label of a class?!
+        $labelparts = array ();
+        foreach ( $checkingForm->labelparts as $labelpart )
+        {
+            $labelparts [] = 'http://als.dispedia.info/architecture/c/20110504/'.
+                             substr ( $labelpart, 
+                                      strrpos ( $labelpart, ':' ) + 1 );
+        }
         
         
         // Creating resources from target classes.
@@ -164,20 +181,31 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         {
             foreach ( $targetClasses as $targetClass ) 
             {
+                // Build label for resource uri.
+                $resourceLabel = '';
+                
+                if ( $checkingForm->targetclasslabel == $targetClass )
+                {
+                    foreach ( $labelparts as $part )
+                    {
+                        $resourceLabel .= Tools::extractValueOfMappedField ( 
+                            $fieldMappings, $checkingForm->targetclasslabel, $part
+                        );
+                    }
+                }
+                
+                // Generate and save resource uri                
                 $resourceArray [ $targetClass ] = Tools::generateUniqueUri ( 
                     (string) $this->_owApp->selectedModel, 
                     $targetClass, 
-                    'foobar' // TODO Use labelparts!
+                    $resourceLabel
                 );
             }
             $json['resources'] = $resourceArray;
         }
+                
         
-        
-        
-        //echo "<br>Create following triples:";
-        
-        
+        // 
         foreach ( $targetClasses as $class )
         {
             foreach ( $fieldMappings as $entry )
@@ -220,7 +248,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $rcrelation['S'] = $resourceArray [ $class ];
             $rcrelation['P'] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
             // TODO: no use of fix URI, get architecture URI from ontology
-            // >other solution, is the following but it chance view name in the properties list, what is right or better? 
+            // >other solution, is the following but it chance view name in 
+            //  the properties list, what is right or better? 
             // $rcrelation['O'] = 'architecture:' . $class;
             // also look at the Tools::replaceNamespaces function
             $rcrelation['O'] = 'http://als.dispedia.info/architecture/c/20110504/' . $class;
@@ -246,20 +275,18 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // Get relations between main XML config and nestedconfig's
         $relationsArray = Tools::getNestedConfigRelations ( $checkingForm );
         
-       // echo "<br><br><hr>";
         
-       // echo "<br>Create following relations between resources:";
         
         foreach ( $relationsArray as $entry )
         {
             foreach ( $entry ['relations'] as $relation )
             {
                 if (isset($resourceArray [ $targetClasses [0] ])
-                    && "" != $resourceArray [ $targetClasses [0] ]
+                    && '' != $resourceArray [ $targetClasses [0] ]
                     && isset($relation)
-                    && "" != $relation
+                    && '' != $relation
                     && isset($resourceArray [ $entry ['targetclass'] ])
-                    && "" != $resourceArray [ $entry ['targetclass'] ]
+                    && '' != $resourceArray [ $entry ['targetclass'] ]
                 ) {
                     $relation_array = Array();
                     $relation_array['S'] = $resourceArray [ $targetClasses [0] ];

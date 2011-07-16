@@ -349,23 +349,41 @@ class Tools
      * @param $resourceUri URI of the resource
      * @return Array with property => value pairs
      */
-     public static function getResourceProperties( $resourceUri, $model)
-     {
-         $properties = Array();
-         $results = $model->sparqlQuery(
-            'SELECT ?property ?value 
-              WHERE {
-                  <' . $resourceUri . '> ?property ?value.
-              }'
-        );
-        
-        foreach ($results as $result)
-        {
-            $properties[$result['property']] = $result['value'];
+    public static function getResourceProperties( $resourceUri, $model)
+    {
+        $properties = Array();
+        $results = $model->sparqlQuery(
+           'SELECT ?property ?value 
+             WHERE {
+                 <' . $resourceUri . '> ?property ?value.
+             }'
+       );
+       
+       foreach ($results as $result)
+       {
+           $properties[$result['property']] = $result['value'];
+       }
+       
+       return isset ( $properties )
+              ? $properties 
+              : -1;
+    }
+     
+    /**
+     * @param fieldMappings 
+     * @param class Current target class
+     * @param fieldUri Field URI (Predicate URI)
+     * @return String|null Value of field which represents by predicateuri.
+     */
+    public static function extractValueOfMappedField ( &$fieldMappings, $class, $fieldUri )
+    {
+        foreach ( (array) $fieldMappings as $entry )
+        {                
+            // Only take predicates from current selected targetclass!
+            if ( $class == $entry ['targetclass'] AND $fieldUri == $entry ['predicateuri'] )
+                return $_REQUEST [ $entry ['md5'] ];
         }
         
-        return isset ( $properties )
-               ? $properties 
-               : -1;
-     }
+        return null;
+    }
 }

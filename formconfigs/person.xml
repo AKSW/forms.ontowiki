@@ -10,10 +10,10 @@
         <item>architecture:lastName</item>
     </labelparts>
 	
-    <!-- Headline of this formula -->
+    <!-- Headline of this formula. -->
     <headline>Person</headline>
 	
-    <!-- Introducing text to inform the user about the formula -->
+    <!-- Introducing text to inform the user about the formula. -->
     <introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</introduceText>
 	
     <sections>

@@ -49,9 +49,7 @@ foreach ( Tools::getConfigFileList () as $file )
 <table class="resource-list separated-vertical ui-droppable">
                 
 <!-- Iterate about sections -->
-<?php 
-$td = 'even';
-foreach ( $this->form->sections as $section ) { ?>
+<?php foreach ( $this->form->sections as $section ) { ?>
 
     <tr>
         <td colspan="2" class="even">
@@ -94,11 +92,8 @@ foreach ( $this->form->sections as $section ) { ?>
                 </td>
             </tr>
 
-<?php
-        }
-    }
+<?php } } 
 
-   
     ## Iterate about nestedconfigs, only if nestedconfig was set ##
     if ( true == isset ( $section ['nestedconfig'] ) ) {
                 
@@ -118,7 +113,7 @@ foreach ( $this->form->sections as $section ) { ?>
                                 <!-- Caption of predicate -->
                                 <?php echo $predicate ['caption']; ?>
                         
-                                <!-- * = mandatory, no * than not mandatory -->
+                                <!-- * = mandatory, no * means not mandatory -->
                                 <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?> 
                                 
                             </div>
@@ -156,15 +151,14 @@ foreach ( $this->form->sections as $section ) { ?>
             <div class="hidden" id="hiddenfield">
                 <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
                 <input type="hidden" class="hidden" id="isedit" name="isedit" value="false"/>
-                <?php
-                    foreach ($this->resourceArray as $className => $resourceUri)
-                    {
-                ?>
-                        <input type="hidden" class="hidden hiddenfields" id="<?php echo $className; ?>" name="<?php echo $className; ?>" value="<?php echo $resourceUri; ?>"/>
+                
+                <input type="hidden" name="labelparts" value="<?php echo implode ( ',', $this->form->labelparts ); ?>"/>
+                
+                <?php foreach ( $this->resourceArray as $className => $resourceUri ) { ?>
                         
-                <?php
-                    }
-                ?>
+                    <input type="hidden" class="hidden hiddenfields" id="<?php echo $className; ?>" name="<?php echo $className; ?>" value="<?php echo $resourceUri; ?>"/>
+                
+                <?php } ?>
             </div>
             
             <a id="addResource" class="button submit" onclick="submitFunction(false)"/><span>Add New</span></a>&nbsp;&nbsp;<a id="editResource" class="button submit<?php echo (0 < count($this->resourceArray) ? '' : ' hidden'); ?>" onclick="submitFunction(true)"/><span>Save</span></a>
@@ -225,14 +219,15 @@ function submitFunction(editResource) {
         $('#statusMessagebox').removeClass('error');
         $('#statusMessagebox').show();
         setTimeout(function (){
-            $('#statusMessagebox').hide();
+            $('#statusMessagebox').hide(); // is fadeout better?
         }, 5000);
         
         // show Edit Button
         $('#editResource').show();
         
         // show new triples
-        for (var i=0;i<response.triples.length;i++){
+        for (var i=0;i<response.triples.length;++i){
+            // use foreach?
             test += response.triples[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.triples[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.triples[i].O + '<br>';
             // paint all inputs white
             $('#' + response.triples[i].md5).css("background-color", "transparent");
@@ -242,6 +237,7 @@ function submitFunction(editResource) {
         
         // show new Resource Class relations
         for (var i=0;i<response.rcrelations.length;i++){
+            // use foreach?
             test += response.rcrelations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.rcrelations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.rcrelations[i].O + '<br>';
         }
         
@@ -249,6 +245,7 @@ function submitFunction(editResource) {
         
         // show new relations
         for (var i=0;i<response.relations.length;i++){
+            // use foreach?
             test += response.relations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].O + '<br>';
         }
         
