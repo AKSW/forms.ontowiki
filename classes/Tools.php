@@ -182,8 +182,7 @@ class Tools
         $targetClasses = array ();
         
         // Level 0 target class
-        $targetClasses [] = substr ( (string) $form->targetclass,
-                                     strpos ( (string) $form->targetclass, ':' ) + 1 );
+        $targetClasses [] = Tools::extractClassNameFromUri( (string) $form->targetclass );
         
         foreach ( $form->sections as $section )
         {            

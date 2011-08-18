@@ -47,8 +47,7 @@ class Form
 				case 'targetclass':
 					$this->targetclass = $nodeValue [0];
                     
-                    $this->targetclasslabel = substr ( $this->targetclass, 
-                                                       1+strrpos ( $this->targetclass, ':' ) );
+                    $this->targetclasslabel = Tools::extractClassNameFromUri($this->targetclass);
                     
 					break;
 					
