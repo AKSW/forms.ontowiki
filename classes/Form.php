@@ -142,8 +142,8 @@ class Form
         //Tools::dumpIt( $formSections );
         $resourceArray = array ();
         // TODO Handle classes which have a # at the end!
-		$className = substr ( $resource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'], 1+strrpos ( $resource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'], '/' ) );
-        $resourceArray[$className] = $resource['uri'];
+		$className = Tools::extractClassNameFromUri($resource['properties']['http://www.w3.org/1999/02/22-rdf-syntax-ns#type']);
+        $resourceArray[$className . "0"] = $resource['uri'];
         
         if (null == $formSections)
             $formSections = &$this->sections;
@@ -171,9 +171,11 @@ class Form
         }
         
         // TODO: attention double classnames were overwritten, if two nestedforms of same type one resource is lost
-        if ( isset($nestedResourceArray) AND 0 < count($nestedResourceArray) )
+        if ( isset($nestedResourceArray) AND 0 < count($nestedResourceArray) ) {
+            $id = 1;
             foreach ($nestedResourceArray as $classname => $resourceUri)
-                $resourceArray[$classname] = $resourceUri;
+                $resourceArray[$classname . $id++] = $resourceUri;
+        }
         
         return $resourceArray;
     }

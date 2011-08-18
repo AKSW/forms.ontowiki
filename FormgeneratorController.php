@@ -167,15 +167,15 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         if (isset($_REQUEST['isedit']) && "" != $_REQUEST['isedit'] && 'true' == $_REQUEST['isedit'])
         {
-            foreach ( $targetClasses as $targetClass ) 
+            foreach ( $targetClasses as $key => $targetClass ) 
             {
-                $resourceArray [ $targetClass ] = $_REQUEST[$targetClass];
+                $resourceArray [ $targetClass . $key ] = $_REQUEST[$targetClass . $key ];
             }
             $modus = 'edit';
         }
         else
         {
-            foreach ( $targetClasses as $targetClass ) 
+            foreach ( $targetClasses as $key => $targetClass ) 
             {
                 // Build label for resource uri.
                 $resourceLabel = '';
@@ -218,7 +218,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 
                 
                 // Generate and save resource uri                
-                $resourceArray [ $targetClass ] = Tools::generateUniqueUri ( 
+                $resourceArray [ $targetClass . $key ] = Tools::generateUniqueUri ( 
                     (string) $this->_owApp->selectedModel, 
                     $targetClass, 
                     $resourceLabel,
@@ -228,21 +228,20 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $json['resources'] = $resourceArray;
         }
                 
-        
         // 
-        foreach ( $targetClasses as $class )
+        foreach ( $targetClasses as $key => $class )
         {
             foreach ( $fieldMappings as $entry )
             {                
                 // Only take predicates from current selected targetclass!
                 if ( $class == $entry ['targetclass'] )
                 {
-                    if (isset($resourceArray [ $class ])     && '' != $resourceArray [ $class ]
+                    if (isset($resourceArray [ $class . $key ])     && '' != $resourceArray [ $class . $key ]
                         && isset($entry ['predicateuri'])    && '' != $entry ['predicateuri']
                         && isset($_REQUEST [$entry ['md5']]) && '' != $_REQUEST [$entry ['md5']]
                     ) {
                         $triple = Array();
-                        $triple['S'] = $resourceArray [ $class ];
+                        $triple['S'] = $resourceArray [ $class . $key ];
                         $triple['P'] = $entry ['predicateuri'];
                         $triple['O'] = $_REQUEST [$entry ['md5']];
                         $triple['md5'] = $entry ['md5'];
@@ -269,7 +268,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             // add relation from Resource to Class
             
             $rcrelation = Array();
-            $rcrelation['S'] = $resourceArray [ $class ];
+            $rcrelation['S'] = $resourceArray [ $class . $key ];
             $rcrelation['P'] = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
             // TODO: no use of fix URI, get architecture URI from ontology
             // >other solution, is the following but it chance view name in 
@@ -301,21 +300,21 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         
         
-        foreach ( $relationsArray as $entry )
+        foreach ( $relationsArray as $key => $entry )
         {
             foreach ( $entry ['relations'] as $relation )
             {
-                if (isset($resourceArray [ $targetClasses [0] ])
-                    && '' != $resourceArray [ $targetClasses [0] ]
+                if (isset($resourceArray [ $targetClasses [0] . "0" ])
+                    && '' != $resourceArray [ $targetClasses [0] . "0" ]
                     && isset($relation)
                     && '' != $relation
-                    && isset($resourceArray [ $entry ['targetclass'] ])
-                    && '' != $resourceArray [ $entry ['targetclass'] ]
+                    && isset($resourceArray [ $entry ['targetclass'] . (((int) $key) + 1) ])
+                    && '' != $resourceArray [ $entry ['targetclass'] . (((int) $key) + 1) ]
                 ) {
                     $relation_array = Array();
-                    $relation_array['S'] = $resourceArray [ $targetClasses [0] ];
+                    $relation_array['S'] = $resourceArray [ $targetClasses [0] . "0"];
                     $relation_array['P'] = $relation;
-                    $relation_array['O'] = $resourceArray [ $entry ['targetclass'] ];
+                    $relation_array['O'] = $resourceArray [ $entry ['targetclass'] . (((int) $key) + 1) ];
                     $json['relations'][] = $relation_array;
                     
                     if (!$this->editTriple(   $relation_array['S'],

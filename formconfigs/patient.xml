@@ -65,13 +65,26 @@
         <!-- Another section ... -->
 		<item>	
         
-            <caption>Treating physician</caption>
+            <caption>Treating physician1</caption>
 		
             <!-- Include a XML file -->
 			<nestedconfig>
 				<target>doctor.xml</target>
 				<relations>
 					<item>architecture:isSupervisedBy</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+                <!-- Another section ... -->
+		<item>	
+        
+            <caption>Treating physician2</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>doctor.xml</target>
+				<relations>
 					<item>architecture:isDoctorOf</item>
 				</relations>
 			</nestedconfig>

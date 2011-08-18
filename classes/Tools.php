@@ -136,7 +136,7 @@ class Tools
                     $mappingArray [] = array ( 
                         'targetclass'   => Tools::extractClassNameFromUri( (string) $form->targetclass ),
                         'predicateuri'  => (string) $predicate ['predicateuri'],
-                        'md5'           => md5 ( $form->targetclass . $predicate ['predicateuri'] ),
+                        'md5'           => md5 ( $form->targetclass . "0" . $predicate ['predicateuri'] ),
                         'mandatory'     => $predicate ['mandatory']
                     );
                 }
@@ -148,7 +148,7 @@ class Tools
             {
                 
                 // Include formulas from nested configs
-                foreach ( $section ['nestedconfig'] as $nestedconfig )
+                foreach ( $section ['nestedconfig'] as $key => $nestedconfig )
                 {                    
                     foreach ( $nestedconfig ['form']->sections as $section )
                     {                                            
@@ -159,7 +159,7 @@ class Tools
                                 $mappingArray [] = array ( 
                                     'targetclass'   => Tools::extractClassNameFromUri( (string) $nestedconfig ['form']->targetclass ),
                                     'predicateuri'  => (string) $predicate ['predicateuri'],
-                                    'md5'           => md5 ( $nestedconfig ['form']->targetclass . $predicate ['predicateuri'] ),
+                                    'md5'           => md5 ( $nestedconfig ['form']->targetclass . ($key + 1) . $predicate ['predicateuri'] ),
                                     'mandatory'     => $predicate ['mandatory']
                                 );
                             }
