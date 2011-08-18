@@ -23,8 +23,7 @@ class Tools
 	 */
 	public static function getClassRelevantConfigFile ( $classUri, &$m, &$c )
 	{
-        // TODO Handle classes which have a # at the end!
-		$className = substr ( $classUri, 1+strrpos ( $classUri, '/' ) );
+		$className = Tools::extractClassNameFromUri( $classUri );
         
         
         // Set standard xml file, which will be loaded if no mapping is available.
@@ -45,7 +44,7 @@ class Tools
             {
                 $newClassUri = Tools::getSuperClass ( $classUri, $m );
                 
-                $className = substr ( $newClassUri, 1+strrpos ( $newClassUri, '/' ) );
+		$className = Tools::extractClassNameFromUri( $newClassUri );
                 
                 // If mapping for current class was found
                 if ( '' != $c->mapping->$className )
@@ -135,8 +134,7 @@ class Tools
                 foreach ( $section ['predicate'] as $predicate )
                 {
                     $mappingArray [] = array ( 
-                        'targetclass'   => substr ( (string) $form->targetclass,
-                                                    strpos ( (string) $form->targetclass, ':' ) + 1 ),
+                        'targetclass'   => Tools::extractClassNameFromUri( (string) $form->targetclass ),
                         'predicateuri'  => (string) $predicate ['predicateuri'],
                         'md5'           => md5 ( $form->targetclass . $predicate ['predicateuri'] ),
                         'mandatory'     => $predicate ['mandatory']
@@ -159,8 +157,7 @@ class Tools
                             foreach ( $section ['predicate'] as $predicate )
                             {
                                 $mappingArray [] = array ( 
-                                    'targetclass'   => substr ( (string) $nestedconfig ['form']->targetclass,
-                                                                strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 ),
+                                    'targetclass'   => Tools::extractClassNameFromUri( (string) $nestedconfig ['form']->targetclass ),
                                     'predicateuri'  => (string) $predicate ['predicateuri'],
                                     'md5'           => md5 ( $nestedconfig ['form']->targetclass . $predicate ['predicateuri'] ),
                                     'mandatory'     => $predicate ['mandatory']
@@ -197,8 +194,7 @@ class Tools
                 // Include formulas from nested configs
                 foreach ( $section ['nestedconfig'] as $nestedconfig )
                 {                    
-                    $targetClasses [] = substr ( (string) $nestedconfig ['form']->targetclass,
-                                                 strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 );
+                    $targetClasses [] = Tools::extractClassNameFromUri( (string) $nestedconfig ['form']->targetclass );
                 }
                 
             }
@@ -217,8 +213,7 @@ class Tools
         $labelParts = array ();
         
         // Level 0 target class
-        $level0TargetClass = substr ( (string) $form->targetclass,
-                                       strpos ( (string) $form->targetclass, ':' ) + 1 );
+        $level0TargetClass = Tools::extractClassNameFromUri( (string) $form->targetclass );
         
         
         // Saves level 0 target class as key and labelparts array as value.
@@ -239,8 +234,7 @@ class Tools
                 // Include formulas from nested configs
                 foreach ( $section ['nestedconfig'] as $nestedconfig )
                 {                    
-                    $class = substr ( (string) $nestedconfig ['form']->targetclass,
-                                      strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 );
+                    $class = Tools::extractClassNameFromUri( (string) $nestedconfig ['form']->targetclass );
                     
                     foreach ( $nestedconfig ['form']->labelparts as $part )
                     {
@@ -276,8 +270,7 @@ class Tools
                     
                     
                     // Get targetclass from nestedconfig item.
-                    $entry ['targetclass'] = substr ( (string) $nestedconfig ['form']->targetclass,
-                                                      strpos ( (string) $nestedconfig ['form']->targetclass, ':' ) + 1 );
+                    $entry ['targetclass'] = Tools::extractClassNameFromUri( (string) $nestedconfig ['form']->targetclass );
                      
                                          
                     // Get all relations between nestedconfig item.
@@ -388,5 +381,21 @@ class Tools
         }
         
         return null;
+    }
+    
+    /**
+     * function extract the classname from an uri
+     * @param classUri Uri of class
+     * @return classname as a string
+     */
+    public static function extractClassNameFromUri( $classUri )
+    {
+         if (strrpos ( $classUri, '/' ) < strrpos ( $classUri, '#' ) )
+             $seperator = "#";
+         elseif (strrpos ( $classUri, '/' ) > strrpos ( $classUri, '#' ) )
+             $seperator = "/";
+         else
+             $seperator = ":";
+         return substr($classUri, strrpos ( $classUri, $seperator ) + 1);
     }
 }
