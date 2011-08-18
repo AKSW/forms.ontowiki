@@ -29,7 +29,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      */
     public function formAction()
     {   
-        // TODO Implement stuff for showing unfilled mandatory fields.
         
         // Build URL string for formula
         $this->view->actionUrl = (string)   
@@ -149,9 +148,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $modus = 'add';
         
-        // TODO How to merge targetclasses and labelparts ?!
-        // $labelParts = Tools::getLabelParts ( $checkingForm );
-        
         $targetClasses = Tools::getTargetClasses ( $checkingForm );
             
                 
@@ -225,7 +221,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 $resourceArray [ $targetClass ] = Tools::generateUniqueUri ( 
                     (string) $this->_owApp->selectedModel, 
                     $targetClass, 
-                    $resourceLabel 
+                    $resourceLabel,
+                    $this->_privateConfig
                 );
             }
             $json['resources'] = $resourceArray;

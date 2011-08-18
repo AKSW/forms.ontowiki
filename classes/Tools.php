@@ -101,15 +101,20 @@ class Tools
     /**
      * 
      */
-    public static function generateUniqueUri ( $modelUri, $className, $label )
+    public static function generateUniqueUri ( $modelUri, $className, $label, $privateConfig )
     {
-		$time = time ();
+	$time = time ();
+        if ("/" == substr ( $modelUri, strlen($modelUri) - 1 ))
+                $modelUri = substr ( $modelUri, 0, strlen($modelUri) - 1 );
         
-        return $modelUri . 'i/' . 
-			   date ( 'Ymd', $time ) . '/' . 
-			   $className . '/' .
-			   substr ( md5 ($time . $className), 0, 6 ) . '/' . 
-			   str_replace ( ' ', '', $label ); 
+        $newUri = str_replace("%modeluri%", $modelUri, $privateConfig->uriparts);
+        $newUri = str_replace("%hash%", substr ( md5 ($time . $className), 0, 6 ), $newUri);
+        $newUri = str_replace("%date%", date ( 'Ymd', $time ), $newUri);
+        $newUri = str_replace("%labelparts%", $label, $newUri);
+        $newUri = str_replace("%classname%", $className, $newUri);
+        
+                
+        return $newUri;
     }
     
     /**
@@ -241,8 +246,6 @@ class Tools
                     {
                         $labelParts [ $class ] [] = Tools::replaceNamespaces ( $part );
                     }
-                                                 
-                    // TODO Extends this to a dynamic depth!
                 }
                 
             }
