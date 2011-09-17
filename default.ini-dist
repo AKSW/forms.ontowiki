@@ -13,4 +13,4 @@ authorUrl   = "http://www.dispedia.de"
 [private] 
 
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
-uriparts      = "%modeluri%/i/%classname%/%date%/%hash%/%labelparts%"
+uriParts      = "%modeluri%/i/%classname%/%date%/%hash%/%labelparts%"
