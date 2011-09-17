@@ -17,20 +17,12 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
         $selectedClass = OntoWiki_Model_Instances::getSelectedClass ();
         
         // If a model has been selected
-        if ($owApp->selectedModel != null
-            
-            AND ( 'formgenerator' == $c 
-                
-                OR 'resource' == $c ) )
+        if ($owApp->selectedModel != null 
+            && ( 'formgenerator' == $c || 'resource' == $c ) )
         {
             // A class was selected
             if ( -1 !== $selectedClass
-            
-                AND ( 'instances' ==  $a
-            
-                    OR  ( 'form' == $a
-                        
-                        AND 'instances' == $lastRoute ) ) )
+                && ( 'instances' ==  $a || ( 'form' == $a && 'instances' == $lastRoute ) ) )
             {
                 // Add entry in tab list
                 OntoWiki_Navigation::register (
@@ -44,12 +36,8 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
             }
             // If an Resource was selected
             else if ( (string) $owApp->selectedModel !== $selectedResource
-            
-                AND ( 'properties' ==  $a
-            
-                    OR ( 'form' == $a 
-                        
-                        AND 'properties' == $lastRoute ) ) )
+                        && ( 'properties' ==  $a  || ( 'form' == $a 
+                        && 'properties' == $lastRoute ) ) )
             {
                 // Add entry in tab list
                 OntoWiki_Navigation::register (
