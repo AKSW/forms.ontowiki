@@ -29,29 +29,27 @@ class XmlConfig
         } 
         else
         {
-            $form = new Formula ();
+            $form = new Formula ( '0' );
             
+            $form->setXmlConfig ( $file );
             
             // ReadIn all readable data from XML-Config file.
             foreach ($xml as $nodeName => $nodeValue) 
             {	
                 switch ( $nodeName )
                 {
-                    
-                    case 'headline':
-                        $this->headline = $nodeValue [0];
+                    case 'title':
+                        $form->setTitle ( (string) $nodeValue [0] );
                         break;
                         
                         
-                    case 'introduceText':
-                        $this->introduceText = $nodeValue [0];
+                    case 'description':
+                        $form->setDescription ( (string) $nodeValue [0] );
                         break;
                         
                         
                     case 'targetclass':
-                        $this->targetclass = $nodeValue [0];
-                        
-                        $this->targetclasslabel = Tools::extractClassNameFromUri($this->targetclass);
+                        $form->setTargetClass ( (string) $nodeValue [0] );
                         
                         break;
                         
@@ -59,13 +57,13 @@ class XmlConfig
                     case 'labelparts':
                         
                         foreach ( $xml->labelparts->item as $nodeValue )
-                            $this->labelparts [] = (string) $nodeValue [0];
+                            $form->addLabelpart ( (string) $nodeValue [0] );
                             
                         break;
                         
                         
                     case 'sections':					
-                    
+                        /*
                         foreach ( $xml->sections->item as $nodeValue ) 
                         {
                             $newSection = array ();
@@ -125,7 +123,7 @@ class XmlConfig
                             }
                             
                             $this->sections [] = $newSection;
-                        }
+                        }*/
                     
                         break;
                         
