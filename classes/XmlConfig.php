@@ -121,7 +121,7 @@ class XmlConfig
                                 // Load XML Config
                                 $f = XmlConfig::loadFile ( 
                                     config::get ( 'dirXmlConfigurationFiles' ) . $nestedconfig->xmlfile,
-                                    $index .','. $entryIndex++
+                                    $index .','. $entryIndex
                                 );
                                 
                                 $relations = array ();
@@ -132,11 +132,14 @@ class XmlConfig
                                                                                     
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array ( 
-                                     'xmlfile'       => (string) $nestedconfig->xmlfile,
+                                     'xmlfile'      => (string) $nestedconfig->xmlfile,
+                                     'index'        => $index .','. $entryIndex,
                                      'relations'    => $relations,
                                      'form'         => $f, 
                                      'sectiontype'  => 'nestedconfig'
                                 );
+                                
+                                ++$entryIndex;
                             }
                             
                             $form->addSection ( $newSection );
