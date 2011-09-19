@@ -1,1 +1,39 @@
+<?php foreach ( $this->form->getSections () as $section ) { ?>
 
+<div class="content">
+    
+    <!-- Title -->
+    <h3><?php echo $section ['title']; ?></h3>
+    
+    <?php foreach ( $section as $element ) { ?>
+                
+        <!-- PREDICATE -->
+        <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
+            
+            <!-- Predicate title -->        
+            <span><?php echo $element ['title']; ?></span>
+            
+            <?php if ( 'list' == $element ['type'] ) { ?>
+            
+                <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
+        
+            <?php } else { ?>
+            
+                <input type="text" name="" value=""/>
+            
+            <?php } ?>
+        
+        
+        <!-- NESTEDCONFIG -->            
+        <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
+                   
+            
+                   
+        <?php } ?>
+        
+        <br/>
+    
+    <?php } ?>
+</div>
+
+<?php } ?>
