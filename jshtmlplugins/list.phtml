@@ -1,0 +1,13 @@
+<select name="<?php echo $element ['name']; ?>" class="text">
+
+    <option value="">- please select -</option>
+                
+<?php foreach ( $element ['typeparameter'] as $par ) { $resourceValue = ''; ?>
+
+    <option value="<?php echo $par ['value']; ?>" <?php echo ($par ['value'] == $resourceValue ? 'selected="selected"' : ''); ?>>
+        <?php echo $par ['label']; ?>
+    </option>
+
+<?php } ?>
+
+</select>

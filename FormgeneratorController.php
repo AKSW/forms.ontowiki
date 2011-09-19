@@ -23,13 +23,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function formAction()
     {   
         config::set ( 'selectedModel', $this->_owApp->selectedModel );
-        
+                
         // load xml configuration file
-        $f = XmlConfig::loadFile ( 
+        $this->view->form = XmlConfig::loadFile ( 
             config::get ( 'dirXmlConfigurationFiles' ) .'patient.xml'
         );
         
-        echo $f->toString ();
+        echo $this->view->form->toString ();
     }
 }
 
