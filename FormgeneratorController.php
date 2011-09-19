@@ -1,5 +1,10 @@
 <?php
 
+require_once 'helper.php';
+require_once 'classes/XmlConfig.php';
+require_once 'classes/Formula.php';
+require_once 'classes/Resource.php';
+
 /**
  * Controller for Formgenerator.
  *
@@ -9,30 +14,22 @@
  * @author     Konrad Abicht <konrad@inspirito.de>
  * @copyright  Copyright (c) 2011
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
- */
- 
-// extends include_path 
-set_include_path(
-    get_include_path() . PATH_SEPARATOR . 
-    ONTOWIKI_ROOT . 'extension/formgenerator/classes/' . PATH_SEPARATOR
-);
- 
+ */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
-{    
-    /**
-     * Default action. Forwards to get action.
-     */
-    public function __call($action, $params)
-    {
-        $this->_forward('get', 'files');
-    }	 
-     
+{         
     /**
      * 
      */
     public function formAction()
     {   
+        config::set ( 'selectedModel', $this->_owApp->selectedModel );
         
+        // load xml configuration file
+        $f = XmlConfig::loadFile ( 
+            config::get ( 'dirXmlConfigurationFiles' ) .'patient.xml'
+        );
+        
+        echo $f->toString ();
     }
 }
 

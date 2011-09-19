@@ -11,7 +11,7 @@
 class Formula 
 {
     /**
-     * 
+     * Stores all data about this formula
      */
     private $_data;
     
@@ -25,6 +25,8 @@ class Formula
         
         $this->_data ['index'] = $index;        
         $this->_data ['mode'] = 'add';
+        $this->_data ['resources'] = array ();
+        $this->_data ['sections'] = array ();
     }
     
     
@@ -156,6 +158,42 @@ class Formula
     /**
      * 
      */
+    public function getFieldType ( $predicate, $t )
+    {
+        $t = (string) $t;
+        
+        if (true == isset ( $t ) AND '' != $t )
+        {
+            return $t;
+        }
+        
+        else
+        {
+            // Get range infos for predicate
+            $range = config::get ( 'selectedModel' )->sparqlQuery(
+                'SELECT ?object 
+                  WHERE {
+                     <' . $predicate . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.
+                  }'
+            );
+            
+            $type = 'xsd:string';
+            
+            // If a range was defined
+            if ( 0 < count($range) AND true === isset ( $range[0]['object'] ) )
+                $type = substr ( 
+                    $range[0]['object'],
+                    1+strrpos ( $range[0]['object'], '/' ) 
+                );
+                
+            return $type;
+        }
+    }
+    
+    
+    /**
+     * 
+     */
     public function addLabelpart ( $value )
     {
         $this->_data ['labelparts'] [$value] = $value;
@@ -165,7 +203,7 @@ class Formula
     /**
      * 
      */
-    public function getLabelparts ( $value )
+    public function getLabelparts ()
     {
         return $this->_data ['labelparts'];
     }
@@ -183,31 +221,64 @@ class Formula
     /**
      * @return void
      */
-    public function addSection ()
+    public function addSection ( $value )
     {
-        
+        $this->_data ['sections'] [] = $value;
     }
     
     
     /**
      * @return void
      */
-    public function removeSection ()
+    public function removeSection ( $value )
     {
-        
+        unset ( $this->_data ['sections'] [$value] );
     }
+    
+    
+    /**
+     * @return array
+     */
+    public function getSections ()
+    {
+        return $this->_data ['sections'];
+    }
+    
     
     /**
      * @return string
      */
     public function toString ()
-    {
-        return 'Form '. $this->getTitle () .' with index '. $this->getIndex () .'<br/>'.
-                $this->getDescription () .
+    {        
+        $return = '<br/>- title: '. $this->getTitle () .
+                '<br/>- index: '. $this->getIndex () .
+                '<br/>- description: '. $this->getDescription () .
                 '<br/>- label parts: '. implode ( ', ', $this->getLabelparts () ) .
                 '<br/>- mode: '. $this->getMode () .
                 '<br/>- resources: '. implode ( ', ', $this->getResources () ) .
                 '<br/>- target class: '. $this->getTargetClass () .
-                '<br/>- XML config: '. $this->getXmlConfig () ;
+                '<br/>- XML config: '. $this->getXmlConfig () .
+                '<br/>- sections: ';
+          
+        foreach ( $this->getSections () as $section )
+            foreach ( $section as $s )
+                if ( 'predicate' == $s ['sectiontype'] )
+                {
+                    $return .= '<br/>&nbsp;&nbsp;+ predicate ';
+                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - title: '. $s ['title'];
+                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - predicateuri: '. $s ['predicateuri'];
+                }
+                elseif ( 'nestedconfig' == $s ['sectiontype'] )
+                {
+                    $return .= '<br/>&nbsp;&nbsp;+ nestedconfig ';
+                    $return .= '<br/>';
+                    $return .= $s ['form']->toString ();
+                }
+        /*
+        echo '<pre>';
+        var_dump ( $this->getSections () );
+        echo '</pre>';
+        */
+        return $return;
     }
 }

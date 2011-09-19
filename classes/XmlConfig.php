@@ -18,10 +18,11 @@ class XmlConfig
 	/**
 	 * Loads a xml file.
      * @param $file name of XML configuration file.
+     * @return Formula Filled formula instance
 	 */
-	public function loadXmlConfigurationFile ( $file )
+	public static function loadFile ( $file, $index = 0 )
 	{
-        $xml = simpleXML_load_file($file); 
+        $xml = simpleXML_load_file ( $file ); 
         
         if( false === $xml ) 
         { 
@@ -29,7 +30,7 @@ class XmlConfig
         } 
         else
         {
-            $form = new Formula ( '0' );
+            $form = new Formula ( $index );
             
             $form->setXmlConfig ( $file );
             
@@ -57,73 +58,82 @@ class XmlConfig
                     case 'labelparts':
                         
                         foreach ( $xml->labelparts->item as $nodeValue )
+                        {
                             $form->addLabelpart ( (string) $nodeValue [0] );
+                        }
                             
                         break;
                         
                         
                     case 'sections':					
-                        /*
+                        
                         foreach ( $xml->sections->item as $nodeValue ) 
                         {
                             $newSection = array ();
                             
-                            $newSection ['caption'] = $nodeValue->caption;
+                            $newSection ['title'] = (string) $nodeValue->title;
                             
                             // Iterate over predicate entries.
                             foreach ( $nodeValue->predicate as $predicate )
                             {	
-                                $p = Tools::replaceNamespaces ( $predicate->predicateuri );
+                                // get complete URI of predicate
+                                $p = XmlConfig::replaceNamespace ( $predicate->predicateuri );
                                 
-                                $titleHelper = new OntoWiki_Model_TitleHelper ( $this->model );
+                                $titleHelper = new OntoWiki_Model_TitleHelper ( 
+                                    config::get ( 'selectedModel' )
+                                );                                
                                 $titleHelper->addResource( $p );
                                 
-                                // Get type of this field.
-                                $type = $this->getFieldType ( $p, $predicate->type );
+                                $type = Formula::getFieldType ( $p, $predicate->type );
                                 $typeparameter = array ();
+
                                 
                                 // If set, get type parameters
                                 if ( true == isset ( $predicate->typeparameter ) )
-                                {
                                     foreach ( $predicate->typeparameter->item as $parameter )
-                                    {
-                                        $typeparameter [] = array ( 'label' => $parameter->label,
-                                                                    'value' => $parameter->value );
-                                    }
-                                }                            
+                                        $typeparameter [] = array ( 
+                                            'label' => $parameter->label,
+                                            'value' => $parameter->value 
+                                        );
+                                    
                                 
                                 // Build an entry instance.
-                                $entry = array ( 'predicateuri' => Tools::replaceNamespaces ( (string) $predicate->predicateuri ),
-                                                 'type' 		=> $type,
-                                                 'typeparameter'=> $typeparameter,
-                                                 'caption'	    => $titleHelper->getTitle( $p ), 
-                                                 'mandatory'    => (int) $predicate->mandatory,
-                                                 'resourcevalue'=> '' );
-                                
-                                // Add entry to predicate array.
-                                $newSection ['predicate'] [] = $entry;
+                                $newSection [] = array ( 
+                                    'predicateuri'  => XmlConfig::replaceNamespace ( (string) $predicate->predicateuri ),
+                                    'type' 		    => $type,
+                                    'typeparameter' => $typeparameter,
+                                    'title'	        => $titleHelper->getTitle( $p ), 
+                                    'mandatory'     => (int) $predicate->mandatory,
+                                    'sectiontype'   => 'predicate'
+                                );
                             }
                              
                             // Iterate over nestedconfig entries.                       
                             foreach ( $nodeValue->nestedconfig as $nestedconfig )
                             {                                             
                                 // Load XML Config
-                                $form = new Form ( $this->model );
-                                $form->loadConfig ( realpath(dirname(__FILE__)) . 
-                                                    '/../formconfigs/' .
-                                                    $nestedconfig->target  );
-                                                    
-                                // Build an entry instance.
-                                $entry = array ( 'target'       => $nestedconfig->target,
-                                                 'relations'    => $nestedconfig->relations,
-                                                 'form'         => $form );
+                                $f = XmlConfig::loadFile ( 
+                                    config::get ( 'dirXmlConfigurationFiles' ) . $nestedconfig->target,
+                                    $index+1 
+                                );
                                 
+                                $relations = array ();
+                                
+                                if ( true === isset ( $nestedconfig->relations ) )
+                                    foreach ( $nestedconfig->relations->item as $rel )
+                                        $relations [] = (string) $rel;
+                                                                                    
                                 // Add entry to nestedconfig array.
-                                $newSection ['nestedconfig'] [] = $entry;
+                                $newSection [] = array ( 
+                                     'target'       => (string) $nestedconfig->target,
+                                     'relations'    => $relations,
+                                     'form'         => $f, 
+                                     'sectiontype'  => 'nestedconfig'
+                                );
                             }
                             
-                            $this->sections [] = $newSection;
-                        }*/
+                            $form->addSection ( $newSection );
+                        }
                     
                         break;
                         
@@ -131,6 +141,18 @@ class XmlConfig
                         break;
                 }
             }
+        
+            return $form;
         }
 	}
+    
+    
+    /**
+     * 
+     */
+    public static function replaceNamespace ( $s )
+    {
+        // TODO: no use of fix Uri                                   
+		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
+    }
 }
