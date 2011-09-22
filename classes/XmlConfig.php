@@ -65,7 +65,9 @@ class XmlConfig
                         break;
                         
                         
-                    case 'sections':					
+                    case 'sections':	
+                    
+                        $entryIndex = 0;
                         
                         foreach ( $xml->sections->item as $nodeValue ) 
                         {
@@ -88,17 +90,20 @@ class XmlConfig
                                 $typeparameter = array ();
 
                                 
-                                // If set, get type parameters
+                                // if set, get type parameters
+                                // TODO make it dynamic!
                                 if ( true == isset ( $predicate->typeparameter ) )
                                     foreach ( $predicate->typeparameter->item as $parameter )
                                         $typeparameter [] = array ( 
-                                            'label' => $parameter->label,
-                                            'value' => $parameter->value 
+                                            'label' => (string) $parameter->label,
+                                            'value' => (string) $parameter->value 
                                         );
                                     
                                 
                                 // Build an entry instance.
                                 $newSection [] = array ( 
+                                    'index'         => $index . ',' . $entryIndex,
+                                    'name'          => substr ( md5 ( $index . ',' . $entryIndex ), 0, 10),
                                     'predicateuri'  => XmlConfig::replaceNamespace ( (string) $predicate->predicateuri ),
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
@@ -106,6 +111,8 @@ class XmlConfig
                                     'mandatory'     => (int) $predicate->mandatory,
                                     'sectiontype'   => 'predicate'
                                 );
+                                
+                                ++$entryIndex;
                             }
                              
                             // Iterate over nestedconfig entries.                       
@@ -113,8 +120,8 @@ class XmlConfig
                             {                                             
                                 // Load XML Config
                                 $f = XmlConfig::loadFile ( 
-                                    config::get ( 'dirXmlConfigurationFiles' ) . $nestedconfig->target,
-                                    $index+1 
+                                    config::get ( 'dirXmlConfigurationFiles' ) . $nestedconfig->xmlfile,
+                                    $index .','. $entryIndex
                                 );
                                 
                                 $relations = array ();
@@ -125,11 +132,14 @@ class XmlConfig
                                                                                     
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array ( 
-                                     'target'       => (string) $nestedconfig->target,
+                                     'xmlfile'      => (string) $nestedconfig->xmlfile,
+                                     'index'        => $index .','. $entryIndex,
                                      'relations'    => $relations,
                                      'form'         => $f, 
                                      'sectiontype'  => 'nestedconfig'
                                 );
+                                
+                                ++$entryIndex;
                             }
                             
                             $form->addSection ( $newSection );

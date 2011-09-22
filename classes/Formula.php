@@ -158,7 +158,7 @@ class Formula
     /**
      * 
      */
-    public function getFieldType ( $predicate, $t )
+    public static function getFieldType ( $predicate, $t )
     {
         $t = (string) $t;
         
@@ -169,22 +169,25 @@ class Formula
         
         else
         {
+            /*
             // Get range infos for predicate
             $range = config::get ( 'selectedModel' )->sparqlQuery(
                 'SELECT ?object 
                   WHERE {
                      <' . $predicate . '> <http://www.w3.org/2000/01/rdf-schema#range> ?object.
                   }'
-            );
+            );*/
             
             $type = 'xsd:string';
             
+            /*
             // If a range was defined
             if ( 0 < count($range) AND true === isset ( $range[0]['object'] ) )
                 $type = substr ( 
                     $range[0]['object'],
                     1+strrpos ( $range[0]['object'], '/' ) 
                 );
+            */
                 
             return $type;
         }
@@ -265,7 +268,9 @@ class Formula
                 if ( 'predicate' == $s ['sectiontype'] )
                 {
                     $return .= '<br/>&nbsp;&nbsp;+ predicate ';
+                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - index: '. $s ['index'];
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - title: '. $s ['title'];
+                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - name: '. $s ['name'];
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - predicateuri: '. $s ['predicateuri'];
                 }
                 elseif ( 'nestedconfig' == $s ['sectiontype'] )
