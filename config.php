@@ -16,3 +16,4 @@ class config {
 // configuration 
 config::set ( 'dir', dirname ( __FILE__ ) );
 config::set ( 'dirXmlConfigurationFiles', config::get ('dir') . '/xmlconfigurationfiles/' );
+config::set ( 'dirJsHtmlPlugins', config::get ('dir') . '/jshtmlplugins/' );

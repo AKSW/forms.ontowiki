@@ -158,7 +158,7 @@ class Formula
     /**
      * 
      */
-    public function getFieldType ( $predicate, $t )
+    public static function getFieldType ( $predicate, $t )
     {
         $t = (string) $t;
         
