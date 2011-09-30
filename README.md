@@ -1,4 +1,4 @@
-# Different XML-Config ways ... 
+# DISPEDIA - An OntoWiki extension
 
 ## Way 1 - Predicate / NestedConfig
 
