@@ -1,0 +1,81 @@
+<!-- Create a new patient. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Patient</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula -->
+    <headline>Patient</headline>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</introduceText>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            
+            <!-- Caption of this section part -->
+			<caption>Patient information</caption> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthdate</predicateuri>
+				<type>birthdate</type>
+			</predicate>
+            	
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:gender</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>female</label>
+                        <value>http://xmlns.com/foaf/0.1/gender#female</value>
+                    </item>
+                    <item>
+                        <label>male</label>
+                        <value>http://xmlns.com/foaf/0.1/gender#male</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+		
+		</item>
+		
+        <!-- Another section ... -->
+		<item>	
+        
+            <caption>Treating physician</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>doctor.xml</target>
+				<relations>
+					<item>architecture:isSupervisedBy</item>
+					<item>architecture:isDoctorOf</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+	</sections>
+</form>

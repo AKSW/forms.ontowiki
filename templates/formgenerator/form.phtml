@@ -1,0 +1,254 @@
+<div align="right" class="messagebox">
+<form method="post" action="">
+
+        Load a different template >
+
+        <select name="newFormConfig">
+            
+<?php 
+// If a template was selected, select it after reload.
+if ( true == isset ( $this->loadedFormConfig ) ) {
+    echo '<option value="'. $this->loadedFormConfig .'">'. $this->loadedFormConfig .'</option>';
+}
+?>
+            
+            <option value="">- please select -</option>
+
+<?php
+// Read all XML files in formconfig folder and generate a list.
+foreach ( Tools::getConfigFileList () as $file )
+{
+    echo '<option value="'. $file .'" label="'. $file .'">'. $file .'</option>';
+}
+?>
+        </select>
+        <input type="submit" value=">>" class="button"/>
+    
+    </div>
+
+</form>
+
+
+<p class="messagebox info hidden" id="statusMessagebox"></p>
+
+<!-- Content of "headline" tag -->
+<form id="mainform" method="post" action="<?php echo $this->actionUrl; ?>">
+
+
+<!-- Content of "headline" tag -->
+<h2><?php echo $this->form->headline; ?></h2>
+        
+        
+<!-- Content of "introduceText" tag -->
+<p class="info messagebox">
+    <?php echo $this->form->introduceText; ?>
+</p>
+      
+<br/>
+
+<table class="resource-list separated-vertical ui-droppable">
+                
+<!-- Iterate about sections -->
+<?php foreach ( $this->form->sections as $section ) { ?>
+
+    <tr>
+        <td colspan="2" class="even">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="odd">
+            <h3><?php echo $section ['caption']; ?></h3>
+        </td>
+    </tr>
+    
+<?php ## Iterate about predicates, only if predicate was set ##
+    if ( true == isset ( $section ['predicate'] ) ) {
+        
+        foreach ( $section ['predicate'] as $predicate ) { ?>
+        
+            <tr>
+                <td width="15%" class="even">
+                    
+                    <div style="font-weight: bold;">
+                        
+                        <!-- Caption of predicate -->
+                        <?php echo $predicate ['caption']; ?>
+                
+                        <!-- * = mandatory, no * than not mandatory -->
+                        <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?> 
+                        
+                    </div>
+                 
+                </td>
+                <td width="85%" class="even">
+                    <?php // Output HTML code which belongs to this type    
+                    Plugin::includePlugin ( $predicate ['type'],
+                                            $predicate ['typeparameter'], 
+                                            $predicate ['predicateuri'],
+                                            $this->form->targetclass,
+                                            $predicate ['resourcevalue'] ); ?>
+                                    
+                </td>
+            </tr>
+
+<?php } } 
+
+    ## Iterate about nestedconfigs, only if nestedconfig was set ##
+    if ( true == isset ( $section ['nestedconfig'] ) ) {
+                
+        // Include formulas from nested configs
+        foreach ( $section ['nestedconfig'] as $nestedconfig ) {
+            foreach ( $nestedconfig ['form']->sections as $section ) {                        
+                // Iterate about predicates, only if predicate was set
+                if ( true == isset ( $section ['predicate'] ) ) {
+                    foreach ( $section ['predicate'] as $predicate ) { ?>
+                    
+                    <tr>
+                    
+                        <td class="even">
+                             
+                            <div style="font-weight: bold;">
+                        
+                                <!-- Caption of predicate -->
+                                <?php echo $predicate ['caption']; ?>
+                        
+                                <!-- * = mandatory, no * means not mandatory -->
+                                <?php echo '1' == $predicate ['mandatory'] ? '* &nbsp;' : ''; ?> 
+                                
+                            </div>
+                             
+                        </td>
+
+                        <td class="even">
+
+                            <?php // Output HTML code which belongs to this type    
+                            Plugin::includePlugin ( $predicate ['type'],
+                                                    $predicate ['typeparameter'], 
+                                                    $predicate ['predicateuri'],
+                                                    $nestedconfig ['form']->targetclass,
+                                                    $predicate ['resourcevalue'] ); ?>
+                                            
+                        </td>
+                        
+                    </tr>
+                                                                       
+<?php           } } } ?>
+            
+                <input type="hidden" name="<?php echo $nestedconfig ['form']->targetclasslabel .'_labelparts'; ?>" value="<?php echo implode ( ',', $nestedconfig ['form']->labelparts ); ?>"/>
+            
+<?php } } } ?>
+    <tr>
+        <td colspan="2" class="even">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td class="even" colspan="2">
+            <div class="hidden" id="hiddenfield">
+                <input type="hidden" name="loadedFormConfig" value="<?php echo $this->loadedFormConfig; ?>"/>
+                <input type="hidden" class="hidden" id="isedit" name="isedit" value="false"/>
+                
+                <input type="hidden" name="labelparts" value="<?php echo implode ( ',', $this->form->labelparts ); ?>"/>
+                
+                <?php foreach ( $this->resourceArray as $className => $resourceUri ) { ?>
+                        
+                    <input type="hidden" class="hidden hiddenfields" id="<?php echo $className; ?>" name="<?php echo $className; ?>" value="<?php echo $resourceUri; ?>"/>
+                
+                <?php } ?>
+            </div>
+            
+            <a id="addResource" class="button submit" onclick="submitFunction(false)"/><span>Add New</span></a>&nbsp;&nbsp;<a id="editResource" class="button submit<?php echo (0 < count($this->resourceArray) ? '' : ' hidden'); ?>" onclick="submitFunction(true)"/><span>Save</span></a>
+        </td>
+    </tr>
+</table>
+</form>
+<p id="test"></p>
+<script type="text/javascript">
+
+function submitFunction(editResource) {
+    $('#isedit').val(editResource);
+
+    response = jQuery.parseJSON($.ajax({
+			type: "POST",
+			url: "<?php echo (string) new OntoWiki_Url ( 
+                                    array('controller' => 'formgenerator',
+                                          'action' => 'checkform') 
+                                 ); ?>",
+			data: ($('#mainform').serializeArray()),
+			dataType: "json",
+			async:false
+		}).responseText);
+    var test = "";
+    
+    // if required fields are empty then
+    if (null != response.notset)
+    {        
+        // fill messagebox with error message
+        $('#statusMessagebox').text('Requried fields are empty!');
+        $('#statusMessagebox').addClass('error');
+        $('#statusMessagebox').show();
+        
+        // paint all empty fields red 
+        for (var i=0;i<response.notset.length;i++){
+            $('#' + response.notset[i]).css("background-color", "#FFBBBB");
+        }
+    }
+    else
+    {
+        // add resource URIs to hidden input fields
+        if (!editResource)
+        {
+            $('.hiddenfields').remove();
+            jQuery.each(response.resources, function(i, val) {
+                $('<input type="hidden" class="hidden hiddenfields" id="' + i + '" name="' + i + '" value="' + val + '"/>').appendTo('#hiddenfield');
+            });
+            // fill messagebox with success message(added)
+            $('#statusMessagebox').text('Resource added successfuly!');
+        }
+        else
+        {
+            // fill messagebox with success message(edited)
+            $('#statusMessagebox').text('Resource saved successfuly!');
+        }
+        
+        // show messagebox and remove error message if there was one befor
+        $('#statusMessagebox').removeClass('error');
+        $('#statusMessagebox').show();
+        setTimeout(function (){
+            $('#statusMessagebox').hide(); // is fadeout better?
+        }, 5000);
+        
+        // show Edit Button
+        $('#editResource').show();
+        
+        // show new triples
+        for (var i=0;i<response.triples.length;++i){
+            // use foreach?
+            test += response.triples[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.triples[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.triples[i].O + '<br>';
+            // paint all inputs white
+            $('#' + response.triples[i].md5).css("background-color", "transparent");
+        }
+        
+        test += '<br><br>';
+        
+        // show new Resource Class relations
+        for (var i=0;i<response.rcrelations.length;i++){
+            // use foreach?
+            test += response.rcrelations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.rcrelations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.rcrelations[i].O + '<br>';
+        }
+        
+        test += '<br><br>';
+        
+        // show new relations
+        for (var i=0;i<response.relations.length;i++){
+            // use foreach?
+            test += response.relations[i].S + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].P + '&nbsp;&nbsp;&nbsp;&nbsp;' + response.relations[i].O + '<br>';
+        }
+        
+        // debug echo
+        //$('#test').html(test);
+        
+    }
+}
+</script>

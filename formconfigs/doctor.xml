@@ -1,0 +1,30 @@
+<!-- Create a new doctor. -->
+<form> 
+    <targetclass>architecture:Person</targetclass>				
+	
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+    
+    <headline>Doctor</headline>
+    
+	<introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</introduceText>
+	
+    <sections>
+		<item>
+			<caption>Treating physician</caption> 								
+
+            <predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+            
+		</item>
+	</sections>
+</form>
