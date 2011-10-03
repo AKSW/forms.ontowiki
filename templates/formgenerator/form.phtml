@@ -11,7 +11,7 @@
         <!-- PREDICATE -->
             
             <!-- Predicate title -->        
-            <span><?php echo $element ['title']; ?></span>
+            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
             
             <?php if ( 'list' == $element ['type'] ) { ?>
             
@@ -39,7 +39,7 @@
                     <!-- PREDICATE -->
                     
                         <!-- Predicate title -->        
-                        <span><?php echo $element ['title']; ?></span>
+                        <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                         
                         <?php if ( 'list' == $element ['type'] ) { ?>
                         
@@ -57,6 +57,9 @@
                     <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
                     <!-- NESTEDCONFIG -->
                     
+                        <!-- Title -->
+                        <h4><?php echo $element ['form']->getTitle (); ?></h4>
+                    
                         <?php $oldElement2 = $element; ?>
                     
                         <?php foreach ( $oldElement2 ['form']->getSections () as $section ) { ?>
@@ -67,7 +70,7 @@
                                     <!-- PREDICATE -->
                                     
                                         <!-- Predicate title -->        
-                                        <span><?php echo $element ['title']; ?></span>
+                                        <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                                         
                                         <?php if ( 'list' == $element ['type'] ) { ?>
                                         

@@ -1,0 +1,15 @@
+/**
+ * CSS file for javascript-html plugins
+ */
+
+.predicateValue_Textfield {
+  width: 100%;
+  height: 100%;
+  font-size: 25px;
+}
+
+.predicateValue_List {
+  width: 100%;
+  height: 100%;
+  font-size: 21px;
+}

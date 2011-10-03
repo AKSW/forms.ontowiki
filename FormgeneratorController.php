@@ -16,12 +16,25 @@ require_once 'classes/Resource.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
-{         
+{    
     /**
-     * 
+     * init controller
+     */     
+    public function init()
+    {
+        parent::init();
+        
+        config::set ( 'url', $this->_componentUrlBase );
+    }    
+    
+    /**
+     * form action
      */
     public function formAction()
     {   
+        $this->view->headLink()->appendStylesheet( config::get ('url') .'css/form.css' );
+        $this->view->headLink()->appendStylesheet( config::get ('url') .'css/jshtmlplugins.css' );
+        
         config::set ( 'selectedModel', $this->_owApp->selectedModel );
                 
         // load xml configuration file
