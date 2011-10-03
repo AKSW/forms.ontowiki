@@ -249,6 +249,15 @@ class Formula
     
     
     /**
+     * 
+     */
+    public function getData ()
+    {
+        return $this->_data;
+    }
+    
+    
+    /**
      * @return string
      */
     public function toString ()

@@ -1,114 +1,146 @@
-<?php foreach ( $this->form->getSections () as $section ) { ?>
+<?php 
+/**
+ * Template for form action
+ * 
+ * @category   OntoWiki
+ * @package    OntoWiki_extensions_formgenerator
+ * @author     Lars Eidam <larseidam@googlemail.com>
+ * @author     Konrad Abicht <konrad@inspirito.de>
+ * @copyright  Copyright (c) 2011
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */
+?>
 
-<div class="content">
-    
-    <!-- Title -->
-    <h3><?php echo $section ['title']; ?></h3>
-    
-    <?php foreach ( $section as $element ) { ?>
-                
-        <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
-        <!-- PREDICATE -->
-            
-            <!-- Predicate title -->        
-            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-            
-            <?php if ( 'list' == $element ['type'] ) { ?>
-            
-                <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
+<!-- important variables -->
+<script type="text/javascript">       
+    var url = '<?php echo config::get ( 'url' ); ?>';
+    var urlMvc = urlBase + 'formgenerator/';
+    var formXmlConfig = <?php echo json_encode ( $this->form->getXmlConfig () ); ?>;
+</script>
+
+
+<!-- formula -->
+<form id="mainform" method="post" action="<?php echo $this->actionUrl; ?>">
+
+    <?php foreach ( $this->form->getSections () as $section ) { ?>
+
+    <div class="content">
         
-            <?php } else { ?>
+        <!-- Title -->
+        <h3><?php echo $section ['title']; ?></h3>
+        
+        <?php foreach ( $section as $element ) { ?>
+                    
+            <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
+            <!-- PREDICATE -->
+                
+                <!-- Predicate title -->        
+                <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                
+                <?php if ( 'list' == $element ['type'] ) { ?>
+                
+                    <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
             
-                <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
+                <?php } else { ?>
+                
+                    <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
+                
+                <?php } ?>
+                
+                <br/>
             
+            
+            <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
+            <!-- NESTEDCONFIG - level 2 ------------------------------------->            
+                       
+                <?php $oldElement = $element; ?>
+                       
+                       
+                <?php foreach ( $oldElement ['form']->getSections () as $section ) { ?>
+                 
+                     <?php foreach ( $section as $element ) { ?>
+                     
+                        <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
+                        <!-- PREDICATE -->
+                        
+                            <!-- Predicate title -->        
+                            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                            
+                            <?php if ( 'list' == $element ['type'] ) { ?>
+                            
+                                <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
+                        
+                            <?php } else { ?>
+                            
+                                <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
+                            
+                            <?php } ?>
+                            
+                            <br/><br/>
+                        
+                        
+                        <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
+                        <!-- NESTEDCONFIG - level 3 ------------------------------------->
+                        
+                            <!-- Title -->
+                            <h4><?php echo $element ['form']->getTitle (); ?></h4>
+                        
+                            <?php $oldElement2 = $element; ?>
+                        
+                            <?php foreach ( $oldElement2 ['form']->getSections () as $section ) { ?>
+                            
+                                <?php foreach ( $section as $element ) { ?>
+                                
+                                    <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
+                                        <!-- PREDICATE -->
+                                        
+                                            <!-- Predicate title -->        
+                                            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                                            
+                                            <?php if ( 'list' == $element ['type'] ) { ?>
+                                            
+                                                <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
+                                        
+                                            <?php } else { ?>
+                                            
+                                                <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
+                                            
+                                            <?php } ?>
+                                            
+                                            <br/><br/>
+                                        
+                                        
+                                        <?php } ?>
+                                
+                                <?php } ?>
+                            
+                            <?php } ?>   
+                            
+                            <?php $element = $oldElement2; ?>
+                            
+                        <!-- NESTEDCONFIG - level 3 end -->                    
+                        <?php } ?>
+                     
+                    <?php } ?>
+                    
+                     
+                <?php } ?>
+                
+                <?php $element = $oldElement; ?>
+                
+            
+            <!-- NESTEDCONFIG - level 2 end -->
             <?php } ?>
             
             <br/>
-        
-        <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
-        <!-- NESTEDCONFIG -->            
-                   
-            <?php $oldElement = $element; ?>
-                   
-                   
-            <?php foreach ( $oldElement ['form']->getSections () as $section ) { ?>
-             
-                 <?php foreach ( $section as $element ) { ?>
-                 
-                    <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
-                    <!-- PREDICATE -->
-                    
-                        <!-- Predicate title -->        
-                        <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                        
-                        <?php if ( 'list' == $element ['type'] ) { ?>
-                        
-                            <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
-                    
-                        <?php } else { ?>
-                        
-                            <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
-                        
-                        <?php } ?>
-                        
-                        <br/><br/>
-                    
-                    
-                    <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
-                    <!-- NESTEDCONFIG -->
-                    
-                        <!-- Title -->
-                        <h4><?php echo $element ['form']->getTitle (); ?></h4>
-                    
-                        <?php $oldElement2 = $element; ?>
-                    
-                        <?php foreach ( $oldElement2 ['form']->getSections () as $section ) { ?>
-                        
-                            <?php foreach ( $section as $element ) { ?>
-                            
-                                <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
-                                    <!-- PREDICATE -->
-                                    
-                                        <!-- Predicate title -->        
-                                        <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                                        
-                                        <?php if ( 'list' == $element ['type'] ) { ?>
-                                        
-                                            <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
-                                    
-                                        <?php } else { ?>
-                                        
-                                            <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
-                                        
-                                        <?php } ?>
-                                        
-                                        <br/><br/>
-                                    
-                                    
-                                    <?php } ?>
-                            
-                            <?php } ?>
-                        
-                        <?php } ?>   
-                        
-                        <?php $element = $oldElement2; ?>
-                    
-                    <?php } ?>
-                 
-                <?php } ?>
-                
-                 
-            <?php } ?>
-            
-            <?php $element = $oldElement; ?>
-            
+                       
         <?php } ?>
         
-        <br/>
-                   
+    </div>
+        
     <?php } ?>
     
-</div>
-    
-<?php } ?>
-
+    <a id="addResource" class="button submit" onclick="submitFormula( formXmlConfig, urlMvc );"/>
+        <span>Add New</span>
+    </a>
+</form>

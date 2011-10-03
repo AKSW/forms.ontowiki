@@ -1,15 +1,21 @@
 /**
  * CSS file for javascript-html plugins
+ * @category   OntoWiki
+ * @package    OntoWiki_extensions_formgenerator
+ * @author     Lars Eidam <larseidam@googlemail.com>
+ * @author     Konrad Abicht <konrad@inspirito.de>
+ * @copyright  Copyright (c) 2011
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
 .predicateValue_Textfield {
   width: 100%;
   height: 100%;
-  font-size: 25px;
+  font-size: 18px;
 }
 
 .predicateValue_List {
   width: 100%;
   height: 100%;
-  font-size: 21px;
+  font-size: 18px;
 }
