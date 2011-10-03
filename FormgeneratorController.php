@@ -1,6 +1,6 @@
 <?php
 
-require_once 'config.php';
+require_once 'helper.php';
 require_once 'classes/XmlConfig.php';
 require_once 'classes/Formula.php';
 require_once 'classes/Resource.php';

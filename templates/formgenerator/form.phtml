@@ -30,12 +30,14 @@
                    
             <?php $oldElement = $element; ?>
                    
+                   
             <?php foreach ( $oldElement ['form']->getSections () as $section ) { ?>
              
                  <?php foreach ( $section as $element ) { ?>
                  
                     <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
-                 
+                    <!-- PREDICATE -->
+                    
                         <!-- Predicate title -->        
                         <span><?php echo $element ['title']; ?></span>
                         
@@ -51,9 +53,47 @@
                         
                         <br/><br/>
                     
+                    
+                    <?php } elseif ( 'nestedconfig' == $element ['sectiontype'] ) { ?>
+                    <!-- NESTEDCONFIG -->
+                    
+                        <?php $oldElement2 = $element; ?>
+                    
+                        <?php foreach ( $oldElement2 ['form']->getSections () as $section ) { ?>
+                        
+                            <?php foreach ( $section as $element ) { ?>
+                            
+                                <?php if ( 'predicate' == $element ['sectiontype'] ) { ?>
+                                    <!-- PREDICATE -->
+                                    
+                                        <!-- Predicate title -->        
+                                        <span><?php echo $element ['title']; ?></span>
+                                        
+                                        <?php if ( 'list' == $element ['type'] ) { ?>
+                                        
+                                            <?php require config::get ( 'dirJsHtmlPlugins' ). 'list.phtml'; ?>
+                                    
+                                        <?php } else { ?>
+                                        
+                                            <?php require config::get ( 'dirJsHtmlPlugins' ). 'textfield.phtml'; ?>
+                                        
+                                        <?php } ?>
+                                        
+                                        <br/><br/>
+                                    
+                                    
+                                    <?php } ?>
+                            
+                            <?php } ?>
+                        
+                        <?php } ?>   
+                        
+                        <?php $element = $oldElement2; ?>
+                    
                     <?php } ?>
                  
                 <?php } ?>
+                
                  
             <?php } ?>
             
