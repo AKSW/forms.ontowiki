@@ -1,9 +1,10 @@
 <?php
 
 require_once 'helper.php';
-require_once 'classes/XmlConfig.php';
+require_once 'classes/Data.php';
 require_once 'classes/Formula.php';
 require_once 'classes/Resource.php';
+require_once 'classes/XmlConfig.php';
 
 /**
  * Controller for Formgenerator.
@@ -60,37 +61,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // disable layout for Ajax requests
         $this->_helper->layout()->disableLayout();
         
-        // init
-        $json = array ();
-        
-        // error
-        if ( false == isset ( $_REQUEST ['form'] ) )
-        {
-            $json ['status'] = 'error';
-            $json ['message'] = 'form not set';
-        }
-        else
-        {
-            $form = json_decode ( $_REQUEST ['form'] );
-         
-            // error
-            if ( null == $form )
-            {
-                $json ['status'] = 'error';
-                $json ['message'] = 'form not valid json';
-            }
-            
-            // $form is valid JSON
-            else
-            {
-                $json = $_REQUEST ['form'];
-                
-                // check mandatory fields
-                
-            }
-        }
-        
-        echo json_encode ( $json );
+        // processes a formula and output the result
+        $form = true == isset ( $_REQUEST ['form'] ) ? $_REQUEST ['form'] : null;
+        echo json_encode ( Data::submitFormula ( $form ) );
     }
 }
 

@@ -288,11 +288,7 @@ class Formula
                     $return .= '<br/>';
                     $return .= $s ['form']->toString ();
                 }
-        /*
-        echo '<pre>';
-        var_dump ( $this->getSections () );
-        echo '</pre>';
-        */
+                
         return $return;
     }
     
@@ -337,5 +333,14 @@ class Formula
                 }
                 
         return $arr;
+    }
+
+    
+    /**
+     * 
+     */
+    public function initByJson ( $jsonForm )
+    {
+        
     }
 }
