@@ -13,15 +13,14 @@
     width: 200px;
     height: 30px;
 
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     vertical-align: middle;
 }
 .predicateValue {
     float: left;
     width: 250px;
-    height: 28px;
+    height: 20px;
     margin: 0px 1%;
-    background-color: #070DED;
 }
 

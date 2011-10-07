@@ -45,8 +45,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->form = XmlConfig::loadFile ( 
             config::get ( 'dirXmlConfigurationFiles' ) .'patient.xml'
         );
-        
-        echo $this->view->form->toString ();
     }
     
     
@@ -60,27 +58,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 
         // disable layout for Ajax requests
         $this->_helper->layout()->disableLayout();
-    }
-    
-    
-    /**
-     * echoformarray action
-     */
-    public function echoformarrayAction()
-    {   
-        // disable auto-rendering
-        $this->_helper->viewRenderer->setNoRender();
-
-        // disable layout for Ajax requests
-        $this->_helper->layout()->disableLayout();
-        
-        if ( 'json' == $_REQUEST ['type'] )
-        {            
-            // load formula
-            $f = XmlConfig::loadFile ( $_REQUEST ['xml'] );
-            
-            echo json_encode ( $f->getData () );
-        }
     }
 }
 

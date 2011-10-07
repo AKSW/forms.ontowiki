@@ -9,78 +9,6 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
-/**
- * loads json-serialized formula instance by xml configuration file name
- * @param xml xml configuration file name
- * @param url url of extension
- * @param callback will be called on ajax success
- * @return void
- */ 
-function loadFormulaArray ( xml, url, callback )
-{
-    $.ajax({
-        type: "POST",
-        
-        // target
-        url: url + 'echoformarray/',
-        
-        // payload
-        data: "type=json&xml=" + xml,
-        
-        dataType: "json",
-        
-        async: true,
-        
-        cache: false,
-        
-        // on complete
-        success: callback
-    });
-} 
-
-
-/**
- * help function for formula interaction
- */
-var currentFormula = null; var currentSectionIndex = -1;
-
-function getNextSection ()
-{
-    function isString(s) {
-        return typeof(s)=='string';
-    }
-    
-    ++currentSectionIndex;
-    var tmpCounter = 0;
-    
-    if ( null != currentFormula )
-    {
-        for ( var i=0; i < currentFormula.sections.length; ++i )
-        {
-            for ( entry in currentFormula.sections [i] )
-            {
-                if ( currentSectionIndex == tmpCounter && 
-                     false == isString ( currentFormula.sections [i] [entry] ) )
-                    return currentFormula.sections [i] [entry];
-                
-                ++tmpCounter;
-            }
-        }
-    }
-    
-    return null;
-}
-
-
-/**
- * help function for formula interaction
- */
-function resetNextSection ()
-{
-    currentSectionIndex = -1;
-    currentFormula = null;
-}
-
 
 /**
  * extracts values of formula fields and save them in jsonForm
@@ -89,18 +17,34 @@ function resetNextSection ()
  */ 
 function setFormulaArrayFields ( f )
 {    
-    currentFormula = f;
-    var section;
+    var sectionElement = null;
+    var j = 0;
     
-    while ( true )
+    // for ( var i=0; i < f.sections.length; ++i )
+    for ( i in f.sections )
     {
-        section = getNextSection ();
+        sectionElement = f.sections [i];
         
-        console.log ( section );
+        console.log ( sectionElement );
         
-        // stop loop iff no new section exists
-        if ( null == section ) 
-            break;
+        while ( true ) 
+        {
+            // if ( null == sectionElement [j] )
+                break;
+                
+            console.log ( sectionElement [j] );
+                
+            ++j;
+        }
+        
+        j = 0;
+        
+        /*for ( entry in f.sections [i] )
+        {
+            // if ( false == isString ( f.sections [i] [entry] ) )
+            // if ( "NaN" != parseInt ( entry, "10" ) )
+            // console.log ( f.sections [i] [entry] );
+        }*/
     }
     
     return f;
@@ -110,16 +54,7 @@ function setFormulaArrayFields ( f )
 /**
  * sends a complete json-serialzed formula instance and add/edit resources
  */
-function submitFormula ( xml, url ) 
+function submitFormula ( xml, url, formData ) 
 {
-    // load current formula
-    loadFormulaArray ( 
-        xml, url, 
-                
-        // on complete (jsonForm = complete json-serialized formula instance )
-        function ( jsonForm ) {
-            
-            jsonForm = setFormulaArrayFields ( jsonForm );
-        }
-    );
+    formData = setFormulaArrayFields ( formData );
 }
