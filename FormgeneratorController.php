@@ -60,9 +60,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // disable layout for Ajax requests
         $this->_helper->layout()->disableLayout();
         
-        // 
+        // init
         $json = array ();
         
+        // error
         if ( false == isset ( $_REQUEST ['form'] ) )
         {
             $json ['status'] = 'error';
@@ -71,15 +72,21 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         else
         {
             $form = json_decode ( $_REQUEST ['form'] );
-            
+         
+            // error
             if ( null == $form )
             {
                 $json ['status'] = 'error';
                 $json ['message'] = 'form not valid json';
             }
+            
+            // $form is valid JSON
             else
             {
                 $json = $_REQUEST ['form'];
+                
+                // check mandatory fields
+                
             }
         }
         

@@ -323,6 +323,7 @@ class Formula
                         'title'         => $s ['title'],
                         'name'          => $s ['name'],
                         'value'         => '',
+                        'mandatory'     => $s ['mandatory'],
                         'predicateuri'  => $s ['predicateuri'],
                         'sectiontype'   => $s ['sectiontype']
                     );
