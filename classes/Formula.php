@@ -335,9 +335,7 @@ class Formula
         {
             for ( $i = 0; $i < (count ( $entry )-1); ++$i )
             {
-                // var_dump ( $entry );
-                
-                $s = $entry ;
+                $s = $entry [$i];
                 
                 if ( 'predicate' == $s ['sectiontype'] )
                 {
@@ -371,55 +369,55 @@ class Formula
     /**
      * @return Formula
      */
-    public static function initByJson ( $jsonForm )
+    public static function initByArray ( $formArray )
     {
         // init a new Formula instance
         $form = new Formula ( 0 );
 
-        $form->setTitle ( $jsonForm ['title'] );
+        $form->setTitle ( $formArray ['title'] );
         
-        $form->setDescription ( $jsonForm ['description'] );
+        $form->setDescription ( $formArray ['description'] );
         
-        $form->setLabelparts ( $jsonForm ['labelparts'] );
+        $form->setLabelparts ( $formArray ['labelparts'] );
         
-        $form->setMode ( $jsonForm ['mode'] );
+        $form->setMode ( $formArray ['mode'] );
         
-        $form->setResources ( $jsonForm ['resources'] );
+        $form->setResources ( $formArray ['resources'] );
         
-        $form->setTargetClass ( $jsonForm ['targetclass'] );
+        $form->setTargetClass ( $formArray ['targetclass'] );
         
-        $form->setxmlfile ( $jsonForm ['xmlfile'] );
+        $form->setxmlfile ( $formArray ['xmlfile'] );
         
-        foreach ( $jsonForm ['sections'] as $section )
+        foreach ( $formArray ['sections'] as $section )
         {
+            $newSection = array ( 'title' => 'foo' );
+            
             if ( 'predicate' == $section ['sectiontype'] )
             {
-                $form->addSection (
-                    array ( 
-                        'index'         => $section ['index'],
-                        'name'          => $section ['name'],
-                        'value'         => $section ['value'],
-                        'predicateuri'  => $section ['predicateuri'],
-                        'type' 		    => $section ['type'],
-                        'typeparameter' => $section ['typeparameter'],
-                        'title'	        => $section ['title'],
-                        'mandatory'     => $section ['mandatory'],
-                        'sectiontype'   => 'predicate'
-                    )
+                $newSection [] = array (
+                    'index'         => $section ['index'],
+                    'name'          => $section ['name'],
+                    'value'         => $section ['value'],
+                    'predicateuri'  => $section ['predicateuri'],
+                    'type' 		    => $section ['type'],
+                    'typeparameter' => $section ['typeparameter'],
+                    'title'	        => $section ['title'],
+                    'mandatory'     => $section ['mandatory'],
+                    'sectiontype'   => 'predicate'
                 );
             }
             elseif ( 'nestedconfig' == $section ['sectiontype'] )
             {
-                $form->addSection (                
-                    array ( 
-                        'xmlfile'    => $section ['form']['xmlfile'],
-                        'index'        => $section ['form']['index'],
-                        'relations'    => $section ['relations'],
-                        'form'         => new Formula ( $section ['form']['index'] ), 
-                        'sectiontype'  => 'nestedconfig'
-                    )
+                $newSection [] = array ( 
+                    'xmlfile'      => $section ['form']['xmlfile'],
+                    'index'        => $section ['form']['index'],
+                    'relations'    => $section ['relations'],
+                    'form'         => Formula::initByArray ( $section ['form'] ), 
+                    'sectiontype'  => 'nestedconfig'
                 );
             }
+            
+            $form->addSection ( $newSection );
         }
         
         return $form;

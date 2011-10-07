@@ -47,7 +47,7 @@ class Data
             else
             {
                 // build a formula instance
-                $form = Formula::initByJson ( $form );
+                $form = Formula::initByArray ( $form );
                 
                 $json = json_encode ( $form->getDataAsArrays () );
             }
