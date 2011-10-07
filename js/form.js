@@ -38,8 +38,20 @@ function setFormulaArrayFields ( f )
 /**
  * sends a complete json-serialzed formula instance and add/edit resources
  */
-function submitFormula ( xml, url, formData ) 
+function submitFormula ( url, formData ) 
 {
+    // set values
     formData = setFormulaArrayFields ( formData );
-    console.log ( formData );
+    
+    
+    // send formula
+    response = jQuery.parseJSON($.ajax({
+        type: "POST",
+        url: url + "submit/",
+        data: "form="+ formData,
+        dataType: "json",
+        async:false
+    }).responseText);
+    
+    console.log ( response );
 }

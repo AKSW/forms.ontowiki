@@ -15,7 +15,6 @@
 <script type="text/javascript">       
     var url = '<?php echo config::get ( 'url' ); ?>';
     var urlMvc = urlBase + 'formgenerator/';
-    var formXmlConfig = <?php echo json_encode ( $this->form->getXmlConfig () ); ?>;
     var formData = <?php echo json_encode ( $this->form->getDataAsArrays () ); ?>;
 </script>
 
@@ -141,7 +140,7 @@
         
     <?php } ?>
     
-    <a id="addResource" class="button submit" onclick="submitFormula( formXmlConfig, urlMvc, formData );"/>
+    <a id="addResource" class="button submit" onclick="submitFormula( urlMvc, formData );"/>
         <span>Add New</span>
     </a>
 </form>
