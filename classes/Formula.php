@@ -36,7 +36,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setDescription ( $value)
+    public function setDescription ( $value )
     {
         $this->_data ['description'] = $value;
     }
@@ -63,7 +63,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setMode ( $value)
+    public function setMode ( $value )
     {
         $this->_data ['mode'] = $value;
     }
@@ -75,6 +75,16 @@ class Formula
     public function getMode ()
     {
         return $this->_data ['mode'];
+    }
+    
+    
+    /**
+     * @param $value resource
+     * @return void 
+     */
+    public function addResource ( $value )
+    {
+        $this->_data ['resources'] [] = $value;
     }
     
     
@@ -119,7 +129,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setTitle ( $value)
+    public function setTitle ( $value )
     {
         $this->_data ['title'] = $value;
     }
@@ -137,18 +147,18 @@ class Formula
     /**
      * @return void 
      */
-    public function setXmlConfig ( $value)
+    public function setxmlfile ( $value )
     {
-        $this->_data ['xmlconfig'] = $value;
+        $this->_data ['xmlfile'] = $value;
     }
     
     
     /**
      * @return string 
      */
-    public function getXmlConfig ()
+    public function getxmlfile ()
     {
-        return $this->_data ['xmlconfig'];
+        return $this->_data ['xmlfile'];
     }
     
     
@@ -199,7 +209,7 @@ class Formula
      */
     public function addLabelpart ( $value )
     {
-        $this->_data ['labelparts'] [$value] = $value;
+        $this->_data ['labelparts'] [] = $value;
     }
     
     
@@ -218,6 +228,16 @@ class Formula
     public function removeLabelpart ( $value )
     {
         unset ( $this->_data ['labelparts'] [$value] );
+    }
+    
+    
+    /**
+     * @param $value Array of URIs
+     * @return void 
+     */
+    public function setLabelparts ( $value )
+    {
+        $this->_data ['labelparts'] = $value;
     }
     
     
@@ -269,7 +289,7 @@ class Formula
                 '<br/>- mode: '. $this->getMode () .
                 '<br/>- resources: '. implode ( ', ', $this->getResources () ) .
                 '<br/>- target class: '. $this->getTargetClass () .
-                '<br/>- XML config: '. $this->getXmlConfig () .
+                '<br/>- XML config: '. $this->getxmlfile () .
                 '<br/>- sections: ';
           
         foreach ( $this->getSections () as $section )
@@ -306,12 +326,19 @@ class Formula
             'mode'          => $this->getMode (),
             'resources'     => $this->getResources (),
             'targetclass'   => $this->getTargetClass (),
-            'xmlconfig'     => $this->getXmlConfig (),
+            'xmlfile'       => $this->getxmlfile (),
             'sections'      => array ()
         );
-          
-        foreach ( $this->getSections () as $section )
-            foreach ( $section as $s )
+                  
+        
+        foreach ( $this->getSections () as $entry )
+        {
+            for ( $i = 0; $i < (count ( $entry )-1); ++$i )
+            {
+                // var_dump ( $entry );
+                
+                $s = $entry ;
+                
                 if ( 'predicate' == $s ['sectiontype'] )
                 {
                     $arr ['sections'] [] = array (
@@ -321,26 +348,80 @@ class Formula
                         'value'         => '',
                         'mandatory'     => $s ['mandatory'],
                         'predicateuri'  => $s ['predicateuri'],
-                        'sectiontype'   => $s ['sectiontype']
+                        'sectiontype'   => $s ['sectiontype'],
+                        'type'          => $s ['type'],
+                        'typeparameter' => $s ['typeparameter']
                     );
                 }
                 elseif ( 'nestedconfig' == $s ['sectiontype'] )
                 {
                     $arr ['sections'] [] = array (
                         'sectiontype'   => $s ['sectiontype'],
+                        'relations'     => $s ['relations'],
                         'form'          => $s ['form']->getDataAsArrays ()
                     );
                 }
+            }
+        }
                 
         return $arr;
     }
 
     
     /**
-     * 
+     * @return Formula
      */
-    public function initByJson ( $jsonForm )
+    public static function initByJson ( $jsonForm )
     {
+        // init a new Formula instance
+        $form = new Formula ( 0 );
+
+        $form->setTitle ( $jsonForm ['title'] );
         
+        $form->setDescription ( $jsonForm ['description'] );
+        
+        $form->setLabelparts ( $jsonForm ['labelparts'] );
+        
+        $form->setMode ( $jsonForm ['mode'] );
+        
+        $form->setResources ( $jsonForm ['resources'] );
+        
+        $form->setTargetClass ( $jsonForm ['targetclass'] );
+        
+        $form->setxmlfile ( $jsonForm ['xmlfile'] );
+        
+        foreach ( $jsonForm ['sections'] as $section )
+        {
+            if ( 'predicate' == $section ['sectiontype'] )
+            {
+                $form->addSection (
+                    array ( 
+                        'index'         => $section ['index'],
+                        'name'          => $section ['name'],
+                        'value'         => $section ['value'],
+                        'predicateuri'  => $section ['predicateuri'],
+                        'type' 		    => $section ['type'],
+                        'typeparameter' => $section ['typeparameter'],
+                        'title'	        => $section ['title'],
+                        'mandatory'     => $section ['mandatory'],
+                        'sectiontype'   => 'predicate'
+                    )
+                );
+            }
+            elseif ( 'nestedconfig' == $section ['sectiontype'] )
+            {
+                $form->addSection (                
+                    array ( 
+                        'xmlfile'    => $section ['form']['xmlfile'],
+                        'index'        => $section ['form']['index'],
+                        'relations'    => $section ['relations'],
+                        'form'         => new Formula ( $section ['form']['index'] ), 
+                        'sectiontype'  => 'nestedconfig'
+                    )
+                );
+            }
+        }
+        
+        return $form;
     }
 }

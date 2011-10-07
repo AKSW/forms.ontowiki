@@ -33,7 +33,8 @@ class Data
         }
         else
         {
-            $form = json_decode ( $form );
+            // return $form;
+            $form = json_decode ( $form, true );
          
             // error
             if ( null == $form )
@@ -45,9 +46,10 @@ class Data
             // $form is valid JSON
             else
             {
-                $json = $form;
+                // build a formula instance
+                $form = Formula::initByJson ( $form );
                 
-                // check mandatory fields
+                $json = json_encode ( $form->getDataAsArrays () );
             }
         }
         

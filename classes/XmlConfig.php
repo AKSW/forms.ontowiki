@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2011
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
-class XmlConfig 
+class xmlfile 
 {
     public function __construct ()
     {
@@ -32,7 +32,7 @@ class XmlConfig
         {
             $form = new Formula ( $index );
             
-            $form->setXmlConfig ( $file );
+            $form->setxmlfile ( $file );
             
             // ReadIn all readable data from XML-Config file.
             foreach ($xml as $nodeName => $nodeValue) 
@@ -79,7 +79,7 @@ class XmlConfig
                             foreach ( $nodeValue->predicate as $predicate )
                             {	
                                 // get complete URI of predicate
-                                $p = XmlConfig::replaceNamespace ( $predicate->predicateuri );
+                                $p = xmlfile::replaceNamespace ( $predicate->predicateuri );
                                 
                                 $titleHelper = new OntoWiki_Model_TitleHelper ( 
                                     config::get ( 'selectedModel' )
@@ -104,7 +104,7 @@ class XmlConfig
                                 $newSection [] = array ( 
                                     'index'         => $index . ',' . $entryIndex,
                                     'name'          => substr ( md5 ( $index . ',' . $entryIndex ), 0, 10),
-                                    'predicateuri'  => XmlConfig::replaceNamespace ( (string) $predicate->predicateuri ),
+                                    'predicateuri'  => xmlfile::replaceNamespace ( (string) $predicate->predicateuri ),
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
                                     'title'	        => $titleHelper->getTitle( $p ), 
@@ -119,7 +119,7 @@ class XmlConfig
                             foreach ( $nodeValue->nestedconfig as $nestedconfig )
                             {                                             
                                 // Load XML Config
-                                $f = XmlConfig::loadFile ( 
+                                $f = xmlfile::loadFile ( 
                                     config::get ( 'dirXmlConfigurationFiles' ) . $nestedconfig->xmlfile,
                                     $index .','. $entryIndex
                                 );
@@ -132,7 +132,7 @@ class XmlConfig
                                                                                     
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array ( 
-                                     'xmlfile'      => (string) $nestedconfig->xmlfile,
+                                     'xmlfile'    => (string) $nestedconfig->xmlfile,
                                      'index'        => $index .','. $entryIndex,
                                      'relations'    => $relations,
                                      'form'         => $f, 
