@@ -322,6 +322,7 @@ class Formula
                         'index'         => $s ['index'],
                         'title'         => $s ['title'],
                         'name'          => $s ['name'],
+                        'value'         => '',
                         'predicateuri'  => $s ['predicateuri'],
                         'sectiontype'   => $s ['sectiontype']
                     );

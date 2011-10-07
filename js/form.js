@@ -11,40 +11,24 @@
 
 
 /**
- * extracts values of formula fields and save them in jsonForm
+ * extracts value of formula fields and saves it in form
  * @param f json-serialized formula instance
  * @return array modified formula instance
  */ 
 function setFormulaArrayFields ( f )
-{    
-    var sectionElement = null;
-    var j = 0;
-    
-    // for ( var i=0; i < f.sections.length; ++i )
+{        
     for ( i in f.sections )
     {
-        sectionElement = f.sections [i];
-        
-        console.log ( sectionElement );
-        
-        while ( true ) 
+        if ( "predicate" == f.sections [i].sectiontype )
         {
-            // if ( null == sectionElement [j] )
-                break;
-                
-            console.log ( sectionElement [j] );
-                
-            ++j;
+            f.sections [i].value = $( "#" + f.sections [i].name ).val();
         }
         
-        j = 0;
-        
-        /*for ( entry in f.sections [i] )
+        // recursive call of this function 
+        else if ( "nestedconfig" == f.sections [i].sectiontype )
         {
-            // if ( false == isString ( f.sections [i] [entry] ) )
-            // if ( "NaN" != parseInt ( entry, "10" ) )
-            // console.log ( f.sections [i] [entry] );
-        }*/
+            setFormulaArrayFields ( f.sections [i].form );
+        }
     }
     
     return f;
@@ -57,4 +41,5 @@ function setFormulaArrayFields ( f )
 function submitFormula ( xml, url, formData ) 
 {
     formData = setFormulaArrayFields ( formData );
+    console.log ( formData );
 }
