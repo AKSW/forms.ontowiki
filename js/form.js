@@ -40,15 +40,15 @@ function setFormulaArrayFields ( f )
  */
 function submitFormula ( url, formData ) 
 {
-    // set values
+    // set values from formula into the formula instance 
+    // which was loaded at the beginning
     formData = setFormulaArrayFields ( formData );
     
-    
-    // send formula
+    // send formula to submit action on server
     response = jQuery.parseJSON($.ajax({
         type: "POST",
         url: url + "submit/",
-        data: "form="+ formData,
+        data: "form=" + $.toJSON( formData ),
         dataType: "json",
         async:false
     }).responseText);

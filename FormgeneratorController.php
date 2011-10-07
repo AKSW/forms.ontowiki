@@ -39,7 +39,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->headLink()->appendStylesheet( config::get ('url') .'css/jshtmlplugins.css' );
         
         // include Javascript files
-        $this->view->headScript()->appendFile( config::get ('url') .'js/form.js');
+        $this->view->headScript()->appendFile( config::get ('url') .'js/form.js');        
+        $this->view->headScript()->appendFile( config::get ('url') .'libraries/jquery.json.min.js');
                 
         // load xml configuration file
         $this->view->form = XmlConfig::loadFile ( 
@@ -78,7 +79,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             }
             else
             {
-                
+                $json = $_REQUEST ['form'];
             }
         }
         
