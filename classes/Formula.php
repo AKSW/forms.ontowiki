@@ -295,4 +295,45 @@ class Formula
         */
         return $return;
     }
+    
+    
+    /**
+     * @return array
+     */
+    public function getDataAsArrays ( )
+    {
+        $arr = array (
+            'title'         => $this->getTitle (),
+            'index'         => $this->getIndex (),
+            'description'   => $this->getDescription (),
+            'labelparts'    => $this->getLabelparts (),
+            'mode'          => $this->getMode (),
+            'resources'     => $this->getResources (),
+            'targetclass'   => $this->getTargetClass (),
+            'xmlconfig'     => $this->getXmlConfig (),
+            'sections'      => array ()
+        );
+          
+        foreach ( $this->getSections () as $section )
+            foreach ( $section as $s )
+                if ( 'predicate' == $s ['sectiontype'] )
+                {
+                    $arr ['sections'] [] = array (
+                        'index'         => $s ['index'],
+                        'title'         => $s ['title'],
+                        'name'          => $s ['name'],
+                        'predicateuri'  => $s ['predicateuri'],
+                        'sectiontype'   => $s ['sectiontype']
+                    );
+                }
+                elseif ( 'nestedconfig' == $s ['sectiontype'] )
+                {
+                    $arr ['sections'] [] = array (
+                        'sectiontype'   => $s ['sectiontype'],
+                        'form'          => $s ['form']->getDataAsArrays ()
+                    );
+                }
+                
+        return $arr;
+    }
 }
