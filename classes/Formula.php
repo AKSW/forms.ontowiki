@@ -333,13 +333,16 @@ class Formula
         
         foreach ( $this->getSections () as $entry )
         {
+            $newSection = array ();
+            $newSection ['title'] = $entry ['title'];
+            
             for ( $i = 0; $i < (count ( $entry )-1); ++$i )
             {
                 $s = $entry [$i];
                 
                 if ( 'predicate' == $s ['sectiontype'] )
                 {
-                    $arr ['sections'] [] = array (
+                    $newSection [] = array (
                         'index'         => $s ['index'],
                         'title'         => $s ['title'],
                         'name'          => $s ['name'],
@@ -353,13 +356,15 @@ class Formula
                 }
                 elseif ( 'nestedconfig' == $s ['sectiontype'] )
                 {
-                    $arr ['sections'] [] = array (
+                    $newSection [] = array (
                         'sectiontype'   => $s ['sectiontype'],
                         'relations'     => $s ['relations'],
                         'form'          => $s ['form']->getDataAsArrays ()
                     );
                 }
             }
+            
+            $arr ['sections'][] = $newSection;
         }
                 
         return $arr;
@@ -388,33 +393,36 @@ class Formula
         
         $form->setxmlfile ( $formArray ['xmlfile'] );
         
-        foreach ( $formArray ['sections'] as $section )
+        foreach ( $formArray ['sections'] as $entry )
         {
-            $newSection = array ( 'title' => 'foo' );
+            $newSection = array ( 'title' => $entry ['title'] );
             
-            if ( 'predicate' == $section ['sectiontype'] )
+            foreach ( $entry as $section )
             {
-                $newSection [] = array (
-                    'index'         => $section ['index'],
-                    'name'          => $section ['name'],
-                    'value'         => $section ['value'],
-                    'predicateuri'  => $section ['predicateuri'],
-                    'type' 		    => $section ['type'],
-                    'typeparameter' => $section ['typeparameter'],
-                    'title'	        => $section ['title'],
-                    'mandatory'     => $section ['mandatory'],
-                    'sectiontype'   => 'predicate'
-                );
-            }
-            elseif ( 'nestedconfig' == $section ['sectiontype'] )
-            {
-                $newSection [] = array ( 
-                    'xmlfile'      => $section ['form']['xmlfile'],
-                    'index'        => $section ['form']['index'],
-                    'relations'    => $section ['relations'],
-                    'form'         => Formula::initByArray ( $section ['form'] ), 
-                    'sectiontype'  => 'nestedconfig'
-                );
+                if ( 'predicate' == $section ['sectiontype'] )
+                {
+                    $newSection [] = array (
+                        'index'         => $section ['index'],
+                        'name'          => $section ['name'],
+                        'value'         => $section ['value'],
+                        'predicateuri'  => $section ['predicateuri'],
+                        'type' 		    => $section ['type'],
+                        'typeparameter' => $section ['typeparameter'],
+                        'title'	        => $section ['title'],
+                        'mandatory'     => $section ['mandatory'],
+                        'sectiontype'   => 'predicate'
+                    );
+                }
+                elseif ( 'nestedconfig' == $section ['sectiontype'] )
+                {
+                    $newSection [] = array ( 
+                        'xmlfile'      => $section ['form']['xmlfile'],
+                        'index'        => $section ['form']['index'],
+                        'relations'    => $section ['relations'],
+                        'form'         => Formula::initByArray ( $section ['form'] ), 
+                        'sectiontype'  => 'nestedconfig'
+                    );
+                }    
             }
             
             $form->addSection ( $newSection );
