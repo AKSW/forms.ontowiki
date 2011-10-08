@@ -1,0 +1,40 @@
+<!-- Create a new person. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Address</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:street</item>
+    </labelparts>
+	
+    <!-- Headline of this formula. -->
+    <headline>Addres</headline>
+	
+    <!-- Introducing text to inform the user about the formula. -->
+    <introduceText></introduceText>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            
+            <!-- Caption of this section part -->
+			<caption>Address information</caption> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:street</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:zipCode</predicateuri>
+			</predicate>
+		
+		</item>
+	</sections>
+</form>

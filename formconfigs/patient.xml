@@ -36,7 +36,7 @@
 				<predicateuri>architecture:lastName</predicateuri>
 			</predicate>
 			
-            <!-- Textfield -->
+            <!-- Date -->
 			<predicate> 
 				<mandatory>0</mandatory>
 				<predicateuri>architecture:birthdate</predicateuri>

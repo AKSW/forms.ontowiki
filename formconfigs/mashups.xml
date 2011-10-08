@@ -1,0 +1,206 @@
+<!-- Create a new person. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Person</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula. -->
+    <headline>Mash Ups</headline>
+	
+    <!-- Introducing text to inform the user about the formula. -->
+    <introduceText></introduceText>
+	
+    <sections>
+        
+		<item>
+            
+            <!-- Caption of this section part -->
+			<caption>Master data</caption> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthName</predicateuri>
+			</predicate>
+						
+            <!-- Date -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthdate</predicateuri>
+				<type>birthdate</type>
+			</predicate>            
+            
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthLocation</predicateuri>
+			</predicate>
+		
+		</item>
+    
+		<item>	
+        
+            <caption>Address</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>address.xml</target>
+				<relations>
+					<item>architecture:hasAddress</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+        
+        <item>
+            
+            <!-- Caption of this section part -->
+			<caption>Family</caption> 	
+						
+			<!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:familyStatus</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>single</label>
+                        <value>architecture:single</value>
+                    </item>
+                    <item>
+                        <label>engaged</label>
+                        <value>architecture:engaged</value>
+                    </item>
+                    <item>
+                        <label>married</label>
+                        <value>architecture:married</value>
+                    </item>
+                    <item>
+                        <label>divorced</label>
+                        <value>architecture:divorced</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:numberOfMyChildren</predicateuri>
+			</predicate>
+		
+		</item>
+        
+        <item>	
+        
+            <caption>Housing situation</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>housing_situation.xml</target>
+				<relations>
+					<item>architecture:livingIn</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+        
+        <item>
+            
+            <!-- Caption of this section part -->
+			<caption>Social and professional environment</caption> 	
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:education</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:employer</predicateuri>
+			</predicate>
+		
+		</item> 
+                
+        <item>	
+        
+            <caption>Hobby</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>hobby.xml</target>
+				<relations>
+					<item>architecture:has</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+                
+        <item>	
+        
+            <caption>Another hobby</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>hobby.xml</target>
+				<relations>
+					<item>architecture:has</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+        
+        <item>
+            
+            <!-- Caption of this section part -->
+			<caption>Health situation</caption> 	
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:diet</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:locomotion</predicateuri>
+			</predicate>
+		
+		</item> 
+        
+        <item>	
+        
+            <caption>Treating physician</caption>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<target>doctor.xml</target>
+				<relations>
+					<item>architecture:isSupervisedBy</item>
+				</relations>
+			</nestedconfig>
+			
+		</item>
+        
+	</sections>
+</form>

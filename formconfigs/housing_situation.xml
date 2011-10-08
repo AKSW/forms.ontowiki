@@ -1,0 +1,80 @@
+<!-- Create a new doctor. -->
+<form> 
+    <targetclass>architecture:apartment</targetclass>				
+	
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+    
+    <headline>Housing situation</headline>
+    
+	<introduceText></introduceText>
+	
+    <sections>
+		<item>
+			<caption>Housing situation</caption> 								
+			
+			<!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:typeOfHouse</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>block of flats</label>
+                        <value>architecture:blockOfFlat</value>
+                    </item>
+                    <item>
+                        <label>one family house</label>
+                        <value>architecture:oneFamilyHouse</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			
+			<!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:typeOfApartment</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>flatlet</label>
+                        <value>architecture:flatLet</value>
+                    </item>
+                    <item>
+                        <label>flat</label>
+                        <value>architecture:flat</value>
+                    </item>
+                    <item>
+                        <label>attic flat</label>
+                        <value>architecture:atticFlat</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+            
+            <predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:floor</predicateuri>
+			</predicate>
+            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:houseFeatures</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>elevator</label>
+                        <value>architecture:elevator</value>
+                    </item>
+                    <item>
+                        <label>barrier-free</label>
+                        <value>architecture:barrierFree</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+            
+		</item>
+	</sections>
+</form>

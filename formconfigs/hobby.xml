@@ -1,0 +1,24 @@
+<!-- Create a new doctor. -->
+<form> 
+    <targetclass>architecture:hobby</targetclass>				
+	
+    <labelparts>
+        <item>architecture:title</item>
+    </labelparts>
+    
+    <headline>Hobby</headline>
+    
+	<introduceText></introduceText>
+	
+    <sections>
+		<item>
+			<caption>Hobby</caption> 								
+			            
+            <predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:title</predicateuri>
+			</predicate>
+            
+		</item>
+	</sections>
+</form>

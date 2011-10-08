@@ -7,24 +7,72 @@
         <item>architecture:lastName</item>
     </labelparts>
     
-    <headline>Doctor</headline>
+    <headline>Treating physician</headline>
     
-	<introduceText>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</introduceText>
+	<introduceText></introduceText>
 	
     <sections>
 		<item>
 			<caption>Treating physician</caption> 								
-
-            <predicate> 
+			          
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:title</predicateuri>
+			</predicate>
+			            
+			<!-- Textfield -->
+			<predicate> 
 				<mandatory>1</mandatory>
 				<predicateuri>architecture:firstName</predicateuri>
 			</predicate>
 			
+            <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
 				<predicateuri>architecture:lastName</predicateuri>
 			</predicate>
             
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:street</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:zipCode</predicateuri>
+			</predicate>
+			
+			<!-- List -->		
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:typeOfDoctor</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>internist</label>
+                        <value>architecture:internist</value>
+                    </item>
+                    <item>
+                        <label>oncologist</label>
+                        <value>architecture:oncologist</value>
+                    </item>
+                    <item>
+                        <label>physiotherapist</label>
+                        <value>architecture:physiotherapist</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:doctorSpecialization</predicateuri>
+			</predicate>
+            
 		</item>
+        
 	</sections>
 </form>
