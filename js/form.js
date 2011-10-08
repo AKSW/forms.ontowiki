@@ -17,17 +17,23 @@
  */ 
 function setFormulaArrayFields ( f )
 {        
-    for ( i in f.sections )
-    {
-        if ( "predicate" == f.sections [i].sectiontype )
+    for ( var i = 0; i < f.sections.length; ++i )
+    {       
+        for ( var j = 0;;++j )
         {
-            f.sections [i].value = $( "#" + f.sections [i].name ).val();
-        }
-        
-        // recursive call of this function 
-        else if ( "nestedconfig" == f.sections [i].sectiontype )
-        {
-            setFormulaArrayFields ( f.sections [i].form );
+            if ( undefined == f.sections [i][j] ) 
+                break;
+         
+            if ( "predicate" == f.sections [i][j].sectiontype )
+            {
+                f.sections [i][j].value = $( "#" + f.sections [i][j].name ).val();
+            }
+            
+            // recursive call of this function 
+            else if ( "nestedconfig" == f.sections [i][j].sectiontype )
+            {
+                setFormulaArrayFields ( f.sections [i][j].form );
+            }
         }
     }
     

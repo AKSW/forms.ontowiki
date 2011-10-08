@@ -346,7 +346,7 @@ class Formula
                         'index'         => $s ['index'],
                         'title'         => $s ['title'],
                         'name'          => $s ['name'],
-                        'value'         => '',
+                        'value'         => $s ['value'],
                         'mandatory'     => $s ['mandatory'],
                         'predicateuri'  => $s ['predicateuri'],
                         'sectiontype'   => $s ['sectiontype'],
