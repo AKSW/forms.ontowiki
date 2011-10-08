@@ -154,20 +154,6 @@
 			</nestedconfig>
 			
 		</item> 
-                
-        <item>	
-        
-            <caption>Another hobby</caption>
-		
-            <!-- Include a XML file -->
-			<nestedconfig>
-				<target>hobby.xml</target>
-				<relations>
-					<item>architecture:has</item>
-				</relations>
-			</nestedconfig>
-			
-		</item> 
         
         <item>
             
@@ -187,20 +173,6 @@
 			</predicate>
 		
 		</item> 
-        
-        <item>	
-        
-            <caption>Treating physician</caption>
-		
-            <!-- Include a XML file -->
-			<nestedconfig>
-				<target>doctor.xml</target>
-				<relations>
-					<item>architecture:isSupervisedBy</item>
-				</relations>
-			</nestedconfig>
-			
-		</item>
         
 	</sections>
 </form>
