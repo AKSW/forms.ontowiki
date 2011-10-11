@@ -43,7 +43,7 @@ class Data
                 
                 // from
                 // http://de.php.net/manual/en/function.json-last-error.php
-                switch(json_last_error())
+                switch ( json_last_error() )
                 {
                     case JSON_ERROR_NONE:
                         $json ['message'] = 'No errors';
@@ -74,7 +74,7 @@ class Data
             {
                 // build a formula instance
                 $form = Formula::initByArray ( $form );
-                /*
+                
                 if ( false === Formula::isValid ( $form ) )
                 {
                     
@@ -87,12 +87,12 @@ class Data
                         
                     elseif ( 'edit' == $form->getMode () )
                         Data::changeFormulaData ( $form );
-                }*/
+                }
                 
-                $json = $form;
+                $json = $form->getDataAsArrays ();
             }
         }
-        
+         
         return json_encode ( $json );
     }
     

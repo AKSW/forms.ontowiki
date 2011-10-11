@@ -164,14 +164,14 @@ class Formula
     
     // -----------------------------------------------------------------
     
-    
+     
     /**
      * Extract field type.
      * @return string
      */
     public static function getFieldType ( $predicate, $t )
     {
-        $t = (string) $t;
+        $t = (string) $t; 
         
         if (true == isset ( $t ) AND '' != $t )
         {
@@ -435,7 +435,7 @@ class Formula
     }
     
     
-    /**
+    /** 
      * Check a formula
      * @return boolean 
      */
@@ -459,9 +459,9 @@ class Formula
                     if ( 'predicate' == $entry ['sectiontype'] )
                     {
                         // check mandatory field value
-                        if ( 'mandatory' == $section ['mandatory'] )
+                        if ( 'mandatory' == $entry ['mandatory'] )
                         {
-                            $section ['value'] = trim ( $section ['value'] );
+                            $entry ['value'] = trim ( $entry ['value'] );
                         }
                         
                     }
