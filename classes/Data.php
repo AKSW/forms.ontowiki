@@ -113,11 +113,31 @@ class Data
         // generate a new unique resource uri based on the target class
         $resource = Data::generateUniqueUri ( $f );
         
+        // add resource - rdf:type - targetclass
         Data::addStmt ( 
             $resource,
             config::get ( 'predicate_type' ),
             $targetClass 
         );
+        
+        foreach ( $f->getSections () as $sectionEntries )
+        {
+            // extract title from array and delete it
+            // so there only predicate and nestedconfig elements in it
+            array_shift( $sectionEntries );
+            
+            foreach ( $sectionEntries as $entry )
+            {
+                if ( 'predicate' == $entry ['sectiontype'] )
+                {
+                    Data::addStmt ( 
+                        $resource,
+                        $entry ['predicateuri'],
+                        $entry ['value'] 
+                    );
+                }
+            } 
+        }
         
         return $resource;
     }
@@ -132,12 +152,13 @@ class Data
     }
     
     
+    /**
+     * adds a triple to datastore
+     */
     public static function addStmt ( $s, $p, $o )
     {
         // set type (uri or literal)
-        $type = preg_match("/^(http(s?):\/\/|ftp:\/\/{1})((\w+\.){1,})\w{2,}$/i", $o )
-                    ? 'uri' 
-                    : 'literal';
+        $type = Data::determineObjectType ( $o );
         
         // add a triple to datastore
         return config::get('store')->addStatement (
@@ -183,11 +204,24 @@ class Data
     
     
     /**
-     * 
+     * @param $s
+     * @return string
      */
     public static function replaceNamespaces ( $s )
 	{
         //TODO: no use of fix Uri                                   
 		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
 	}
+    
+    
+    /**
+     * @param $o
+     * @return string uri or literal
+     */
+    public static function determineObjectType ( $o )
+    {
+        return preg_match('/^(http(s?):\/\/|ftp:\/\/{1})((\w+\.){1,})\w{2,}$/i', $o )
+                    ? 'uri' 
+                    : 'literal';
+    }
 }
