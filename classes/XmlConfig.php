@@ -81,9 +81,7 @@ class XmlConfig
                                 // get complete URI of predicate
                                 $p = XmlConfig::replaceNamespace ( $predicate->predicateuri );
                                 
-                                $titleHelper = config::get ( 'titleHelper' );                    
-                                $titleHelper->addResource( $p );
-                                
+                                                                
                                 $type = Formula::getFieldType ( $p, $predicate->type );
                                 $typeparameter = array ();
 
@@ -96,6 +94,12 @@ class XmlConfig
                                             'label' => (string) $parameter->label,
                                             'value' => (string) $parameter->value 
                                         );
+                                        
+                                config::get ( 'titleHelper' )->addResource ( $p );
+                                $title = config::get ( 'titleHelper' )->getTitle ( $p );
+                                
+                                if ( true == Resource::isUri ( $title ) )
+                                    $title = Resource::extractClassNameFromUri ( $title );
                                     
                                 
                                 // Build an entry instance.
@@ -105,7 +109,7 @@ class XmlConfig
                                     'predicateuri'  => XmlConfig::replaceNamespace ( (string) $predicate->predicateuri ),
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
-                                    'title'	        => $titleHelper->getTitle( $p ), 
+                                    'title'	        => $title, 
                                     'mandatory'     => (int) $predicate->mandatory,
                                     'value'         => '',
                                     'sectiontype'   => 'predicate'
@@ -123,11 +127,21 @@ class XmlConfig
                                     $index .','. $entryIndex
                                 );
                                 
-                                $relations = array ();
+                                $tmpRel = $relations = array ();
                                 
                                 if ( true === isset ( $nestedconfig->relations ) )
                                     foreach ( $nestedconfig->relations->item as $rel )
-                                        $relations [] = (string) $rel;
+                                        $tmpRel [] = (string) $rel;
+                                        
+                                // replace architecture with complete uri
+                                foreach ( $tmpRel as $r )
+                                {
+                                    config::get ( 'titleHelper' )->addResource ( $r );
+                                    $r = config::get ( 'titleHelper' )->getTitle ( $r );
+                                    
+                                    if ( true == Resource::isUri ( $r ) )
+                                        $r = Resource::extractClassNameFromUri ( $r );
+                                }
                                                                                     
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array ( 
