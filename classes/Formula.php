@@ -113,7 +113,7 @@ class Formula
      */
     public function setTargetClass ( $value )
     {
-        $this->_data ['targetclass'] = $value;
+        $this->_data ['targetclass'] = Data::replaceNamespaces ( $value );
     }
     
     
@@ -147,7 +147,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setxmlfile ( $value )
+    public function setXmlFile ( $value )
     {
         $this->_data ['xmlfile'] = $value;
     }
@@ -156,7 +156,7 @@ class Formula
     /**
      * @return string 
      */
-    public function getxmlfile ()
+    public function getXmlFile ()
     {
         return $this->_data ['xmlfile'];
     }
@@ -329,7 +329,7 @@ class Formula
             'mode'          => $this->getMode (),
             'resources'     => $this->getResources (),
             'targetclass'   => $this->getTargetClass (),
-            'xmlfile'       => $this->getxmlfile (),
+            'xmlfile'       => $this->getXmlFile (),
             'sections'      => array ()
         );
                   
@@ -394,7 +394,7 @@ class Formula
         
         $form->setTargetClass ( $formArray ['targetclass'] );
         
-        $form->setxmlfile ( $formArray ['xmlfile'] );
+        $form->setXmlFile ( $formArray ['xmlfile'] );
         
         foreach ( $formArray ['sections'] as $entry )
         {
@@ -471,5 +471,35 @@ class Formula
         
         // TODO implement Formula::isValid
         return true;
+    }
+    
+    
+    /**
+     * extracts the values of as labelpart marked predicates
+     */
+    public function getLabelpartValues ()
+    {
+        $values = array ();
+        
+        foreach ( $this->getLabelparts () as $lp )
+        {
+            foreach ( $this->getSections () as $sectionEntries )
+            {
+                // extract title from array and delete it
+                // so there only predicate and nestedconfig elements in it
+                array_shift( $sectionEntries );
+                
+                foreach ( $sectionEntries as $entry )
+                {
+                    if ( 'predicate' == $entry ['sectiontype'] &&
+                         $lp == $entry ['predicateuri'] )
+                    {
+                        $values [] = $entry ['value'];
+                    }
+                } 
+            }
+        }
+        
+        return $values;
     }
 }

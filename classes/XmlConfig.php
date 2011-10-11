@@ -32,7 +32,7 @@ class XmlConfig
         {
             $form = new Formula ( $index );
             
-            $form->setxmlfile ( $file );
+            $form->setXmlFile ( $file );
             
             // ReadIn all readable data from XML-Config file.
             foreach ($xml as $nodeName => $nodeValue) 
@@ -81,9 +81,7 @@ class XmlConfig
                                 // get complete URI of predicate
                                 $p = XmlConfig::replaceNamespace ( $predicate->predicateuri );
                                 
-                                $titleHelper = new OntoWiki_Model_TitleHelper ( 
-                                    config::get ( 'selectedModel' )
-                                );                                
+                                $titleHelper = config::get ( 'titleHelper' );                    
                                 $titleHelper->addResource( $p );
                                 
                                 $type = Formula::getFieldType ( $p, $predicate->type );

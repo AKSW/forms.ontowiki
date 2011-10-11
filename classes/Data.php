@@ -72,6 +72,8 @@ class Data
             // $form is valid JSON
             else
             {
+                $json ['status'] = 'ok';
+                
                 // build a formula instance
                 $form = Formula::initByArray ( $form );
                 
@@ -83,13 +85,13 @@ class Data
                 {
                     // Add formula data to backend
                     if ( 'add' == $form->getMode () )
-                        Data::addFormulaData ( $form );
+                        $json ['message'] = Data::addFormulaData ( $form );
                         
                     elseif ( 'edit' == $form->getMode () )
                         Data::changeFormulaData ( $form );
                 }
                 
-                $json = $form->getDataAsArrays ();
+                // $json = $form->getDataAsArrays ();
             }
         }
          
@@ -100,9 +102,16 @@ class Data
     /**
      * Add a formula to backend
      */
-    public static function addFormulaData ( )
+    public static function addFormulaData ( $f )
     {
+        $targetClass = $f->getTargetClass ();
         
+        config::get ( 'titleHelper' )->addResource( $targetClass );
+                    
+        // generate a new unique resource uri
+        $resource = Data::generateUniqueUri ( $f );
+        
+        return $resource;
     }
     
     
@@ -113,4 +122,48 @@ class Data
     {
         // TODO 
     }
+    
+    
+    /**
+     * Generate a unique resource uri. 
+     * @param $modelUri Model uri
+     * @param $className Class from which the resource is an instance of
+     * @param $label A label
+     * @param $uriParts From default.ini
+     * @return string
+     */
+    public static function generateUniqueUri ( $f )
+    {
+        // set essential parts
+        $targetClass = $f->getTargetClass ();
+        $modelUri    = (string) config::get ( 'selectedModel' );
+        $className   = config::get ( 'titleHelper' )->getTitle ( $targetClass );
+        $label       = implode ( ' ', $f->getLabelpartValues () );
+        $uriParts    = config::get ( 'uriParts' );
+        
+        $time = time ();
+        
+        // if a / is at the end of the modelUri, remove it
+        if ( '/' == substr ( $modelUri, strlen($modelUri) - 1 ) )
+            $modelUri = substr ( $modelUri, 0, strlen($modelUri) - 1 );
+        
+        // replace placeholders in $uriParts
+        $newUri = str_replace('%modeluri%', $modelUri, $uriParts);
+        $newUri = str_replace('%hash%', substr ( md5 ($time . $className . rand() ), 0, 6 ), $newUri);
+        $newUri = str_replace('%date%', date ( 'Ymd', $time ), $newUri);
+        $newUri = str_replace('%labelparts%', $label, $newUri);
+        $newUri = str_replace('%classname%', $className, $newUri);
+                
+        return $newUri;
+    }
+    
+    
+    /**
+     * 
+     */
+    public static function replaceNamespaces ( $s )
+	{
+        //TODO: no use of fix Uri                                   
+		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
+	}
 }
