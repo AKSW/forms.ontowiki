@@ -24,7 +24,7 @@ class Formula
         $this->_data = array ();
         
         $this->_data ['index'] = $index;        
-        $this->_data ['mode'] = 'add';
+        $this->_data ['mode'] = 'new';
         $this->_data ['resources'] = array ();
         $this->_data ['sections'] = array ();
     }
@@ -166,7 +166,8 @@ class Formula
     
     
     /**
-     * 
+     * Extract field type.
+     * @return string
      */
     public static function getFieldType ( $predicate, $t )
     {
@@ -179,6 +180,8 @@ class Formula
         
         else
         {
+            // TODO determine field type by predicate url
+            
             /*
             // Get range infos for predicate
             $range = config::get ( 'selectedModel' )->sparqlQuery(
@@ -429,5 +432,44 @@ class Formula
         }
         
         return $form;
+    }
+    
+    
+    /**
+     * Check a formula
+     * @return boolean 
+     */
+    public static function isValid ( $f )
+    {
+        if ( 'new' == $f->getMode () )
+        {
+            
+        }
+        
+        elseif ( 'add' == $f->getMode () )
+        {
+            foreach ( $f->getSections () as $sectionEntries )
+            {
+                // extract title from array and delete it
+                // so there only predicate and nestedconfig elements in it
+                $title = array_shift( $sectionEntries );
+                
+                foreach ( $sectionEntries as $entry )
+                {
+                    if ( 'predicate' == $entry ['sectiontype'] )
+                    {
+                        // check mandatory field value
+                        if ( 'mandatory' == $section ['mandatory'] )
+                        {
+                            $section ['value'] = trim ( $section ['value'] );
+                        }
+                        
+                    }
+                } 
+            }
+        }
+        
+        // TODO implement Formula::isValid
+        return true;
     }
 }

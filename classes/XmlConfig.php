@@ -109,6 +109,7 @@ class XmlConfig
                                     'typeparameter' => $typeparameter,
                                     'title'	        => $titleHelper->getTitle( $p ), 
                                     'mandatory'     => (int) $predicate->mandatory,
+                                    'value'         => '',
                                     'sectiontype'   => 'predicate'
                                 );
                                 
