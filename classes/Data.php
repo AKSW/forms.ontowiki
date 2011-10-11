@@ -74,7 +74,7 @@ class Data
             {
                 // build a formula instance
                 $form = Formula::initByArray ( $form );
-                /*
+                
                 if ( false === Formula::isValid ( $form ) )
                 {
                     
@@ -87,9 +87,9 @@ class Data
                         
                     elseif ( 'edit' == $form->getMode () )
                         Data::changeFormulaData ( $form );
-                }*/
+                }
                 
-                $json = $form;
+                $json = $form->getDataAsArrays ();
             }
         }
         

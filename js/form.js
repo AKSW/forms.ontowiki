@@ -65,13 +65,18 @@ function setFormulaModeTo ( f, newMode )
             // recursive call of this function 
             else if ( "nestedconfig" == f.sections [i][j].sectiontype )
             {
-                setFormulaModeTo ( f.sections [i][j].form, newMode );
+                f.sections [i][j].form = setFormulaModeTo ( 
+                    f.sections [i][j].form, 
+                    newMode 
+                );
             }
         }
     }
+    
+    return f;
 } 
 
- 
+  
 /**
  * sends a complete json-serialzed formula instance and add/edit resources
  * @param url target URL
@@ -79,15 +84,17 @@ function setFormulaModeTo ( f, newMode )
  */
 function submitFormula ( url, formData ) 
 {
+    console.log ( formData );
+    
     // set values from formula into the formula instance 
     // which was loaded at the beginning
     formData = setFormulaArrayFields ( formData );
     
     // set mode from new to add
     formData = setFormulaModeTo ( formData, "add" );
-    
+        
     // send formula to submit action on server
-    response =  $.ajax({
+    response = $.ajax({
         type: "POST",
         url: url + "submit/",
         data: "form=" + $.toJSON( formData ),
@@ -95,10 +102,7 @@ function submitFormula ( url, formData )
         async:false
     }).responseText;
     
-    console.log ( "formData" );
-    console.log ( $.toJSON( formData ) );
-    console.log ( "-------------------" );
-    
     response = jQuery.parseJSON ( response );
+    
     console.log ( response );
 }

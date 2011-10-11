@@ -435,7 +435,7 @@ class Formula
     }
     
     
-    /**
+    /** 
      * Check a formula
      * @return boolean 
      */
@@ -459,9 +459,9 @@ class Formula
                     if ( 'predicate' == $entry ['sectiontype'] )
                     {
                         // check mandatory field value
-                        if ( 'mandatory' == $section ['mandatory'] )
+                        if ( 'mandatory' == $entry ['mandatory'] )
                         {
-                            $section ['value'] = trim ( $section ['value'] );
+                            $entry ['value'] = trim ( $entry ['value'] );
                         }
                         
                     }
