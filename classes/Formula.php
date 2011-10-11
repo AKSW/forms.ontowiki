@@ -476,6 +476,7 @@ class Formula
     
     /**
      * extracts the values of as labelpart marked predicates
+     * @return array list of labelpart values
      */
     public function getLabelpartValues ()
     {

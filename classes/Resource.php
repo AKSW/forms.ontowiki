@@ -75,10 +75,10 @@ class Resource
     {
         if ( 0 <= strpos ( $o, ':' ) )
             return true;
-        
-        return preg_match('/^(http|ftp|https|architecture):\/\/|ftp:\/\/{1})((\w+\.){1,})\w{2,}$/i', $o )
-            ? false
-            : true;
+        else
+            return preg_match('/^(http|ftp|https|architecture):\/\/|ftp:\/\/{1})((\w+\.){1,})\w{2,}$/i', $o )
+                ? false
+                : true;
     }
     
     

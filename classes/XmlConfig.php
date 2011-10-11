@@ -141,6 +141,8 @@ class XmlConfig
                                     
                                     if ( true == Resource::isUri ( $r ) )
                                         $r = Resource::extractClassNameFromUri ( $r );
+                                        
+                                    $relations [] = $r;
                                 }
                                                                                     
                                 // Add entry to nestedconfig array.
