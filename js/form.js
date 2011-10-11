@@ -83,9 +83,7 @@ function setFormulaModeTo ( f, newMode )
  * @param formData a json-serialized formula instance
  */
 function submitFormula ( url, formData ) 
-{
-    console.log ( formData );
-    
+{    
     // set values from formula into the formula instance 
     // which was loaded at the beginning
     formData = setFormulaArrayFields ( formData );

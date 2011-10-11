@@ -85,10 +85,12 @@ class Data
                 {
                     // Add formula data to backend
                     if ( 'add' == $form->getMode () )
-                        $json ['message'] = Data::addFormulaData ( $form );
+                        Data::addFormulaData ( $form );
                         
                     elseif ( 'edit' == $form->getMode () )
                         Data::changeFormulaData ( $form );
+                        
+                    $json ['message'] = implode ( ' ', $form->getLabelpartValues () );
                 }
                 
                 // $json = $form->getDataAsArrays ();
@@ -108,8 +110,14 @@ class Data
         
         config::get ( 'titleHelper' )->addResource( $targetClass );
                     
-        // generate a new unique resource uri
+        // generate a new unique resource uri based on the target class
         $resource = Data::generateUniqueUri ( $f );
+        
+        Data::addStmt ( 
+            $resource,
+            config::get ( 'predicate_type' ),
+            $targetClass 
+        );
         
         return $resource;
     }
@@ -121,6 +129,22 @@ class Data
     public static function changeFormulaData ( )
     {
         // TODO 
+    }
+    
+    
+    public static function addStmt ( $s, $p, $o )
+    {
+        // set type (uri or literal)
+        $type = preg_match("/^(http(s?):\/\/|ftp:\/\/{1})((\w+\.){1,})\w{2,}$/i", $o )
+                    ? 'uri' 
+                    : 'literal';
+        
+        // add a triple to datastore
+        return config::get('store')->addStatement (
+            config::get ('selectedModelUri'), 
+            $s, $p, 
+            array ( 'value' => $o, 'type' => $type )
+        );
     }
     
     
@@ -138,7 +162,7 @@ class Data
         $targetClass = $f->getTargetClass ();
         $modelUri    = (string) config::get ( 'selectedModel' );
         $className   = config::get ( 'titleHelper' )->getTitle ( $targetClass );
-        $label       = implode ( ' ', $f->getLabelpartValues () );
+        $label       = implode ( '', $f->getLabelpartValues () );
         $uriParts    = config::get ( 'uriParts' );
         
         $time = time ();

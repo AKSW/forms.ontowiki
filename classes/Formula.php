@@ -212,7 +212,7 @@ class Formula
      */
     public function addLabelpart ( $value )
     {
-        $this->_data ['labelparts'] [] = $value;
+        $this->_data ['labelparts'] [] = Data::replaceNamespaces ( $value );
     }
     
     
@@ -228,9 +228,9 @@ class Formula
     /**
      * 
      */
-    public function removeLabelpart ( $value )
+    public function removeLabelparts ()
     {
-        unset ( $this->_data ['labelparts'] [$value] );
+        $this->_data ['labelparts'] = array ();
     }
     
     

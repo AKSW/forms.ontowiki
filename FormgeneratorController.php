@@ -3,7 +3,6 @@
 require_once 'helper.php';
 require_once 'classes/Data.php';
 require_once 'classes/Formula.php';
-require_once 'classes/Resource.php';
 require_once 'classes/XmlConfig.php';
 
 /**
@@ -27,6 +26,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         config::set ( 'url', $this->_componentUrlBase );
         config::set ( 'selectedModel', $this->_owApp->selectedModel );
+        config::set ( 'selectedModelUri', (string) config::get ( 'selectedModel' ) );
+        config::set ( 'titleHelper', new OntoWiki_Model_TitleHelper ( config::get ( 'selectedModel' ) ) );
+        config::set ( 'uriParts', $this->_privateConfig->uriParts );
+        config::set ( 'store', Erfurt_App::getInstance()->getStore() );
+        
+        config::set ( 'predicate_type', $this->_privateConfig->predicate_type );
     }    
 
 
@@ -47,7 +52,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->form = XmlConfig::loadFile ( 
             config::get ( 'dirXmlConfigurationFiles' ) .'patient.xml'
         );
-        
     }
     
     
