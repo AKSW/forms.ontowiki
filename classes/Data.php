@@ -102,9 +102,10 @@ class Data
     
     
     /**
-     * Add a formula to backend
+     * adds a formula to backend
+     * @param $f formula instance
      */
-    public static function addFormulaData ( $f )
+    public static function addFormulaData ( $f, $upperResource = null, $relations = array () )
     {
         $targetClass = $f->getTargetClass ();
         
@@ -115,10 +116,20 @@ class Data
         
         // add resource - rdf:type - targetclass
         Data::addStmt ( 
-            $resource,
-            config::get ( 'predicate_type' ),
-            $targetClass 
+            $resource, config::get ( 'predicate_type' ), $targetClass 
         );
+        
+        // add relations between a upper resource and a new resource 
+        if ( null != $upperResource && 0 < count ( $relations ) )
+        {
+            foreach ( $relations as $relation ) 
+            {
+                Data::addStmt ( 
+                    $upperResource, $relation, $resource
+                );
+            }
+        }
+        
         
         foreach ( $f->getSections () as $sectionEntries )
         {
@@ -128,12 +139,19 @@ class Data
             
             foreach ( $sectionEntries as $entry )
             {
+                // predicate
                 if ( 'predicate' == $entry ['sectiontype'] )
                 {
                     Data::addStmt ( 
-                        $resource,
-                        $entry ['predicateuri'],
-                        $entry ['value'] 
+                        $resource, $entry ['predicateuri'], $entry ['value'] 
+                    );
+                }
+                
+                // sub formula
+                elseif ( 'nestedconfig' == $entry ['sectiontype'] )
+                {
+                    Data::addFormulaData ( 
+                        $entry ['form'], $resource, $entry ['relations'] 
                     );
                 }
             } 
