@@ -127,7 +127,7 @@ class Data
         }
         
         
-        foreach ( $f->getSections () as $sectionEntries )
+        foreach ( $f->getSections () as $sectionEntries ) 
         {
             // extract title from array and delete it
             // so there only predicate and nestedconfig elements in it

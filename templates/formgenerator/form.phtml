@@ -140,7 +140,10 @@
         
     <?php } ?>
     
-    <a id="addResource" class="button submit" onclick="submitFormula( urlMvc, formData );"/>
+    <a id="changeResource" class="button submit hidden" onclick="submitFormula( urlMvc, formData, 'edit' );"/>
+        <span>Edit</span>
+    </a>
+    <a id="addResource" class="button submit" onclick="submitFormula( urlMvc, formData, 'add' );"/>
         <span>Add New</span>
     </a>
 </form>

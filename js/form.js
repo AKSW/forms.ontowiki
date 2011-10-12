@@ -82,14 +82,14 @@ function setFormulaModeTo ( f, newMode )
  * @param url target URL
  * @param formData a json-serialized formula instance
  */
-function submitFormula ( url, formData ) 
+function submitFormula ( url, formData, mode ) 
 {    
     // set values from formula into the formula instance 
     // which was loaded at the beginning
     formData = setFormulaArrayFields ( formData );
     
     // set mode from new to add
-    formData = setFormulaModeTo ( formData, "add" );
+    formData = setFormulaModeTo ( formData, mode );
         
     // send formula to submit action on server
     response = $.ajax({
@@ -101,6 +101,11 @@ function submitFormula ( url, formData )
     }).responseText;
     
     response = jQuery.parseJSON ( response );
+    
+    // replace changed form
+    formData = response['form'];
+    
+    $("#changeResource").show();
     
     console.log ( response );
 }
