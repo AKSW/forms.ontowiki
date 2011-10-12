@@ -72,8 +72,6 @@ class Data
             // $form is valid JSON
             else
             {
-                $json ['status'] = 'ok';
-                
                 // build a formula instance
                 $form = Formula::initByArray ( $form );
                 
@@ -85,15 +83,11 @@ class Data
                 {
                     // Add formula data to backend
                     if ( 'add' == $form->getMode () )
-                        Data::addFormulaData ( $form );
+                        $json = Data::addFormulaData ( $form );
                         
                     elseif ( 'edit' == $form->getMode () )
                         Data::changeFormulaData ( $form );
-                        
-                    $json ['message'] = implode ( ' ', $form->getLabelpartValues () );
                 }
-                
-                $json = $form->getDataAsArrays ();
             }
         }
          
@@ -105,7 +99,7 @@ class Data
      * adds a formula to backend
      * @param $f formula instance
      */
-    public static function addFormulaData ( $f, $upperResource = null, $relations = array () )
+    public static function addFormulaData ( &$f, $upperResource = null, $relations = array () )
     {
         $targetClass = $f->getTargetClass ();
         
@@ -118,6 +112,8 @@ class Data
         Data::addStmt ( 
             $resource, config::get ( 'predicate_type' ), $targetClass 
         );
+        
+        $f->addResource($resource);
         
         // add relations between a upper resource and a new resource 
         if ( null != $upperResource && 0 < count ( $relations ) )
@@ -157,7 +153,11 @@ class Data
             } 
         }
         
-        return $resource;
+        $json = array();
+        $json['status'] = 'ok';
+        $json['form'] = $f->getDataAsArrays();
+        
+        return $json;
     }
     
     
