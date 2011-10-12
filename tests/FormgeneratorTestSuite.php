@@ -1,6 +1,6 @@
 <?php
 
-require_once _TESTROOT . 'TestHelper.php';
+require_once 'ExtensionTestHelper.php';
 
 require_once 'classes/ClassesTestSuite.php';
 

@@ -32,7 +32,7 @@
 /*
  * Helper file, that adjusts the include_path and initializes the test environment.
  */
-require_once _TESTROOT . 'TestHelper.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'ExtensionTestHelper.php';
 
 // This constant will not be defined iff this file is executed directly.
 if (!defined('PHPUnit_MAIN_METHOD')) {
@@ -41,6 +41,7 @@ if (!defined('PHPUnit_MAIN_METHOD')) {
 
 require_once 'FormulaTest.php';
 require_once 'ResourceTest.php';
+require_once 'XmlConfigTest.php';
 
 /**
  * @category   Formgenator
@@ -73,6 +74,7 @@ class Classes_TestSuite extends PHPUnit_Framework_TestSuite
         
         $suite->addTestSuite('FormulaTest');
         $suite->addTestSuite('ResourceTest');
+        $suite->addTestSuite('XmlConfigTest');
         
         return $suite;
     }
