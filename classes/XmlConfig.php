@@ -137,20 +137,8 @@ class XmlConfig
                                 
                                 if ( true === isset ( $nestedconfig->relations ) )
                                     foreach ( $nestedconfig->relations->item as $rel )
-                                        $tmpRel [] = (string) $rel;
-                                        
-                                // replace architecture with complete uri
-                                foreach ( $tmpRel as $r )
-                                {
-                                    $this->_titleHelper->addResource ( $r );
-                                    $r = $this->_titleHelper->getTitle ( $r );
-                                    
-                                    if ( true == Resource::isUri ( $r ) )
-                                        $r = Resource::extractClassNameFromUri ( $r );
-                                        
-                                    $relations [] = $r;
-                                }
-                                                                                    
+                                        $relations [] = Data::replaceNamespaces((string) $rel);
+                                 
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array ( 
                                      'xmlfile'      => (string) $nestedconfig->xmlfile,

@@ -25,7 +25,7 @@ class Formula
         
         $this->_data ['index'] = $index;        
         $this->_data ['mode'] = 'new';
-        $this->_data ['resources'] = array ();
+        $this->_data ['resource'] = "";
         $this->_data ['sections'] = array ();
     }
     
@@ -79,31 +79,21 @@ class Formula
     
     
     /**
-     * @param $value resource
+     * @param $value URI
      * @return void 
      */
-    public function addResource ( $value )
+    public function setResource ( $value )
     {
-        $this->_data ['resources'] [] = $value;
+        $this->_data ['resource'] = $value;
     }
     
     
     /**
-     * @param $value Array of URIs
-     * @return void 
+     * @return string
      */
-    public function setResources ( $value )
+    public function getResource ()
     {
-        $this->_data ['resources'] = $value;
-    }
-    
-    
-    /**
-     * @return array 
-     */
-    public function getResources ()
-    {
-        return $this->_data ['resources'];
+        return $this->_data ['resource'];
     }
     
     
@@ -290,7 +280,7 @@ class Formula
                 '<br/>- description: '. $this->getDescription () .
                 '<br/>- label parts: '. implode ( ', ', $this->getLabelparts () ) .
                 '<br/>- mode: '. $this->getMode () .
-                '<br/>- resources: '. implode ( ', ', $this->getResources () ) .
+                '<br/>- resource: '. implode ( ', ', $this->getResource () ) .
                 '<br/>- target class: '. $this->getTargetClass () .
                 '<br/>- XML config: '. $this->getxmlfile () .
                 '<br/>- sections: ';
@@ -327,7 +317,7 @@ class Formula
             'description'   => $this->getDescription (),
             'labelparts'    => $this->getLabelparts (),
             'mode'          => $this->getMode (),
-            'resources'     => $this->getResources (),
+            'resource'      => $this->getResource (),
             'targetclass'   => $this->getTargetClass (),
             'xmlfile'       => $this->getXmlFile (),
             'sections'      => array ()
@@ -361,7 +351,7 @@ class Formula
                 {
                     $newSection [] = array (
                         'sectiontype'   => $s ['sectiontype'],
-                        'relations'     => $s ['relations'],
+                        'relations'      => $s ['relations'],
                         'form'          => $s ['form']->getDataAsArrays ()
                     );
                 }
@@ -390,7 +380,7 @@ class Formula
         
         $form->setMode ( $formArray ['mode'] );
         
-        $form->setResources ( $formArray ['resources'] );
+        $form->setResource ( $formArray ['resource'] );
         
         $form->setTargetClass ( $formArray ['targetclass'] );
         
@@ -502,5 +492,35 @@ class Formula
         }
         
         return $values;
+    }
+    
+    /**
+     *
+     *
+     */
+    public function getPredicateValueByIndex ( $index )
+    {
+        foreach ( $this->getSections () as $sectionEntries ) 
+        {
+            // extract title from array and delete it
+            // so there only predicate and nestedconfig elements in it
+            array_shift( $sectionEntries );
+            
+            foreach ( $sectionEntries as $entry )
+            {
+                // predicate
+                if ( 'predicate' == $entry ['sectiontype'] && $index == $entry ['index'] )
+                {
+                    return $entry ['value'];
+                }
+                
+                // sub formula
+                elseif ( 'nestedconfig' == $entry ['sectiontype'] )
+                {
+                    return $entry ['form']->getPredicateValueByIndex($index);
+                }
+            } 
+        }
+        return 0;
     }
 }

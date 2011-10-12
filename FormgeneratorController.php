@@ -83,7 +83,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // processes a formula and output the result
         $form = true == isset ( $_REQUEST ['form'] ) ? $_REQUEST ['form'] : null;
-        echo Data::submitFormula ( $form );
+        $formOld =  true == isset ( $_REQUEST ['formOld'] ) ? $_REQUEST ['formOld'] : null;
+        echo Data::submitFormula ( $form, $formOld );
     }
 }
 

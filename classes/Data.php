@@ -21,7 +21,7 @@ class Data
      * @param
      * @return string json result
      */
-    public static function submitFormula ( $form )
+    public static function submitFormula ( $form, $formOld )
     {
         $json = array ();
         
@@ -35,6 +35,7 @@ class Data
         {
             // JSON decode ( string to array)
             $form = json_decode ( $form, true );
+            $formOld = json_decode ( $formOld, true );
          
             // error
             if ( null == $form )
@@ -74,6 +75,7 @@ class Data
             {
                 // build a formula instance
                 $form = Formula::initByArray ( $form );
+                $formOld = Formula::initByArray ( $formOld );
                 
                 if ( false === Formula::isValid ( $form ) )
                 {
@@ -86,7 +88,7 @@ class Data
                         $json = Data::addFormulaData ( $form );
                         
                     elseif ( 'edit' == $form->getMode () )
-                        Data::changeFormulaData ( $form );
+                        $json = Data::changeFormulaData ( $form, $formOld );
                 }
             }
         }
@@ -113,7 +115,7 @@ class Data
             $resource, config::get ( 'predicate_type' ), $targetClass 
         );
         
-        $f->addResource($resource);
+        $f->setResource($resource);
         
         // add relations between a upper resource and a new resource 
         if ( null != $upperResource && 0 < count ( $relations ) )
@@ -164,9 +166,40 @@ class Data
     /**
      * Change formula data in backend
      */
-    public static function changeFormulaData ( )
+    public static function changeFormulaData ( $form, $formOld )
     {
-        // TODO 
+        foreach ( $form->getSections () as $sectionEntries ) 
+        {
+            // extract title from array and delete it
+            // so there only predicate and nestedconfig elements in it
+            array_shift( $sectionEntries );
+            
+            foreach ( $sectionEntries as $entry )
+            {
+                // predicate
+                if ( 'predicate' == $entry ['sectiontype'] )
+                {
+                    $oldValue = $formOld->getPredicateValueByIndex( $entry ['index'] );
+                    if ($entry ['value'] != $oldValue)
+                    {
+                        Data::removeStmt($form->getResource(), $entry ['predicateUri'], $oldValue);
+                        Data::addStmt($form->getResource(), $entry ['predicateUri'], $entry ['value']);
+                    }
+                }
+                
+                // sub formula
+                elseif ( 'nestedconfig' == $entry ['sectiontype'] )
+                {
+                    
+                }
+            }
+        }
+        
+        $json = array();
+        $json['status'] = 'ok';
+        $json['form'] = $form->getDataAsArrays();
+        
+        return $json;
     }
     
     
@@ -183,6 +216,32 @@ class Data
             config::get ('selectedModelUri'), 
             $s, $p, 
             array ( 'value' => $o, 'type' => $type )
+        );
+    }
+    
+    /**
+     *
+     */
+    public static function removeStmt ( $s, $p, $o )
+    {
+        $type = Resource::determineObjectType ( $o );
+        if ('uri' == $type)
+        {
+            $options['object_type'] = Erfurt_Store::TYPE_IRI;
+        }
+        else if ('literal' == $type)
+        {
+            $type == '';
+            $options['object_type'] = Erfurt_Store::TYPE_LITERAL;
+        }
+        
+        // aremove a triple form datastore
+        return config::get('store')->deleteMatchingStatements (
+            config::get ('selectedModelUri'),
+            $s,
+            $p,
+            $o,
+            $options
         );
     }
     
