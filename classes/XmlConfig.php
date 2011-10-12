@@ -10,18 +10,23 @@
  */
 class XmlConfig 
 {
-    public function __construct ()
+    private $_titleHelper;
+    private $_dirXmlConfigurationFiles;
+    
+    public function __construct ($titleHelper, $dirXmlConfigurationFiles)
     {
-        
+        $this->_titleHelper = $titleHelper;
+        $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
     }
     
-	/**
-	 * Loads a xml file.
+    /**
+     * Loads a xml file.
      * @param $file name of XML configuration file.
      * @return Formula Filled formula instance
-	 */
-	public static function loadFile ( $file, $index = 0 )
-	{
+     */
+    public function loadFile ( $file, $index = 0 )
+    {
+	$file = $this->_dirXmlConfigurationFiles . $file;
         $xml = simpleXML_load_file ( $file ); 
         
         if( false === $xml ) 
@@ -79,7 +84,7 @@ class XmlConfig
                             foreach ( $nodeValue->predicate as $predicate )
                             {	
                                 // get complete URI of predicate
-                                $p = XmlConfig::replaceNamespace ( $predicate->predicateuri );
+                                $p = $this->replaceNamespace ( $predicate->predicateuri );
                                 
                                                                 
                                 $type = Formula::getFieldType ( $p, $predicate->type );
@@ -95,8 +100,8 @@ class XmlConfig
                                             'value' => (string) $parameter->value 
                                         );
                                         
-                                config::get ( 'titleHelper' )->addResource ( $p );
-                                $title = config::get ( 'titleHelper' )->getTitle ( $p );
+                                $this->_titleHelper->addResource ( $p );
+                                $title = $this->_titleHelper->getTitle ( $p );
                                 
                                 if ( true == Resource::isUri ( $title ) )
                                     $title = Resource::extractClassNameFromUri ( $title );
@@ -106,7 +111,7 @@ class XmlConfig
                                 $newSection [] = array ( 
                                     'index'         => $index . ',' . $entryIndex,
                                     'name'          => substr ( md5 ( $index . ',' . $entryIndex ), 0, 10),
-                                    'predicateuri'  => XmlConfig::replaceNamespace ( (string) $predicate->predicateuri ),
+                                    'predicateuri'  => $this->replaceNamespace ( (string) $predicate->predicateuri ),
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
                                     'title'	        => $title, 
@@ -122,8 +127,9 @@ class XmlConfig
                             foreach ( $nodeValue->nestedconfig as $nestedconfig )
                             {                                             
                                 // Load XML Config
-                                $f = XmlConfig::loadFile ( 
-                                    config::get ( 'dirXmlConfigurationFiles' ) . $nestedconfig->xmlfile,
+				$xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
+                                $f = $xmlConfig->loadFile( 
+                                    $nestedconfig->xmlfile,
                                     $index .','. $entryIndex
                                 );
                                 
@@ -136,8 +142,8 @@ class XmlConfig
                                 // replace architecture with complete uri
                                 foreach ( $tmpRel as $r )
                                 {
-                                    config::get ( 'titleHelper' )->addResource ( $r );
-                                    $r = config::get ( 'titleHelper' )->getTitle ( $r );
+                                    $this->_titleHelper->addResource ( $r );
+                                    $r = $this->_titleHelper->getTitle ( $r );
                                     
                                     if ( true == Resource::isUri ( $r ) )
                                         $r = Resource::extractClassNameFromUri ( $r );
@@ -175,7 +181,7 @@ class XmlConfig
     /**
      * 
      */
-    public static function replaceNamespace ( $s )
+    public function replaceNamespace ( $s )
     {
         // TODO: no use of fix Uri                                   
 		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );

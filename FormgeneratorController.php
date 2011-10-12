@@ -17,7 +17,14 @@ require_once 'classes/XmlConfig.php';
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
-{    
+{
+    private $_titleHelper;
+    private $_selectedModel;
+    private $_uriParts;
+    private $_store;
+    private $_predicateType;
+    private $_dirXmlConfigurationFiles;
+    
     /**
      * init controller
      */     
@@ -25,14 +32,22 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     {
         parent::init();
         
+        $this->_selectedModel = $this->_owApp->selectedModel;
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper ( $this->_selectedModel );
+        $this->_uriPart = $this->_privateConfig->uriParts;
+        $this->_store = Erfurt_App::getInstance()->getStore();
+        $this->_predicateType = $this->_privateConfig->predicateType;
+        $this->_dirXmlConfigurationFiles = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
+        
         config::set ( 'url', $this->_componentUrlBase );
+        
         config::set ( 'selectedModel', $this->_owApp->selectedModel );
         config::set ( 'selectedModelUri', (string) config::get ( 'selectedModel' ) );
         config::set ( 'titleHelper', new OntoWiki_Model_TitleHelper ( config::get ( 'selectedModel' ) ) );
         config::set ( 'uriParts', $this->_privateConfig->uriParts );
         config::set ( 'store', Erfurt_App::getInstance()->getStore() );
         
-        config::set ( 'predicate_type', $this->_privateConfig->predicate_type );
+        config::set ( 'predicate_type', $this->_privateConfig->predicateType );
     }    
 
 
@@ -48,11 +63,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // include Javascript files
         $this->view->headScript()->appendFile( config::get ('url') .'js/form.js');        
         $this->view->headScript()->appendFile( config::get ('url') .'libraries/jquery.json.min.js');
-                
+        
         // load xml configuration file
-        $this->view->form = XmlConfig::loadFile ( 
-            config::get ( 'dirXmlConfigurationFiles' ) .'patient.xml'
-        );
+        $xmlconfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
+        $this->view->form = $xmlconfig->loadFile('patient.xml');
     }
     
     

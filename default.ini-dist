@@ -14,3 +14,5 @@ authorUrl   = "http://www.dispedia.de"
 
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
 uriParts      = "%modeluri%/i/%classname%/%date%/%hash%/%labelparts%"
+predicateType = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+dirXmlConfigurationFiles = "xmlconfigurationfiles/"
