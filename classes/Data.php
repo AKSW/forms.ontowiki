@@ -5,12 +5,12 @@
  * @package    OntoWiki_extensions_formgenerator
  * @author     Lars Eidam <larseidam@googlemail.com>
  * @author     Konrad Abicht <konrad@inspirito.de>
- * @copyright  Copyright (c) 2011
- * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ * @copyright  Copyright(c) 2011
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License(GPL)
  */
-class Data 
+class Data
 {
-    public function __construct ()
+    public function __construct()
     {
         
     }
@@ -21,79 +21,69 @@ class Data
      * @param
      * @return string json result
      */
-    public static function submitFormula ( $form, $formOld )
+    public static function submitFormula($form, $formOld)
     {
-        $json = array ();
+        $json = array();
         
         // error
-        if ( null == $form )
-        {
+        if (null == $form) {
             $json ['status'] = 'error';
             $json ['message'] = 'form not set';
-        }
-        else
-        {
-            // JSON decode ( string to array)
-            $form = json_decode ( $form, true );
-            $formOld = json_decode ( $formOld, true );
+        } else {
+            // JSON decode(string to array)
+            $form = json_decode($form, true);
+            $formOld = json_decode($formOld, true);
          
             // error
-            if ( null == $form )
-            {
+            if (null == $form) {
                 $json ['status'] = 'error';
                 
                 // from
                 // http://de.php.net/manual/en/function.json-last-error.php
-                switch ( json_last_error() )
+                switch(json_last_error())
                 {
                     case JSON_ERROR_NONE:
                         $json ['message'] = 'No errors';
-                    break;
+                        break;
                     case JSON_ERROR_DEPTH:
                         $json ['message'] = 'Maximum stack depth exceeded';
-                    break;
+                        break;
                     case JSON_ERROR_STATE_MISMATCH:
                         $json ['message'] = 'Underflow or the modes mismatch';
-                    break;
+                        break;
                     case JSON_ERROR_CTRL_CHAR:
                         $json ['message'] = 'Unexpected control character found';
-                    break;
+                        break;
                     case JSON_ERROR_SYNTAX:
                         $json ['message'] = 'Syntax error, malformed JSON';
-                    break;
+                        break;
                     case JSON_ERROR_UTF8:
                         $json ['message'] = 'Malformed UTF-8 characters, possibly incorrectly encoded';
-                    break;
+                        break;
                     default:
                         $json ['message'] = 'Unknown error';
-                    break;                    
+                        break;                    
                 }
-            }
-            
             // $form is valid JSON
-            else
-            {
+            } else {
                 // build a formula instance
-                $form = Formula::initByArray ( $form );
-                $formOld = Formula::initByArray ( $formOld );
+                $form = Formula::initByArray($form);
+                $formOld = Formula::initByArray($formOld);
                 
-                if ( false === Formula::isValid ( $form ) )
-                {
+                if (false === Formula::isValid($form)) {
                     
-                }
-                else
-                {
+                } else {
                     // Add formula data to backend
-                    if ( 'add' == $form->getMode () )
-                        $json = Data::addFormulaData ( $form );
+                    if ('add' == $form->getMode())
+                        $json = Data::addFormulaData($form);
                         
-                    elseif ( 'edit' == $form->getMode () )
-                        $json = Data::changeFormulaData ( $form, $formOld );
+                    elseif ('edit' == $form->getMode())
+                        $json = Data::changeFormulaData($form, $formOld);
                 }
             }
         }
          
-        return json_encode ( $json );
+        return json_encode($json);
     }
     
     
@@ -101,55 +91,55 @@ class Data
      * adds a formula to backend
      * @param $f formula instance
      */
-    public static function addFormulaData ( &$f, $upperResource = null, $relations = array () )
+    public static function addFormulaData(&$f, $upperResource = null, $relations = array())
     {
-        $targetClass = $f->getTargetClass ();
+        $targetClass = $f->getTargetClass();
         
-        config::get ( 'titleHelper' )->addResource( $targetClass );
+        config::get('titleHelper')->addResource($targetClass);
                     
         // generate a new unique resource uri based on the target class
-        $resource = Resource::generateUniqueUri ( $f );
+        $resource = Resource::generateUniqueUri($f);
         
         // add resource - rdf:type - targetclass
-        Data::addStmt ( 
-            $resource, config::get ( 'predicate_type' ), $targetClass 
+        Data::addStmt(
+            $resource,
+            config::get('predicate_type'),
+            targetClass 
         );
         
         $f->setResource($resource);
         
         // add relations between a upper resource and a new resource 
-        if ( null != $upperResource && 0 < count ( $relations ) )
-        {
-            foreach ( $relations as $relation ) 
-            {
-                Data::addStmt ( 
-                    $upperResource, $relation, $resource
+        if (null != $upperResource && 0 < count($relations)) {
+            foreach ($relations as $relation) {
+                Data::addStmt(
+                    $upperResource,
+                    $relation,
+                    $resource
                 );
             }
         }
         
         
-        foreach ( $f->getSections () as $sectionEntries ) 
-        {
+        foreach ($f->getSections() as $sectionEntries) {
             // extract title from array and delete it
             // so there only predicate and nestedconfig elements in it
-            array_shift( $sectionEntries );
+            array_shift($sectionEntries);
             
-            foreach ( $sectionEntries as $entry )
-            {
+            foreach ($sectionEntries as $entry) {
                 // predicate
-                if ( 'predicate' == $entry ['sectiontype'] )
-                {
-                    Data::addStmt ( 
-                        $resource, $entry ['predicateuri'], $entry ['value'] 
+                if ('predicate' == $entry ['sectiontype']) {
+                    Data::addStmt(
+                        $resource,
+                        $entry ['predicateuri'],
+                        $entry ['value'] 
                     );
-                }
-                
                 // sub formula
-                elseif ( 'nestedconfig' == $entry ['sectiontype'] )
-                {
-                    Data::addFormulaData ( 
-                        $entry ['form'], $resource, $entry ['relations'] 
+                } elseif ('nestedconfig' == $entry ['sectiontype']) {
+                    Data::addFormulaData(
+                        $entry ['form'],
+                        $resource,
+                        $entry ['relations'] 
                     );
                 }
             } 
@@ -166,31 +156,24 @@ class Data
     /**
      * Change formula data in backend
      */
-    public static function changeFormulaData ( $form, $formOld )
+    public static function changeFormulaData($form, $formOld)
     {
-        foreach ( $form->getSections () as $sectionEntries ) 
-        {
+        foreach ($form->getSections() as $sectionEntries) {
             // extract title from array and delete it
             // so there only predicate and nestedconfig elements in it
-            array_shift( $sectionEntries );
+            array_shift($sectionEntries);
             
-            foreach ( $sectionEntries as $entry )
-            {
+            foreach ($sectionEntries as $entry) {
                 // predicate
-                if ( 'predicate' == $entry ['sectiontype'] )
-                {
-                    $oldValue = $formOld->getPredicateValueByIndex( $entry ['index'] );
-                    if ($entry ['value'] != $oldValue)
-                    {
+                if ('predicate' == $entry ['sectiontype']) {
+                    $oldValue = $formOld->getPredicateValueByIndex($entry ['index']);
+                    if ($entry ['value'] != $oldValue) {
                         Data::removeStmt($form->getResource(), $entry ['predicateUri'], $oldValue);
                         Data::addStmt($form->getResource(), $entry ['predicateUri'], $entry ['value']);
                     }
-                }
-                
                 // sub formula
-                elseif ( 'nestedconfig' == $entry ['sectiontype'] )
-                {
-                    
+                } elseif ('nestedconfig' == $entry ['sectiontype']) {
+                  //TODO  
                 }
             }
         }
@@ -206,38 +189,36 @@ class Data
     /**
      * adds a triple to datastore
      */
-    public static function addStmt ( $s, $p, $o )
+    public static function addStmt($s, $p, $o)
     {
-        // set type (uri or literal)
-        $type = Resource::determineObjectType ( $o );
+        // set type(uri or literal)
+        $type = Resource::determineObjectType($o);
         
         // add a triple to datastore
-        return config::get('store')->addStatement (
-            config::get ('selectedModelUri'), 
-            $s, $p, 
-            array ( 'value' => $o, 'type' => $type )
+        return config::get('store')->addStatement(
+            config::get('selectedModelUri'), 
+            $s,
+            $p, 
+            array('value' => $o, 'type' => $type)
         );
     }
     
     /**
      *
      */
-    public static function removeStmt ( $s, $p, $o )
+    public static function removeStmt($s, $p, $o)
     {
-        $type = Resource::determineObjectType ( $o );
-        if ('uri' == $type)
-        {
+        $type = Resource::determineObjectType($o);
+        if ('uri' == $type) {
             $options['object_type'] = Erfurt_Store::TYPE_IRI;
-        }
-        else if ('literal' == $type)
-        {
+        } else if ('literal' == $type) {
             $type == '';
             $options['object_type'] = Erfurt_Store::TYPE_LITERAL;
         }
         
         // aremove a triple form datastore
-        return config::get('store')->deleteMatchingStatements (
-            config::get ('selectedModelUri'),
+        return config::get('store')->deleteMatchingStatements(
+            config::get('selectedModelUri'),
             $s,
             $p,
             $o,
@@ -250,9 +231,9 @@ class Data
      * @param $s
      * @return string
      */
-    public static function replaceNamespaces ( $s )
-	{
+    public static function replaceNamespaces($s)
+    {
         //TODO: no use of fix Uri       
-		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
-	}
+	return str_replace('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
+    }
 }
