@@ -518,6 +518,9 @@ class Formula
      */
     public function getPredicateValueByIndex ( $index )
     {
+        if ( $this->getIndex () == $index )
+            return $this;
+        
         foreach ( $this->getSections () as $sectionEntries ) 
         {
             // extract title from array and delete it

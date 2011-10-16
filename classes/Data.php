@@ -70,6 +70,12 @@ class Data
                 $form = Formula::initByArray($form);
                 $formOld = Formula::initByArray($formOld);
                 
+                /*echo '<pre>'; var_dump ( $formOld->getDataAsArrays () ); echo '</pre>
+                
+                
+                
+                ';*/
+                
                 if (false === Formula::isValid($form)) {
                     
                 } else {
@@ -177,7 +183,6 @@ class Data
                         Data::removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
                         
                         $json['change'][] = 'remove ' . $form->getResource() . ' --- '. $entry ['predicateuri']  . ' --- '. $oldValue;
-                        // $json['change'][] = 'remove ' . json_encode ( $entry );
                         
                         Data::addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
@@ -187,6 +192,11 @@ class Data
                 
                 // sub formula
                 elseif ('nestedconfig' == $entry ['sectiontype']) {
+                    
+                    if ( '0,5' == $entry ['index'] )
+                    {
+                        // echo '<pre>'; var_dump ( $entry ); echo '</pre>';
+                    }
                     
                     Data::changeFormulaData ( $entry ['form'], $oldValue );
                   
