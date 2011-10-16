@@ -128,7 +128,8 @@ class XmlConfig
                             foreach ( $nodeValue->nestedconfig as $nestedconfig )
                             {                                             
                                 // Load XML Config
-				$xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
+                                $xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
+                                
                                 $f = $xmlConfig->loadFile( 
                                     $nestedconfig->xmlfile,
                                     $index .','. $entryIndex

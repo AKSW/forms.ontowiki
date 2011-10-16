@@ -61,6 +61,15 @@ class Formula
     
     
     /**
+     * @param $v new index
+     */
+    public function setIndex ($v)
+    {
+        $this->_data ['index'] = $v;
+    }
+    
+    
+    /**
      * @return void 
      */
     public function setMode ( $value )
@@ -351,7 +360,9 @@ class Formula
                 {
                     $newSection [] = array (
                         'sectiontype'   => $s ['sectiontype'],
-                        'relations'      => $s ['relations'],
+                        'relations'     => $s ['relations'],
+                        'index'         => $s ['index'],
+                        'xmlfile'       => $s ['xmlfile'],
                         'form'          => $s ['form']->getDataAsArrays ()
                     );
                 }
@@ -368,9 +379,9 @@ class Formula
      * @return Formula
      */
     public static function initByArray ( $formArray )
-    {
+    {  
         // init a new Formula instance
-        $form = new Formula ( 0 );
+        $form = new Formula ( $formArray ['index'] );
 
         $form->setTitle ( $formArray ['title'] );
         
@@ -385,7 +396,7 @@ class Formula
         $form->setTargetClass ( $formArray ['targetclass'] );
         
         $form->setXmlFile ( $formArray ['xmlfile'] );
-        
+                        
         foreach ( $formArray ['sections'] as $entry )
         {
             $newSection = array ( 'title' => $entry ['title'] );
@@ -407,7 +418,14 @@ class Formula
                     );
                 }
                 elseif ( 'nestedconfig' == $section ['sectiontype'] )
-                {
+                {                
+                    /*echo "====> XML : " .$section ['form']['xmlfile'] ."
+                    
+                    INDEX: ". $section ['form']['index'] ."
+                    
+                    
+                    ";*/
+                        
                     $newSection [] = array ( 
                         'xmlfile'      => $section ['form']['xmlfile'],
                         'index'        => $section ['form']['index'],
@@ -507,12 +525,17 @@ class Formula
             array_shift( $sectionEntries );
             
             foreach ( $sectionEntries as $entry )
-            {
+            {                
                 // predicate
                 if ( 'predicate' == $entry ['sectiontype'] && $index == $entry ['index'] )
                 {
                     return $entry ['value'];
                 }
+                
+                elseif ( 'nestedconfig' == $entry ['sectiontype'] && $index == $entry ['index'] )
+                {
+                    return $entry ['form'];
+                } 
                 
                 // sub formula
                 elseif ( 'nestedconfig' == $entry ['sectiontype'] )

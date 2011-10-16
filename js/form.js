@@ -82,16 +82,32 @@ function setFormulaModeTo ( f, newMode )
  * @param url target URL
  * @param formData a json-serialized formula instance
  */
-function submitFormula ( url, formOld, mode ) 
-{    
+function submitFormula ( url, data, mode ) 
+{   
+    var form = $.data(data, "form");
+    
+    var formOld = "add" == mode 
+        ? $.data(data, "form")
+        : $.data(data, "formOld");
+        
+    console.log ( "submitFormulasubmitFormulasubmitFormulasubmitFormula" );
+    console.log ( "form" );
+    console.log ( form );
+    console.log ( "" );
+    
+    console.log ( "formOld" );
+    console.log ( formOld );
+    console.log ( "" );
+    
     // set values from formula into the formula instance 
     // which was loaded at the beginning
-    var form = setFormulaArrayFields ( formOld );
+    form = setFormulaArrayFields ( form );
     
     // set mode from new to add
     form = setFormulaModeTo ( form, mode );
+    // formOld = setFormulaModeTo ( formOld, mode );
         
-    // send formula to submit action on server
+    // send formulas to submit action on server
     response = $.ajax({
         type: "POST",
         url: url + "submit/",
@@ -102,10 +118,15 @@ function submitFormula ( url, formOld, mode )
     
     response = jQuery.parseJSON ( response );
     
-    // replace changed form
-    formOld = response['form'];
+    // replace formOld with form
+    $.data(data, "formOld", $.extend(true, {}, form));
     
+    // replace form with form instance from response
+    $.data(data, "form", response['form']);
+    
+    // show edit button
     $("#changeResource").show();
     
-    console.log ( response );
+    console.log ("response");
+    console.log (response);
 }

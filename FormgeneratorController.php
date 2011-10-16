@@ -64,6 +64,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // include Javascript files
         $this->view->headScript()->appendFile( config::get ('url') .'js/form.js');        
+        // $this->view->headScript()->appendFile( config::get ('url') .'js/main.js');        
         $this->view->headScript()->appendFile( config::get ('url') .'libraries/jquery.json.min.js');
         
         // set form relevant variables
@@ -71,7 +72,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // load xml configuration file
         $xmlconfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
-        $this->view->form = $xmlconfig->loadFile('patient.xml');
+        $this->view->form = $xmlconfig->loadFile('person.xml');
+        
+        echo '<pre>'; var_dump ( $this->view->form->getDataAsArrays () ); echo '</pre>';
     }
     
     
