@@ -26,7 +26,8 @@ class XmlConfig
      */
     public function loadFile ( $file, $index = 0 )
     {
-	$file = $this->_dirXmlConfigurationFiles . $file;
+        $file = $this->_dirXmlConfigurationFiles .'/'. $file;
+        
         $xml = simpleXML_load_file ( $file ); 
         
         if( false === $xml ) 

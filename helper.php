@@ -19,8 +19,3 @@ class config {
     public static function set ($n, $v) { self::$c [$n] = $v; } 
     public static function get ($n) { return self::$c [$n]; } 
 }
-
-// configuration 
-config::set ( 'dir', dirname ( __FILE__ ) );
-config::set ( 'dirXmlConfigurationFiles', config::get ('dir') . '/xmlconfigurationfiles/' );
-config::set ( 'dirJsHtmlPlugins', config::get ('dir') . '/jshtmlplugins/' );

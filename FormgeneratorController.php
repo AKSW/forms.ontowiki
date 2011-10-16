@@ -24,6 +24,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     private $_store;
     private $_predicateType;
     private $_dirXmlConfigurationFiles;
+    private $_dirJsHtmlPlugins;
     
     /**
      * init controller
@@ -38,6 +39,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_store = Erfurt_App::getInstance()->getStore();
         $this->_predicateType = $this->_privateConfig->predicateType;
         $this->_dirXmlConfigurationFiles = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
+        $this->_dirJsHtmlPlugins = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
         
         config::set ( 'url', $this->_componentUrlBase );
         
@@ -63,6 +65,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // include Javascript files
         $this->view->headScript()->appendFile( config::get ('url') .'js/form.js');        
         $this->view->headScript()->appendFile( config::get ('url') .'libraries/jquery.json.min.js');
+        
+        // set form relevant variables
+        $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
         
         // load xml configuration file
         $xmlconfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
