@@ -405,6 +405,8 @@ class Formula
             {
                 if ( 'predicate' == $section ['sectiontype'] )
                 {
+                    $section ['value'] = str_replace ( ' ', '', $section ['value'] );
+                    
                     $newSection [] = array (
                         'index'         => $section ['index'],
                         'name'          => $section ['name'],
@@ -418,14 +420,7 @@ class Formula
                     );
                 }
                 elseif ( 'nestedconfig' == $section ['sectiontype'] )
-                {                
-                    /*echo "====> XML : " .$section ['form']['xmlfile'] ."
-                    
-                    INDEX: ". $section ['form']['index'] ."
-                    
-                    
-                    ";*/
-                        
+                {                                
                     $newSection [] = array ( 
                         'xmlfile'      => $section ['form']['xmlfile'],
                         'index'        => $section ['form']['index'],
