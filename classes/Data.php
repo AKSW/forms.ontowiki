@@ -81,13 +81,7 @@ class Data
                 // build a formula instance
                 $form = Formula::initByArray($form);
                 $formOld = Formula::initByArray($formOld);
-                
-                /*echo '<pre>'; var_dump ( $formOld->getDataAsArrays () ); echo '</pre>
-                
-                
-                
-                ';*/
-                
+                                
                 if (false === Formula::isValid($form)) {
                     
                 } else {
