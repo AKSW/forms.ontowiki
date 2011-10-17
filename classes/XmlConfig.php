@@ -104,8 +104,8 @@ class XmlConfig
                                 $this->_titleHelper->addResource ( $p );
                                 $title = $this->_titleHelper->getTitle ( $p );
                                 
-                                if ( true == Resource::isUri ( $title ) )
-                                    $title = Resource::extractClassNameFromUri ( $title );
+                                if (true == Erfurt_Uri::check($title))
+                                    $title = Resource::extractClassNameFromUri ($title);
                                     
                                 
                                 // Build an entry instance.

@@ -31,8 +31,8 @@ class Resource
         $modelUri    = (string) config::get ( 'selectedModel' );
         
         $className   = config::get ( 'titleHelper' )->getTitle ( $targetClass );
-        $className   = true == Resource::isUri ( $className )
-                       ? Resource::extractClassNameFromUri ( $className )
+        $className   = true == Erfurt_Uri::check($className)
+                       ? Resource::extractClassNameFromUri ($className)
                        : $className;
                     
         $label       = implode ( '', $f->getLabelpartValues () );
@@ -52,33 +52,6 @@ class Resource
         $newUri = str_replace('%classname%', $className, $newUri);
                 
         return $newUri;
-    }
-    
-
-    /**
-     * @param $o
-     * @return string uri or literal
-     */
-    public static function determineObjectType ( $o )
-    {
-        return Resource::isUri ( $o )
-            ? 'uri' 
-            : 'literal';
-    }
-    
-    
-    /**
-     * @param $o
-     * @return string uri or literal
-     */
-    public static function isUri ( $o )
-    {
-        if ( 0 <= strpos ( $o, ':' ) )
-            return true;
-        else
-            return preg_match('/^(http|ftp|https|architecture):\/\/|ftp:\/\/{1})((\w+\.){1,})\w{2,}$/i', $o )
-                ? false
-                : true;
     }
     
     

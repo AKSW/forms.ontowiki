@@ -162,12 +162,20 @@ class Data
     /**
      * Change formula data in backend
      */
-    public static function changeFormulaData($form, $formOld)
+    public static function changeFormulaData($form, $formOld, $start = true)
     {
-        $json = array();
-        $json['status'] = 'ok';
+        if ( true == $start )
+        {
+            $json = array();
+            $json['status'] = 'ok';            
+            $json['formOld'] = $formOld->getDataAsArrays();
+        }
+        else
+            $log = array ();
+            
                 
-        foreach ($form->getSections() as $sectionEntries) {
+        foreach ($form->getSections() as $sectionEntries) 
+        {
             // extract title from array and delete it
             // so there only predicate and nestedconfig elements in it
             array_shift($sectionEntries);
@@ -177,36 +185,51 @@ class Data
                 $oldValue = $formOld->getPredicateValueByIndex($entry ['index']);
                 
                 // predicate
-                if ('predicate' == $entry ['sectiontype']) {
+                if ('predicate' == $entry ['sectiontype'] && false === is_object ( $oldValue ) ) {
                     
-                    if ($entry ['value'] != $oldValue) {
+                    if ($entry ['value'] != $oldValue) 
+                    {
                         Data::removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
                         
-                        $json['change'][] = 'remove ' . $form->getResource() . ' --- '. $entry ['predicateuri']  . ' --- '. $oldValue;
+                        if ( true == $start )
+                            $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
+                        else
+                            $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         
                         Data::addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
-                        $json['change'][] = 'add ' . $form->getResource() .' ---- '. $entry ['predicateuri'] .' --- '. $entry ['value'];
+                        if ( true == $start )
+                            $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
+                        else
+                            $log [] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'].' (index='. $entry ['index'] .')';
+                    }
+                    else
+                    {
+                        if ( true == $start )
+                            $json['log'][] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
+                        else
+                            $log [] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
                     }
                 } 
                 
                 // sub formula
-                elseif ('nestedconfig' == $entry ['sectiontype']) {
-                    
-                    if ( '0,5' == $entry ['index'] )
-                    {
-                        // echo '<pre>'; var_dump ( $entry ); echo '</pre>';
-                    }
-                    
-                    Data::changeFormulaData ( $entry ['form'], $oldValue );
-                  
+                elseif ('nestedconfig' == $entry ['sectiontype'] && true === is_object ( $oldValue )) 
+                {
+                    if ( true == $start ) 
+                        $json ['log'] [] = Data::changeFormulaData ( $entry ['form'], $oldValue, false );
+                    else
+                        $log = array_merge ($log, Data::changeFormulaData ( $entry ['form'], $oldValue, false ));
                 }
             }
         }
         
-        $json['form'] = $form->getDataAsArrays();
-        
-        return $json;
+        if ( true == $start )
+        {
+            $json['form'] = $form->getDataAsArrays();
+            return $json;
+        }
+        else
+            return $log;
     }
     
     
@@ -216,7 +239,9 @@ class Data
     public static function addStmt($s, $p, $o)
     {
         // set type(uri or literal)
-        $type = Resource::determineObjectType($o);
+        $type = true == Erfurt_Uri::check($o) 
+            ? Erfurt_Store::TYPE_IRI
+            : Erfurt_Store::TYPE_LITERAL;
         
         // add a triple to datastore
         return config::get('store')->addStatement(
@@ -232,23 +257,17 @@ class Data
      */
     public static function removeStmt($s, $p, $o)
     {
-        $type = Resource::determineObjectType($o);
-        $object = array ('value'=>$o);
-        
-        if ('uri' == Erfurt_Uri::check($o)) {
-            $object['type'] = Erfurt_Store::TYPE_IRI;
-        } 
-        else //  if ('literal' == $type) 
-        {
-            $object['type'] = Erfurt_Store::TYPE_LITERAL;
-        }
-        
+        // set type(uri or literal)
+        $type = true == Erfurt_Uri::check($o) 
+            ? Erfurt_Store::TYPE_IRI
+            : Erfurt_Store::TYPE_LITERAL;
+            
         // aremove a triple form datastore
         return config::get('store')->deleteMatchingStatements(
             config::get('selectedModelUri'),
             $s,
             $p,
-            $object
+            array('value' => $o, 'type' => $type)
         );
     }
     

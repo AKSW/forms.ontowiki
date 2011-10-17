@@ -23,7 +23,7 @@ class Formula
     {
         $this->_data = array ();
         
-        $this->_data ['index'] = $index;        
+        $this->_data ['index'] = $this->setIndex ($index);        
         $this->_data ['mode'] = 'new';
         $this->_data ['resource'] = "";
         $this->_data ['sections'] = array ();
@@ -56,7 +56,7 @@ class Formula
      */
     public function getIndex ()
     {
-        return $this->_data ['index'];
+        return (string) $this->_data ['index'];
     }
     
     
@@ -65,7 +65,7 @@ class Formula
      */
     public function setIndex ($v)
     {
-        $this->_data ['index'] = $v;
+        $this->_data ['index'] = (string) $v;
     }
     
     
@@ -512,16 +512,19 @@ class Formula
         return $values;
     }
     
+    
     /**
      *
      *
      */
     public function getPredicateValueByIndex ( $index )
     {
-        if ( $this->getIndex () == $index )
+        if ($this->getIndex () == $index)
+        {
             return $this;
+        }
         
-        foreach ( $this->getSections () as $sectionEntries ) 
+        foreach ($this->getSections () as $sectionEntries) 
         {
             // extract title from array and delete it
             // so there only predicate and nestedconfig elements in it
@@ -542,11 +545,15 @@ class Formula
                 
                 // sub formula
                 elseif ( 'nestedconfig' == $entry ['sectiontype'] )
-                {
-                    return $entry ['form']->getPredicateValueByIndex($index);
+                {                    
+                    $result = $entry ['form']->getPredicateValueByIndex($index);
+                    
+                    if ( '' != $result )
+                        return $result;
                 }
+                
             } 
         }
-        return 0;
+        return '';
     }
 }
