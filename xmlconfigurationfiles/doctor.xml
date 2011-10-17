@@ -1,0 +1,30 @@
+<!-- Create a new doctor. -->
+<form> 
+    <targetclass>architecture:Person</targetclass>				
+	
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+    
+    <title>Doctor</title>
+    
+	<description>Lorem </description>
+	
+    <sections>
+		<item>
+			<title>Treating physician</title> 								
+
+            <predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+            
+		</item>
+	</sections>
+</form>

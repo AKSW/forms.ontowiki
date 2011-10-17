@@ -1,8 +1,8 @@
-<!-- Create a new person. -->
+<!-- Create a new patient. -->
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Person</targetclass>
+    <targetclass>architecture:Patient</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
@@ -10,19 +10,19 @@
         <item>architecture:lastName</item>
     </labelparts>
 	
-    <!-- Headline of this formula. -->
-    <title>Person</title>
+    <!-- Headline of this formula -->
+    <title>Patient</title>
 	
-    <!-- Introducing text to inform the user about the formula. -->
-    <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</description>
+    <!-- Introducing text to inform the user about the formula -->
+    <description>Lorem</description>
 	
     <sections>
         
         <!-- A new section -->
 		<item>
             
-            <!-- Caption of this section part -->
-			<caption>Person information</caption> 	
+            <!-- title of this section part -->
+			<title>Patient information</title> 	
 						
             <!-- Textfield -->
 			<predicate> 
@@ -36,7 +36,7 @@
 				<predicateuri>architecture:lastName</predicateuri>
 			</predicate>
 			
-            <!-- Date -->
+            <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
 				<predicateuri>architecture:birthdate</predicateuri>
@@ -61,5 +61,35 @@
 			</predicate>
 		
 		</item>
+		
+        <!-- Another section ... -->
+		<item>	
+        
+            <title>Mother</title>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>person.xml</xmlfile>
+				<relations>
+					<item>architecture:isMotherOf</item>
+					<item>architecture:isLovedBye</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+                <!-- Another section ... -->
+		<item>	
+        
+            <title>Treating physician</title>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>doctor.xml</xmlfile>
+				<relations>
+					<item>architecture:isDoctorOf</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
 	</sections>
 </form>
