@@ -1,6 +1,5 @@
 <?php
 
-require_once 'helper.php';
 require_once 'classes/Data.php';
 require_once 'classes/Formula.php';
 require_once 'classes/Resource.php';
