@@ -10,9 +10,21 @@
  */
 class Data
 {
-    public function __construct()
+    private $_predicateType;
+    private $_selectedModel;
+    private $_selectedModelUri;
+    private $_store;
+    private $_titleHelper;
+    private $_uriParts;
+    
+    public function __construct( $predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts )
     {
-        
+        $this->_predicateType = $predicateType;
+        $this->_selectedModel = $selectedModel;
+        $this->_selectedModelUri = $selectedModelUri;
+        $this->_store = $store;
+        $this->_titleHelper = $titleHelper;
+        $this->_uriParts = $uriParts;
     }
     
     
@@ -21,7 +33,7 @@ class Data
      * @param
      * @return string json result
      */
-    public static function submitFormula($form, $formOld)
+    public function submitFormula($form, $formOld)
     {
         $json = array();
         
@@ -81,10 +93,10 @@ class Data
                 } else {
                     // Add formula data to backend
                     if ('add' == $form->getMode())
-                        $json = Data::addFormulaData($form);
+                        $json = $this->addFormulaData($form);
                         
                     elseif ('edit' == $form->getMode())
-                        $json = Data::changeFormulaData($form, $formOld);
+                        $json = $this->changeFormulaData($form, $formOld);
                 }
             }
         }
@@ -97,19 +109,19 @@ class Data
      * adds a formula to backend
      * @param $f formula instance
      */
-    public static function addFormulaData(&$f, $upperResource = null, $relations = array())
+    public function addFormulaData(&$f, $upperResource = null, $relations = array())
     {
         $targetClass = $f->getTargetClass();
         
-        config::get('titleHelper')->addResource($targetClass);
+        $this->_titleHelper->addResource($targetClass);
                     
         // generate a new unique resource uri based on the target class
-        $resource = Resource::generateUniqueUri($f);
+        $resource = Resource::generateUniqueUri($f, $this->_selectedModel, $this->_titleHelper, $this->_uriParts );
         
         // add resource - rdf:type - targetclass
-        Data::addStmt(
+        $this->addStmt(
             $resource,
-            config::get('predicate_type'),
+            $this->_predicateType,
             $targetClass 
         );
         
@@ -118,7 +130,7 @@ class Data
         // add relations between a upper resource and a new resource 
         if (null != $upperResource && 0 < count($relations)) {
             foreach ($relations as $relation) {
-                Data::addStmt(
+                $this->addStmt(
                     $upperResource,
                     $relation,
                     $resource
@@ -135,14 +147,14 @@ class Data
             foreach ($sectionEntries as $entry) {
                 // predicate
                 if ('predicate' == $entry ['sectiontype']) {
-                    Data::addStmt(
+                    $this->addStmt(
                         $resource,
                         $entry ['predicateuri'],
                         $entry ['value'] 
                     );
                 // sub formula
                 } elseif ('nestedconfig' == $entry ['sectiontype']) {
-                    Data::addFormulaData(
+                    $this->addFormulaData(
                         $entry ['form'],
                         $resource,
                         $entry ['relations'] 
@@ -162,7 +174,7 @@ class Data
     /**
      * Change formula data in backend
      */
-    public static function changeFormulaData($form, $formOld, $start = true)
+    public function changeFormulaData($form, $formOld, $start = true)
     {
         if ( true == $start )
         {
@@ -189,14 +201,14 @@ class Data
                     
                     if ($entry ['value'] != $oldValue) 
                     {
-                        Data::removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
+                        $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
                         
                         if ( true == $start )
                             $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
                         else
                             $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         
-                        Data::addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
+                        $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
                         if ( true == $start )
                             $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
@@ -216,9 +228,9 @@ class Data
                 elseif ('nestedconfig' == $entry ['sectiontype'] && true === is_object ( $oldValue )) 
                 {
                     if ( true == $start ) 
-                        $json ['log'] [] = Data::changeFormulaData ( $entry ['form'], $oldValue, false );
+                        $json ['log'] [] = $this->changeFormulaData ( $entry ['form'], $oldValue, false );
                     else
-                        $log = array_merge ($log, Data::changeFormulaData ( $entry ['form'], $oldValue, false ));
+                        $log = array_merge ($log, $data->changeFormulaData ( $entry ['form'], $oldValue, false ));
                 }
             }
         }
@@ -236,7 +248,7 @@ class Data
     /**
      * adds a triple to datastore
      */
-    public static function addStmt($s, $p, $o)
+    public function addStmt($s, $p, $o)
     {
         // set type(uri or literal)
         $type = true == Erfurt_Uri::check($o) 
@@ -244,8 +256,8 @@ class Data
             : Erfurt_Store::TYPE_LITERAL;
         
         // add a triple to datastore
-        return config::get('store')->addStatement(
-            config::get('selectedModelUri'), 
+        return $this->_store->addStatement(
+            $this->_selectedModelUri, 
             $s,
             $p, 
             array('value' => $o, 'type' => $type)
@@ -255,7 +267,7 @@ class Data
     /**
      *
      */
-    public static function removeStmt($s, $p, $o)
+    public function removeStmt($s, $p, $o)
     {
         // set type(uri or literal)
         $type = true == Erfurt_Uri::check($o) 
@@ -263,8 +275,8 @@ class Data
             : Erfurt_Store::TYPE_LITERAL;
             
         // aremove a triple form datastore
-        return config::get('store')->deleteMatchingStatements(
-            config::get('selectedModelUri'),
+        return $this->_store->deleteMatchingStatements(
+            $this->_selectedModelUri,
             $s,
             $p,
             array('value' => $o, 'type' => $type)
@@ -279,6 +291,6 @@ class Data
     public static function replaceNamespaces($s)
     {
         //TODO: no use of fix Uri       
-	return str_replace('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
+        return str_replace('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
     }
 }

@@ -24,28 +24,28 @@ class Resource
      * @param $uriParts From default.ini
      * @return string
      */
-    public static function generateUniqueUri ( $f )
+    public static function generateUniqueUri ( $f, $selectedModel, $titleHelper, $uriParts )
     {
         // set essential parts
         $targetClass = $f->getTargetClass ();
-        $modelUri    = (string) config::get ( 'selectedModel' );
         
-        $className   = config::get ( 'titleHelper' )->getTitle ( $targetClass );
+        $selectedModel = (string) $selectedModel;
+        
+        $className   = $titleHelper->getTitle ( $targetClass );
         $className   = true == Erfurt_Uri::check($className)
                        ? Resource::extractClassNameFromUri ($className)
                        : $className;
                     
         $label       = implode ( '', $f->getLabelpartValues () );
-        $uriParts    = config::get ( 'uriParts' );
         
         $time = time ();
         
         // if a / is at the end of the modelUri, remove it
-        if ( '/' == substr ( $modelUri, strlen($modelUri) - 1 ) )
-            $modelUri = substr ( $modelUri, 0, strlen($modelUri) - 1 );
+        if ( '/' == substr ( $selectedModel, strlen($selectedModel) - 1 ) )
+            $selectedModel = substr ( $selectedModel, 0, strlen($selectedModel) - 1 );
         
         // replace placeholders in $uriParts
-        $newUri = str_replace('%modeluri%', $modelUri, $uriParts);
+        $newUri = str_replace('%modeluri%', $selectedModel, $uriParts);
         $newUri = str_replace('%hash%', substr ( md5 ($time . $className . rand() ), 0, 6 ), $newUri);
         $newUri = str_replace('%date%', date ( 'Ymd', $time ), $newUri);
         $newUri = str_replace('%labelparts%', $label, $newUri);

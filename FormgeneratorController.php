@@ -18,13 +18,15 @@ require_once 'classes/XmlConfig.php';
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
 {
-    private $_titleHelper;
-    private $_selectedModel;
-    private $_uriParts;
-    private $_store;
-    private $_predicateType;
     private $_dirXmlConfigurationFiles;
     private $_dirJsHtmlPlugins;
+    private $_predicateType;
+    private $_selectedModel;
+    private $_selectedModelUri;
+    private $_store;
+    private $_titleHelper;
+    private $_uriParts;
+    private $_url;
     
     /**
      * init controller
@@ -36,25 +38,26 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // sets default model
         $model = new Erfurt_Rdf_Model ( $this->_privateConfig->model );
         
-        $this->_selectedModel = $model;
-        $this->_owApp->selectedModel = $model;
-        
-        $this->_titleHelper = new OntoWiki_Model_TitleHelper ( $this->_selectedModel );
-        $this->_uriPart = $this->_privateConfig->uriParts;
-        $this->_store = Erfurt_App::getInstance()->getStore();
-        $this->_predicateType = $this->_privateConfig->predicateType;
         $this->_dirXmlConfigurationFiles = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
         $this->_dirJsHtmlPlugins = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
+        $this->_predicateType = $this->_privateConfig->predicateType;
+        $this->_selectedModel = $model;
+        $this->_selectedModelUri = (string) $model;
+        $this->_store = Erfurt_App::getInstance()->getStore();
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper ( $this->_selectedModel );
+        $this->_uriParts = $this->_privateConfig->uriParts;        
+        $this->_url = $this->_componentUrlBase;
+        $this->_owApp->selectedModel = $model;
         
-        config::set ( 'url', $this->_componentUrlBase );
+        // config::set ( 'url', $this->_componentUrlBase );
         
-        config::set ( 'selectedModel', $this->_owApp->selectedModel );
-        config::set ( 'selectedModelUri', (string) config::get ( 'selectedModel' ) );
-        config::set ( 'titleHelper', new OntoWiki_Model_TitleHelper ( config::get ( 'selectedModel' ) ) );
-        config::set ( 'uriParts', $this->_privateConfig->uriParts );
-        config::set ( 'store', Erfurt_App::getInstance()->getStore() );
+        // config::set ( 'selectedModel', $this->_owApp->selectedModel );
+        // config::set ( 'selectedModelUri', (string) config::get ( 'selectedModel' ) );
+        // config::set ( 'titleHelper', new OntoWiki_Model_TitleHelper ( config::get ( 'selectedModel' ) ) );
+        // config::set ( 'uriParts', $this->_privateConfig->uriParts );
+        // config::set ( 'store', Erfurt_App::getInstance()->getStore() );
         
-        config::set ( 'predicate_type', $this->_privateConfig->predicateType );
+        // config::set ( 'predicate_type', $this->_privateConfig->predicateType );
     }    
 
 
@@ -64,15 +67,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function formAction()
     {   
         // include CSS files
-        $this->view->headLink()->appendStylesheet( config::get ('url') .'css/form.css' );
-        $this->view->headLink()->appendStylesheet( config::get ('url') .'css/jshtmlplugins.css' );
+        $this->view->headLink()->appendStylesheet( $this->_url .'css/form.css' );
+        $this->view->headLink()->appendStylesheet( $this->_url .'css/jshtmlplugins.css' );
         
         // include Javascript files
-        $this->view->headScript()->appendFile( config::get ('url') .'js/form.js');           
-        $this->view->headScript()->appendFile( config::get ('url') .'libraries/jquery.json.min.js');
+        $this->view->headScript()->appendFile( $this->_url .'js/form.js');           
+        $this->view->headScript()->appendFile( $this->_url .'libraries/jquery.json.min.js');
         
         // set form relevant variables
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
+        $this->view->url = $this->_url;
         
         // set file to load or default filename
         $file = '' != $this->_request->getParam('file')
@@ -99,7 +103,14 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // processes a formula and output the result
         $form = true == isset ( $_REQUEST ['form'] ) ? $_REQUEST ['form'] : null;
         $formOld =  true == isset ( $_REQUEST ['formOld'] ) ? $_REQUEST ['formOld'] : null;
-        echo Data::submitFormula ( $form, $formOld );
+        
+        // instance of Data class for communicate with backend
+        $data = new Data ( 
+            $this->_predicateType, $this->_selectedModel, $this->_selectedModelUri,
+            $this->_store, $this->_titleHelper, $this->_uriParts 
+        );
+        
+        echo $data->submitFormula ( $form, $formOld );
     }
 }
 
