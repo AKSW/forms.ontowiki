@@ -33,7 +33,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     {
         parent::init();
         
-        $this->_selectedModel = $this->_owApp->selectedModel;
+        // sets default model
+        $model = new Erfurt_Rdf_Model ( $this->_privateConfig->model );
+        
+        $this->_selectedModel = $model;
+        $this->_owApp->selectedModel = $model;
+        
         $this->_titleHelper = new OntoWiki_Model_TitleHelper ( $this->_selectedModel );
         $this->_uriPart = $this->_privateConfig->uriParts;
         $this->_store = Erfurt_App::getInstance()->getStore();
@@ -69,11 +74,14 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // set form relevant variables
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
         
+        // set file to load or default filename
+        $file = '' != $this->_request->getParam('file')
+            ? $this->_request->getParam('file') 
+            : 'person';
+        
         // load xml configuration file
         $xmlconfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
-        $this->view->form = $xmlconfig->loadFile('patient.xml');
-        
-        // echo '<pre>'; var_dump ( $this->view->form ); echo '</pre>';
+        $this->view->form = $xmlconfig->loadFile($file .'.xml');
     }
     
     
