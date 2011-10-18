@@ -12,6 +12,8 @@ authorUrl   = "http://www.dispedia.de"
 
 [private] 
 
+defaultModel = "http://als.dispedia.info/"
+
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
 uriParts      = "%modeluri%/i/%classname%/%date%/%hash%/%labelparts%"
 

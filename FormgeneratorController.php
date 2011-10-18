@@ -35,7 +35,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         parent::init();
         
         // sets default model
-        $model = new Erfurt_Rdf_Model ( $this->_privateConfig->model );
+        $model = new Erfurt_Rdf_Model ( $this->_privateConfig->defaultModel );
         
         $this->_dirXmlConfigurationFiles = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
         $this->_dirJsHtmlPlugins = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
