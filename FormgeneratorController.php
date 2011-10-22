@@ -17,6 +17,7 @@ require_once 'classes/XmlConfig.php';
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
 {
+    private $_defaultXmlConfigurationFile;
     private $_dirXmlConfigurationFiles;
     private $_dirJsHtmlPlugins;
     private $_predicateType;
@@ -37,6 +38,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // sets default model
         $model = new Erfurt_Rdf_Model ( $this->_privateConfig->defaultModel );
         
+        $this->_defaultXmlConfigurationFile = $this->_privateConfig->defaultXmlConfigurationFile;
         $this->_dirXmlConfigurationFiles = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
         $this->_dirJsHtmlPlugins = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
         $this->_predicateType = $this->_privateConfig->predicateType;
@@ -46,17 +48,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_titleHelper = new OntoWiki_Model_TitleHelper ( $this->_selectedModel );
         $this->_uriParts = $this->_privateConfig->uriParts;        
         $this->_url = $this->_componentUrlBase;
+        
         $this->_owApp->selectedModel = $model;
-        
-        // config::set ( 'url', $this->_componentUrlBase );
-        
-        // config::set ( 'selectedModel', $this->_owApp->selectedModel );
-        // config::set ( 'selectedModelUri', (string) config::get ( 'selectedModel' ) );
-        // config::set ( 'titleHelper', new OntoWiki_Model_TitleHelper ( config::get ( 'selectedModel' ) ) );
-        // config::set ( 'uriParts', $this->_privateConfig->uriParts );
-        // config::set ( 'store', Erfurt_App::getInstance()->getStore() );
-        
-        // config::set ( 'predicate_type', $this->_privateConfig->predicateType );
     }    
 
 
@@ -78,12 +71,22 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->url = $this->_url;
         
         // set file to load or default filename
-        $file = '' != $this->_request->getParam('file')
-            ? $this->_request->getParam('file') 
-            : 'person';
+        if ('' != $this->_request->getParam('file'))
+            $file = $this->_request->getParam('file');
+            
+        elseif ( '' != OntoWiki_Model_Instances::getSelectedClass () )
+        {
+            $this->_titleHelper->addResource ( OntoWiki_Model_Instances::getSelectedClass () );
+            $file = $this->_titleHelper->getTitle ( OntoWiki_Model_Instances::getSelectedClass () );
+        }
+            
+        else
+            $file = 'person';
         
         // load xml configuration file
-        $xmlconfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
+        $xmlconfig = new XmlConfig(
+            $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile);
+        
         $this->view->form = $xmlconfig->loadFile($file .'.xml');
     }
     
