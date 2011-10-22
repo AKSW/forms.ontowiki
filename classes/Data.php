@@ -17,7 +17,7 @@ class Data
     private $_titleHelper;
     private $_uriParts;
     
-    public function __construct( $predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts )
+    public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts)
     {
         $this->_predicateType = $predicateType;
         $this->_selectedModel = $selectedModel;
@@ -110,14 +110,14 @@ class Data
         $this->_titleHelper->addResource($targetClass);
                     
         // generate a new unique resource uri based on the target class
-        $resource = Resource::generateUniqueUri($f, $this->_selectedModel, $this->_titleHelper, $this->_uriParts );
+        $resource = Resource::generateUniqueUri($f, $this->_selectedModel, $this->_titleHelper, $this->_uriParts);
         
         // add resource - rdf:type - targetclass
         $this->addStmt(
             $resource,
             $this->_predicateType,
             $targetClass 
-        );
+       );
         
         $f->setResource($resource);
         
@@ -128,7 +128,7 @@ class Data
                     $upperResource,
                     $relation,
                     $resource
-                );
+               );
             }
         }
         
@@ -145,14 +145,14 @@ class Data
                         $resource,
                         $entry ['predicateuri'],
                         $entry ['value'] 
-                    );
+                   );
                 // sub formula
                 } elseif ('nestedconfig' == $entry ['sectiontype']) {
                     $this->addFormulaData(
                         $entry ['form'],
                         $resource,
                         $entry ['relations'] 
-                    );
+                   );
                 }
             } 
         }
@@ -170,7 +170,7 @@ class Data
      */
     public function changeFormulaData($form, $formOld, $start = true)
     {
-        if ( true == $start )
+        if (true == $start)
         {
             $json = array();
             $json['status'] = 'ok';            
@@ -191,27 +191,27 @@ class Data
                 $oldValue = $formOld->getPredicateValueByIndex($entry ['index']);
                 
                 // predicate
-                if ('predicate' == $entry ['sectiontype'] && false === is_object ( $oldValue ) ) {
+                if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
                     
                     if ($entry ['value'] != $oldValue) 
                     {
                         $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
                         
-                        if ( true == $start )
+                        if (true == $start)
                             $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
                         else
                             $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         
                         $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
-                        if ( true == $start )
+                        if (true == $start)
                             $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
                         else
                             $log [] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'].' (index='. $entry ['index'] .')';
                     }
                     else
                     {
-                        if ( true == $start )
+                        if (true == $start)
                             $json['log'][] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
                         else
                             $log [] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
@@ -219,17 +219,17 @@ class Data
                 } 
                 
                 // sub formula
-                elseif ('nestedconfig' == $entry ['sectiontype'] && true === is_object ( $oldValue )) 
+                elseif ('nestedconfig' == $entry ['sectiontype'] && true === is_object ($oldValue)) 
                 {
-                    if ( true == $start ) 
-                        $json ['log'] [] = $this->changeFormulaData ( $entry ['form'], $oldValue, false );
+                    if (true == $start) 
+                        $json ['log'] [] = $this->changeFormulaData ($entry ['form'], $oldValue, false);
                     else
-                        $log = array_merge ($log, $data->changeFormulaData ( $entry ['form'], $oldValue, false ));
+                        $log = array_merge ($log, $data->changeFormulaData ($entry ['form'], $oldValue, false));
                 }
             }
         }
         
-        if ( true == $start )
+        if (true == $start)
         {
             $json['form'] = $form->getDataAsArrays();
             return $json;
@@ -255,7 +255,7 @@ class Data
             $s,
             $p, 
             array('value' => $o, 'type' => $type)
-        );
+       );
     }
     
     /**
@@ -274,7 +274,7 @@ class Data
             $s,
             $p,
             array('value' => $o, 'type' => $type)
-        );
+       );
     }
     
     

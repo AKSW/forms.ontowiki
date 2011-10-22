@@ -19,7 +19,7 @@ class Formula
     /**
      * 
      */
-    public function __construct( $index )
+    public function __construct($index)
     {
         $this->_data = array ();
         
@@ -36,7 +36,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setDescription ( $value )
+    public function setDescription ($value)
     {
         $this->_data ['description'] = $value;
     }
@@ -72,7 +72,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setMode ( $value )
+    public function setMode ($value)
     {
         $this->_data ['mode'] = $value;
     }
@@ -91,7 +91,7 @@ class Formula
      * @param $value URI
      * @return void 
      */
-    public function setResource ( $value )
+    public function setResource ($value)
     {
         $this->_data ['resource'] = $value;
     }
@@ -110,9 +110,9 @@ class Formula
      * @param $value URI of target class
      * @return void 
      */
-    public function setTargetClass ( $value )
+    public function setTargetClass ($value)
     {
-        $this->_data ['targetclass'] = Data::replaceNamespaces ( $value );
+        $this->_data ['targetclass'] = Data::replaceNamespaces ($value);
     }
     
     
@@ -128,7 +128,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setTitle ( $value )
+    public function setTitle ($value)
     {
         $this->_data ['title'] = $value;
     }
@@ -146,7 +146,7 @@ class Formula
     /**
      * @return void 
      */
-    public function setXmlFile ( $value )
+    public function setXmlFile ($value)
     {
         $this->_data ['xmlfile'] = $value;
     }
@@ -168,11 +168,11 @@ class Formula
      * Extract field type.
      * @return string
      */
-    public static function getFieldType ( $predicate, $t )
+    public static function getFieldType ($predicate, $t)
     {
         $t = (string) $t; 
         
-        if (true == isset ( $t ) AND '' != $t )
+        if (true == isset ($t) AND '' != $t)
         {
             return $t;
         }
@@ -190,9 +190,9 @@ class Formula
     /**
      * 
      */
-    public function addLabelpart ( $value )
+    public function addLabelpart ($value)
     {
-        $this->_data ['labelparts'] [] = Data::replaceNamespaces ( $value );
+        $this->_data ['labelparts'] [] = Data::replaceNamespaces ($value);
     }
     
     
@@ -218,7 +218,7 @@ class Formula
      * @param $value Array of URIs
      * @return void 
      */
-    public function setLabelparts ( $value )
+    public function setLabelparts ($value)
     {
         $this->_data ['labelparts'] = $value;
     }
@@ -227,7 +227,7 @@ class Formula
     /**
      * @return void
      */
-    public function addSection ( $value )
+    public function addSection ($value)
     {
         $this->_data ['sections'] [] = $value;
     }
@@ -238,7 +238,7 @@ class Formula
      */
     public function removeSection ( $value )
     {
-        unset ( $this->_data ['sections'] [$value] );
+        unset ($this->_data ['sections'] [$value]);
     }
     
     
@@ -268,16 +268,16 @@ class Formula
         $return = '<br/>- title: '. $this->getTitle () .
                 '<br/>- index: '. $this->getIndex () .
                 '<br/>- description: '. $this->getDescription () .
-                '<br/>- label parts: '. implode ( ', ', $this->getLabelparts () ) .
+                '<br/>- label parts: '. implode (', ', $this->getLabelparts ()) .
                 '<br/>- mode: '. $this->getMode () .
-                '<br/>- resource: '. implode ( ', ', $this->getResource () ) .
+                '<br/>- resource: '. implode (', ', $this->getResource ()) .
                 '<br/>- target class: '. $this->getTargetClass () .
                 '<br/>- XML config: '. $this->getxmlfile () .
                 '<br/>- sections: ';
           
-        foreach ( $this->getSections () as $section )
-            foreach ( $section as $s )
-                if ( 'predicate' == $s ['sectiontype'] )
+        foreach ($this->getSections () as $section)
+            foreach ($section as $s)
+                if ('predicate' == $s ['sectiontype'])
                 {
                     $return .= '<br/>&nbsp;&nbsp;+ predicate ';
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - index: '. $s ['index'];
@@ -285,7 +285,7 @@ class Formula
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - name: '. $s ['name'];
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - predicateuri: '. $s ['predicateuri'];
                 }
-                elseif ( 'nestedconfig' == $s ['sectiontype'] )
+                elseif ('nestedconfig' == $s ['sectiontype'])
                 {
                     $return .= '<br/>&nbsp;&nbsp;+ nestedconfig ';
                     $return .= '<br/>';
@@ -299,7 +299,7 @@ class Formula
     /**
      * @return array
      */
-    public function getDataAsArrays ( )
+    public function getDataAsArrays ()
     {
         $arr = array (
             'title'         => $this->getTitle (),
@@ -311,19 +311,19 @@ class Formula
             'targetclass'   => $this->getTargetClass (),
             'xmlfile'       => $this->getXmlFile (),
             'sections'      => array ()
-        );
+       );
                   
         
-        foreach ( $this->getSections () as $entry )
+        foreach ($this->getSections () as $entry)
         {
             $newSection = array ();
             $newSection ['title'] = $entry ['title'];
             
-            for ( $i = 0; $i < (count ( $entry )-1); ++$i )
+            for ($i = 0; $i < (count ($entry)-1); ++$i)
             {
                 $s = $entry [$i];
                 
-                if ( 'predicate' == $s ['sectiontype'] )
+                if ('predicate' == $s ['sectiontype'])
                 {
                     $newSection [] = array (
                         'index'         => $s ['index'],
@@ -335,9 +335,9 @@ class Formula
                         'sectiontype'   => $s ['sectiontype'],
                         'type'          => $s ['type'],
                         'typeparameter' => $s ['typeparameter']
-                    );
+                   );
                 }
-                elseif ( 'nestedconfig' == $s ['sectiontype'] )
+                elseif ('nestedconfig' == $s ['sectiontype'])
                 {
                     $newSection [] = array (
                         'sectiontype'   => $s ['sectiontype'],
@@ -345,7 +345,7 @@ class Formula
                         'index'         => $s ['index'],
                         'xmlfile'       => $s ['xmlfile'],
                         'form'          => $s ['form']->getDataAsArrays ()
-                    );
+                   );
                 }
             }
             
@@ -359,34 +359,34 @@ class Formula
     /**
      * @return Formula
      */
-    public static function initByArray ( $formArray )
+    public static function initByArray ($formArray)
     {  
         // init a new Formula instance
-        $form = new Formula ( $formArray ['index'] );
+        $form = new Formula ($formArray ['index']);
 
-        $form->setTitle ( $formArray ['title'] );
+        $form->setTitle ($formArray ['title']);
         
-        $form->setDescription ( $formArray ['description'] );
+        $form->setDescription ($formArray ['description']);
         
-        $form->setLabelparts ( $formArray ['labelparts'] );
+        $form->setLabelparts ($formArray ['labelparts']);
         
-        $form->setMode ( $formArray ['mode'] );
+        $form->setMode ($formArray ['mode']);
         
-        $form->setResource ( $formArray ['resource'] );
+        $form->setResource ($formArray ['resource']);
         
-        $form->setTargetClass ( $formArray ['targetclass'] );
+        $form->setTargetClass ($formArray ['targetclass']);
         
-        $form->setXmlFile ( $formArray ['xmlfile'] );
+        $form->setXmlFile ($formArray ['xmlfile']);
                         
-        foreach ( $formArray ['sections'] as $entry )
+        foreach ($formArray ['sections'] as $entry)
         {
-            $newSection = array ( 'title' => $entry ['title'] );
+            $newSection = array ('title' => $entry ['title']);
             
-            foreach ( $entry as $section )
+            foreach ($entry as $section)
             {
-                if ( 'predicate' == $section ['sectiontype'] )
+                if ('predicate' == $section ['sectiontype'])
                 {
-                    $section ['value'] = str_replace ( ' ', '', $section ['value'] );
+                    $section ['value'] = str_replace (' ', '', $section ['value']);
                     
                     $newSection [] = array (
                         'index'         => $section ['index'],
@@ -398,21 +398,21 @@ class Formula
                         'title'	        => $section ['title'],
                         'mandatory'     => $section ['mandatory'],
                         'sectiontype'   => 'predicate'
-                    );
+                   );
                 }
-                elseif ( 'nestedconfig' == $section ['sectiontype'] )
+                elseif ('nestedconfig' == $section ['sectiontype'])
                 {                                
-                    $newSection [] = array ( 
+                    $newSection [] = array (
                         'xmlfile'      => $section ['form']['xmlfile'],
                         'index'        => $section ['form']['index'],
                         'relations'    => $section ['relations'],
-                        'form'         => Formula::initByArray ( $section ['form'] ), 
+                        'form'         => Formula::initByArray ($section ['form']), 
                         'sectiontype'  => 'nestedconfig'
-                    );
+                   );
                 }    
             }
             
-            $form->addSection ( $newSection );
+            $form->addSection ($newSection);
         }
         
         return $form;
@@ -423,29 +423,29 @@ class Formula
      * Check a formula
      * @return boolean 
      */
-    public static function isValid ( $f )
+    public static function isValid ($f)
     {
-        if ( 'new' == $f->getMode () )
+        if ('new' == $f->getMode ())
         {
             
         }
         
-        elseif ( 'add' == $f->getMode () )
+        elseif ('add' == $f->getMode ())
         {
-            foreach ( $f->getSections () as $sectionEntries )
+            foreach ($f->getSections () as $sectionEntries)
             {
                 // extract title from array and delete it
                 // so there only predicate and nestedconfig elements in it
-                $title = array_shift( $sectionEntries );
+                $title = array_shift($sectionEntries);
                 
-                foreach ( $sectionEntries as $entry )
+                foreach ($sectionEntries as $entry)
                 {
-                    if ( 'predicate' == $entry ['sectiontype'] )
+                    if ('predicate' == $entry ['sectiontype'])
                     {
                         // check mandatory field value
-                        if ( 'mandatory' == $entry ['mandatory'] )
+                        if ('mandatory' == $entry ['mandatory'])
                         {
-                            $entry ['value'] = trim ( $entry ['value'] );
+                            $entry ['value'] = trim ($entry ['value']);
                         }
                         
                     }
@@ -466,18 +466,18 @@ class Formula
     {
         $values = array ();
         
-        foreach ( $this->getLabelparts () as $lp )
+        foreach ($this->getLabelparts () as $lp)
         {
-            foreach ( $this->getSections () as $sectionEntries )
+            foreach ($this->getSections () as $sectionEntries)
             {
                 // extract title from array and delete it
                 // so there only predicate and nestedconfig elements in it
-                array_shift( $sectionEntries );
+                array_shift($sectionEntries);
                 
-                foreach ( $sectionEntries as $entry )
+                foreach ($sectionEntries as $entry)
                 {
-                    if ( 'predicate' == $entry ['sectiontype'] &&
-                         $lp == $entry ['predicateuri'] )
+                    if ('predicate' == $entry ['sectiontype'] &&
+                         $lp == $entry ['predicateuri'])
                     {
                         $values [] = $entry ['value'];
                     }
@@ -493,7 +493,7 @@ class Formula
      *
      *
      */
-    public function getPredicateValueByIndex ( $index )
+    public function getPredicateValueByIndex ($index)
     {
         if ($this->getIndex () == $index)
         {
@@ -504,27 +504,27 @@ class Formula
         {
             // extract title from array and delete it
             // so there only predicate and nestedconfig elements in it
-            array_shift( $sectionEntries );
+            array_shift($sectionEntries);
             
-            foreach ( $sectionEntries as $entry )
+            foreach ($sectionEntries as $entry)
             {                
                 // predicate
-                if ( 'predicate' == $entry ['sectiontype'] && $index == $entry ['index'] )
+                if ('predicate' == $entry ['sectiontype'] && $index == $entry ['index'])
                 {
                     return $entry ['value'];
                 }
                 
-                elseif ( 'nestedconfig' == $entry ['sectiontype'] && $index == $entry ['index'] )
+                elseif ('nestedconfig' == $entry ['sectiontype'] && $index == $entry ['index'])
                 {
                     return $entry ['form'];
                 } 
                 
                 // sub formula
-                elseif ( 'nestedconfig' == $entry ['sectiontype'] )
+                elseif ('nestedconfig' == $entry ['sectiontype'])
                 {                    
                     $result = $entry ['form']->getPredicateValueByIndex($index);
                     
-                    if ( '' != $result )
+                    if ('' != $result)
                         return $result;
                 }
                 

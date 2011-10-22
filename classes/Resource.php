@@ -24,30 +24,30 @@ class Resource
      * @param $uriParts From default.ini
      * @return string
      */
-    public static function generateUniqueUri ( $f, $selectedModel, $titleHelper, $uriParts )
+    public static function generateUniqueUri ($f, $selectedModel, $titleHelper, $uriParts)
     {
         // set essential parts
         $targetClass = $f->getTargetClass ();
         
         $selectedModel = (string) $selectedModel;
         
-        $className   = $titleHelper->getTitle ( $targetClass );
+        $className   = $titleHelper->getTitle ($targetClass);
         $className   = true == Erfurt_Uri::check($className)
                        ? Resource::extractClassNameFromUri ($className)
                        : $className;
                     
-        $label       = implode ( '', $f->getLabelpartValues () );
+        $label       = implode ('', $f->getLabelpartValues ());
         
         $time = time ();
         
         // if a / is at the end of the modelUri, remove it
-        if ( '/' == substr ( $selectedModel, strlen($selectedModel) - 1 ) )
-            $selectedModel = substr ( $selectedModel, 0, strlen($selectedModel) - 1 );
+        if ('/' == substr ($selectedModel, strlen($selectedModel) - 1))
+            $selectedModel = substr ($selectedModel, 0, strlen($selectedModel) - 1);
         
         // replace placeholders in $uriParts
         $newUri = str_replace('%modeluri%', $selectedModel, $uriParts);
-        $newUri = str_replace('%hash%', substr ( md5 ($time . $className . rand() ), 0, 6 ), $newUri);
-        $newUri = str_replace('%date%', date ( 'Ymd', $time ), $newUri);
+        $newUri = str_replace('%hash%', substr (md5 ($time . $className . rand()), 0, 6), $newUri);
+        $newUri = str_replace('%date%', date ('Ymd', $time), $newUri);
         $newUri = str_replace('%labelparts%', $label, $newUri);
         $newUri = str_replace('%classname%', $className, $newUri);
                 
@@ -60,19 +60,19 @@ class Resource
      * @param classUri Uri of class
      * @return classname as a string
      */
-    public static function extractClassNameFromUri( $classUri )
+    public static function extractClassNameFromUri($classUri)
     {
-        if (strrpos ( $classUri, '/' ) < strrpos ( $classUri, '#' ) )
+        if (strrpos ($classUri, '/') < strrpos ($classUri, '#'))
             $seperator = '#';
-        elseif (strrpos ( $classUri, '/' ) > strrpos ( $classUri, '#' ) )
+        elseif (strrpos ($classUri, '/') > strrpos ($classUri, '#'))
             $seperator = '/';
         else
             $seperator = ':';
              
-        $classUri = substr($classUri, strrpos ( $classUri, $seperator ));
+        $classUri = substr($classUri, strrpos ($classUri, $seperator));
         
-        return false === strpos ( $classUri, ':' )
+        return false === strpos ($classUri, ':')
             ? $classUri
-            : substr ( $classUri, 1 );
+            : substr ($classUri, 1);
     }
 }

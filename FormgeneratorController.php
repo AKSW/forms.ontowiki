@@ -36,16 +36,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         parent::init();
         
         // sets default model
-        $model = new Erfurt_Rdf_Model ( $this->_privateConfig->defaultModel );
+        $model = new Erfurt_Rdf_Model ($this->_privateConfig->defaultModel);
         
         $this->_defaultXmlConfigurationFile = $this->_privateConfig->defaultXmlConfigurationFile;
-        $this->_dirXmlConfigurationFiles = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
-        $this->_dirJsHtmlPlugins = dirname ( __FILE__ ) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
+        $this->_dirXmlConfigurationFiles = dirname (__FILE__) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
+        $this->_dirJsHtmlPlugins = dirname (__FILE__) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
         $this->_predicateType = $this->_privateConfig->predicateType;
         $this->_selectedModel = $model;
         $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
-        $this->_titleHelper = new OntoWiki_Model_TitleHelper ( $this->_selectedModel );
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper ($this->_selectedModel);
         $this->_uriParts = $this->_privateConfig->uriParts;        
         $this->_url = $this->_componentUrlBase;
         
@@ -59,12 +59,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function formAction()
     {   
         // include CSS files
-        $this->view->headLink()->appendStylesheet( $this->_url .'css/form.css' );
-        $this->view->headLink()->appendStylesheet( $this->_url .'css/jshtmlplugins.css' );
+        $this->view->headLink()->appendStylesheet($this->_url .'css/form.css');
+        $this->view->headLink()->appendStylesheet($this->_url .'css/jshtmlplugins.css');
         
         // include Javascript files
-        $this->view->headScript()->appendFile( $this->_url .'js/form.js');           
-        $this->view->headScript()->appendFile( $this->_url .'libraries/jquery.json.min.js');
+        $this->view->headScript()->appendFile($this->_url .'js/form.js');           
+        $this->view->headScript()->appendFile($this->_url .'libraries/jquery.json.min.js');
         
         // set form relevant variables
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
@@ -74,10 +74,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         if ('' != $this->_request->getParam('file'))
             $file = $this->_request->getParam('file');
             
-        elseif ( '' != OntoWiki_Model_Instances::getSelectedClass () )
+        elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
         {
-            $this->_titleHelper->addResource ( OntoWiki_Model_Instances::getSelectedClass () );
-            $file = $this->_titleHelper->getTitle ( OntoWiki_Model_Instances::getSelectedClass () );
+            $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
+            $file = $this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ());
         }
             
         else
@@ -87,7 +87,14 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $xmlconfig = new XmlConfig(
             $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile);
         
-        $this->view->form = $xmlconfig->loadFile($file .'.xml');
+        $form = $xmlconfig->loadFile($file .'.xml');
+        
+        if ('' != $this->_request->getParam('r'))
+        {
+            $form->
+        }
+        
+        $this->view->form = $form;
     }
     
     
@@ -103,16 +110,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_helper->layout()->disableLayout();
         
         // processes a formula and output the result
-        $form = true == isset ( $_REQUEST ['form'] ) ? $_REQUEST ['form'] : null;
-        $formOld =  true == isset ( $_REQUEST ['formOld'] ) ? $_REQUEST ['formOld'] : null;
+        $form = true == isset ($_REQUEST ['form']) ? $_REQUEST ['form'] : null;
+        $formOld =  true == isset ($_REQUEST ['formOld']) ? $_REQUEST ['formOld'] : null;
         
         // instance of Data class for communicate with backend
-        $data = new Data ( 
+        $data = new Data (
             $this->_predicateType, $this->_selectedModel, $this->_selectedModelUri,
             $this->_store, $this->_titleHelper, $this->_uriParts 
-        );
+       );
         
-        echo $data->submitFormula ( $form, $formOld );
+        echo $data->submitFormula ($form, $formOld);
     }
 }
 

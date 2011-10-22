@@ -26,51 +26,51 @@ class XmlConfig
      * @param $file name of XML configuration file.
      * @return Formula Filled formula instance
      */
-    public function loadFile ( $file, $index = 0 )
+    public function loadFile ($file, $index = 0)
     {
         $file = $this->_dirXmlConfigurationFiles . $file;
         
         // load file
-        $xml = true === file_exists ( $file )
-            ? simpleXML_load_file ( $file )
-            : simpleXML_load_file ( $this->_dirXmlConfigurationFiles . $this->_defaultXmlConfigurationFile ); 
+        $xml = true === file_exists ($file)
+            ? simpleXML_load_file ($file)
+            : simpleXML_load_file ($this->_dirXmlConfigurationFiles . $this->_defaultXmlConfigurationFile); 
         
-        if( false === $xml ) 
+        if(false === $xml) 
         { 
            //deal with error 
         } 
         else
         {
-            $form = new Formula ( $index );
+            $form = new Formula ($index);
             
-            $form->setXmlFile ( $file );
+            $form->setXmlFile ($file);
             
             // ReadIn all readable data from XML-Config file.
             foreach ($xml as $nodeName => $nodeValue) 
             {	
-                switch ( $nodeName )
+                switch ($nodeName)
                 {
                     case 'title':
-                        $form->setTitle ( (string) $nodeValue [0] );
+                        $form->setTitle ((string) $nodeValue [0]);
                         break;
                         
                         
                     case 'description':
-                        $form->setDescription ( (string) $nodeValue [0] );
+                        $form->setDescription ((string) $nodeValue [0]);
                         break;
                         
                         
                     case 'targetclass':
-                        $form->setTargetClass ( (string) $nodeValue [0] );
+                        $form->setTargetClass ((string) $nodeValue [0]);
                         
                         break;
                         
                         
                     case 'labelparts':
                         
-                        foreach ( $xml->labelparts->item as $nodeValue )
+                        foreach ($xml->labelparts->item as $nodeValue)
                         {
-                            $form->addLabelpart ( (string) $nodeValue [0] );
+                            $form->addLabelpart ((string) $nodeValue [0]);
                         }
                             
                         break;
@@ -80,86 +80,86 @@ class XmlConfig
                     
                         $entryIndex = 0;
                         
-                        foreach ( $xml->sections->item as $nodeValue ) 
+                        foreach ($xml->sections->item as $nodeValue) 
                         {
                             $newSection = array ();
                             
                             $newSection ['title'] = (string) $nodeValue->title;
                             
                             // Iterate over predicate entries.
-                            foreach ( $nodeValue->predicate as $predicate )
+                            foreach ($nodeValue->predicate as $predicate)
                             {	
                                 // get complete URI of predicate
-                                $p = $this->replaceNamespace ( $predicate->predicateuri );
+                                $p = $this->replaceNamespace ($predicate->predicateuri);
                                 
                                                                 
-                                $type = Formula::getFieldType ( $p, $predicate->type );
+                                $type = Formula::getFieldType ($p, $predicate->type);
                                 $typeparameter = array ();
 
                                 
                                 // if set, get type parameters
                                 // TODO make it dynamic!
-                                if ( true == isset ( $predicate->typeparameter ) )
-                                    foreach ( $predicate->typeparameter->item as $parameter )
-                                        $typeparameter [] = array ( 
+                                if (true == isset ($predicate->typeparameter))
+                                    foreach ($predicate->typeparameter->item as $parameter)
+                                        $typeparameter [] = array (
                                             'label' => (string) $parameter->label,
                                             'value' => (string) $parameter->value 
-                                        );
+                                       );
                                         
-                                $this->_titleHelper->addResource ( $p );
-                                $title = $this->_titleHelper->getTitle ( $p );
+                                $this->_titleHelper->addResource ($p);
+                                $title = $this->_titleHelper->getTitle ($p);
                                 
                                 if (true == Erfurt_Uri::check($title))
                                     $title = Resource::extractClassNameFromUri ($title);
                                     
                                 
                                 // Build an entry instance.
-                                $newSection [] = array ( 
+                                $newSection [] = array (
                                     'index'         => $index . ',' . $entryIndex,
-                                    'name'          => substr ( md5 ( $index . ',' . $entryIndex ), 0, 10),
-                                    'predicateuri'  => $this->replaceNamespace ( (string) $predicate->predicateuri ),
+                                    'name'          => substr (md5 ($index . ',' . $entryIndex), 0, 10),
+                                    'predicateuri'  => $this->replaceNamespace ((string) $predicate->predicateuri),
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
                                     'title'	        => $title, 
                                     'mandatory'     => (int) $predicate->mandatory,
                                     'value'         => '',
                                     'sectiontype'   => 'predicate'
-                                );
+                               );
                                 
                                 ++$entryIndex;
                             }
                              
                             // Iterate over nestedconfig entries.                       
-                            foreach ( $nodeValue->nestedconfig as $nestedconfig )
+                            foreach ($nodeValue->nestedconfig as $nestedconfig)
                             {                                             
                                 // Load XML Config
                                 $xmlConfig = new XmlConfig(
                                     $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile);
                                 
-                                $f = $xmlConfig->loadFile( 
+                                $f = $xmlConfig->loadFile(
                                     $nestedconfig->xmlfile,
                                     $index .','. $entryIndex
-                                );
+                               );
                                 
                                 $tmpRel = $relations = array ();
                                 
-                                if ( true === isset ( $nestedconfig->relations ) )
-                                    foreach ( $nestedconfig->relations->item as $rel )
+                                if (true === isset ($nestedconfig->relations))
+                                    foreach ($nestedconfig->relations->item as $rel)
                                         $relations [] = Data::replaceNamespaces((string) $rel);
                                  
                                 // Add entry to nestedconfig array.
-                                $newSection [] = array ( 
+                                $newSection [] = array (
                                      'xmlfile'      => (string) $nestedconfig->xmlfile,
                                      'index'        => $index .','. $entryIndex,
                                      'relations'    => $relations,
                                      'form'         => $f, 
                                      'sectiontype'  => 'nestedconfig'
-                                );
+                               );
                                 
                                 ++$entryIndex;
                             }
                             
-                            $form->addSection ( $newSection );
+                            $form->addSection ($newSection);
                         }
                     
                         break;
@@ -177,9 +177,9 @@ class XmlConfig
     /**
      * 
      */
-    public function replaceNamespace ( $s )
+    public function replaceNamespace ($s)
     {
         // TODO: no use of fix Uri                                   
-		return str_replace ( 'architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s );
+		return str_replace ('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
     }
 }

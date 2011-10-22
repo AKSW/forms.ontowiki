@@ -15,27 +15,27 @@
  * @param f json-serialized formula instance
  * @return array modified formula instance
  */ 
-function setFormulaArrayFields ( f )
+function setFormulaArrayFields (f)
 {        
     var len = f.sections.length;
     var i, j = 0;
     
-    for ( i = 0; i < len; ++i )
+    for (i = 0; i < len; ++i)
     {       
-        for ( j = 0;;++j )
+        for (j = 0;;++j)
         {
-            if ( undefined == f.sections [i][j] ) 
+            if (undefined == f.sections [i][j]) 
                 break;
          
-            else if ( "predicate" == f.sections [i][j].sectiontype )
+            else if ("predicate" == f.sections [i][j].sectiontype)
             {
-                f.sections [i][j].value = $( "#" + f.sections [i][j].name ).val();
+                f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
             }
             
             // recursive call of this function 
-            else if ( "nestedconfig" == f.sections [i][j].sectiontype )
+            else if ("nestedconfig" == f.sections [i][j].sectiontype)
             {
-                setFormulaArrayFields ( f.sections [i][j].form );
+                setFormulaArrayFields (f.sections [i][j].form);
             }
         }
     }
@@ -49,26 +49,26 @@ function setFormulaArrayFields ( f )
  * @param newMode new formula mode
  * @return void
  */
-function setFormulaModeTo ( f, newMode )
+function setFormulaModeTo (f, newMode)
 {
     f.mode = newMode;
     var len = f.sections.length;
     var i, j = 0;
     
-    for ( i = 0; i < len; ++i )
+    for (i = 0; i < len; ++i)
     {       
-        for ( j = 0;;++j )
+        for (j = 0;;++j)
         {
-            if ( undefined == f.sections [i][j] ) 
+            if (undefined == f.sections [i][j]) 
                 break;
          
             // recursive call of this function 
-            else if ( "nestedconfig" == f.sections [i][j].sectiontype )
+            else if ("nestedconfig" == f.sections [i][j].sectiontype)
             {
-                f.sections [i][j].form = setFormulaModeTo ( 
+                f.sections [i][j].form = setFormulaModeTo (
                     f.sections [i][j].form, 
                     newMode 
-                );
+               );
             }
         }
     }
@@ -82,7 +82,7 @@ function setFormulaModeTo ( f, newMode )
  * @param url target URL
  * @param formData a json-serialized formula instance
  */
-function submitFormula ( url, data, mode ) 
+function submitFormula (url, data, mode) 
 {   
     var form = $.data(data, "form");
     
@@ -90,33 +90,33 @@ function submitFormula ( url, data, mode )
         ? $.data(data, "form")
         : $.data(data, "formOld");
         
-    console.log ( "submitFormulasubmitFormulasubmitFormulasubmitFormula" );
-    console.log ( "form" );
-    console.log ( form );
-    console.log ( "" );
+    console.log ("submitFormulasubmitFormulasubmitFormulasubmitFormula");
+    console.log ("form");
+    console.log (form);
+    console.log ("");
     
-    console.log ( "formOld" );
-    console.log ( formOld );
-    console.log ( "" );
+    console.log ("formOld");
+    console.log (formOld);
+    console.log ("");
     
     // set values from formula into the formula instance 
     // which was loaded at the beginning
-    form = setFormulaArrayFields ( form );
+    form = setFormulaArrayFields (form);
     
     // set mode from new to add
-    form = setFormulaModeTo ( form, mode );
-    // formOld = setFormulaModeTo ( formOld, mode );
+    form = setFormulaModeTo (form, mode);
+    // formOld = setFormulaModeTo (formOld, mode);
         
     // send formulas to submit action on server
     response = $.ajax({
         type: "POST",
         url: url + "submit/",
-        data: "form=" + $.toJSON( form ) + "&formOld=" + $.toJSON( formOld ),
+        data: "form=" + $.toJSON(form) + "&formOld=" + $.toJSON(formOld),
         dataType: "json",
         async:false
     }).responseText;
     
-    response = jQuery.parseJSON ( response );
+    response = jQuery.parseJSON (response);
     
     // replace formOld with form
     $.data(data, "formOld", $.extend(true, {}, form));
