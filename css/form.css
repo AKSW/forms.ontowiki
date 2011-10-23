@@ -12,7 +12,6 @@
     float: left;
     width: 200px;
     height: 30px;
-
     font-size: 13px;
     font-weight: bold;
     vertical-align: middle;
@@ -24,3 +23,11 @@
     margin: 0px 1%;
 }
 
+// Show after press "Add new" or "Edit"
+.pleaseWaitBox {
+    text-align: center;
+    font-weight: bold;
+    width: 100px;
+    height: 18px;
+    background-color: #D3CCFF;
+}

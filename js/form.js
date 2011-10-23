@@ -84,6 +84,9 @@ function setFormulaModeTo (f, newMode)
  */
 function submitFormula (url, data, mode) 
 {   
+    // show please wait box
+    $("#pleaseWaitBox").show ();
+    
     var form = $.data(data, "form");
     
     if (undefined == $.data(data, "formOld"))
@@ -110,27 +113,36 @@ function submitFormula (url, data, mode)
     // set mode from new to add
     form = setFormulaModeTo (form, mode);
     // formOld = setFormulaModeTo (formOld, mode);
+
+    var _data = data;
+    var jQ = jQuery;
         
     // send formulas to submit action on server
-    response = $.ajax({
-        type: "POST",
-        url: url + "submit/",
+    $.ajax({
+        async:true,
         data: "form=" + $.toJSON(form) + "&formOld=" + $.toJSON(formOld),
         dataType: "json",
-        async:false
-    }).responseText;
+        type: "POST",
+        url: url + "submit/",
     
-    response = jQuery.parseJSON (response);
+        // complete, no errors
+        success:function ( res ) {
+            
+            // res = jQ.parseJSON (res);
+            
+            console.log ("response");
+            console.log ( res );
     
-    // replace formOld with form
-    $.data(data, "formOld", $.extend(true, {}, form));
-    
-    // replace form with form instance from response
-    $.data(data, "form", response['form']);
-    
-    // show edit button
-    $("#changeResource").show();
-    
-    console.log ("response");
-    console.log (response);
+            // replace formOld with form
+            jQ.data(_data, "formOld", $.extend(true, {}, form));
+            
+            // replace form with form instance from response
+            jQ.data(_data, "form", res.form);
+            
+            $("#pleaseWaitBox").hide ();
+            
+            // show edit button
+            $("#changeResource").show();
+        }
+    });
 }
