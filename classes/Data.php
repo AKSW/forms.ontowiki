@@ -188,7 +188,7 @@ class Data
             
             foreach ($sectionEntries as $entry) {
                 
-                $oldValue = $formOld->getPredicateValueByIndex($entry ['index']);
+                $oldValue = $formOld->getPredicateValue($entry ['index']);
                 
                 // predicate
                 if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
@@ -258,6 +258,7 @@ class Data
        );
     }
     
+    
     /**
      *
      */
@@ -286,5 +287,71 @@ class Data
     {
         //TODO: no use of fix Uri       
         return str_replace('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
+    }
+    
+    
+    /**
+     * get all properties of a resource from the datastore
+     * @param $resourceUri URI of the resource
+     * @return Array assoziative array
+     */
+    public function getResourceProperties($resourceUri)
+    {
+        $properties = array();
+        
+        // fetch properties of a resource
+        $results = $this->_selectedModel->sparqlQuery(
+            'SELECT ?property ?value 
+            WHERE {<' . $resourceUri . '> ?property ?value.}'
+        );
+
+        // build an assoziative array
+        foreach ($results as $result)
+        {
+            $properties[$result['property']] = $result['value'];
+        }
+
+        return $properties;
+    }
+
+    
+    /**
+     * loads data from a given resource
+     * @param $resource 
+     * @param $form Formula instance to be filled with fetched data
+     */
+    public function fetchFormulaData ( $resource, &$form )
+    {
+        // fetch direct neighbours of the resource
+        $properties = $this->getResourceProperties($resource);
+        
+        if ( 0 == count($properties)) return;
+        else
+        {
+            // save sections
+            $sections = $form->getSections();
+            
+            // 
+            foreach ($sections as $sectionEntries) 
+            {
+                foreach ($sectionEntries as $entry) 
+                {
+                    if (true === is_array($entry))
+                    {
+                        if ( 'predicate' == $entry ['sectiontype'] )
+                        {
+                            $form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
+                        }
+                        elseif ( 'nestedconfig' == $entry ['sectiontype'] )
+                        {
+                            // $entry ['form']->fetchFormulaData (  );
+                        }                    
+                    }
+                }
+            }
+            
+            // set forms resource
+            $form->setResource ($resource);
+        }
     }
 }

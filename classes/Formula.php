@@ -231,16 +231,7 @@ class Formula
     {
         $this->_data ['sections'] [] = $value;
     }
-    
-    
-    /**
-     * @return void
-     */
-    public function removeSection ( $value )
-    {
-        unset ($this->_data ['sections'] [$value]);
-    }
-    
+
     
     /**
      * @return array
@@ -490,10 +481,39 @@ class Formula
     
     
     /**
+     * 
+     */
+    public function setPredicateValue ($index, $value)
+    {
+        // $sections = array_slice($this->getSections(), 1);
+        $sections = $this->getSections ();
+        $count = count ($sections);
+            
+        //for ( $i = 0; $i < $count; ++$i )
+        foreach ($sections as $keySection => $sectionEntries) 
+        {
+            // $countEntries = count($sections [$i]);
+            // echo '<br><br>-'. $keySection;
+
+            // for ($j = 0; $j < $countEntries; ++$j)
+            foreach ($sectionEntries as $keyEntry => $entry) 
+            {
+                // echo '<pre>'; var_dump ( $this->_data ['sections'] [$keySection] [$keyEntry] ); echo '</pre><hr>';
+                
+                if ($index == $entry ['index'])
+                {
+                    $this->_data ['sections'] [$keySection] [$keyEntry] ['value'] = $value;
+                }
+            }
+        }
+    }
+    
+    
+    /**
      *
      *
      */
-    public function getPredicateValueByIndex ($index)
+    public function getPredicateValue ($index)
     {
         if ($this->getIndex () == $index)
         {
@@ -522,7 +542,7 @@ class Formula
                 // sub formula
                 elseif ('nestedconfig' == $entry ['sectiontype'])
                 {                    
-                    $result = $entry ['form']->getPredicateValueByIndex($index);
+                    $result = $entry ['form']->getPredicateValue($index);
                     
                     if ('' != $result)
                         return $result;

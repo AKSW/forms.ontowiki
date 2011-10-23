@@ -17,6 +17,7 @@ require_once 'classes/XmlConfig.php';
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
 {
+    private $_data;
     private $_defaultXmlConfigurationFile;
     private $_dirXmlConfigurationFiles;
     private $_dirJsHtmlPlugins;
@@ -50,6 +51,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_url = $this->_componentUrlBase;
         
         $this->_owApp->selectedModel = $model;
+        
+        // instance of Data class for communicate with backend
+        $this->_data = new Data (
+            $this->_predicateType, $this->_selectedModel, $this->_selectedModelUri,
+            $this->_store, $this->_titleHelper, $this->_uriParts 
+        );
     }    
 
 
@@ -89,9 +96,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $form = $xmlconfig->loadFile($file .'.xml');
         
+        // if resource set ...
         if ('' != $this->_request->getParam('r'))
         {
-            $form->
+            // ... load triples into formula instance
+            $this->_data->fetchFormulaData($this->_request->getParam('r'), $form);
+            $form->setMode ('edit');
         }
         
         $this->view->form = $form;
@@ -113,13 +123,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $form = true == isset ($_REQUEST ['form']) ? $_REQUEST ['form'] : null;
         $formOld =  true == isset ($_REQUEST ['formOld']) ? $_REQUEST ['formOld'] : null;
         
-        // instance of Data class for communicate with backend
-        $data = new Data (
-            $this->_predicateType, $this->_selectedModel, $this->_selectedModelUri,
-            $this->_store, $this->_titleHelper, $this->_uriParts 
-       );
-        
-        echo $data->submitFormula ($form, $formOld);
+        echo $this->_data->submitFormula ($form, $formOld);
     }
 }
 
