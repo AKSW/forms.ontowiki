@@ -344,7 +344,7 @@ class Data
                         }
                         elseif ( 'nestedconfig' == $entry ['sectiontype'] )
                         {
-                            // $entry ['form']->fetchFormulaData (  );
+                            $this->fetchFormulaData ($properties [$entry ['relations'] [0]], $entry ['form']);
                         }                    
                     }
                 }
