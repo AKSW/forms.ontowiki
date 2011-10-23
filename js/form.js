@@ -86,11 +86,15 @@ function submitFormula (url, data, mode)
 {   
     var form = $.data(data, "form");
     
-    var formOld = "add" == mode 
-        ? $.data(data, "form")
-        : $.data(data, "formOld");
+    if (undefined == $.data(data, "formOld"))
+    {
+        var formOld = $.extend(true, {}, $.data(data, "form"));
+    }
+    else
+    {
+        formOld = $.data(data, "formOld");
+    }
         
-    console.log ("submitFormulasubmitFormulasubmitFormulasubmitFormula");
     console.log ("form");
     console.log (form);
     console.log ("");
