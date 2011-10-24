@@ -89,6 +89,12 @@ function submitFormula (url, data, mode)
     
     var form = $.data(data, "form");
     
+    if (false == checkMandatoryFields (form))
+    {
+        $("#pleaseWaitBox").hide ();
+        return;
+    }
+    
     if (undefined == $.data(data, "formOld"))
     {
         var formOld = $.extend(true, {}, $.data(data, "form"));
@@ -157,4 +163,49 @@ function submitFormula (url, data, mode)
             console.log ( "complete" );
         }
     });
+}
+
+/**
+ * checks if mandatory fields are empty
+ * @param url target URL
+ * @param formData a json-serialized formula instance
+ */
+function checkMandatoryFields (f) 
+{
+    var len = f.sections.length;
+    var i, j = 0;
+    var returnValue = true;
+    
+    for (i = 0; i < len; ++i)
+    {       
+        for (j = 0;;++j)
+        {
+            if (undefined == f.sections [i][j]) 
+                break;
+            
+            
+            else if ("predicate" == f.sections [i][j].sectiontype)
+            {
+                if (1 == f.sections [i][j].mandatory)
+                {
+                    if ("" == $("#" + f.sections [i][j].name).val())
+                    {
+                        $("#" + f.sections [i][j].name).addClass("mandatoryFieldEmpty");
+                        returnValue &= false;
+                    }
+                    else {
+                        $("#" + f.sections [i][j].name).removeClass("mandatoryFieldEmpty");
+                    }
+                }
+            }
+            // recursive call of this function 
+            else if ("nestedconfig" == f.sections [i][j].sectiontype)
+            {
+                returnValue &= checkMandatoryFields (
+                    f.sections [i][j].form
+               );
+            }
+        }
+    }
+    return returnValue;
 }
