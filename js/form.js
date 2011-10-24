@@ -126,8 +126,8 @@ function submitFormula (url, data, mode)
         url: url + "submit/",
     
         // complete, no errors
-        success:function ( res ) {
-            
+        success: function ( res ) 
+        {
             // res = jQ.parseJSON (res);
             
             console.log ("response");
@@ -143,6 +143,18 @@ function submitFormula (url, data, mode)
             
             // show edit button
             $("#changeResource").show();
+        },
+        
+        error: function (jqXHR, textStatus, errorThrown)
+        {
+            console.log (jqXHR);
+            console.log (textStatus);
+            console.log (errorThrown);
+        },
+        
+        complete: function ()
+        {
+            console.log ( "complete" );
         }
     });
 }

@@ -195,8 +195,6 @@ class Data
                     
                     if ($entry ['value'] != $oldValue) 
                     {
-                        $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
-                        
                         // if a sub formula resource not exists, create it on the fly
                         if ('' == $form->getResource())
                         {
@@ -239,11 +237,15 @@ class Data
                             // save new generated resource
                             $form->setResource($resource);
                         }
-                        
-                        if ('' == $upperResource)
-                            $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
                         else
-                            $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
+                        {
+                            $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
+                            
+                            if ('' == $upperResource)
+                                $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
+                            else
+                                $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
+                        }
                         
                         $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
@@ -267,7 +269,7 @@ class Data
                     if ('' == $upperResource) 
                         $json ['log'] [] = $this->changeFormulaData ($entry['form'], $oldValue, $form->getResource(), $entry['relations']);
                     else
-                        $log = array_merge ($log, $data->changeFormulaData ($entry ['form'], $oldValue, $form->getResource(), $entry['relations']));
+                        $log = array_merge ($log, $this->changeFormulaData ($entry ['form'], $oldValue, $form->getResource(), $entry['relations']));
                 }
             }
         }
