@@ -337,14 +337,21 @@ class Data
                 foreach ($sectionEntries as $entry) 
                 {
                     if (true === is_array($entry))
-                    {
-                        if ( 'predicate' == $entry ['sectiontype'] )
+                    {                        
+                        if ('predicate' == $entry ['sectiontype'])
                         {
-                            $form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
+                            if (false == isset ($entry['predicateuri']) ||
+                                false == isset ($properties [$entry['predicateuri']]))
+                                continue;
+                            else
+                                $form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
                         }
-                        elseif ( 'nestedconfig' == $entry ['sectiontype'] )
+                        elseif ('nestedconfig' == $entry ['sectiontype'])
                         {
-                            $this->fetchFormulaData ($properties [$entry ['relations'] [0]], $entry ['form']);
+                            if (false == isset ($properties [$entry ['relations'] [0]]))
+                                continue;
+                            else
+                                $this->fetchFormulaData ($properties [$entry ['relations'] [0]], $entry ['form']);
                         }                    
                     }
                 }
@@ -353,5 +360,36 @@ class Data
             // set forms resource
             $form->setResource ($resource);
         }
+    }
+    
+    
+    /**
+     * get type (targetclass) of a resource
+     * @param $resourceUri URI of the resource
+     * @return string type of the resource
+     */
+    public function getResourceType($resourceUri)
+    {
+        $properties = $this->getResourceProperties ($resourceUri);
+        
+        // if a type was set
+        if (true == isset ($properties [$this->_predicateType]))
+        {
+            return $this->getResourceTitle ($properties [$this->_predicateType]);
+        }
+        else
+            return null;
+    }
+    
+    
+    /**
+     * shortcut function for TitleHelper's addResource + getTitle
+     * @param $resource 
+     * @return string title
+     */
+    public function getResourceTitle ($resource)
+    {
+        $this->_titleHelper->addResource ($resource);
+        return $this->_titleHelper->getTitle ($resource);
     }
 }

@@ -77,22 +77,36 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
         $this->view->url = $this->_url;
         
-        // set file to load or default filename
+        // set file to load, if parameter file was set
         if ('' != $this->_request->getParam('file'))
+        {
             $file = $this->_request->getParam('file');
+        }
+        
+        // set resource to load, if parameter r was set
+        elseif ('' != $this->_request->getParam('r'))
+        {
+            $file = $this->_data->getResourceType ($this->_request->getParam('r'));
             
+            if (null == $file)
+                $file = $this->_defaultXmlConfigurationFile;
+        }
+            
+        // set file based on selected class
         elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
         {
             $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
             $file = $this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ());
         }
-            
+        
+        // if a clear call of form action
         else
-            $file = 'person';
+            $file = $this->_defaultXmlConfigurationFile;
         
         // load xml configuration file
         $xmlconfig = new XmlConfig(
-            $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile);
+            $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile
+        );
         
         $form = $xmlconfig->loadFile($file .'.xml');
         
