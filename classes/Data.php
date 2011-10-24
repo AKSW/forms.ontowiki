@@ -168,9 +168,9 @@ class Data
     /**
      * Change formula data in backend
      */
-    public function changeFormulaData($form, $formOld, $start = true)
+    public function changeFormulaData($form, $formOld, $upperResource = '', $relations = array())
     {
-        if (true == $start)
+        if ('' == $upperResource)
         {
             $json = array();
             $json['status'] = 'ok';            
@@ -197,21 +197,64 @@ class Data
                     {
                         $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
                         
-                        if (true == $start)
+                        // if a sub formula resource not exists, create it on the fly
+                        if ('' == $form->getResource())
+                        {
+                            // for example:
+                            // in case of create a doctor (firstname and lastname) but use
+                            // the main resource in a person formula, which has additionally 
+                            // a birthday, gender and sub formula address 
+                            
+                            // generate a new unique resource uri based on the target class
+                            $resource = Resource::generateUniqueUri(
+                                $form, $this->_selectedModel, $this->_titleHelper, $this->_uriParts
+                            );
+                            
+                            // on-the-fly add resource - rdf:type - targetclass
+                            $this->addStmt(
+                                $resource,
+                                $this->_predicateType,
+                                $form->getTargetClass () 
+                            );
+                            
+                            $log [] = 'on-the-fly add ' . $resource . ' > '. $this->_predicateType  . ' > '. $form->getTargetClass () .' (index='. $entry ['index'] .')';
+                            
+                            // add relations between a upper resource and the new resource 
+                            if ( '' != $upperResource && 0 < count($relations)) 
+                            {
+                                $log [] = 'on the fly relations: '. implode (',', $relations);
+                                
+                                foreach ($relations as $relation) {
+                                    $this->addStmt(
+                                        $upperResource,
+                                        $relation,
+                                        $resource
+                                   );
+                                   $log [] = 'on-the-fly add ' . $upperResource . ' > '. $relation  . ' > '. $resource .' (index='. $entry ['index'] .')';
+                                }
+                            }
+                            else
+                                $log [] = 'on the fly $upperResource='. $upperResource .', relations count='. count($relations);
+                            
+                            // save new generated resource
+                            $form->setResource($resource);
+                        }
+                        
+                        if ('' == $upperResource)
                             $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
                         else
                             $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         
                         $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
-                        if (true == $start)
+                        if ('' == $upperResource)
                             $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
                         else
                             $log [] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'].' (index='. $entry ['index'] .')';
                     }
                     else
                     {
-                        if (true == $start)
+                        if ('' == $upperResource)
                             $json['log'][] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
                         else
                             $log [] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
@@ -221,15 +264,15 @@ class Data
                 // sub formula
                 elseif ('nestedconfig' == $entry ['sectiontype'] && true === is_object ($oldValue)) 
                 {
-                    if (true == $start) 
-                        $json ['log'] [] = $this->changeFormulaData ($entry ['form'], $oldValue, false);
+                    if ('' == $upperResource) 
+                        $json ['log'] [] = $this->changeFormulaData ($entry['form'], $oldValue, $form->getResource(), $entry['relations']);
                     else
-                        $log = array_merge ($log, $data->changeFormulaData ($entry ['form'], $oldValue, false));
+                        $log = array_merge ($log, $data->changeFormulaData ($entry ['form'], $oldValue, $form->getResource(), $entry['relations']));
                 }
             }
         }
         
-        if (true == $start)
+        if ('' == $upperResource)
         {
             $json['form'] = $form->getDataAsArrays();
             return $json;
