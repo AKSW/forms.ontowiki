@@ -16,8 +16,9 @@ class Data
     private $_store;
     private $_titleHelper;
     private $_uriParts;
+    private $_form;
     
-    public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts)
+    public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts, &$form)
     {
         $this->_predicateType = $predicateType;
         $this->_selectedModel = $selectedModel;
@@ -25,6 +26,7 @@ class Data
         $this->_store = $store;
         $this->_titleHelper = $titleHelper;
         $this->_uriParts = $uriParts;
+        $this->_form = $form;
     }
     
     
@@ -79,18 +81,18 @@ class Data
             // $form is valid JSON
             } else {
                 // build a formula instance
-                $form = Formula::initByArray($form);
-                $formOld = Formula::initByArray($formOld);
+                $this->_form = $this->_form->initByArray($form);
+                $formOld = $this->_form->initByArray($formOld);
                                 
-                if (false === Formula::isValid($form)) {
+                if (false === $this->_form->isValid($this->_form)) {
                     
                 } else {
                     // Add formula data to backend
-                    if ('add' == $form->getMode())
-                        $json = $this->addFormulaData($form);
+                    if ('add' == $this->_form->getMode())
+                        $json = $this->addFormulaData($this->_form);
                         
-                    elseif ('edit' == $form->getMode())
-                        $json = $this->changeFormulaData($form, $formOld);
+                    elseif ('edit' == $this->_form->getMode())
+                        $json = $this->changeFormulaData($this->_form, $formOld);
                 }
             }
         }
@@ -325,17 +327,6 @@ class Data
     
     
     /**
-     * @param $s
-     * @return string
-     */
-    public static function replaceNamespaces($s)
-    {
-        //TODO: no use of fix Uri       
-        return str_replace('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
-    }
-    
-    
-    /**
      * get all properties of a resource from the datastore
      * @param $resourceUri URI of the resource
      * @return Array assoziative array
@@ -365,7 +356,7 @@ class Data
      * @param $resource 
      * @param $form Formula instance to be filled with fetched data
      */
-    public function fetchFormulaData ( $resource, &$form )
+    public function fetchFormulaData ( $resource)
     {
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
@@ -374,7 +365,7 @@ class Data
         else
         {
             // save sections
-            $sections = $form->getSections();
+            $sections = $this->_form->getSections();
             
             // 
             foreach ($sections as $sectionEntries) 
@@ -389,7 +380,7 @@ class Data
                                 false == isset ($properties [$entry['predicateuri']]))
                                 continue;
                             else
-                                $form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
+                                $this->_form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
                         }
                         elseif ('nestedconfig' == $entry ['sectiontype'])
                         {
@@ -403,7 +394,7 @@ class Data
             }
             
             // set forms resource
-            $form->setResource ($resource);
+            $this->_form->setResource ($resource);
         }
     }
     

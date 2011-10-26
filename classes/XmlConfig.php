@@ -26,7 +26,7 @@ class XmlConfig
      * @param $file name of XML configuration file.
      * @return Formula Filled formula instance
      */
-    public function loadFile ($file, $index = 0)
+    public function loadFile ($file, &$form)
     {
         $file = $this->_dirXmlConfigurationFiles . $file;
         
@@ -41,8 +41,6 @@ class XmlConfig
         } 
         else
         {
-            $form = new Formula ($index);
-            
             $form->setXmlFile ($file);
             
             // ReadIn all readable data from XML-Config file.
@@ -90,10 +88,10 @@ class XmlConfig
                             foreach ($nodeValue->predicate as $predicate)
                             {	
                                 // get complete URI of predicate
-                                $p = $this->replaceNamespace ($predicate->predicateuri);
+                                $p = $form->replaceNamespaces ($predicate->predicateuri);
                                 
                                                                 
-                                $type = Formula::getFieldType ($p, $predicate->type);
+                                $type = $form->getFieldType ($p, $predicate->type);
                                 $typeparameter = array ();
 
                                 
@@ -115,9 +113,9 @@ class XmlConfig
                                 
                                 // Build an entry instance.
                                 $newSection [] = array (
-                                    'index'         => $index . ',' . $entryIndex,
-                                    'name'          => substr (md5 ($index . ',' . $entryIndex), 0, 10),
-                                    'predicateuri'  => $this->replaceNamespace ((string) $predicate->predicateuri),
+                                    'index'         => $form->getIndex() . ',' . $entryIndex,
+                                    'name'          => substr (md5 ($form->getIndex() . ',' . $entryIndex), 0, 10),
+                                    'predicateuri'  => $form->replaceNamespaces ((string) $predicate->predicateuri),
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
                                     'title'	        => $title, 
@@ -138,19 +136,19 @@ class XmlConfig
                                 
                                 $f = $xmlConfig->loadFile(
                                     $nestedconfig->xmlfile,
-                                    $index .','. $entryIndex
+                                    new Formula($form->getIndex() .','. $entryIndex, $form->getSelectedModel())
                                );
                                 
                                 $tmpRel = $relations = array ();
                                 
                                 if (true === isset ($nestedconfig->relations))
                                     foreach ($nestedconfig->relations->item as $rel)
-                                        $relations [] = Data::replaceNamespaces((string) $rel);
+                                        $relations [] = $form->replaceNamespaces((string) $rel);
                                  
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array (
                                      'xmlfile'      => (string) $nestedconfig->xmlfile,
-                                     'index'        => $index .','. $entryIndex,
+                                     'index'        => $form->getIndex() .','. $entryIndex,
                                      'relations'    => $relations,
                                      'form'         => $f, 
                                      'sectiontype'  => 'nestedconfig'
@@ -172,14 +170,4 @@ class XmlConfig
             return $form;
         }
 	}
-    
-    
-    /**
-     * 
-     */
-    public function replaceNamespace ($s)
-    {
-        // TODO: no use of fix Uri                                   
-		return str_replace ('architecture:', 'http://als.dispedia.info/architecture/c/20110504/', $s);
-    }
 }

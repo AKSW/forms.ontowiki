@@ -13,13 +13,16 @@ class Formula
     /**
      * Stores all data about this formula
      */
-    private $_data;
+    private $_dataInstance;
+    
+    private $_selectedModel;
+    private $_architectureUri;
     
     
     /**
      * 
      */
-    public function __construct($index)
+    public function __construct($index, $selectedModel)
     {
         $this->_data = array ();
         
@@ -27,6 +30,8 @@ class Formula
         $this->_data ['mode'] = 'new';
         $this->_data ['resource'] = "";
         $this->_data ['sections'] = array ();
+        
+        $this->_selectedModel = $selectedModel;
     }
     
     
@@ -112,7 +117,7 @@ class Formula
      */
     public function setTargetClass ($value)
     {
-        $this->_data ['targetclass'] = Data::replaceNamespaces ($value);
+        $this->_data ['targetclass'] = $this->replaceNamespaces ($value);
     }
     
     
@@ -168,7 +173,7 @@ class Formula
      * Extract field type.
      * @return string
      */
-    public static function getFieldType ($predicate, $t)
+    public function getFieldType ($predicate, $t)
     {
         $t = (string) $t; 
         
@@ -192,7 +197,7 @@ class Formula
      */
     public function addLabelpart ($value)
     {
-        $this->_data ['labelparts'] [] = Data::replaceNamespaces ($value);
+        $this->_data ['labelparts'] [] = $this->replaceNamespaces ($value);
     }
     
     
@@ -248,6 +253,14 @@ class Formula
     public function getData ()
     {
         return $this->_data;
+    }
+    
+    /**
+     * 
+     */
+    public function getSelectedModel()
+    {
+        return $this->_selectedModel;
     }
     
     
@@ -350,7 +363,7 @@ class Formula
     /**
      * @return Formula
      */
-    public static function initByArray ($formArray)
+    public function initByArray ($formArray)
     {  
         // init a new Formula instance
         $form = new Formula ($formArray ['index']);
@@ -397,7 +410,7 @@ class Formula
                         'xmlfile'      => $section ['form']['xmlfile'],
                         'index'        => $section ['form']['index'],
                         'relations'    => $section ['relations'],
-                        'form'         => Formula::initByArray ($section ['form']), 
+                        'form'         => $this->initByArray ($section ['form']), 
                         'sectiontype'  => 'nestedconfig'
                    );
                 }    
@@ -414,7 +427,7 @@ class Formula
      * Check a formula
      * @return boolean 
      */
-    public static function isValid ($f)
+    public function isValid ($f)
     {
         if ('new' == $f->getMode ())
         {
@@ -551,5 +564,29 @@ class Formula
             } 
         }
         return '';
+    }
+    
+    /**
+     * replace the architecture namespace string with the correct uri
+     * @param $s
+     * @return string
+     */
+    public function replaceNamespaces($s)
+    {
+        
+        $namespaceUri = "";
+        
+        // fetch properties of a resource
+        $result = $this->_selectedModel->sparqlQuery(
+            'SELECT ?namespaceUri
+             WHERE {
+                ?namespaceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
+                FILTER regex(?namespaceUri, "Address", "i")
+             }'
+        );
+        
+        $namespaceUri = str_replace('Address', '', $result[0]['namespaceUri']);
+        
+        return str_replace('architecture:', $namespaceUri, $s);
     }
 }

@@ -17,6 +17,7 @@ require_once 'classes/XmlConfig.php';
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
 {
+    private $_form;
     private $_data;
     private $_defaultXmlConfigurationFile;
     private $_dirXmlConfigurationFiles;
@@ -52,10 +53,14 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $this->_owApp->selectedModel = $model;
         
+        // main instance of a form
+        $this->_form = new Formula(0, $this->_selectedModel);
+        
         // instance of Data class for communicate with backend
         $this->_data = new Data (
             $this->_predicateType, $this->_selectedModel, $this->_selectedModelUri,
-            $this->_store, $this->_titleHelper, $this->_uriParts 
+            $this->_store, $this->_titleHelper, $this->_uriParts,
+            $this->_form
         );
     }    
 
@@ -105,20 +110,24 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // load xml configuration file
         $xmlconfig = new XmlConfig(
-            $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile
+            $this->_titleHelper,
+            $this->_dirXmlConfigurationFiles,
+            $this->_defaultXmlConfigurationFile
         );
         
-        $form = $xmlconfig->loadFile($file .'.xml');
+        $this->_form = $xmlconfig->loadFile($file .'.xml', $this->_form);
         
         // if resource set ...
         if ('' != $this->_request->getParam('r'))
         {
             // ... load triples into formula instance
-            $this->_data->fetchFormulaData($this->_request->getParam('r'), $form);
-            $form->setMode ('edit');
+            $this->_data->fetchFormulaData($this->_request->getParam('r'));
+            $this->_form->setMode ('edit');
         }
         
-        $this->view->form = $form;
+        $this->view->form = $this->_form;
+        
+        $this->view->url = $this->_url;
     }
     
     
