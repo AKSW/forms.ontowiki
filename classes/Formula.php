@@ -26,7 +26,7 @@ class Formula
     {
         $this->_data = array ();
         
-        $this->_data ['index'] = $this->setIndex ($index);        
+        $this->setIndex ($index);        
         $this->_data ['mode'] = 'new';
         $this->_data ['resource'] = "";
         $this->_data ['sections'] = array ();
@@ -366,7 +366,7 @@ class Formula
     public function initByArray ($formArray)
     {  
         // init a new Formula instance
-        $form = new Formula ($formArray ['index']);
+        $form = new Formula ($formArray ['index'], $this->_selectedModel);
 
         $form->setTitle ($formArray ['title']);
         
