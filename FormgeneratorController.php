@@ -124,10 +124,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $this->_data->fetchFormulaData($this->_request->getParam('r'));
             $this->_form->setMode ('edit');
         }
-        
         $this->view->form = $this->_form;
-        
-        $this->view->url = $this->_url;
     }
     
     
