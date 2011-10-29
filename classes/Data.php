@@ -293,8 +293,8 @@ class Data
     {
         // set type(uri or literal)
         $type = true == Erfurt_Uri::check($o) 
-            ? Erfurt_Store::TYPE_IRI
-            : Erfurt_Store::TYPE_LITERAL;
+            ? 'uri'
+            : 'literal';
         
         // add a triple to datastore
         return $this->_store->addStatement(
@@ -313,8 +313,8 @@ class Data
     {
         // set type(uri or literal)
         $type = true == Erfurt_Uri::check($o) 
-            ? Erfurt_Store::TYPE_IRI
-            : Erfurt_Store::TYPE_LITERAL;
+            ? 'uri'
+            : 'literal';
             
         // aremove a triple form datastore
         return $this->_store->deleteMatchingStatements(

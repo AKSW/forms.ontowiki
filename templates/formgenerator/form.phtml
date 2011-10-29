@@ -23,7 +23,62 @@
 
 <!-- formula -->
 <form id="mainform" method="post" action="">
-
+    
+    <div class="content">
+        <h2><?php echo $this->form->getTitle(); ?></h2>
+    </div>
+    
+    <?php if('' != $this->form->getDescription()) { ?>
+    
+    <div class="content">
+        <?php echo $this->form->getDescription(); ?>
+    </div>    
+    
+    <?php } ?>
+    
+    <div class="content">
+        <div class="predicateTitle">&nbsp;</div>
+        <div class="predicateValue">&nbsp;</div>
+    </div>    
+        
+    <?php if (true == isset($this->resourcesOfType)) { ?>
+    
+        <form method="post" action="<?php echo $this->url; ?>form/">
+            <div class="content">
+                <div class="predicateTitle">Please select:</div>
+                
+                <div class="predicateValue">
+                    <select name="r">
+                
+                    <?php foreach ($this->resourcesOfType as $resource) { ?>
+                    
+                        <option value="<?php echo $resource ['uri']; ?>"><?php echo $resource ['label']; ?></option>
+                    
+                    <?php } ?>
+                
+                    </select>
+                    <input type="hidden" name="andFile" value="<?php echo $this->form->getXmlFile(); ?>"/>
+                </div>
+            </div>
+            
+            
+            <div class="content">
+                <div class="predicateTitle">&nbsp;</div>
+                <div class="predicateValue"><input type="submit"></div>
+            </div> 
+        </form>
+    
+    <?php } ?>
+    
+    <?php if (false !== $this->showForm) { ?>
+    
+    <div class="content">
+        <div class="predicateTitle">&nbsp;</div>
+        <div class="predicateValue">&nbsp;</div>
+    </div> 
+    
+    <hr>
+    
     <?php foreach ($this->form->getSections () as $section) { ?>
 
     <div class="content">
@@ -31,7 +86,7 @@
         <!-- Title -->
         <h3><?php echo $section ['title']; ?></h3>
         
-        <?php foreach ($section as $element) { ?>
+        <?php foreach ($section as $element) { if (false == isset($element ['sectiontype']) ) continue; ?>
                     
             <?php if ('predicate' == $element ['sectiontype']) { ?>
             <!-- PREDICATE -->
@@ -142,24 +197,16 @@
         
     <?php } ?>
     
-    <?php if ( 'new' == $this->form->getMode () ) { ?>
-    
-    <a id="changeResource" class="button submit hidden" onclick="submitFormula(urlMvc, data, 'edit');"/>
+    <a id="changeResource" class="button submit<?php if ( 'new' == $this->form->getMode () ) { echo ' hidden'; } ?>" onclick="submitFormula(urlMvc, data, 'edit');"/>
         <span>Edit</span></a>
     
-    <a id="addResource" class="button submit" onclick="submitFormula(urlMvc, data, 'add');"/>
-        <span>Add New</span></a>
-        
-    <div id="pleaseWaitBox" class="hidden">Please wait...</div>
+    <?php if ('' == $this->form->getSelectResourceOfType()) { ?>
     
-    <?php } else { ?>
-    
-    <a id="changeResource" class="button submit" onclick="submitFormula(urlMvc, data, 'edit');"/>
-        <span>Edit</span></a>
-        
     <a id="addResource" class="button submit" onclick="submitFormula(urlMvc, data, 'add');"/>
-        <span>Add New</span></a>
-        
+            <span>Add New</span></a>
+            
+    <?php } ?>
+            
     <div id="pleaseWaitBox" class="hidden">Please wait...</div>
     
     <?php } ?>

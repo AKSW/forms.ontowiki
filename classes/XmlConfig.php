@@ -41,7 +41,10 @@ class XmlConfig
         } 
         else
         {
-            $form->setXmlFile ($file);
+            $xmlFile = substr($file, 1+strrpos ($file, '/')); // cut filename
+            $xmlFile = substr($xmlFile, 0, strpos ($xmlFile, '.')); // delete extension
+            $form->setXmlFile($xmlFile);
+                
             
             // ReadIn all readable data from XML-Config file.
             foreach ($xml as $nodeName => $nodeValue) 
@@ -55,6 +58,11 @@ class XmlConfig
                         
                     case 'description':
                         $form->setDescription ((string) $nodeValue [0]);
+                        break;
+                        
+                        
+                    case 'selectResourceOfType':
+                        $form->setSelectResourceOfType ((string) $nodeValue [0]);
                         break;
                         
                         

@@ -27,9 +27,12 @@ class Formula
         $this->_data = array ();
         
         $this->setIndex ($index);        
+        $this->_data ['title'] = '';
+        $this->_data ['description'] = '';
         $this->_data ['mode'] = 'new';
         $this->_data ['resource'] = "";
         $this->_data ['sections'] = array ();
+        $this->_data ['selectResourceOfType'] = '';
         
         $this->_selectedModel = $selectedModel;
     }
@@ -108,6 +111,25 @@ class Formula
     public function getResource ()
     {
         return $this->_data ['resource'];
+    }
+    
+    
+    /**
+     * @param $value URI of target class
+     * @return void 
+     */
+    public function setSelectResourceOfType ($value)
+    {
+        $this->_data ['selectResourceOfType'] = $this->replaceNamespaces ($value);
+    }
+    
+    
+    /**
+     * @return string 
+     */
+    public function getSelectResourceOfType ()
+    {
+        return $this->_data ['selectResourceOfType'];
     }
     
     
@@ -306,15 +328,16 @@ class Formula
     public function getDataAsArrays ()
     {
         $arr = array (
-            'title'         => $this->getTitle (),
-            'index'         => $this->getIndex (),
-            'description'   => $this->getDescription (),
-            'labelparts'    => $this->getLabelparts (),
-            'mode'          => $this->getMode (),
-            'resource'      => $this->getResource (),
-            'targetclass'   => $this->getTargetClass (),
-            'xmlfile'       => $this->getXmlFile (),
-            'sections'      => array ()
+            'title'                 => $this->getTitle (),
+            'index'                 => $this->getIndex (),
+            'description'           => $this->getDescription (),
+            'selectResourceOfType'  => $this->getSelectResourceOfType (),
+            'labelparts'            => $this->getLabelparts (),
+            'mode'                  => $this->getMode (),
+            'resource'              => $this->getResource (),
+            'targetclass'           => $this->getTargetClass (),
+            'xmlfile'               => $this->getXmlFile (),
+            'sections'              => array ()
        );
                   
         
@@ -372,6 +395,8 @@ class Formula
         
         $form->setDescription ($formArray ['description']);
         
+        $form->setSelectResourceOfType ($formArray ['selectResourceOfType']);
+        
         $form->setLabelparts ($formArray ['labelparts']);
         
         $form->setMode ($formArray ['mode']);
@@ -388,6 +413,9 @@ class Formula
             
             foreach ($entry as $section)
             {
+                if (false == isset($section ['sectiontype']) )
+                    continue;
+                
                 if ('predicate' == $section ['sectiontype'])
                 {
                     $section ['value'] = str_replace (' ', '', $section ['value']);
