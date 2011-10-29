@@ -69,7 +69,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      * form action
      */
     public function formAction()
-    {   
+    {
         // include CSS files
         $this->view->headLink()->appendStylesheet($this->_url .'css/form.css');
         $this->view->headLink()->appendStylesheet($this->_url .'css/jshtmlplugins.css');
@@ -109,7 +109,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
         {
             $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
-            $file = $this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ());
+            $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
         }
         
         // if a clear call of form action
@@ -121,10 +121,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $xmlconfig = new XmlConfig(
             $this->_titleHelper,
             $this->_dirXmlConfigurationFiles,
-            $this->_defaultXmlConfigurationFile
+            $this->_defaultXmlConfigurationFile . '.xml'
         );
         
-        $this->_form = $xmlconfig->loadFile($file .'.xml', $this->_form);
+        $this->_form = $xmlconfig->loadFile($file . '.xml', $this->_form);
         
         // if resource set ...
         if ('' != $this->_request->getParam('r'))
