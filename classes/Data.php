@@ -292,9 +292,9 @@ class Data
     public function addStmt($s, $p, $o)
     {
         // set type(uri or literal)
-        $type = true == Erfurt_Uri::check($o) 
-            ? Erfurt_Store::TYPE_IRI
-            : Erfurt_Store::TYPE_LITERAL;
+        $type = true == Erfurt_Uri::check($o)
+            ? 'uri'
+            : 'literal';
         
         // add a triple to datastore
         return $this->_store->addStatement(
@@ -312,9 +312,9 @@ class Data
     public function removeStmt($s, $p, $o)
     {
         // set type(uri or literal)
-        $type = true == Erfurt_Uri::check($o) 
-            ? Erfurt_Store::TYPE_IRI
-            : Erfurt_Store::TYPE_LITERAL;
+        $type = true == Erfurt_Uri::check($o)
+            ? 'uri'
+            : 'literal';
             
         // aremove a triple form datastore
         return $this->_store->deleteMatchingStatements(
