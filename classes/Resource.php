@@ -71,7 +71,7 @@ class Resource
              
         $classUri = substr($classUri, strrpos ($classUri, $seperator));
         
-        return false === strpos ($classUri, ':')
+        return false === strpos ($classUri, $seperator)
             ? $classUri
             : substr ($classUri, 1);
     }
