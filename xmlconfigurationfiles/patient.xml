@@ -14,7 +14,7 @@
     <title>Patient - Master data</title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Lorem</description>
+    <description></description>
 	
     <sections>
         
@@ -23,6 +23,12 @@
             
             <!-- title of this section part -->
 			<title>Patient information</title> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:patientNumber</predicateuri>
+			</predicate>
 						
             <!-- Textfield -->
 			<predicate> 
@@ -39,54 +45,34 @@
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthdate</predicateuri>
-				<type>birthdate</type>
+				<predicateuri>architecture:birthName</predicateuri>
 			</predicate>
-            	
-            <!-- List -->		
+			
+            <!-- Date -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:gender</predicateuri>
-				<type>list</type>
-                <typeparameter>
-                    <item>
-                        <label>female</label>
-                        <value>http://xmlns.com/foaf/0.1/gender#female</value>
-                    </item>
-                    <item>
-                        <label>male</label>
-                        <value>http://xmlns.com/foaf/0.1/gender#male</value>
-                    </item>
-                </typeparameter>
+				<predicateuri>architecture:birthDate</predicateuri>
+				<type>date</type>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthPlace</predicateuri>
 			</predicate>
 		
 		</item>
 		
-        <!-- Another section ... -->
+        <!-- New section -->
 		<item>	
         
-            <title>Mother</title>
+            <title>Address</title>
 		
             <!-- Include a XML file -->
 			<nestedconfig>
-				<xmlfile>person.xml</xmlfile>
+				<xmlfile>address.xml</xmlfile>
 				<relations>
-					<item>architecture:isMotherOf</item>
-					<item>architecture:isLovedBye</item>
-				</relations>
-			</nestedconfig>
-			
-		</item> 
-                <!-- Another section ... -->
-		<item>	
-        
-            <title>Treating physician</title>
-		
-            <!-- Include a XML file -->
-			<nestedconfig>
-				<xmlfile>doctor.xml</xmlfile>
-				<relations>
-					<item>architecture:isDoctorOf</item>
+					<item>architecture:hasAddress</item>
 				</relations>
 			</nestedconfig>
 			
