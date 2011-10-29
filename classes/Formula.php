@@ -541,7 +541,7 @@ class Formula
             {
                 // echo '<pre>'; var_dump ( $this->_data ['sections'] [$keySection] [$keyEntry] ); echo '</pre><hr>';
                 
-                if ($index == $entry ['index'])
+                if (true == isset($entry ['index']) && $index == $entry ['index'])
                 {
                     $this->_data ['sections'] [$keySection] [$keyEntry] ['value'] = $value;
                 }
