@@ -1,0 +1,85 @@
+<!-- Create a new patient. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Patient</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula -->
+    <title>Patient - Master data</title>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <description>Please select a patient and after reload update his master data.</description>
+    
+    <!-- Shows a dropdown box to select an existing resource. -->
+    <!-- All relations and fields below are going to connect to this resource. -->
+    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            
+            <!-- title of this section part -->
+			<title>Patient information</title> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:patientNumber</predicateuri>
+			</predicate>
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:firstName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:lastName</predicateuri>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthName</predicateuri>
+			</predicate>
+			
+            <!-- Date -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthDate</predicateuri>
+				<type>date</type>
+			</predicate>
+			
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthPlace</predicateuri>
+			</predicate>
+		
+		</item>
+		
+        <!-- New section -->
+		<item>	
+        
+            <title>Address</title>
+		
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>address.xml</xmlfile>
+				<relations>
+					<item>architecture:hasAddress</item>
+				</relations>
+			</nestedconfig>
+			
+		</item> 
+	</sections>
+</form>
