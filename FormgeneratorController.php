@@ -130,7 +130,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         if ('' != $this->_request->getParam('r'))
         {
             // ... load triples into formula instance
-            $this->_data->fetchFormulaData($this->_request->getParam('r'));
+            $this->_data->fetchFormulaData($this->_request->getParam('r'),$this->_form);
             $this->_form->setMode ('edit');
         }
         

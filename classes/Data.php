@@ -356,7 +356,7 @@ class Data
      * @param $resource 
      * @param $form Formula instance to be filled with fetched data
      */
-    public function fetchFormulaData ( $resource)
+    public function fetchFormulaData ($resource, &$form)
     {
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
@@ -365,7 +365,7 @@ class Data
         else
         {
             // save sections
-            $sections = $this->_form->getSections();
+            $sections = $form->getSections();
             
             // 
             foreach ($sections as $sectionEntries) 
@@ -380,7 +380,7 @@ class Data
                                 false == isset ($properties [$entry['predicateuri']]))
                                 continue;
                             else
-                                $this->_form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
+                                $form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
                         }
                         elseif ('nestedconfig' == $entry ['sectiontype'])
                         {
@@ -394,7 +394,7 @@ class Data
             }
             
             // set forms resource
-            $this->_form->setResource ($resource);
+            $form->setResource ($resource);
         }
     }
     
