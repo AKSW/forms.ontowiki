@@ -162,6 +162,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             
             if ( '' == $this->_request->getParam('r'))
                 $this->view->showForm = false;
+            else
+                $this->view->showForm = true;
         }
         else
             $this->view->showForm = true;
