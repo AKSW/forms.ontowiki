@@ -344,7 +344,12 @@ class Data
         // build an assoziative array
         foreach ($results as $result)
         {
-            $properties[$result['property']] = $result['value'];
+            // $properties[$result['property']] = $result['value'];
+            $properties[] = array ( 
+                'property' => $result['property'],
+                'value' => $result['value'],
+                'used' => false
+            );
         }
 
         return $properties;
@@ -376,18 +381,21 @@ class Data
                     {                        
                         if ('predicate' == $entry ['sectiontype'])
                         {
-                            if (false == isset ($entry['predicateuri']) ||
-                                false == isset ($properties [$entry['predicateuri']]))
+                            $value = $this->getPropertyValue($properties, $entry['predicateuri']);
+                            
+                            if (false == isset ($entry['predicateuri']) || false == isset ($value))
                                 continue;
                             else
-                                $form->setPredicateValue ($entry['index'], $properties [$entry['predicateuri']]);
+                                $form->setPredicateValue ($entry['index'], $value);
                         }
                         elseif ('nestedconfig' == $entry ['sectiontype'])
                         {
-                            if (false == isset ($properties [$entry ['relations'] [0]]))
+                            $value = $this->getPropertyValue($properties,$entry ['relations'] [0]);
+                            
+                            if (false == isset ($value))
                                 continue;
                             else
-                                $this->fetchFormulaData ($properties [$entry ['relations'] [0]], $entry ['form']);
+                                $this->fetchFormulaData ($value, $entry ['form']);
                         }                    
                     }
                 }
@@ -396,6 +404,31 @@ class Data
             // set forms resource
             $form->setResource ($resource);
         }
+    }
+    
+    
+    /**
+     * 
+     */
+    public function getPropertyValue (&$properties, $property)
+    {
+        if (0 == count($properties)) {
+            return null;
+        } else {
+            $i = 0;
+            foreach ($properties as $p) {
+                if ($p['property'] == $property && false == $p['used']){
+                    
+                    // this value can be only used one time
+                    $properties [$i]['used'] = true;
+                    
+                    return $p['value'];
+                }
+                $i++;
+            }
+        }
+            
+        return null;
     }
     
     
