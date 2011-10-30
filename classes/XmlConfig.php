@@ -132,13 +132,18 @@ class XmlConfig
                                         break;
                                 }
                                 
-                                        
-                                $this->_titleHelper->addResource ($p);
-                                $title = $this->_titleHelper->getTitle ($p);
+                                // if a title was explicit set in the XML config file
+                                $title = (string) $predicate->title;
                                 
-                                if (true == Erfurt_Uri::check($title))
-                                    $title = Resource::extractClassNameFromUri ($title);
+                                if ('' == $title)
+                                {
+                                    $this->_titleHelper->addResource ($p);
+                                    $title = $this->_titleHelper->getTitle ($p);
                                     
+                                    if (true == Erfurt_Uri::check($title))
+                                        $title = Resource::extractClassNameFromUri ($title);
+                                }
+                                
                                 
                                 // Build an entry instance.
                                 $newSection [] = array (
