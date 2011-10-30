@@ -1,0 +1,39 @@
+<!-- Create a new patient. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:HealthState</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula -->
+    <title>Patient - set Movement</title>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <description>Please select a patient and after reload set his / her movement.</description>
+    
+    <!-- Shows a dropdown box to select an existing resource. -->
+    <!-- All relations and fields below are going to connect to this resource. -->
+    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+	
+    <sections>
+        
+        <item>
+            
+            <!-- Resource -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:movementDescription</predicateuri>
+                <type>resource</type>
+                <typeparameter>
+                    <resource>architecture:HealthState</resource>
+                </typeparameter>
+			</predicate>
+            
+		</item> 
+        
+	</sections>
+</form>

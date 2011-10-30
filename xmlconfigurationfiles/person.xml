@@ -62,19 +62,5 @@
 		
 		</item>
         
-        <item>	
-        
-            <title>Address</title>
-		
-            <!-- Include a XML file -->
-			<nestedconfig>
-				<xmlfile>address.xml</xmlfile>
-				<relations>
-					<item>architecture:hasAddress</item>
-				</relations>
-			</nestedconfig>
-			
-		</item> 
-        
 	</sections>
 </form>

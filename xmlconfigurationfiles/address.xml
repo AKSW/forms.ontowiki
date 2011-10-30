@@ -13,28 +13,188 @@
     <title>Address</title>
 	
     <!-- Introducing text to inform the user about the formula. -->
-    <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</description>
+    <description>Add a new / edit an existing address.</description>
 	
     <sections>
         
         <!-- A new section -->
 		<item>
             
-            <!-- title of this section part -->
-			<title>Address</title> 	
-						
-            <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>architecture:street</predicateuri>
-			</predicate>
-			
-            <!-- Textfield -->
-			<predicate> 
+            <!-- Textfield -->		
+            <predicate> 
 				<mandatory>1</mandatory>
 				<predicateuri>architecture:city</predicateuri>
+            </predicate>
+            
+            <!-- Textfield -->		
+            <predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:street</predicateuri>
+            </predicate>
+            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:homeLawType</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>First Home</label>
+                        <value>first home</value>
+                    </item>
+                    <item>
+                        <label>Secondary Residence</label>
+                        <value>secondary residence</value>
+                    </item>
+                </typeparameter>
 			</predicate>
-			
+            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:homeHousingType</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>Detached House</label>
+                        <value>detached house</value>
+                    </item>
+                    <item>
+                        <label>Multi Family Home</label>
+                        <value>multi family home</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:homeFlatType</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>Loft Apartment</label>
+                        <value>loft apartment</value>
+                    </item>
+                    <item>
+                        <label>Apartment</label>
+                        <value>apartment</value>
+                    </item>
+                    <item>
+                        <label>Maisonette</label>
+                        <value>maisonette</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+            
+             <!-- List -->		
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:homeLevel</predicateuri>
+			</predicate>
+            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:isSuitableForOlderPersons</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>True</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>False</label>
+                        <value>false</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:isBarrierFree</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>True</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>False</label>
+                        <value>false</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:hasWheelChairSize</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>True</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>False</label>
+                        <value>false</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:hasGarden</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>True</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>False</label>
+                        <value>false</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:hasStairs</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>True</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>False</label>
+                        <value>false</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			            
+            <!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:hasLift</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>True</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>False</label>
+                        <value>false</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+            
 		</item> 
         
 	</sections>
