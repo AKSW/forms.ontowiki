@@ -52,6 +52,26 @@ elseif (false !== strpos ($element ['typeparameter'], 'Pet') )
                 
     array_walk ( $resources, 'buildPetLabel' );
 }
+elseif (false !== strpos ($element ['typeparameter'], 'Address') )
+{
+    $resources = $this->selectedModel->sparqlQuery(
+        'SELECT ?uri ?city ?street
+         WHERE {
+             ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
+             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'city> ?city.
+             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'street> ?street.
+         };'
+    );
+    
+    if (false == function_exists('buildAddressLabel')) {
+        // combines firstname and lastname to label
+        function buildAddressLabel (&$item, $key){
+            $item['label'] = $item['city'] .' '. $item['street'];
+        }
+    }
+                
+    array_walk ( $resources, 'buildAddressLabel' );
+}
 ?>
 <div class="predicateValue">
     <select id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="predicateValue_Resource">
