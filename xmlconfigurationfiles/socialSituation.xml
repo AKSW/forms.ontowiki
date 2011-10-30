@@ -2,7 +2,7 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Pet</targetclass>
+    <targetclass>architecture:HealthState</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
@@ -10,10 +10,10 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - set Pets</title>
+    <title>Patient - set Social Situation</title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload set his / her pets.</description>
+    <description>Please select a patient and after reload set his / her social situation.</description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
@@ -26,21 +26,13 @@
             <!-- Resource -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasPet</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>architecture:Pet</resource>
-                </typeparameter>
+				<predicateuri>architecture:socialContact</predicateuri>
 			</predicate>
             
             <!-- Resource -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasPet</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>architecture:Pet</resource>
-                </typeparameter>
+				<predicateuri>architecture:socialContact</predicateuri>
 			</predicate>
             
 		</item> 

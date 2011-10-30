@@ -10,10 +10,10 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - set Pets</title>
+    <title>Patient - set Job</title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload set his / her pets.</description>
+    <description>Please select a patient and after reload set his / her job.</description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
@@ -23,24 +23,38 @@
         
         <item>
             
-            <!-- Resource -->
+            <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasPet</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>architecture:Pet</resource>
-                </typeparameter>
+				<predicateuri>architecture:education</predicateuri>
 			</predicate>
+            
             
             <!-- Resource -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasPet</predicateuri>
+				<predicateuri>architecture:hasEmployer</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>architecture:Pet</resource>
+                    <resource>architecture:Agent</resource>
                 </typeparameter>
+			</predicate>
+            
+            
+            <!-- Resource -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:hasAddress</predicateuri>
+                <type>resource</type>
+                <typeparameter>
+                    <resource>architecture:Address</resource>
+                </typeparameter>
+			</predicate>
+            
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:journeyToWork</predicateuri>
 			</predicate>
             
 		</item> 
