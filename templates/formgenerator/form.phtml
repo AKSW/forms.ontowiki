@@ -55,15 +55,15 @@
                 
                     <?php foreach ($this->resourcesOfType as $resource) { ?>
                     
-                    <?php if ($this->selectedResource == $resource['uri']) { ?>
-                    
-                        <option value="<?php echo $resource ['uri']; ?>" selected><?php echo $resource ['label']; ?></option>
+                        <?php if ($this->selectedResource == $resource['uri']) { ?>
                         
-                    <?php } else { ?>
+                            <option value="<?php echo $resource ['uri']; ?>" selected><?php echo $resource ['label']; ?></option>
+                            
+                        <?php } else { ?>
+                            
+                            <option value="<?php echo $resource ['uri']; ?>"><?php echo $resource ['label']; ?></option>
                         
-                        <option value="<?php echo $resource ['uri']; ?>"><?php echo $resource ['label']; ?></option>
-                    
-                    <?php } ?>
+                        <?php } ?>
                     
                     <?php } ?>
                 
@@ -90,6 +90,7 @@
     
     <hr>
     
+    <!-- sections (predicates and nestedconfigs) -->
     <?php foreach ($this->form->getSections () as $section) { ?>
 
     <div class="content">
@@ -109,6 +110,10 @@
                 
                     <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
             
+                <?php } elseif ('resource' == $element ['type']) { ?>
+                
+                    <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
+                
                 <?php } else { ?>
                 
                     <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
@@ -138,6 +143,10 @@
                             
                                 <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
                         
+                            <?php } elseif ('resource' == $element ['type']) { ?>
+                
+                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
+                            
                             <?php } else { ?>
                             
                                 <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
@@ -169,6 +178,10 @@
                                             
                                                 <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
                                         
+                                            <?php } elseif ('resource' == $element ['type']) { ?>
+                
+                                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
+                                            
                                             <?php } else { ?>
                                             
                                                 <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>

@@ -103,14 +103,35 @@ class XmlConfig
                                 $typeparameter = array ();
 
                                 
-                                // if set, get type parameters
-                                // TODO make it dynamic!
-                                if (true == isset ($predicate->typeparameter))
-                                    foreach ($predicate->typeparameter->item as $parameter)
-                                        $typeparameter [] = array (
-                                            'label' => (string) $parameter->label,
-                                            'value' => (string) $parameter->value 
-                                       );
+                                // set typeparameters
+                                switch ( $type )
+                                {                                    
+                                    case 'date': 
+                                        break;
+                                    
+                                    // a simple list of label/value pairs
+                                    case 'list':
+                                        foreach ($predicate->typeparameter->item as $parameter)
+                                            $typeparameter [] = array (
+                                                'label' => (string) $parameter->label,
+                                                'value' => (string) $parameter->value 
+                                           );
+                                        break;
+                                        
+                                    // a simple list of resources of a given class
+                                    // TODO: extend it to use more than one class
+                                    case 'resource':
+                                        foreach ($predicate->typeparameter->resource as $resource)
+                                        {
+                                            $typeparameter = $form->replaceNamespaces ( (string) $resource );
+                                            break;
+                                        }
+                                        break;
+                                    
+                                    default: // xsd:string
+                                        break;
+                                }
+                                
                                         
                                 $this->_titleHelper->addResource ($p);
                                 $title = $this->_titleHelper->getTitle ($p);
