@@ -23,6 +23,34 @@ if (false !== strpos ($element ['typeparameter'], 'Patient') ||
              ?uri <'. $this->form->replaceNamespaces ('architecture:') .'lastName> ?lastname.
          };'
     );
+    
+    if (false == function_exists('buildPersonPatientLabel')) {
+        // combines firstname and lastname to label
+        function buildPersonPatientLabel (&$item, $key){
+            $item['label'] = $item['firstname'] .' '. $item['lastname'];
+        }
+    }
+                
+    array_walk ( $resources, 'buildPersonPatientLabel' );
+}
+elseif (false !== strpos ($element ['typeparameter'], 'Pet') )
+{
+    $resources = $this->selectedModel->sparqlQuery(
+        'SELECT ?uri ?petName
+         WHERE {
+             ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
+             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'petName> ?petName.
+         };'
+    );
+    
+    if (false == function_exists('buildPetLabel')) {
+        // combines firstname and lastname to label
+        function buildPetLabel (&$item, $key){
+            $item['label'] = $item['petName'];
+        }
+    }
+                
+    array_walk ( $resources, 'buildPetLabel' );
 }
 ?>
 <div class="predicateValue">
@@ -35,12 +63,12 @@ if (false !== strpos ($element ['typeparameter'], 'Patient') ||
     <?php if ($element['value'] == $resource['uri']) { ?>
     
         <option value="<?php echo $resource ['uri']; ?>" selected>
-            <?php echo $resource ['firstname'] .' '. $resource ['lastname']; ?></option>
+            <?php echo $resource ['label']; ?></option>
     
     <?php } else { ?>
 
         <option value="<?php echo $resource ['uri']; ?>">
-            <?php echo $resource ['firstname'] .' '. $resource ['lastname']; ?></option>
+            <?php echo $resource ['label']; ?></option>
 
     <?php } ?>
     

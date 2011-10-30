@@ -1,0 +1,50 @@
+<!-- Create a new patient. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Patient</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:firstName</item>
+        <item>architecture:lastName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula -->
+    <title>Patient - is Silbing of</title>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <description>Please select a patient and after reload set his / her his silbings.</description>
+    
+    <!-- Shows a dropdown box to select an existing resource. -->
+    <!-- All relations and fields below are going to connect to this resource. -->
+    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+	
+    <sections>
+        
+        <item>
+            
+            <!-- Resource -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:isSilbingOf</predicateuri>
+                <type>resource</type>
+                <typeparameter>
+                    <resource>architecture:Person</resource>
+                </typeparameter>
+			</predicate>
+            
+            <!-- Resource -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:isSilbingOf</predicateuri>
+                <type>resource</type>
+                <typeparameter>
+                    <resource>architecture:Person</resource>
+                </typeparameter>
+			</predicate>
+            
+		</item> 
+        
+	</sections>
+</form>

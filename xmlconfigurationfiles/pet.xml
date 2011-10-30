@@ -1,0 +1,58 @@
+<!-- Create a new patient. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>architecture:Pet</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>architecture:petName</item>
+    </labelparts>
+	
+    <!-- Headline of this formula -->
+    <title>Patient - Pet</title>
+	
+    <!-- Introducing text to inform the user about the formula -->
+    <description>Add a new pet or edit an existing one.</description>
+	
+    <sections>
+        
+        <item>
+            
+            <predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:petName</predicateuri>
+			</predicate>
+			
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>architecture:spezies</predicateuri>
+			</predicate>
+			
+			<!-- List -->		
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:gender</predicateuri>
+				<type>list</type>
+                <typeparameter>
+                    <item>
+                        <label>female</label>
+                        <value>http://xmlns.com/foaf/0.1/gender#female</value>
+                    </item>
+                    <item>
+                        <label>male</label>
+                        <value>http://xmlns.com/foaf/0.1/gender#male</value>
+                    </item>
+                </typeparameter>
+			</predicate>
+			
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>architecture:birthDate</predicateuri>
+				<type>date</type>
+			</predicate>
+            
+		</item> 
+        
+	</sections>
+</form>
