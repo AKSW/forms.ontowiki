@@ -75,13 +75,20 @@
                 </typeparameter>
 			</predicate>
             
-            <!-- Resource -->
+            <!-- List -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:inARelationship</predicateuri>
-                <type>resource</type>
+				<predicateuri>architecture:inARelationShip</predicateuri>
+                <type>list</type>
                 <typeparameter>
-                    <resource>architecture:Person</resource>
+                    <item>
+                        <label>Yes</label>
+                        <value>true</value>
+                    </item>
+                    <item>
+                        <label>No</label>
+                        <value>false</value>
+                    </item>
                 </typeparameter>
 			</predicate>
             
