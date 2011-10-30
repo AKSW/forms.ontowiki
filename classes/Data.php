@@ -440,11 +440,11 @@ class Data
     public function getResourceType($resourceUri)
     {
         $properties = $this->getResourceProperties ($resourceUri);
+        $value = $this->getPropertyValue ($properties,$this->_predicateType);
         
         // if a type was set
-        if (true == isset ($properties [$this->_predicateType]))
-        {
-            return $this->getResourceTitle ($properties [$this->_predicateType]);
+        if (true == isset ($value)) {
+            return $this->getResourceTitle ($value);
         }
         else
             return null;
