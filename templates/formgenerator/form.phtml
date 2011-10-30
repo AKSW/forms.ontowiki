@@ -41,6 +41,7 @@
         <div class="predicateValue">&nbsp;</div>
     </div>    
         
+    <!-- select a resource of a specific type -->
     <?php if (true == isset($this->resourcesOfType)) { ?>
     
         <form method="post" action="<?php echo $this->url; ?>form/">
@@ -49,10 +50,20 @@
                 
                 <div class="predicateValue">
                     <select name="r">
+                        
+                        <option value="">- please select -</option>
                 
                     <?php foreach ($this->resourcesOfType as $resource) { ?>
                     
+                    <?php if ($this->selectedResource == $resource['uri']) { ?>
+                    
+                        <option value="<?php echo $resource ['uri']; ?>" selected><?php echo $resource ['label']; ?></option>
+                        
+                    <?php } else { ?>
+                        
                         <option value="<?php echo $resource ['uri']; ?>"><?php echo $resource ['label']; ?></option>
+                    
+                    <?php } ?>
                     
                     <?php } ?>
                 

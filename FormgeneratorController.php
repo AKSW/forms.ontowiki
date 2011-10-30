@@ -81,6 +81,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // set form relevant variables
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
         $this->view->url = $this->_url;
+        $this->view->selectedResource = $this->_request->getParam('r');
+        
         
         // set resource to load, if parameter r was set
         if ('' != $this->_request->getParam('r'))
