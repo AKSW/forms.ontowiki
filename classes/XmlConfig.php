@@ -12,13 +12,11 @@ class XmlConfig
 {
     private $_titleHelper;
     private $_dirXmlConfigurationFiles;
-    private $_defaultXmlConfigurationFile;
     
-    public function __construct ($titleHelper, $dirXmlConfigurationFiles, $defaultXmlConfigurationFile)
+    public function __construct ($titleHelper, $dirXmlConfigurationFiles)
     {
         $this->_titleHelper = $titleHelper;
         $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
-        $this->_defaultXmlConfigurationFile = $defaultXmlConfigurationFile;
     }
     
     /**
@@ -33,11 +31,12 @@ class XmlConfig
         // load file
         $xml = true === file_exists ($file)
             ? simpleXML_load_file ($file)
-            : simpleXML_load_file ($this->_dirXmlConfigurationFiles . $this->_defaultXmlConfigurationFile); 
+            : false; 
         
         if(false === $xml) 
         { 
            //deal with error 
+           return;
         } 
         else
         {
@@ -165,8 +164,7 @@ class XmlConfig
                             foreach ($nodeValue->nestedconfig as $nestedconfig)
                             {                                             
                                 // Load XML Config
-                                $xmlConfig = new XmlConfig(
-                                    $this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_defaultXmlConfigurationFile);
+                                $xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
                                 
                                 $f = $xmlConfig->loadFile(
                                     $nestedconfig->xmlfile,

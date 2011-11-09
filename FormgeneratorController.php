@@ -19,7 +19,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 {
     private $_form;
     private $_data;
-    private $_defaultXmlConfigurationFile;
     private $_dirXmlConfigurationFiles;
     private $_dirJsHtmlPlugins;
     private $_predicateType;
@@ -40,7 +39,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // sets default model
         $model = new Erfurt_Rdf_Model ($this->_privateConfig->defaultModel);
         
-        $this->_defaultXmlConfigurationFile = $this->_privateConfig->defaultXmlConfigurationFile;
         $this->_dirXmlConfigurationFiles = dirname (__FILE__) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
         $this->_dirJsHtmlPlugins = dirname (__FILE__) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
         $this->_predicateType = $this->_privateConfig->predicateType;
@@ -85,6 +83,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->selectedResource = $this->_request->getParam('r');
         $this->view->url = $this->_url;
         
+        $file = null;
+        
         
         // set resource to load, if parameter r was set
         if ('' != $this->_request->getParam('r'))
@@ -98,9 +98,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             {
                 $file = $this->_data->getResourceType ($this->_request->getParam('r'));
             }
-            
-            if (null == $file)
-                $file = $this->_defaultXmlConfigurationFile;
         }
         
         // set file to load, if parameter file was set
@@ -116,16 +113,15 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
         }
         
-        // if a clear call of form action
-        else
-            $file = $this->_defaultXmlConfigurationFile;
-        
+        // If file was not set or not found
+        if (null == $file || false == file_exists ($this->_dirXmlConfigurationFiles . $file .'.xml')) {
+            $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
+        }
         
         // load xml configuration file
         $xmlconfig = new XmlConfig(
             $this->_titleHelper,
-            $this->_dirXmlConfigurationFiles,
-            $this->_defaultXmlConfigurationFile . '.xml'
+            $this->_dirXmlConfigurationFiles
         );
         
         $this->_form = $xmlconfig->loadFile($file . '.xml', $this->_form);
@@ -190,6 +186,15 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $formOld =  true == isset ($_REQUEST ['formOld']) ? $_REQUEST ['formOld'] : null;
         
         echo $this->_data->submitFormula ($form, $formOld);
+    }
+    
+    
+    /**
+     * 
+     */
+    public function xmlfilenotfoundAction()
+    {
+        
     }
 }
 

@@ -15,9 +15,6 @@ authorUrl   = "http://www.dispedia.de"
 ; sets default model
 defaultModel = "http://als.dispedia.info/"
 
-; sets default model
-defaultXmlConfigurationFile  = "person"
-
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
 uriParts      = "%modeluri%/i/%classname%/%date%/%hash%/%labelparts%"
 
