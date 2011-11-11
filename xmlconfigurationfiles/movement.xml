@@ -10,10 +10,16 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - set Movement</title>
+    <title>
+        <de>Bewegungsfähigkeit eines Patienten</de>
+        <en>Patient - set Movement</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload set his / her movement.</description>
+    <description>
+        <de>Bitte wählen Sie einen Patienten aus und setzen Sie danach seine Bewegungsfähigkeit.</de>
+        <en>Please select a patient and after reload set his / her movement.</en>
+    </description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->

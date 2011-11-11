@@ -11,10 +11,16 @@
     </labelparts>
 	
     <!-- Headline of this formula. -->
-    <title>Person</title>
+    <title>
+        <de>Person</de>
+        <en>Person</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula. -->
-    <description>Lorem</description>
+    <description>
+        <de>Hier können Sie Daten zu einer Person erfassen.</de>
+        <en>Here you can insert personal information.</en>
+    </description>
 	
     <sections>
         
@@ -22,7 +28,10 @@
 		<item>
             
             <!-- title of this section part -->
-			<title>Person information</title> 	
+			<title>
+                <de>Person information</de>
+                <en>Person information</en>
+            </title> 	
 						
             <!-- Textfield -->
 			<predicate> 
@@ -50,11 +59,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>female</label>
+                        <label>
+                            <de>weiblich</de>
+                            <en>female</en>
+                        </label>
                         <value>http://xmlns.com/foaf/0.1/gender#female</value>
                     </item>
                     <item>
-                        <label>male</label>
+                        <label>
+                            <de>männlich</de>
+                            <en>male</en>
+                        </label>
                         <value>http://xmlns.com/foaf/0.1/gender#male</value>
                     </item>
                 </typeparameter>

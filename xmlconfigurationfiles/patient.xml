@@ -11,10 +11,16 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - Master data</title>
+    <title>
+        <de>Stammdaten zu einem Patienten</de>
+        <en>Patient - Master data</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description></description>
+    <description>
+        <de>Hier können Sie einen Patienten anlegen oder ändern.</de>
+        <en>Here you can add / edit a patient.</en>
+    </description>
 	
     <sections>
         

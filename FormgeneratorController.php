@@ -118,10 +118,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
         }
         
+        // set standard language
+        $lang = true == isset ($_SESSION ['selectedLanguage'])
+            ? $_SESSION ['selectedLanguage']
+            : 'de';
+        
         // load xml configuration file
         $xmlconfig = new XmlConfig(
             $this->_titleHelper,
-            $this->_dirXmlConfigurationFiles
+            $this->_dirXmlConfigurationFiles,
+            $lang
         );
         
         $this->_form = $xmlconfig->loadFile($file . '.xml', $this->_form);

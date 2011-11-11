@@ -10,10 +10,16 @@
     </labelparts>
 	
     <!-- Headline of this formula. -->
-    <title>Address</title>
+    <title>
+        <de>Addresse</de>
+        <en>Address</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula. -->
-    <description>Add a new / edit an existing address.</description>
+    <description>
+        <de>Erstellen Sie eine neue Addresse oder ändern Sie eine bestehende ab.</de>
+        <en>Add a new / edit an existing address.</en>
+    </description>
 	
     <sections>
         
@@ -39,11 +45,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>First Home</label>
+                        <label>
+                            <de>Erstwohnung</de>
+                            <en>First Home</en>
+                        </label>
                         <value>first home</value>
                     </item>
                     <item>
-                        <label>Secondary Residence</label>
+                        <label>
+                            <de>Zweitwohnung</de>
+                            <en>Secondary Residence</en>
+                        </label>
                         <value>secondary residence</value>
                     </item>
                 </typeparameter>
@@ -56,11 +68,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>Detached House</label>
+                        <label>
+                            <de>Einfamilienhaus</de>
+                            <en>Detached House</en>
+                        </label>
                         <value>detached house</value>
                     </item>
                     <item>
-                        <label>Multi Family Home</label>
+                        <label>
+                            <de>Mehrfamilienhaus</de>
+                            <en>Multi Family Home</en>
+                        </label>
                         <value>multi family home</value>
                     </item>
                 </typeparameter>
@@ -73,15 +91,24 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>Loft Apartment</label>
+                        <label>
+                            <de>Dachgeschosswohnung</de>
+                            <en>Loft Apartment</en>
+                        </label>
                         <value>loft apartment</value>
                     </item>
                     <item>
-                        <label>Apartment</label>
+                        <label>
+                            <de>Einzelwohnung</de>
+                            <en>Apartment</en>
+                        </label>
                         <value>apartment</value>
                     </item>
                     <item>
-                        <label>Maisonette</label>
+                        <label>
+                            <de>Maisonette-Wohnung</de>
+                            <en>Maisonette</en>
+                        </label>
                         <value>maisonette</value>
                     </item>
                 </typeparameter>
@@ -100,11 +127,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>True</label>
+                        <label>
+                            <de>Ja</de>
+                            <en>Yes</en>
+                        </label>
                         <value>true</value>
                     </item>
                     <item>
-                        <label>False</label>
+                        <label>
+                            <de>Nein</de>
+                            <en>No</en>
+                        </label>
                         <value>false</value>
                     </item>
                 </typeparameter>
@@ -117,11 +150,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>True</label>
+                        <label>
+                            <de>Ja</de>
+                            <en>Yes</en>
+                        </label>
                         <value>true</value>
                     </item>
                     <item>
-                        <label>False</label>
+                        <label>
+                            <de>Nein</de>
+                            <en>No</en>
+                        </label>
                         <value>false</value>
                     </item>
                 </typeparameter>
@@ -134,11 +173,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>True</label>
+                        <label>
+                            <de>Ja</de>
+                            <en>Yes</en>
+                        </label>
                         <value>true</value>
                     </item>
                     <item>
-                        <label>False</label>
+                        <label>
+                            <de>Nein</de>
+                            <en>No</en>
+                        </label>
                         <value>false</value>
                     </item>
                 </typeparameter>
@@ -151,11 +196,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>True</label>
+                        <label>
+                            <de>Ja</de>
+                            <en>Yes</en>
+                        </label>
                         <value>true</value>
                     </item>
                     <item>
-                        <label>False</label>
+                        <label>
+                            <de>Nein</de>
+                            <en>No</en>
+                        </label>
                         <value>false</value>
                     </item>
                 </typeparameter>
@@ -168,11 +219,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>True</label>
+                        <label>
+                            <de>Ja</de>
+                            <en>Yes</en>
+                        </label>
                         <value>true</value>
                     </item>
                     <item>
-                        <label>False</label>
+                        <label>
+                            <de>Nein</de>
+                            <en>No</en>
+                        </label>
                         <value>false</value>
                     </item>
                 </typeparameter>
@@ -185,11 +242,17 @@
 				<type>list</type>
                 <typeparameter>
                     <item>
-                        <label>True</label>
+                        <label>
+                            <de>Ja</de>
+                            <en>Yes</en>
+                        </label>
                         <value>true</value>
                     </item>
                     <item>
-                        <label>False</label>
+                        <label>
+                            <de>Nein</de>
+                            <en>No</en>
+                        </label>
                         <value>false</value>
                     </item>
                 </typeparameter>

@@ -10,10 +10,16 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - set Address</title>
+    <title>
+        <de>Addresse eines Patienten setzen</de>
+        <en>Patient - set Address</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload set his / her his address.</description>
+    <description>
+        <de>Bitte wählen Sie einen Patienten aus und weisen Sie ihm danach seine Addresse zu.</de>
+        <en>Please select a patient and after reload set his / her his address.</en>
+    </description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->

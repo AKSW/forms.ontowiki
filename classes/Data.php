@@ -366,6 +366,8 @@ class Data
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
         
+        // echo '<pre>'; var_dump ( $properties ); echo '</pre>';
+        
         if ( 0 == count($properties)) return;
         else
         {

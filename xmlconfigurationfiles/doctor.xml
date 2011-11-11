@@ -7,9 +7,15 @@
         <item>architecture:lastName</item>
     </labelparts>
     
-    <title>Doctor</title>
+    <title>
+        <de>Doktor</de>
+        <en>Doctor</en>
+    </title>
     
-	<description>Lorem </description>
+	<description>
+        <en>Hier können Sie einen neuen behandelnden Arzt anlegen.</en>
+        <en>Here you can create a new treating physican.</en>
+    </description>
 	
     <sections>
 		<item>

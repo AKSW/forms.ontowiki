@@ -133,6 +133,8 @@
                  
                      <?php foreach ($section as $element) { ?>
                      
+                     <?php if (false == is_array($element)) continue; ?>
+                     
                         <?php if ('predicate' == $element ['sectiontype']) { ?>
                         <!-- PREDICATE -->
                         

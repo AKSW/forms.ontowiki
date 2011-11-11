@@ -11,10 +11,16 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - Master data</title>
+    <title>
+        <de>Stammdaten zu einem Patienten</de>
+        <en>Patient - Master data</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload update his master data.</description>
+    <description>
+        <de>Bitte wählen Sie erst einen Patienten aus und danach können Sie seine Stammdaten bearbeiten.</de>
+        <en>Please select a patient and after reload you can his master data.</en>
+    </description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->

@@ -11,10 +11,16 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - Life partner / Spouse</title>
+    <title>
+        <de>Lebenspartner / EhegattIn eines Patienten</de>
+        <en>Patient - Life partner / Spouse</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload set his / her life partner.</description>
+    <description>
+        <de>Bitte wählen Sie einen Patienten aus und setzen Sie danach seinen LebenspartnerIn / EhegattIn.</de>
+        <en>Please select a patient and after reload set his / her life partner.</en>
+    </description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->

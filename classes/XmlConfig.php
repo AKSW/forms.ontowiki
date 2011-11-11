@@ -12,11 +12,13 @@ class XmlConfig
 {
     private $_titleHelper;
     private $_dirXmlConfigurationFiles;
+    private $_language;
     
-    public function __construct ($titleHelper, $dirXmlConfigurationFiles)
+    public function __construct ($titleHelper, $dirXmlConfigurationFiles, $language)
     {
         $this->_titleHelper = $titleHelper;
         $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
+        $this->_language = $language; // de, en
     }
     
     /**
@@ -51,12 +53,15 @@ class XmlConfig
                 switch ($nodeName)
                 {
                     case 'title':
-                        $form->setTitle ((string) $nodeValue [0]);
+                        foreach ($nodeValue [0]->children() as $lang) {
+                            $form->setTitle ((string) $nodeValue [0]->{$this->_language});
+                            break;
+                        }
                         break;
                         
                         
                     case 'description':
-                        $form->setDescription ((string) $nodeValue [0]);
+                        $form->setDescription ((string) $nodeValue [0]->{$this->_language});
                         break;
                         
                         
@@ -112,7 +117,7 @@ class XmlConfig
                                     case 'list':
                                         foreach ($predicate->typeparameter->item as $parameter)
                                             $typeparameter [] = array (
-                                                'label' => (string) $parameter->label,
+                                                'label' => (string) $parameter->label->{$this->_language},
                                                 'value' => (string) $parameter->value 
                                            );
                                         break;
@@ -132,7 +137,7 @@ class XmlConfig
                                 }
                                 
                                 // if a title was explicit set in the XML config file
-                                $title = (string) $predicate->title;
+                                $title = (string) $predicate->title->{$this->_language};
                                 
                                 if ('' == $title)
                                 {

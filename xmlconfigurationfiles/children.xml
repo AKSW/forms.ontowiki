@@ -11,10 +11,16 @@
     </labelparts>
 	
     <!-- Headline of this formula -->
-    <title>Patient - is Parent of</title>
+    <title>
+        <de>Kinder eines Patienten</de>
+        <en>Children of a patient</en>
+    </title>
 	
     <!-- Introducing text to inform the user about the formula -->
-    <description>Please select a patient and after reload set his / her his children.</description>
+    <description>
+        <de>Bitte wählen Sie erst einen Patienten aus und setzen Sie danach seine Kinder.</de>
+        <en>Please select a patient and after reload set his / her his children.</en>
+    </description>
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
