@@ -1,0 +1,32 @@
+<form> 
+	
+    <!-- Headline of this formula. -->
+    <title>
+        <de>ALSFRS Klassifikation</de>
+        <en>ALSFRS classification</en>
+    </title>
+	
+    <!-- Introducing text to inform the user about the formula. -->
+    <description>
+        <de>Wählen Sie einen Patienten aus und setzen Sie danach seinen Gesundheitszustand.</de>
+        <en>Select a patient and set his medical condition.</en>
+    </description>    
+    
+    <!-- Shows a dropdown box to select an existing resource. -->
+    <!-- All relations and fields below are going to connect to this resource. -->
+    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            
+            <!-- Textfield -->		
+            <predicate> 
+				<type>alsfrs</type>
+            </predicate>
+            
+		</item> 
+        
+	</sections>
+</form>

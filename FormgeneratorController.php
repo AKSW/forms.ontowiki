@@ -1,5 +1,6 @@
 <?php
 
+require_once 'classes/ALSFRS.php';
 require_once 'classes/Data.php';
 require_once 'classes/Formula.php';
 require_once 'classes/Resource.php';
@@ -77,6 +78,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->headScript()->appendFile($this->_url .'libraries/jquery.json.min.js');
         
         // set form relevant variables
+        $this->view->alsfrs = new ALSFRS ($this->_selectedModel);
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
         $this->view->predicateType = $this->_predicateType;
         $this->view->selectedModel = $this->_selectedModel;
