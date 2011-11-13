@@ -92,4 +92,13 @@ class ALSFRS
         
         return $result;
     }
+    
+    
+    /**
+     * 
+     */
+    public function generateAlsfrsFormulaPredicates ()
+    {
+        
+    }
 }

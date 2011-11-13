@@ -35,12 +35,50 @@ class Formula
         $this->_data ['resource'] = "";
         $this->_data ['sections'] = array ();
         $this->_data ['selectResourceOfType'] = '';
+        $this->_data ['formulaType'] = 'normal';
+        $this->_data ['formulaParameter'] = array ();
         
         $this->_selectedModel = $selectedModel;
     }
     
     
     // -----------------------------------------------------------------
+    
+    
+    /**
+     * @return void 
+     */
+    public function setFormulaParameter ($value)
+    {
+        $this->_data ['formulaParameter'] = $value;
+    }
+    
+    
+    /**
+     * @return string 
+     */
+    public function getFormulaParameter ()
+    {
+        return $this->_data ['formulaParameter'];
+    }
+    
+    
+    /**
+     * @return void 
+     */
+    public function setFormulaType ($value)
+    {
+        $this->_data ['formulaType'] = $value;
+    }
+    
+    
+    /**
+     * @return string 
+     */
+    public function getFormulaType ()
+    {
+        return $this->_data ['formulaType'];
+    }
     
     
     /**
@@ -332,6 +370,8 @@ class Formula
         $arr = array (
             'title'                 => $this->getTitle (),
             'index'                 => $this->getIndex (),
+            'formulaType'           => $this->getFormulaType (),
+            'formulaParameter'      => $this->getFormulaParameter (),
             'description'           => $this->getDescription (),
             'selectResourceOfType'  => $this->getSelectResourceOfType (),
             'labelparts'            => $this->getLabelparts (),
@@ -408,6 +448,11 @@ class Formula
         $form->setTargetClass ($formArray ['targetclass']);
         
         $form->setXmlFile ($formArray ['xmlfile']);
+        
+        $form->setFormulaType ($formArray ['formulaType']);
+        
+        $form->setFormulaParameter ($formArray ['formulaParameter']);
+        
                         
         foreach ($formArray ['sections'] as $entry)
         {
@@ -618,14 +663,5 @@ class Formula
         $namespaceUri = str_replace('Address', '', $result[0]['namespaceUri']);
         
         return str_replace('architecture:', $namespaceUri, $s);
-    }
-    
-    
-    /**
-     * 
-     */
-    public function generateAlsfrsPredicates ()
-    {
-        
     }
 }

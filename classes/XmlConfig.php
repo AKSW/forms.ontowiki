@@ -46,6 +46,7 @@ class XmlConfig
             $xmlFile = substr($xmlFile, 0, strpos ($xmlFile, '.')); // delete extension
             $form->setXmlFile($xmlFile);
                 
+            // generate a specify XML 
             
             // ReadIn all readable data from XML-Config file.
             foreach ($xml as $nodeName => $nodeValue) 
@@ -72,6 +73,33 @@ class XmlConfig
                         
                     case 'targetclass':
                         $form->setTargetClass ((string) $nodeValue [0]);
+                        
+                        break;
+                        
+                        
+                    case 'formulaType':
+                        $form->setTargetClass ((string) $nodeValue [0]);
+                        
+                        break;
+                        
+                        
+                    case 'formulaParameter':
+                        
+                        $p = array ();
+                        
+                        $p ['predicateToHealthState'] = (string) $xml->formulaParameter->predicateToHealthState;
+                        $p ['healthState'] = (string) $xml->formulaParameter->healthState;
+                        
+                        $p ['predicateToPropertySet'] = (string) $xml->formulaParameter->predicateToPropertySet;
+                        $p ['propertySet'] = (string) $xml->formulaParameter->propertySet;
+                        
+                        $p ['predicateToSymptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
+                        $p ['symptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
+                        
+                        $p ['predicateToPropertyOption'] = (string) $xml->formulaParameter->predicateToPropertyOption;
+                        $p ['predicateToSymptomOption'] = (string) $xml->formulaParameter->predicateToSymptomOption;
+                        
+                        $form->setFormulaParameter ( $p );
                         
                         break;
                         
@@ -109,61 +137,23 @@ class XmlConfig
                                 
                                 // set typeparameters
                                 switch ( $type )
-                                {           
-                                    // ALSFRS: complex structure of relations and instances
-                                    case 'alsfrs':
+                                {                    
+                                    // a ALSFRS question with options
+                                    case 'alsfrsquestion':
                                         
-                                        $typeparameter ['predicateToHealthState'] = (string)
-                                            $predicate->typeparameter->predicateToHealthState;
+                                        $options = array ();
                                         
-                                        $typeparameter ['healthState'] = $predicate->typeparameter->healthState;
+                                        foreach ($predicate->typeparameter->options->item as $i)
+                                            $options [] = (string) $i;
+                                    
+                                        $typeparameter [] = array ( 
+                                            'topicUri'      => (string) $predicate->typeparameter->topicUri,
+                                            'pertainsTo'    => (string) $predicate->typeparameter->pertainsTo,
+                                            'options'       => $options
+                                        );
                                         
-                                        $typeparameter ['predicateToPropertySet'] = (string)
-                                            $predicate->typeparameter->predicateToPropertySet;
-                                        
-                                        $typeparameter ['propertySet'] = $predicate->typeparameter->propertySet;
-                                        
-                                        $typeparameter ['predicateToSymptomSet'] = (string)
-                                            $predicate->typeparameter->predicateToSymptomSet;
-                                        
-                                        $typeparameter ['symptomSet'] = $predicate->typeparameter->symptomSet;
-                                        
-                                        $typeparameter ['predicateToPropertyOption'] = (string)
-                                            $predicate->typeparameter->predicateToPropertyOption;
-                                        
-                                        $typeparameter ['predicateToSymptomOption'] = (string)
-                                            $predicate->typeparameter->predicateToSymptomOption;
-                                        
-                                        // topic
-                                        $typeparameter ['topic'] = (string)
-                                            $predicate->typeparameter->topic;
-                                        
-                                        $typeparameter ['topicLabel'] = (string)
-                                            $predicate->typeparameter->topicLabel;
-                                        
-                                        $typeparameter ['topicSuggestedQuestion'] = (string)
-                                            $predicate->typeparameter->topicSuggestedQuestion;
-                                        
-                                        $typeparameter ['topicHasOption'] = (string)
-                                            $predicate->typeparameter->topicHasOption;
-                                            
-                                        // option
-                                        $typeparameter ['option'] = (string)
-                                            $predicate->typeparameter->option;
-                                        
-                                        $typeparameter ['optionLabel'] = (string)
-                                            $predicate->typeparameter->optionLabel;
-                                        
-                                        // clear assignment which topics are SymptomOptions
-                                        foreach ($predicate->typeparameter->pertainsToSymptomSet->item as $parameter)
-                                            $typeparameter ['pertainsToSymptomSet'][] = (string) $parameter;
-                                        
-                                        // clear assignment which topics are PropertyOptions
-                                        foreach ($predicate->typeparameter->pertainsToPropertySet->item as $parameter)
-                                            $typeparameter ['pertainsToPropertySet'][] = (string) $parameter;
-                                           
                                         break;
-                                                             
+                                           
                                     case 'date': 
                                         break;
                                     

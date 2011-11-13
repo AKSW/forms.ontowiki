@@ -15,67 +15,48 @@
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
     <selectResourceOfType>architecture:Patient</selectResourceOfType>
-	
+    
+    <!-- normal (standard), alsfrs -->
+    <formulaType>alsfrs</formulaType>
+    
+    <formulaParameter>
+        
+        <!-- SelectedResource  has  healthStateInstance -->
+        <predicateToHealthState>has</predicateToHealthState>
+        <healthState>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSHealthState</healthState>
+        
+        <!-- healthStateInstance  includesAffectedProperties  ALSFRSPropertySet -->
+        <predicateToPropertySet>http://als.dispedia.info/architecture/c/20110827/includesAffectedProperties</predicateToPropertySet>
+        <propertySet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSPropertySet</propertySet>
+        
+        <!-- healthStateInstance  includesSymptoms  ALSFRSSymptomSet-Instance -->
+        <predicateToSymptomSet>http://als.dispedia.info/architecture/c/20110827/includesSymptoms</predicateToSymptomSet>
+        <symptomSet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSSymptomSet</symptomSet>
+        
+        <!-- ALSFRSPropertySet-Instance  containsPropertyOption  Option-Instance -->
+        <predicateToPropertyOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsPropertyOption</predicateToPropertyOption>
+        
+        <!-- ALSFRSSymptomSet-Instance  containsSymptomOption  Option-Instance -->
+        <predicateToSymptomOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsSymptomOption</predicateToSymptomOption>
+
+    </formulaParameter>
+	    
     <sections>
         
-        <!-- A new section -->
 		<item>
             
-            <!-- Textfield -->		
             <predicate> 
-				<type>alsfrs</type>
+				<type>alsfrsquestion</type>
                 <typeparameter>
-                    
-                    <!-- Patientresource  has  healthStateInstance -->
-                    <predicateToHealthState>has</predicateToHealthState>
-                    <healthState>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSHealthState</healthState>
-                    
-                    <!-- healthStateInstance  includesAffectedProperties  ALSFRSPropertySet -->
-                    <predicateToPropertySet>http://als.dispedia.info/architecture/c/20110827/includesAffectedProperties</predicateToPropertySet>
-                    <propertySet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSPropertySet</propertySet>
-                    
-                    <!-- healthStateInstance  includesSymptoms  ALSFRSSymptomSet-Instance -->
-                    <predicateToSymptomSet>http://als.dispedia.info/architecture/c/20110827/includesSymptoms</predicateToSymptomSet>
-                    <symptomSet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSSymptomSet</symptomSet>
-                    
-                    <!-- ALSFRSPropertySet-Instance  containsPropertyOption  Option-Instance -->
-                    <predicateToPropertyOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsPropertyOption</predicateToPropertyOption>
-                    
-                    <!-- ALSFRSSymptomSet-Instance  containsSymptomOption  Option-Instance -->
-                    <predicateToSymptomOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsSymptomOption</predicateToSymptomOption>
-                                        
-                    <!-- Topic related stuff -->
-                    <topic>http://als.dispedia.info/frs/o/Topic</topic>
-                    <topicLabel>http://www.w3.org/2000/01/rdf-schema#label</topicLabel>
-                    <topicSuggestedQuestion>http://als.dispedia.info/frs/o/suggestedQuestion</topicSuggestedQuestion>
-                    <topicHasOption>http://als.dispedia.info/frs/o/hasOption</topicHasOption>
-                    
-                    <!-- Option related stuff -->
-                    <option>http://als.dispedia.info/frs/o/Option</option>
-                    <optionLabel>http://www.w3.org/2000/01/rdf-schema#label</optionLabel>
-                    <optionHasScore>http://als.dispedia.info/frs/o/hasScore</optionHasScore>
-                    
-                    <!-- clear assignment which topics are SymptomOptions -->
-                    <pertainsToSymptomSet>
-                        <item>http://als.dispedia.info/frs/i/topic/t2</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t4</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t8</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t10</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t11</item>
-                    </pertainsToSymptomSet>
-                    
-                    <!-- clear assignment which topics are PropertyOptions -->
-                    <pertainsToPropertySet>
-                        <item>http://als.dispedia.info/frs/i/topic/t1</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t3</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t5a</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t5b</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t6</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t7</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t9</item>
-                        <item>http://als.dispedia.info/frs/i/topic/t12</item>
-                    </pertainsToPropertySet>
-                                        
+                    <topicUri>http://als.dispedia.info/frs/i/topic/t1</topicUri>
+                    <pertainsTo>SymptomSet</pertainsTo>
+                    <options>
+                        <item>http://als.dispedia.info/frs/i/option/o1_0</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_1</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_2</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_3</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_4</item>
+                    </options>
                 </typeparameter>
             </predicate>
             
