@@ -28,27 +28,80 @@ foreach ( $element ['typeparameter']['options'] as $option ) {
     
     // TODO add language selection
     
-    $option = $this->selectedModel->sparqlQuery(
+    $o = $this->selectedModel->sparqlQuery(
         'SELECT ?optionUri ?label ?score
          WHERE {
              ?optionUri <http://www.w3.org/2000/01/rdf-schema#label> ?label .
              <'. $option .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
              <'. $option .'> <http://als.dispedia.info/frs/o/hasScore> ?score .
+         } 
+         ORDER BY ?score;'
+    );
+    
+    $o [1] ['optionValue'] = $option;    
+    $element ['outputOptions'][] = $o [1];
+}
+
+$entrySelected = false;
+
+// Get latest score
+$setOptions = array ();
+if ('PropertySet' == $element ['typeparameter']['pertainsTo']) {
+    
+    $tmp = $this->selectedModel->sparqlQuery(
+        'SELECT ?setOption
+         WHERE {
+             <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> ?healthState .
+             ?healthState <'. $this->formulaParameter ['predicateToPropertySet'] .'> ?propertySet .
+             ?propertySet <'. $this->formulaParameter ['predicateToPropertyOption'] .'> ?setOption .
          };'
     );
     
-    $element ['outputOptions'][] = $option [1];
+    foreach ( $tmp as $option ) {
+        $setOptions [] = $option ['setOption'];
+        $entrySelected = true;
+    }
+    
+} elseif ('SymptomSet' == $element ['typeparameter']['pertainsTo']) {
+ 
+    $tmp = $this->selectedModel->sparqlQuery(
+        'SELECT ?setOption
+         WHERE {
+             <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> ?healthState .
+             ?healthState <'. $this->formulaParameter ['predicateToSymptomSet'] .'> ?symptomSet .
+             ?symptomSet <'. $this->formulaParameter ['predicateToSymptomOption'] .'> ?setOption .
+         };'
+    );
+    
+    foreach ( $tmp as $option ) {
+        $setOptions [] = $option ['setOption'];
+        $entrySelected = true;
+    }
 }
 
 ?>
 <!-- suggested question -->
-<h2><?php echo $element ['label']; ?> - <?php echo $element ['suggestedQuestion']; ?></h2>
+<h2><?php echo $element ['suggestedQuestion']; ?></h2>
 
 <!-- list of options -->
 <?php foreach ( $element ['outputOptions'] as $option ) { ?>
 
     <br/>
-    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['score']; ?>"/>
+    
+    <?php if ( true == in_array ( $option ['optionValue'], $setOptions ) ) { ?>
+    
+    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked/>
+    
+    <?php } elseif ( false == $entrySelected ) { $entrySelected = true; ?>
+    
+    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked/>
+    
+    <?php } else { ?>
+    
+    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>"/>
+    
+    <?php } ?>
+    
     &nbsp; <?php echo $option ['label']; ?>
 
 <?php } ?>

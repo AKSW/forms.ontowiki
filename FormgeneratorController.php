@@ -141,6 +141,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         
         $this->view->form = $this->_form;
+        $this->view->formulaParameter = $this->_form->getFormulaParameter ();
         
         // loading resource of type
         if ('' != $this->_form->getSelectResourceOfType ())
