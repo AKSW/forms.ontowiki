@@ -98,7 +98,7 @@ class XmlConfig
                             $p ['propertySetInstanceUri'] = (string) $xml->formulaParameter->propertySetInstanceUri;
                             
                             $p ['predicateToSymptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
-                            $p ['symptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
+                            $p ['symptomSet'] = (string) $xml->formulaParameter->symptomSet;
                             $p ['symptomSetInstanceUri'] = (string) $xml->formulaParameter->symptomSetInstanceUri;
                             
                             $p ['predicateToPropertyOption'] = (string) $xml->formulaParameter->predicateToPropertyOption;
