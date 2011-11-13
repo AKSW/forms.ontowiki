@@ -311,20 +311,12 @@ class Data
                              };'
                         );
                         
-                        var_dump ( 'SELECT ?score
-                             WHERE {
-                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> ?score .
-                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> <'. $oldValue .'> .
-                             };' );
-                        
                         if ( 0 == count ( $result ) ) {
                             $this->addStmt(
                                 $propertySetInstance,
                                 $para['predicateToPropertyOption'],
                                 $entry ['value']
                             );
-                            
-                            echo "ADD NEW!";
                         } else {
                             
                             // delete old value
@@ -340,13 +332,45 @@ class Data
                                 $para['predicateToPropertyOption'],
                                 $entry ['value']
                             );
-                            
-                            echo "DEL OLD ........... ADD NEW!";
                         }
                     }
+                    
+                    // -------------------------------------------------
+                    
                     elseif ( 'SymptomSet' == $entry ['typeparameter']['pertainsTo'] )
                     {
+                        // check that is a relation between symptomSet instance
+                        // and this option value
+                        $result = $this->_selectedModel->sparqlQuery(
+                            'SELECT ?score
+                             WHERE {
+                                 <'. $symptomSetInstance .'> <'. $para['predicateToSymptomOption'] .'> ?score .
+                                 <'. $symptomSetInstance .'> <'. $para['predicateToSymptomOption'] .'> <'. $oldValue .'> .
+                             };'
+                        );
                         
+                        if ( 0 == count ( $result ) ) {
+                            $this->addStmt(
+                                $symptomSetInstance,
+                                $para['predicateToSymptomOption'],
+                                $entry ['value']
+                            );
+                        } else {
+                            
+                            // delete old value
+                            $this->removeStmt(
+                                $symptomSetInstance,
+                                $para['predicateToSymptomOption'],
+                                $oldValue
+                            );
+                            
+                            // add new one
+                            $this->addStmt(
+                                $symptomSetInstance,
+                                $para['predicateToSymptomOption'],
+                                $entry ['value']
+                            );
+                        }
                     }
                     
                     continue;
