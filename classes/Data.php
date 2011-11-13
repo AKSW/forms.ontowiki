@@ -195,35 +195,52 @@ class Data
             $result = $this->_selectedModel->sparqlQuery(
                 'SELECT ?healthState
                  WHERE {
-                     ?healthState <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $healthState .'> .
                      <'. $res .'> <'. $has .'> ?healthState .
+                     ?healthState <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $healthState .'> .
                  };'
             );
             
-            $count = count ( $result );
-            
             // no relation, no healthState instance
-            if ( 0 == $count ) {
-                
-                // generate a new healthState instance
+            if ( 0 == count ( $result ) ) 
+            {
+                // create a new healthState instance
                 $healthStateInstance = $para['healthStateInstanceUri'] . substr ( md5 (time()), 0, 8 );
-                
                 $this->addStmt( 
                     $healthStateInstance, 
                     'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
                     $para['healthState']
                 );
                 
+                // selectedResource  has  healthState instance
                 $this->addStmt( $res, $has, $healthStateInstance );
                 
-                // HealthState-instance  includesAffactedProperties  PropertySet-instance
-                $propertySetInstance = $para['propertySetInstanceUri'] . substr ( md5 (time()), 0, 8 );
                 
+                // create a new propertySet instance
+                $propertySetInstance = $para['propertySetInstanceUri'] . substr ( md5 (time()), 0, 8 );
+                $this->addStmt( 
+                    $propertySetInstance,
+                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                    $para['propertySet'] 
+                );
+                
+                // HealthState-instance  includesAffactedProperties  PropertySet-instance
                 $this->addStmt( $healthState, $para['predicateToPropertySet'], $propertySetInstance );
+                
+                
+                // create a new propertySet instance
+                $symptomSetInstance = $para['symptomSetInstanceUri'] . substr ( md5 (time()), 0, 8 );
+                $this->addStmt( 
+                    $symptomSetInstance,
+                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                    $para['symptomSet'] 
+                );
+                
+                // HealthState-instance  includesAffactedProperties  PropertySet-instance
+                $this->addStmt( $healthState, $para['predicateToSymptomSet'], $symptomSetInstance );
             }
             
             // relation founded
-            elseif ( 1 == $count ) {
+            else { // 1 == $count
                 echo "düasldsdsaü plpü";
             }
         }
