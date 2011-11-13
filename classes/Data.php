@@ -181,7 +181,54 @@ class Data
         else
             $log = array ();
             
+        // -------------------------------------------------------------
+        $para = $form->getFormulaParameter();
+        
+        if (0 < count ( $para ))
+        {
+            $res = $form->getResource();
+            $has = $para ['predicateToHealthState'];
+            $healthState = $para ['healthState'];
+            
+            // Check if there is an relation between selectedResource
+            // (e.g. a patient) and a healthState instance
+            $result = $this->_selectedModel->sparqlQuery(
+                'SELECT ?healthState
+                 WHERE {
+                     ?healthState <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $healthState .'> .
+                     <'. $res .'> <'. $has .'> ?healthState .
+                 };'
+            );
+            
+            $count = count ( $result );
+            
+            // no relation, no healthState instance
+            if ( 0 == $count ) {
                 
+                // generate a new healthState instance
+                $healthStateInstance = $para['healthStateInstanceUri'] . substr ( md5 (time()), 0, 8 );
+                
+                $this->addStmt( 
+                    $healthStateInstance, 
+                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                    $para['healthState']
+                );
+                
+                $this->addStmt( $res, $has, $healthStateInstance );
+                
+                // HealthState-instance  includesAffactedProperties  PropertySet-instance
+                $propertySetInstance = $para['propertySetInstanceUri'] . substr ( md5 (time()), 0, 8 );
+                
+                $this->addStmt( $healthState, $para['predicateToPropertySet'], $propertySetInstance );
+            }
+            
+            // relation founded
+            elseif ( 1 == $count ) {
+                echo "düasldsdsaü plpü";
+            }
+        }
+        
+        // -------------------------------------------------------------
         foreach ($form->getSections() as $sectionEntries) 
         {
             // extract title from array and delete it
@@ -191,6 +238,12 @@ class Data
             foreach ($sectionEntries as $entry) {
                 
                 $oldValue = $formOld->getPredicateValue($entry ['index']);
+                
+                // $log [] = 'found alsfrs question with value: '. $entry ['value'];
+                if('alsfrsquestion' == $entry ['type'])
+                {
+                    continue;
+                }
                 
                 // predicate
                 if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {

@@ -24,14 +24,20 @@
         <!-- SelectedResource  has  healthStateInstance -->
         <predicateToHealthState>has</predicateToHealthState>
         <healthState>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSHealthState</healthState>
+        <!-- Prefix of a HealthState instance -->
+        <healthStateInstanceUri>http://als.dispedia.info/wrapperAlsfrs/i/20111105/</healthStateInstanceUri>
         
         <!-- healthStateInstance  includesAffectedProperties  ALSFRSPropertySet -->
         <predicateToPropertySet>http://als.dispedia.info/architecture/c/20110827/includesAffectedProperties</predicateToPropertySet>
         <propertySet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSPropertySet</propertySet>
+        <!-- Prefix of a PropertySet instance -->
+        <propertySetInstanceUri>http://als.dispedia.info/wrapperAlsfrs/i/20111105/</propertySetInstanceUri>
         
         <!-- healthStateInstance  includesSymptoms  ALSFRSSymptomSet-Instance -->
         <predicateToSymptomSet>http://als.dispedia.info/architecture/c/20110827/includesSymptoms</predicateToSymptomSet>
         <symptomSet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSSymptomSet</symptomSet>
+        <!-- Prefix of a SymptomSet instance -->
+        <symptomSetInstanceUri>http://als.dispedia.info/wrapperAlsfrs/i/20111105/</symptomSetInstanceUri>
         
         <!-- ALSFRSPropertySet-Instance  containsPropertyOption  Option-Instance -->
         <predicateToPropertyOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsPropertyOption</predicateToPropertyOption>
@@ -49,7 +55,7 @@
 				<type>alsfrsquestion</type>
                 <predicateuri>http://als.dispedia.info/frs/i/topic/t1</predicateuri>
                 <typeparameter>
-                    <pertainsTo>SymptomSet</pertainsTo>
+                    <pertainsTo>PropertySet</pertainsTo>
                     <options>
                         <item>http://als.dispedia.info/frs/i/option/o1_4</item>
                         <item>http://als.dispedia.info/frs/i/option/o1_3</item>

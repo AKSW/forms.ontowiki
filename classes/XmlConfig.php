@@ -78,7 +78,7 @@ class XmlConfig
                         
                         
                     case 'formulaType':
-                        $form->setTargetClass ((string) $nodeValue [0]);
+                        $form->setFormulaType ((string) $nodeValue [0]);
                         
                         break;
                         
@@ -91,12 +91,15 @@ class XmlConfig
                         {
                             $p ['predicateToHealthState'] = (string) $xml->formulaParameter->predicateToHealthState;
                             $p ['healthState'] = (string) $xml->formulaParameter->healthState;
+                            $p ['healthStateInstanceUri'] = (string) $xml->formulaParameter->healthStateInstanceUri;
                             
                             $p ['predicateToPropertySet'] = (string) $xml->formulaParameter->predicateToPropertySet;
                             $p ['propertySet'] = (string) $xml->formulaParameter->propertySet;
+                            $p ['propertySetInstanceUri'] = (string) $xml->formulaParameter->propertySetInstanceUri;
                             
                             $p ['predicateToSymptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
                             $p ['symptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
+                            $p ['symptomSetInstanceUri'] = (string) $xml->formulaParameter->symptomSetInstanceUri;
                             
                             $p ['predicateToPropertyOption'] = (string) $xml->formulaParameter->predicateToPropertyOption;
                             $p ['predicateToSymptomOption'] = (string) $xml->formulaParameter->predicateToSymptomOption;
