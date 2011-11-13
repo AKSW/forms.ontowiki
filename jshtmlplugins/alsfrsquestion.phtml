@@ -8,27 +8,48 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */ 
 
+$element ['outputOptions'] = array ();
+
+// get information about the topic
+$topic = $this->selectedModel->sparqlQuery(
+    'SELECT ?topicUri ?label ?suggestedQuestion
+     WHERE {
+         <'. $element ['predicateuri'] .'> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://als.dispedia.info/frs/o/Topic> .
+         <'. $element ['predicateuri'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+         <'. $element ['predicateuri'] .'> <http://als.dispedia.info/frs/o/suggestedQuestion> ?suggestedQuestion .
+     };'
+);
+
+$element ['label'] = $topic [0]['label'];
+$element ['suggestedQuestion'] = $topic [0]['suggestedQuestion'];
+
+// get information about all options of the topic
+foreach ( $element ['typeparameter']['options'] as $option ) {
+    
+    // TODO add language selection
+    
+    $option = $this->selectedModel->sparqlQuery(
+        'SELECT ?optionUri ?label ?score
+         WHERE {
+             ?optionUri <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+             <'. $option .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+             <'. $option .'> <http://als.dispedia.info/frs/o/hasScore> ?score .
+         };'
+    );
+    
+    $element ['outputOptions'][] = $option [1];
+}
 
 ?>
+<!-- suggested question -->
+<h2><?php echo $element ['label']; ?> - <?php echo $element ['suggestedQuestion']; ?></h2>
 
-<div class="content">
-    <!-- question -->
-    <h3><?php echo 'FRAGE'; ?></h3>
-    
-    <input type="radio" name="<?php echo $element ['name']; ?>"/>
-    
-    <?php /*echo $topic ['suggestedQuestion']; ?></h3>
-    
-    <!-- list of options -->
-    <?php foreach ( $topic['options'] as $option ) { ?>
-    
-        <br/>
-        <input type="radio" value="" name=""/>
-        &nbsp; <?php echo $option ['label']; ?>
-    
-    <?php }*/ ?>
-    
-</div>
+<!-- list of options -->
+<?php foreach ( $element ['outputOptions'] as $option ) { ?>
 
+    <br/>
+    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['score']; ?>"/>
+    &nbsp; <?php echo $option ['label']; ?>
 
-<div class="content">
+<?php } ?>
+    

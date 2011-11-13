@@ -47,17 +47,34 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
+                <predicateuri>http://als.dispedia.info/frs/i/topic/t1</predicateuri>
                 <typeparameter>
-                    <topicUri>http://als.dispedia.info/frs/i/topic/t1</topicUri>
                     <pertainsTo>SymptomSet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o1_0</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_3</item>
                         <item>http://als.dispedia.info/frs/i/option/o1_4</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_3</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_2</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_1</item>
+                        <item>http://als.dispedia.info/frs/i/option/o1_0</item>
                     </options>
                 </typeparameter>
+                <mandatory>0</mandatory>
+            </predicate>
+            
+            <predicate> 
+				<type>alsfrsquestion</type>
+                <predicateuri>http://als.dispedia.info/frs/i/topic/t2</predicateuri>
+                <typeparameter>
+                    <pertainsTo>SymptomSet</pertainsTo>
+                    <options>
+                        <item>http://als.dispedia.info/frs/i/option/o2_4</item>
+                        <item>http://als.dispedia.info/frs/i/option/o2_3</item>
+                        <item>http://als.dispedia.info/frs/i/option/o2_2</item>
+                        <item>http://als.dispedia.info/frs/i/option/o2_1</item>
+                        <item>http://als.dispedia.info/frs/i/option/o2_0</item>
+                    </options>
+                </typeparameter>
+                <mandatory>0</mandatory>
             </predicate>
             
 		</item> 

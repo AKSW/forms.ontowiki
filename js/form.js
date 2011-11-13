@@ -125,7 +125,7 @@ function submitFormula (url, data, mode)
 
     var _data = data;
     var jQ = jQuery;
-        /*
+        
     // send formulas to submit action on server
     $.ajax({
         async:true,
@@ -165,7 +165,7 @@ function submitFormula (url, data, mode)
         {
             console.log ( "complete" );
         }
-    });*/
+    });
 }
 
 /**

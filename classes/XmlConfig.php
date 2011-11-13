@@ -87,17 +87,20 @@ class XmlConfig
                         
                         $p = array ();
                         
-                        $p ['predicateToHealthState'] = (string) $xml->formulaParameter->predicateToHealthState;
-                        $p ['healthState'] = (string) $xml->formulaParameter->healthState;
-                        
-                        $p ['predicateToPropertySet'] = (string) $xml->formulaParameter->predicateToPropertySet;
-                        $p ['propertySet'] = (string) $xml->formulaParameter->propertySet;
-                        
-                        $p ['predicateToSymptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
-                        $p ['symptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
-                        
-                        $p ['predicateToPropertyOption'] = (string) $xml->formulaParameter->predicateToPropertyOption;
-                        $p ['predicateToSymptomOption'] = (string) $xml->formulaParameter->predicateToSymptomOption;
+                        if ( 'alsfrs' == $form->getFormulaType () )
+                        {
+                            $p ['predicateToHealthState'] = (string) $xml->formulaParameter->predicateToHealthState;
+                            $p ['healthState'] = (string) $xml->formulaParameter->healthState;
+                            
+                            $p ['predicateToPropertySet'] = (string) $xml->formulaParameter->predicateToPropertySet;
+                            $p ['propertySet'] = (string) $xml->formulaParameter->propertySet;
+                            
+                            $p ['predicateToSymptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
+                            $p ['symptomSet'] = (string) $xml->formulaParameter->predicateToSymptomSet;
+                            
+                            $p ['predicateToPropertyOption'] = (string) $xml->formulaParameter->predicateToPropertyOption;
+                            $p ['predicateToSymptomOption'] = (string) $xml->formulaParameter->predicateToSymptomOption;
+                        }
                         
                         $form->setFormulaParameter ( $p );
                         
@@ -146,8 +149,7 @@ class XmlConfig
                                         foreach ($predicate->typeparameter->options->item as $i)
                                             $options [] = (string) $i;
                                     
-                                        $typeparameter [] = array ( 
-                                            'topicUri'      => (string) $predicate->typeparameter->topicUri,
+                                        $typeparameter = array ( 
                                             'pertainsTo'    => (string) $predicate->typeparameter->pertainsTo,
                                             'options'       => $options
                                         );

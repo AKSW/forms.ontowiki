@@ -103,23 +103,26 @@
             <?php if ('predicate' == $element ['sectiontype']) { ?>
             <!-- PREDICATE -->
                 
-                <!-- Predicate title -->        
-                <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                
                 <?php if ('list' == $element ['type']) { ?>
-                
+                    
+                    <!-- Predicate title -->        
+                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                     <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
             
                 <?php } elseif ('resource' == $element ['type']) { ?>
                 
+                    <!-- Predicate title -->        
+                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                     <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
                             
                 <?php } elseif ('alsfrsquestion' == $element ['type']) { ?>
-                </div>
+                
                     <?php require $this->dirJsHtmlPlugins . 'alsfrsquestion.phtml'; ?>            
                 
                 <?php } else { ?>
                 
+                    <!-- Predicate title -->        
+                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                     <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
                 
                 <?php } ?>
