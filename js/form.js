@@ -29,7 +29,10 @@ function setFormulaArrayFields (f)
          
             else if ("predicate" == f.sections [i][j].sectiontype)
             {
-                f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
+                if ( "alsfrsquestion" == f.sections[i][j].type )
+                    f.sections [i][j].value = $("input[name=" + f.sections [i][j].name + "]:checked").val();
+                else
+                    f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
             }
             
             // recursive call of this function 
@@ -122,7 +125,7 @@ function submitFormula (url, data, mode)
 
     var _data = data;
     var jQ = jQuery;
-        
+        /*
     // send formulas to submit action on server
     $.ajax({
         async:true,
@@ -162,7 +165,7 @@ function submitFormula (url, data, mode)
         {
             console.log ( "complete" );
         }
-    });
+    });*/
 }
 
 /**
