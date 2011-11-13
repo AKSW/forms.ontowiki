@@ -109,7 +109,61 @@ class XmlConfig
                                 
                                 // set typeparameters
                                 switch ( $type )
-                                {                                    
+                                {           
+                                    // ALSFRS: complex structure of relations and instances
+                                    case 'alsfrs':
+                                        
+                                        $typeparameter ['predicateToHealthState'] = (string)
+                                            $predicate->typeparameter->predicateToHealthState;
+                                        
+                                        $typeparameter ['healthState'] = $predicate->typeparameter->healthState;
+                                        
+                                        $typeparameter ['predicateToPropertySet'] = (string)
+                                            $predicate->typeparameter->predicateToPropertySet;
+                                        
+                                        $typeparameter ['propertySet'] = $predicate->typeparameter->propertySet;
+                                        
+                                        $typeparameter ['predicateToSymptomSet'] = (string)
+                                            $predicate->typeparameter->predicateToSymptomSet;
+                                        
+                                        $typeparameter ['symptomSet'] = $predicate->typeparameter->symptomSet;
+                                        
+                                        $typeparameter ['predicateToPropertyOption'] = (string)
+                                            $predicate->typeparameter->predicateToPropertyOption;
+                                        
+                                        $typeparameter ['predicateToSymptomOption'] = (string)
+                                            $predicate->typeparameter->predicateToSymptomOption;
+                                        
+                                        // topic
+                                        $typeparameter ['topic'] = (string)
+                                            $predicate->typeparameter->topic;
+                                        
+                                        $typeparameter ['topicLabel'] = (string)
+                                            $predicate->typeparameter->topicLabel;
+                                        
+                                        $typeparameter ['topicSuggestedQuestion'] = (string)
+                                            $predicate->typeparameter->topicSuggestedQuestion;
+                                        
+                                        $typeparameter ['topicHasOption'] = (string)
+                                            $predicate->typeparameter->topicHasOption;
+                                            
+                                        // option
+                                        $typeparameter ['option'] = (string)
+                                            $predicate->typeparameter->option;
+                                        
+                                        $typeparameter ['optionLabel'] = (string)
+                                            $predicate->typeparameter->optionLabel;
+                                        
+                                        // clear assignment which topics are SymptomOptions
+                                        foreach ($predicate->typeparameter->pertainsToSymptomSet->item as $parameter)
+                                            $typeparameter ['pertainsToSymptomSet'][] = (string) $parameter;
+                                        
+                                        // clear assignment which topics are PropertyOptions
+                                        foreach ($predicate->typeparameter->pertainsToPropertySet->item as $parameter)
+                                            $typeparameter ['pertainsToPropertySet'][] = (string) $parameter;
+                                           
+                                        break;
+                                                             
                                     case 'date': 
                                         break;
                                     
@@ -132,7 +186,7 @@ class XmlConfig
                                         }
                                         break;
                                     
-                                    default: // xsd:string
+                                    default: 
                                         break;
                                 }
                                 

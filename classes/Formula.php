@@ -26,7 +26,9 @@ class Formula
     {
         $this->_data = array ();
         
-        $this->setIndex ($index);        
+        $this->setIndex ($index);       
+        $this->_data ['targetclass'] = ''; 
+        $this->_data ['labelparts'] = array (); 
         $this->_data ['title'] = '';
         $this->_data ['description'] = '';
         $this->_data ['mode'] = 'new';
@@ -594,6 +596,7 @@ class Formula
         return '';
     }
     
+    
     /**
      * replace the architecture namespace string with the correct uri
      * @param $s
@@ -601,8 +604,7 @@ class Formula
      */
     public function replaceNamespaces($s)
     {
-        
-        $namespaceUri = "";
+        $namespaceUri = '';
         
         // fetch properties of a resource
         $result = $this->_selectedModel->sparqlQuery(
@@ -616,5 +618,14 @@ class Formula
         $namespaceUri = str_replace('Address', '', $result[0]['namespaceUri']);
         
         return str_replace('architecture:', $namespaceUri, $s);
+    }
+    
+    
+    /**
+     * 
+     */
+    public function generateAlsfrsPredicates ()
+    {
+        
     }
 }
