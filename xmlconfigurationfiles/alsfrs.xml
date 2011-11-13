@@ -44,6 +44,8 @@
         
         <!-- ALSFRSSymptomSet-Instance  containsSymptomOption  Option-Instance -->
         <predicateToSymptomOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsSymptomOption</predicateToSymptomOption>
+        
+        <optionUri>http://als.dispedia.info/frs/o/Option</optionUri>
 
     </formulaParameter>
 	    

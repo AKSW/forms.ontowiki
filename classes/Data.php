@@ -270,12 +270,6 @@ class Data
                      };'
                 );
                 
-                var_dump ( '1111 SELECT ?instance
-                     WHERE {
-                         <'. $healthStateInstance .'> <'. $para['predicateToPropertySet'] .'> ?instance .
-                         ?instance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $para['propertySet']  .'> .
-                     };' );
-                
                 $propertySetInstance = $result [0]['instance'];
                 
                 // symptomSet
@@ -286,13 +280,6 @@ class Data
                          ?instance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $para['symptomSet']  .'> .
                      };'
                 );
-                
-                
-                var_dump ( '22222 SELECT ?instance
-                     WHERE {
-                         <'. $healthStateInstance .'> <'. $para['predicateToSymptomSet'] .'> ?instance .
-                         ?instance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $para['symptomSet']  .'> .
-                     };' );
                 
                 $symptomSetInstance = $result [0]['instance'];
             }
@@ -312,6 +299,56 @@ class Data
                 // $log [] = 'found alsfrs question with value: '. $entry ['value'];
                 if('alsfrsquestion' == $entry ['type'])
                 {
+                    if ( 'PropertySet' == $entry ['typeparameter']['pertainsTo'] )
+                    {
+                        // check that is a relation between propertySet instance
+                        // and this option value
+                        $result = $this->_selectedModel->sparqlQuery(
+                            'SELECT ?score
+                             WHERE {
+                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> ?score .
+                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> <'. $oldValue .'> .
+                             };'
+                        );
+                        
+                        var_dump ( 'SELECT ?score
+                             WHERE {
+                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> ?score .
+                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> <'. $oldValue .'> .
+                             };' );
+                        
+                        if ( 0 == count ( $result ) ) {
+                            $this->addStmt(
+                                $propertySetInstance,
+                                $para['predicateToPropertyOption'],
+                                $entry ['value']
+                            );
+                            
+                            echo "ADD NEW!";
+                        } else {
+                            
+                            // delete old value
+                            $this->removeStmt(
+                                $propertySetInstance,
+                                $para['predicateToPropertyOption'],
+                                $oldValue
+                            );
+                            
+                            // add new one
+                            $this->addStmt(
+                                $propertySetInstance,
+                                $para['predicateToPropertyOption'],
+                                $entry ['value']
+                            );
+                            
+                            echo "DEL OLD ........... ADD NEW!";
+                        }
+                    }
+                    elseif ( 'SymptomSet' == $entry ['typeparameter']['pertainsTo'] )
+                    {
+                        
+                    }
+                    
                     continue;
                 }
                 

@@ -103,6 +103,8 @@ class XmlConfig
                             
                             $p ['predicateToPropertyOption'] = (string) $xml->formulaParameter->predicateToPropertyOption;
                             $p ['predicateToSymptomOption'] = (string) $xml->formulaParameter->predicateToSymptomOption;
+                            
+                            $p ['optionUri'] = (string) $xml->formulaParameter->optionUri;
                         }
                         
                         $form->setFormulaParameter ( $p );
