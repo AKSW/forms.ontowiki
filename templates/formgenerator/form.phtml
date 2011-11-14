@@ -19,7 +19,31 @@
     var data = {};
     $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
 </script>
- 
+
+<!-- formular select box -->
+<div align="right" class="messagebox">
+    <form id="formformlist" method="get" action="">
+
+        Forms >
+
+        <select id="selectformlist" name="file">
+            <?php
+                // Read all XML files in formconfig folder and generate a list.
+                foreach ( $this->formList as $file )
+                {
+                    echo '<option value="'. $file .'" label="'. $file .'"' . ($this->form->getXmlFile() == $file ? ' selected="selected"' : "") . '>' .
+                    substr_replace($file, strtoupper(substr($file, 0, 1)), 0, 1) .'</option>' . "\n";
+                }
+            ?>
+        </select>
+    </form>
+</div>
+
+<script type="text/javascript">       
+    $('#selectformlist').change(function() {
+        $('#formformlist').submit();
+    });
+</script>
 
 <!-- formula -->
 <form id="mainform" method="post" action="">

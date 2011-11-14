@@ -257,5 +257,21 @@ class XmlConfig
         
             return $form;
         }
+    }
+    
+    /**
+     * Generate a list of all form/xmlconfigs files.
+     * @return Array of formnames
+     */
+    public function getFormList ()
+    {
+	$directory = opendir($this->_dirXmlConfigurationFiles);
+	$formlist = array();
+	while (false !== ($file = readdir($directory))) {
+	    if ("." != $file && ".." != $file)
+		$formlist[] = substr($file, 0, strpos ($file, '.'));
 	}
+	array_multisort($formlist);
+	return $formlist;
+    }
 }

@@ -130,6 +130,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $lang
         );
         
+        // read the formlist to the view
+        $this->view->formList = $xmlconfig->getFormList();
+        
         $this->_form = $xmlconfig->loadFile($file . '.xml', $this->_form);
         
         // if resource set ...
