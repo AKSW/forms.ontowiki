@@ -220,7 +220,7 @@ class XmlConfig
                             foreach ($nodeValue->nestedconfig as $nestedconfig)
                             {                                             
                                 // Load XML Config
-                                $xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles);
+                                $xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_language);
                                 
                                 $f = $xmlConfig->loadFile(
                                     $nestedconfig->xmlfile,
