@@ -96,7 +96,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             }
             else
             {
-                $file = $this->_data->getResourceType ($this->_request->getParam('r'));
+                $file = strtolower($this->_data->getResourceType ($this->_request->getParam('r')));
             }
         }
         
