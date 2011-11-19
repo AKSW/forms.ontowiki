@@ -1,0 +1,33 @@
+<!-- Create a new person. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>http://als.dispedia.info/architecture/c/20110827/Proposal</targetclass>
+    	
+    <!-- Headline of this formula. -->
+    <title>
+        <de>Behandlungsvorschlag erstellen / ändern</de>
+        <en>Add or edit a proposal</en>
+    </title>
+	
+    <!-- Introducing text to inform the user about the formula. -->
+    <description>
+        <de>Hier können sie einen Behandlungsvorschlag erstellen / ändern.</de>
+        <en>Here you can add or edit a proposal.</en>
+    </description>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>http://www.w3.org/2000/01/rdf-schema#label</predicateuri>
+			</predicate>
+			
+		</item>
+        
+	</sections>
+</form>
