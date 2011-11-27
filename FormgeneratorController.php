@@ -130,6 +130,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $lang
         );
         
+        $this->view->selectedLanguage = $lang;
+
         // read the formlist to the view
         $this->view->formList = $xmlconfig->getFormList();
         
