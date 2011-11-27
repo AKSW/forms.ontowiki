@@ -17,7 +17,6 @@ $topic = $this->selectedModel->sparqlQuery(
          <'. $element ['predicateuri'] .'> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://als.dispedia.info/frs/o/Topic> .
          <'. $element ['predicateuri'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
          <'. $element ['predicateuri'] .'> <http://als.dispedia.info/frs/o/suggestedQuestion> ?suggestedQuestion .
-         FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
      };'
 );
 
@@ -35,13 +34,12 @@ foreach ( $element ['typeparameter']['options'] as $option ) {
              ?optionUri <http://www.w3.org/2000/01/rdf-schema#label> ?label .
              <'. $option .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
              <'. $option .'> <http://als.dispedia.info/frs/o/hasScore> ?score .
-             FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
          } 
          ORDER BY ?score;'
     );
     
-    $o [0] ['optionValue'] = $option;    
-    $element ['outputOptions'][] = $o [0];
+    $o [1] ['optionValue'] = $option;    
+    $element ['outputOptions'][] = $o [1];
 }
 
 $entrySelected = false;
