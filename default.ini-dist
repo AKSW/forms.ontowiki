@@ -13,10 +13,7 @@ authorUrl   = "http://www.dispedia.de"
 [private] 
 
 ; sets default model
-mainModel = "http://www.dispedia.de/"
-alsModel = "http://als.dispedia.de/"
-patientsModel = "http://patients.dispedia.de/"
-alsfrsModel = "http://als.dispedia.de/frs/"
+defaultModel = "http://als.dispedia.info/"
 
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
 uriParts      = "%modeluri%/i/%classname%/%date%/%hash%/%labelparts%"
