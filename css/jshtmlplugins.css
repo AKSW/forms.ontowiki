@@ -30,5 +30,5 @@
 }
 
 .mandatoryFieldEmpty {
-    background-color: #FFBBBB;
+    background-color: #FFBBBB !important;
 }
