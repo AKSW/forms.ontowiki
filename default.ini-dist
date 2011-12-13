@@ -18,6 +18,9 @@ defaultModel = "http://patients.dispedia.de/"
 ; alsfrs model
 alsfrsModel = "http://als.dispedia.de/frs/"
 
+; dispedia model
+dispediaModel = "http://www.dispedia.de/"
+
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
 uriParts      = "%modeluri%/%labelparts%%hash%"
 

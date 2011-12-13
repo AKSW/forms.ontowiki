@@ -22,6 +22,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     private $_dirXmlConfigurationFiles;
     private $_dirJsHtmlPlugins;
     private $_predicateType;
+    private $_dispediaModel;
     private $_selectedModel;
     private $_selectedModelUri;
     private $_store;
@@ -45,7 +46,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_selectedModel = $model;
         $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
-        $this->_titleHelper = new OntoWiki_Model_TitleHelper ($this->_selectedModel);
+        
+        $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_privateConfig->dispediaModel);
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper ($this->_dispediaModel);
+        
         $this->_uriParts = $this->_privateConfig->uriParts;        
         $this->_url = $this->_componentUrlBase;
         
@@ -127,6 +131,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // load xml configuration file
         $xmlconfig = new XmlConfig(
             $this->_titleHelper,
+            $this->_dispediaModel,
             $this->_dirXmlConfigurationFiles,
             $lang 
         );

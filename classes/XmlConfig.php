@@ -10,13 +10,14 @@
  */
 class XmlConfig 
 {
-    private $_titleHelper;
+    private $_dispediaModel;
     private $_dirXmlConfigurationFiles;
     private $_language;
     
-    public function __construct ($titleHelper, $dirXmlConfigurationFiles, $language)
+    public function __construct ($titleHelper, $dispediaModel, $dirXmlConfigurationFiles, $language)
     {
         $this->_titleHelper = $titleHelper;
+        $this->_dispediaModel = $dispediaModel;
         $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
         $this->_language = $language; // de, en
     }
@@ -192,13 +193,10 @@ class XmlConfig
                                 
                                 if ('' == $title)
                                 {
-                                    $this->_titleHelper->addResource ($p);
-                                    $title = $this->_titleHelper->getTitle ($p);
-                                    
+                                    $title = Data::getResTitle ( $this->_dispediaModel, $p, $this->_language );
                                     if (true == Erfurt_Uri::check($title))
                                         $title = Resource::extractClassNameFromUri ($title);
-                                }
-                                
+                                }                                
                                 
                                 // Build an entry instance.
                                 $newSection [] = array (

@@ -24,7 +24,7 @@
 <div align="right" class="messagebox">
     <form id="formformlist" method="get" action="">
 
-        Forms >
+        <?php echo $this->_translate->_('Available forms:'); ?>
 
         <select id="selectformlist" name="file">
             <?php
@@ -70,12 +70,12 @@
     
         <form method="post" action="<?php echo $this->url; ?>form/">
             <div class="content">
-                <div class="predicateTitle">Please select:</div>
+                <div class="predicateTitle"><?php echo $this->_translate->_('Please select:'); ?></div>
                 
                 <div class="predicateValue">
                     <select name="r">
                         
-                        <option value="">- please select -</option>
+                        <option value=""><?php echo $this->_translate->_('please select'); ?></option>
                 
                     <?php foreach ($this->resourcesOfType as $resource) { ?>
                     
@@ -99,7 +99,7 @@
             
             <div class="content">
                 <div class="predicateTitle">&nbsp;</div>
-                <div class="predicateValue"><input type="submit" value="Select"></div>
+                <div class="predicateValue"><input type="submit" value="<?php echo $this->_translate->_('Select'); ?>"></div>
             </div> 
         </form>
     

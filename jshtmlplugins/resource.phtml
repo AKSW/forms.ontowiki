@@ -76,7 +76,7 @@ elseif (false !== strpos ($element ['typeparameter'], 'Address') )
 <div class="predicateValue">
     <select id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="predicateValue_Resource">
 
-        <option value="">- please select -</option>
+        <option value=""><?php echo $this->_translate->_('please select'); ?></option>
                     
     <?php foreach ( $resources as $resource ) { ?>
 

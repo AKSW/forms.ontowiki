@@ -647,4 +647,22 @@ class Data
         $this->_titleHelper->addResource ($resource);
         return $this->_titleHelper->getTitle ($resource);
     }
+    
+    
+    /**
+     * 
+     */
+    public static function getResTitle ($model, $resource, $language)
+    {
+        $result = $model->sparqlQuery (
+            'SELECT ?label
+              WHERE {
+                    <'. $resource .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
+                    FILTER (langmatches(lang(?label), "'. $language .'"))
+              } 
+              LIMIT 1;'
+        );
+        
+        return $result [0] ['label'];
+    }    
 }
