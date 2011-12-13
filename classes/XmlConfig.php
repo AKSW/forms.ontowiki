@@ -194,8 +194,9 @@ class XmlConfig
                                 if ('' == $title)
                                 {
                                     $title = Data::getResTitle ( $this->_dispediaModel, $p, $this->_language );
-                                    if (true == Erfurt_Uri::check($title))
-                                        $title = Resource::extractClassNameFromUri ($title);
+                                    
+                                    if (true == Erfurt_Uri::check($title) || '' == $title)
+                                        $title = Resource::extractClassNameFromUri ($p);
                                 }                                
                                 
                                 // Build an entry instance.
