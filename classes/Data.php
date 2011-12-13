@@ -219,6 +219,13 @@ class Data
                     $para['healthState']
                 );
                 
+                // Add a timestamp
+                $this->addStmt( 
+                    $healthStateInstance, 
+                    'http://www.w3.org/2001/XMLSchema#dateTime',
+                    date ( 'Y-m-d H:i:s', time () )
+                );
+                
                 // selectedResource  has  healthState instance
                 $this->addStmt( $selectedResource, $has, $healthStateInstance );
                 
