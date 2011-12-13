@@ -2,12 +2,12 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Patient</targetclass>
+    <targetclass>http://www.dispedia.de/o/Patient</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:firstName</item>
-        <item>architecture:lastName</item>
+        <item>http://www.dispedia.de/o/firstName</item>
+        <item>http://www.dispedia.de/o/lastName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -18,7 +18,7 @@
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
-    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+    <selectResourceOfType>http://www.dispedia.de/o/Patient</selectResourceOfType>
 	
     <sections>
         
@@ -27,7 +27,7 @@
             <!-- List -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:single</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/single</predicateuri>
                 <type>list</type>
                 <typeparameter>
                     <item>
@@ -44,7 +44,7 @@
             <!-- List -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:divorced</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/divorced</predicateuri>
                 <type>list</type>
                 <typeparameter>
                     <item>
@@ -61,7 +61,7 @@
             <!-- List -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:married</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/married</predicateuri>
                 <type>list</type>
                 <typeparameter>
                     <item>
@@ -78,7 +78,7 @@
             <!-- List -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:inARelationShip</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/inARelationShip</predicateuri>
                 <type>list</type>
                 <typeparameter>
                     <item>

@@ -1,10 +1,10 @@
 <!-- Create a new doctor. -->
 <form> 
-    <targetclass>architecture:Person</targetclass>				
+    <targetclass>http://www.dispedia.de/o/Person</targetclass>				
 	
     <labelparts>
-        <item>architecture:firstName</item>
-        <item>architecture:lastName</item>
+        <item>http://www.dispedia.de/o/firstName</item>
+        <item>http://www.dispedia.de/o/lastName</item>
     </labelparts>
     
     <title>
@@ -23,12 +23,12 @@
 
             <predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:firstName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
 			</predicate>
 			
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:lastName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
 			</predicate>
             
 		</item>

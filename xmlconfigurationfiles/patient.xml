@@ -2,12 +2,12 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Patient</targetclass>
+    <targetclass>http://www.dispedia.de/o/Patient</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:firstName</item>
-        <item>architecture:lastName</item>
+        <item>http://www.dispedia.de/o/firstName</item>
+        <item>http://www.dispedia.de/o/lastName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -33,38 +33,38 @@
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:patientNumber</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/patientNumber</predicateuri>
 			</predicate>
 						
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:firstName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:lastName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthName</predicateuri>
 			</predicate>
 			
             <!-- Date -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthDate</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthDate</predicateuri>
 				<type>date</type>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthPlace</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthPlace</predicateuri>
 			</predicate>
 		
 		</item>

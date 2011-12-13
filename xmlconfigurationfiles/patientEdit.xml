@@ -2,12 +2,12 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Patient</targetclass>
+    <targetclass>http://www.dispedia.de/o/Patient</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:firstName</item>
-        <item>architecture:lastName</item>
+        <item>http://www.dispedia.de/o/firstName</item>
+        <item>http://www.dispedia.de/o/lastName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -24,7 +24,7 @@
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
-    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+    <selectResourceOfType>http://www.dispedia.de/o/Patient</selectResourceOfType>
 	
     <sections>
         
@@ -37,38 +37,38 @@
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:patientNumber</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/patientNumber</predicateuri>
 			</predicate>
 						
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:firstName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:lastName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthName</predicateuri>
 			</predicate>
 			
             <!-- Date -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthDate</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthDate</predicateuri>
 				<type>date</type>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthPlace</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthPlace</predicateuri>
 			</predicate>
 		
 		</item>
@@ -82,7 +82,7 @@
 			<nestedconfig>
 				<xmlfile>address.xml</xmlfile>
 				<relations>
-					<item>architecture:hasAddress</item>
+					<item>http://www.dispedia.de/o/hasAddress</item>
 				</relations>
 			</nestedconfig>
 			

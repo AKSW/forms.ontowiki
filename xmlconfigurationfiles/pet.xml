@@ -2,11 +2,11 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Pet</targetclass>
+    <targetclass>http://www.dispedia.de/o/Pet</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:petName</item>
+        <item>http://www.dispedia.de/o/petName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -27,18 +27,18 @@
             
             <predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:petName</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/petName</predicateuri>
 			</predicate>
 			
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:spezies</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/spezies</predicateuri>
 			</predicate>
 			
 			<!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:gender</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/gender</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -60,7 +60,7 @@
 			
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthDate</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthDate</predicateuri>
 				<type>date</type>
 			</predicate>
             

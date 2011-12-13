@@ -14,7 +14,7 @@
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
-    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+    <selectResourceOfType>http://www.dispedia.de/o/Patient</selectResourceOfType>
     
     <!-- normal (standard), alsfrs -->
     <formulaType>alsfrs</formulaType>
@@ -23,29 +23,29 @@
         
         <!-- SelectedResource  has  healthStateInstance -->
         <predicateToHealthState>has</predicateToHealthState>
-        <healthState>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSHealthState</healthState>
+        <healthState>http://www.dispedia.de/wrapper/alsfrs/ALSFRSHealthState</healthState>
         <!-- Prefix of a HealthState instance -->
-        <healthStateInstanceUri>http://als.dispedia.info/wrapperAlsfrs/i/20111105/</healthStateInstanceUri>
+        <healthStateInstanceUri>http://www.dispedia.de/wrapper/alsfrs/</healthStateInstanceUri>
         
         <!-- healthStateInstance  includesAffectedProperties  ALSFRSPropertySet-Instance -->
-        <predicateToPropertySet>http://als.dispedia.info/architecture/c/20110827/includesAffectedProperties</predicateToPropertySet>
-        <propertySet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSPropertySet</propertySet>
+        <predicateToPropertySet>http://www.dispedia.de/o/includesAffectedProperties</predicateToPropertySet>
+        <propertySet>http://www.dispedia.de/wrapper/alsfrs/ALSFRSPropertySet</propertySet>
         <!-- Prefix of a PropertySet instance -->
-        <propertySetInstanceUri>http://als.dispedia.info/wrapperAlsfrs/i/20111105/</propertySetInstanceUri>
+        <propertySetInstanceUri>http://www.dispedia.de/wrapper/alsfrs/</propertySetInstanceUri>
         
         <!-- healthStateInstance  includesSymptoms  ALSFRSSymptomSet-Instance -->
-        <predicateToSymptomSet>http://als.dispedia.info/architecture/c/20110827/includesSymptoms</predicateToSymptomSet>
-        <symptomSet>http://als.dispedia.info/wrapperAlsfrs/c/20111105/ALSFRSSymptomSet</symptomSet>
+        <predicateToSymptomSet>http://www.dispedia.de/o/includesSymptoms</predicateToSymptomSet>
+        <symptomSet>http://www.dispedia.de/wrapper/alsfrs/ALSFRSSymptomSet</symptomSet>
         <!-- Prefix of a SymptomSet instance -->
-        <symptomSetInstanceUri>http://als.dispedia.info/wrapperAlsfrs/i/20111105/</symptomSetInstanceUri>
+        <symptomSetInstanceUri>http://www.dispedia.de/wrapper/alsfrs/</symptomSetInstanceUri>
         
         <!-- ALSFRSPropertySet-Instance  containsPropertyOption  Option-Instance -->
-        <predicateToPropertyOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsPropertyOption</predicateToPropertyOption>
+        <predicateToPropertyOption>http://www.dispedia.de/wrapper/alsfrs/containsPropertyOption</predicateToPropertyOption>
         
         <!-- ALSFRSSymptomSet-Instance  containsSymptomOption  Option-Instance -->
-        <predicateToSymptomOption>http://als.dispedia.info/wrapperAlsfrs/c/20111105/containsSymptomOption</predicateToSymptomOption>
+        <predicateToSymptomOption>http://www.dispedia.de/wrapper/alsfrs/containsSymptomOption</predicateToSymptomOption>
         
-        <optionUri>http://als.dispedia.info/frs/o/Option</optionUri>
+        <optionUri>http://als.dispedia.de/frs/o/Option</optionUri>
 
     </formulaParameter>
 	    
@@ -55,15 +55,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t1</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t1</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o1_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o1_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o1_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o1_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o1_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o1_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o1_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -71,15 +71,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t2</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t2</predicateuri>
                 <typeparameter>
                     <pertainsTo>SymptomSet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o2_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o2_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o2_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o2_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o2_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o2_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o2_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o2_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o2_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o2_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -87,15 +87,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t3</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t3</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o3_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o3_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o3_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o3_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o3_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o3_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o3_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o3_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o3_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o3_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -103,15 +103,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t4</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t4</predicateuri>
                 <typeparameter>
                     <pertainsTo>SymptomSet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o4_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o4_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o4_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o4_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o4_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o4_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o4_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o4_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o4_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o4_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -119,15 +119,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t5a</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t5a</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o5a_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5a_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5a_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5a_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5a_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5a_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5a_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5a_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5a_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5a_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -135,15 +135,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t5b</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t5b</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o5b_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5b_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5b_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5b_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o5b_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5b_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5b_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5b_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5b_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o5b_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -151,15 +151,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t6</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t6</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o6_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o6_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o6_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o6_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o6_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o6_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o6_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o6_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o6_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o6_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -167,15 +167,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t7</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t7</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o7_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o7_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o7_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o7_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o7_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o7_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o7_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o7_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o7_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o7_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -183,15 +183,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t8</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t8</predicateuri>
                 <typeparameter>
                     <pertainsTo>SymptomSet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o8_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o8_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o8_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o8_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o8_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o8_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o8_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o8_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o8_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o8_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -199,15 +199,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t9</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t9</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o9_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o9_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o9_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o9_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o9_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o9_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o9_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o9_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o9_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o9_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -215,15 +215,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t10</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t10</predicateuri>
                 <typeparameter>
                     <pertainsTo>SymptomSet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o10_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o10_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o10_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o10_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o10_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o10_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o10_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o10_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o10_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o10_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -231,15 +231,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t11</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t11</predicateuri>
                 <typeparameter>
                     <pertainsTo>SymptomSet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o11_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o11_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o11_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o11_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o11_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o11_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o11_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o11_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o11_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o11_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>
@@ -247,15 +247,15 @@
             
             <predicate> 
 				<type>alsfrsquestion</type>
-                <predicateuri>http://als.dispedia.info/frs/i/topic/t12</predicateuri>
+                <predicateuri>http://als.dispedia.de/frs/i/topic/t12</predicateuri>
                 <typeparameter>
                     <pertainsTo>PropertySet</pertainsTo>
                     <options>
-                        <item>http://als.dispedia.info/frs/i/option/o12_4</item>
-                        <item>http://als.dispedia.info/frs/i/option/o12_3</item>
-                        <item>http://als.dispedia.info/frs/i/option/o12_2</item>
-                        <item>http://als.dispedia.info/frs/i/option/o12_1</item>
-                        <item>http://als.dispedia.info/frs/i/option/o12_0</item>
+                        <item>http://als.dispedia.de/frs/i/option/o12_4</item>
+                        <item>http://als.dispedia.de/frs/i/option/o12_3</item>
+                        <item>http://als.dispedia.de/frs/i/option/o12_2</item>
+                        <item>http://als.dispedia.de/frs/i/option/o12_1</item>
+                        <item>http://als.dispedia.de/frs/i/option/o12_0</item>
                     </options>
                 </typeparameter>
                 <mandatory>0</mandatory>

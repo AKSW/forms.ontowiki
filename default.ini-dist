@@ -15,6 +15,9 @@ authorUrl   = "http://www.dispedia.de"
 ; sets default model
 defaultModel = "http://patients.dispedia.de/"
 
+; alsfrs model
+alsfrsModel = "http://als.dispedia.de/frs/"
+
 ; %hash%, %date%, %labelparts%, %modeluri%, %classname%
 uriParts      = "%modeluri%/%labelparts%%hash%"
 

@@ -2,11 +2,11 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Address</targetclass>
+    <targetclass>http://www.dispedia.de/o/Address</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:firstName</item>
+        <item>http://www.dispedia.de/o/firstName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -23,7 +23,7 @@
     
     <!-- Shows a dropdown box to select an existing resource. -->
     <!-- All relations and fields below are going to connect to this resource. -->
-    <selectResourceOfType>architecture:Patient</selectResourceOfType>
+    <selectResourceOfType>http://www.dispedia.de/o/Patient</selectResourceOfType>
 	
     <sections>
         
@@ -32,10 +32,10 @@
             <!-- Resource -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasAddress</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/hasAddress</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>architecture:Address</resource>
+                    <resource>http://www.dispedia.de/o/Address</resource>
                 </typeparameter>
 			</predicate>
             

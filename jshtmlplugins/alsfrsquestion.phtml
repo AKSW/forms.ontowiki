@@ -11,12 +11,12 @@
 $element ['outputOptions'] = array ();
 
 // get information about the topic
-$topic = $this->selectedModel->sparqlQuery(
+$topic = $this->alsfrsModel->sparqlQuery(
     'SELECT ?topicUri ?label ?suggestedQuestion
      WHERE {
-         <'. $element ['predicateuri'] .'> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://als.dispedia.info/frs/o/Topic> .
+         <'. $element ['predicateuri'] .'> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://als.dispedia.de/frs/o/Topic> .
          <'. $element ['predicateuri'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
-         <'. $element ['predicateuri'] .'> <http://als.dispedia.info/frs/o/suggestedQuestion> ?suggestedQuestion .
+         <'. $element ['predicateuri'] .'> <http://als.dispedia.de/frs/o/suggestedQuestion> ?suggestedQuestion .
          FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
      };'
 );
@@ -29,12 +29,12 @@ foreach ( $element ['typeparameter']['options'] as $option ) {
     
     // TODO add language selection
     
-    $o = $this->selectedModel->sparqlQuery(
+    $o = $this->alsfrsModel->sparqlQuery(
         'SELECT ?optionUri ?label ?score
          WHERE {
              ?optionUri <http://www.w3.org/2000/01/rdf-schema#label> ?label .
              <'. $option .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
-             <'. $option .'> <http://als.dispedia.info/frs/o/hasScore> ?score .
+             <'. $option .'> <http://als.dispedia.de/frs/o/hasScore> ?score .
              FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
          } 
          ORDER BY ?score;'
@@ -48,6 +48,7 @@ $entrySelected = false;
 
 // Get latest score
 $setOptions = array ();
+
 if ('PropertySet' == $element ['typeparameter']['pertainsTo']) {
     
     $tmp = $this->selectedModel->sparqlQuery(
@@ -92,11 +93,11 @@ if ('PropertySet' == $element ['typeparameter']['pertainsTo']) {
     
     <?php if ( true == in_array ( $option ['optionValue'], $setOptions ) ) { ?>
     
-    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked/>
+    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked="checked"/>
     
     <?php } elseif ( false == $entrySelected ) { $entrySelected = true; ?>
     
-    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked/>
+    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked="checked"/>
     
     <?php } else { ?>
     

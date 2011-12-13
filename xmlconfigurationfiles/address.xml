@@ -1,12 +1,12 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>architecture:Address</targetclass>
+    <targetclass>http://www.dispedia.de/o/Address</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:street</item>
-        <item>architecture:city</item>
+        <item>http://www.dispedia.de/o/street</item>
+        <item>http://www.dispedia.de/o/city</item>
     </labelparts>
 	
     <!-- Headline of this formula. -->
@@ -29,19 +29,19 @@
             <!-- Textfield -->		
             <predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:city</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/city</predicateuri>
             </predicate>
             
             <!-- Textfield -->		
             <predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:street</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/street</predicateuri>
             </predicate>
             
             <!-- List -->		
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:homeLawType</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/homeLawType</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -64,7 +64,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:homeHousingType</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/homeHousingType</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -87,7 +87,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:homeFlatType</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/homeFlatType</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -117,13 +117,13 @@
              <!-- List -->		
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:homeLevel</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/homeLevel</predicateuri>
 			</predicate>
             
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:isSuitableForOlderPersons</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/isSuitableForOlderPersons</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -146,7 +146,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:isBarrierFree</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/isBarrierFree</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -169,7 +169,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasWheelChairSize</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/hasWheelChairSize</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -192,7 +192,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasGarden</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/hasGarden</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -215,7 +215,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasStairs</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/hasStairs</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
@@ -238,7 +238,7 @@
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:hasLift</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/hasLift</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
