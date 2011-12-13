@@ -158,9 +158,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 $this->view->resourcesOfType = $this->_selectedModel->sparqlQuery(
                     'SELECT ?uri ?firstname ?lastname
                      WHERE {
-                         ?uri <'. $this->_predicateType .'> <'. $this->_form->getSelectResourceOfType () .'>.
-                         ?uri <'. $this->_form->replaceNamespaces ('architecture:') .'firstName> ?firstname.
-                         ?uri <'. $this->_form->replaceNamespaces ('architecture:') .'lastName> ?lastname.
+                         ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $this->_form->getSelectResourceOfType () .'>.
+                         ?uri <http://www.dispedia.de/o/firstName> ?firstname.
+                         ?uri <http://www.dispedia.de/o/lastName> ?lastname.
                      };'
                 );
                 

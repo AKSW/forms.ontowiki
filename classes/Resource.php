@@ -46,7 +46,7 @@ class Resource
         
         // replace placeholders in $uriParts
         $newUri = str_replace('%modeluri%', $selectedModel, $uriParts);
-        $newUri = str_replace('%hash%', substr (md5 ($time . $className . rand()), 0, 6), $newUri);
+        $newUri = str_replace('%hash%', substr (md5 ($time . $className . rand()), 0, 4), $newUri);
         $newUri = str_replace('%date%', date ('Ymd', $time), $newUri);
         $newUri = str_replace('%labelparts%', $label, $newUri);
         $newUri = str_replace('%classname%', $className, $newUri);
