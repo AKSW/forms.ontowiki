@@ -171,8 +171,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 );
                 
                 // combines firstname and lastname to label
-                function toSelectBox (&$item, $key){
-                    $item['label'] = $item['firstname'] .' '. $item['lastname'];
+                if ( false == function_exists ('toSelectBox') ) {
+                    function toSelectBox (&$item, $key){
+                        $item['label'] = $item['firstname'] .' '. $item['lastname'];
+                    }
                 }
                 
                 array_walk ( $this->view->resourcesOfType, 'toSelectBox' );
