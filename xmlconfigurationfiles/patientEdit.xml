@@ -61,7 +61,7 @@
             <!-- Date -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/birthDate</predicateuri>
+				<predicateuri>http://www.dispedia.de/o/birthdate</predicateuri>
 				<type>date</type>
 			</predicate>
 			
