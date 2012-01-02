@@ -11,6 +11,7 @@
 class XmlConfig 
 {
     private $_dispediaModel;
+    private $_titleHelper;
     private $_dirXmlConfigurationFiles;
     private $_language;
     
@@ -219,7 +220,10 @@ class XmlConfig
                             foreach ($nodeValue->nestedconfig as $nestedconfig)
                             {                                             
                                 // Load XML Config
-                                $xmlConfig = new XmlConfig($this->_titleHelper, $this->_dirXmlConfigurationFiles, $this->_language);
+                                $xmlConfig = new XmlConfig(
+                                    $this->_titleHelper, $this->_dispediaModel, 
+                                    $this->_dirXmlConfigurationFiles, $this->_language
+                                );
                                 
                                 $f = $xmlConfig->loadFile(
                                     $nestedconfig->xmlfile,
