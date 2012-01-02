@@ -670,6 +670,6 @@ class Data
               LIMIT 1;'
         );
         
-        return $result [0] ['label'];
+        return true == isset ( $result [0] ['label'] ) ? $result [0] ['label'] : '';
     }    
 }
