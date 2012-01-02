@@ -190,106 +190,55 @@ class Data
             $has = $para ['predicateToHealthState'];
             $healthState = $para ['healthState'];
             
-            // Check if there is an relation between selectedResource
-            // (e.g. a patient) and a healthState instance
-            $result = $this->_selectedModel->sparqlQuery(
-                'SELECT ?instance
-                 WHERE {
-                     <'. $selectedResource .'> <'. $has .'> ?instance .
-                     ?instance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $healthState .'> .
-                 };'
+            /**
+             * Creates following relations:
+             * 
+             * - SelectedResource       has                         healthState-Instance
+             * - healthStateInstance    includesAffectedProperties  ALSFRSPropertySet-Instance
+             * - healthStateInstance    includesSymptoms            ALSFRSSymptomSet-Instance
+             */
+                            
+            // create a new healthState instance
+            $healthStateInstance = $para['healthStateInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
+            $this->addStmt( 
+                $healthStateInstance, 
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                $para['healthState']
             );
             
-            // no relation, no healthState instance
-            if ( 0 == count ( $result ) ) 
-            {
-                /**
-                 * Creates following relations:
-                 * 
-                 * - SelectedResource       has                         healthState-Instance
-                 * - healthStateInstance    includesAffectedProperties  ALSFRSPropertySet-Instance
-                 * - healthStateInstance    includesSymptoms            ALSFRSSymptomSet-Instance
-                 */
-                                
-                // create a new healthState instance
-                $healthStateInstance = $para['healthStateInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
-                $this->addStmt( 
-                    $healthStateInstance, 
-                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                    $para['healthState']
-                );
-                
-                // Add a timestamp
-                $this->addStmt( 
-                    $healthStateInstance, 
-                    'http://purl.org/dc/terms/created',
-                    date ( 'Y-m-d H:i:s', time () )
-                );
-                
-                // selectedResource  has  healthState instance
-                $this->addStmt( $selectedResource, $has, $healthStateInstance );
-                
-                
-                // create a new propertySet instance
-                $propertySetInstance = $para['propertySetInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
-                $this->addStmt( 
-                    $propertySetInstance,
-                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                    $para['propertySet'] 
-                );
-                
-                // HealthState-instance  includesAffactedProperties  PropertySet-instance
-                $this->addStmt( $healthStateInstance, $para['predicateToPropertySet'], $propertySetInstance );
-                
-                
-                // create a new propertySet instance
-                $symptomSetInstance = $para['symptomSetInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
-                $this->addStmt( 
-                    $symptomSetInstance,
-                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
-                    $para['symptomSet'] 
-                );
-                
-                // HealthState-instance  includesAffactedProperties  PropertySet-instance
-                $this->addStmt( $healthStateInstance, $para['predicateToSymptomSet'], $symptomSetInstance );
-            }
+            // Add a timestamp
+            $this->addStmt( 
+                $healthStateInstance, 
+                'http://purl.org/dc/terms/created',
+                date ( 'Y-m-d H:i:s', time () )
+            );
             
-            // relation founded
-            else { // 1 == $count
-                
-                /**
-                 * Collect following relations:
-                 * 
-                 * - SelectedResource       has                         healthState-Instance
-                 * - healthStateInstance    includesAffectedProperties  ALSFRSPropertySet-Instance
-                 * - healthStateInstance    includesSymptoms            ALSFRSSymptomSet-Instance
-                 */
-                
-                // healthState
-                $healthStateInstance = $result [0]['instance'];
-                
-                // propertySet
-                $result = $this->_selectedModel->sparqlQuery(
-                    'SELECT ?instance
-                     WHERE {
-                         <'. $healthStateInstance .'> <'. $para['predicateToPropertySet'] .'> ?instance .
-                         ?instance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $para['propertySet']  .'> .
-                     };'
-                );
-                
-                $propertySetInstance = $result [0]['instance'];
-                
-                // symptomSet
-                $result = $this->_selectedModel->sparqlQuery(
-                    'SELECT ?instance
-                     WHERE {
-                         <'. $healthStateInstance .'> <'. $para['predicateToSymptomSet'] .'> ?instance .
-                         ?instance <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $para['symptomSet']  .'> .
-                     };'
-                );
-                
-                $symptomSetInstance = $result [0]['instance'];
-            }
+            // selectedResource  has  healthState instance
+            $this->addStmt( $selectedResource, $has, $healthStateInstance );
+            
+            
+            // create a new propertySet instance
+            $propertySetInstance = $para['propertySetInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
+            $this->addStmt( 
+                $propertySetInstance,
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                $para['propertySet'] 
+            );
+            
+            // HealthState-instance  includesAffactedProperties  PropertySet-instance
+            $this->addStmt( $healthStateInstance, $para['predicateToPropertySet'], $propertySetInstance );
+            
+            
+            // create a new propertySet instance
+            $symptomSetInstance = $para['symptomSetInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
+            $this->addStmt( 
+                $symptomSetInstance,
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                $para['symptomSet'] 
+            );
+            
+            // HealthState-instance  includesAffactedProperties  PropertySet-instance
+            $this->addStmt( $healthStateInstance, $para['predicateToSymptomSet'], $symptomSetInstance );
         }
         
         // -------------------------------------------------------------
