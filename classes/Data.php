@@ -304,7 +304,7 @@ class Data
                 $oldValue = $formOld->getPredicateValue($entry ['index']);
                 
                 // $log [] = 'found alsfrs question with value: '. $entry ['value'];
-                if('alsfrsquestion' == $entry ['type'])
+                if(true == isset ( $entry ['type'] ) && 'alsfrsquestion' == $entry ['type'])
                 {
                     if ( 'PropertySet' == $entry ['typeparameter']['pertainsTo'] )
                     {
