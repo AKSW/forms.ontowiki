@@ -222,7 +222,7 @@ class Data
                 // Add a timestamp
                 $this->addStmt( 
                     $healthStateInstance, 
-                    'http://www.w3.org/2001/XMLSchema#dateTime',
+                    'http://purl.org/dc/terms/created',
                     date ( 'Y-m-d H:i:s', time () )
                 );
                 
