@@ -27,8 +27,6 @@ $element ['suggestedQuestion'] = $topic [0]['suggestedQuestion'];
 // get information about all options of the topic
 foreach ( $element ['typeparameter']['options'] as $option ) {
     
-    // TODO add language selection
-    
     $o = $this->alsfrsModel->sparqlQuery(
         'SELECT ?optionUri ?label ?score
          WHERE {
@@ -49,13 +47,33 @@ $entrySelected = false;
 // Get latest score
 $setOptions = array ();
 
+
+// get latest timestamp
+$latestHealthState = $this->selectedModel->sparqlQuery(
+    'SELECT ?healthState
+     WHERE {
+         <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> ?healthState .
+         ?healthState <http://purl.org/dc/terms/created> ?dateTime .
+     }
+     ORDER BY DESC(?dateTime)
+     LIMIT 1;'
+); 
+
+if ( true == isset ( $latestHealthState [0] ['healthState'] ) ) { 
+    $latestHealthState = '<'. $latestHealthState [0]['healthState'] .'>';
+} else {
+    $latestHealthState = '?healthState';
+}
+
+
+// if question pertains to a PropertySet
 if ('PropertySet' == $element ['typeparameter']['pertainsTo']) {
     
     $tmp = $this->selectedModel->sparqlQuery(
         'SELECT ?setOption
          WHERE {
-             <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> ?healthState .
-             ?healthState <'. $this->formulaParameter ['predicateToPropertySet'] .'> ?propertySet .
+             <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> '. $latestHealthState .' .
+             '. $latestHealthState .' <'. $this->formulaParameter ['predicateToPropertySet'] .'> ?propertySet .
              ?propertySet <'. $this->formulaParameter ['predicateToPropertyOption'] .'> ?setOption .
          };'
     );
@@ -65,13 +83,15 @@ if ('PropertySet' == $element ['typeparameter']['pertainsTo']) {
         $entrySelected = true;
     }
     
+    
+// if question pertains to a SymptomSet
 } elseif ('SymptomSet' == $element ['typeparameter']['pertainsTo']) {
  
     $tmp = $this->selectedModel->sparqlQuery(
         'SELECT ?setOption
          WHERE {
-             <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> ?healthState .
-             ?healthState <'. $this->formulaParameter ['predicateToSymptomSet'] .'> ?symptomSet .
+             <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> '. $latestHealthState .' .
+             '. $latestHealthState .' <'. $this->formulaParameter ['predicateToSymptomSet'] .'> ?symptomSet .
              ?symptomSet <'. $this->formulaParameter ['predicateToSymptomOption'] .'> ?setOption .
          };'
     );
