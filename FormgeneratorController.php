@@ -85,37 +85,37 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->predicateType = $this->_predicateType;
         $this->view->selectedModel = $this->_selectedModel;
         $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_privateConfig->alsfrsModel);
-        $this->view->selectedResource = $this->_request->getParam('r');
         $this->view->url = $this->_url;
         
         $file = null;
         
-        
-        // set resource to load, if parameter r was set
+        $currentResource = '';
+        if ('' != $_SESSION['selectedPatientUri'])
+            $currentResource = $_SESSION['selectedPatientUri'];
         if ('' != $this->_request->getParam('r'))
-        {
-            if ('' != $this->_request->getParam('andFile'))
-            {
-                $file = $this->_request->getParam('andFile');
-                $this->view->resourceSelected = true;
-            }
-            else
-            {
-                $file = strtolower($this->_data->getResourceType ($this->_request->getParam('r')));
-            }
-        }
+            $currentResource = $this->_request->getParam('r');
+        
+        $this->view->selectedResource = $currentResource;
         
         // set file to load, if parameter file was set
-        elseif ('' != $this->_request->getParam('file'))
+        if ('' != $this->_request->getParam('file'))
         {
             $file = $this->_request->getParam('file');
+            $this->view->resourceSelected = true;
         }
-            
-        // set file based on selected class
-        elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
+        else
         {
-            $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
-            $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
+            // set resource to load, if parameter r was set
+            if ('' != $this->_request->getParam('r'))
+            {
+                $file = strtolower($this->_data->getResourceType ($currentResource));
+            }
+            // set file based on selected class
+            elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
+            {
+                $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
+                $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
+            }
         }
         
         // If file was not set or not found
@@ -143,17 +143,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $this->_form = $xmlconfig->loadFile($file . '.xml', $this->_form);
         
-        // if resource set ...
-        if ('' != $this->_request->getParam('r'))
-        {
-            // ... load triples into formula instance
-            $this->_data->fetchFormulaData($this->_request->getParam('r'),$this->_form);
-            $this->_form->setMode ('edit');
-        }
-        
-        $this->view->form = $this->_form;
-        $this->view->formulaParameter = $this->_form->getFormulaParameter ();
-        
         // loading resource of type
         if ('' != $this->_form->getSelectResourceOfType ())
         {
@@ -180,13 +169,29 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 array_walk ( $this->view->resourcesOfType, 'toSelectBox' );
             }
             
-            if ( '' == $this->_request->getParam('r'))
+            if ( '' == $currentResource)
                 $this->view->showForm = false;
             else
                 $this->view->showForm = true;
         }
         else
             $this->view->showForm = true;
+            
+        // if resource set ...
+        if ('' != $currentResource)
+        {
+            if (false == isset($this->view->resourcesOfType) && '' != $_SESSION['selectedPatientUri'] && '' == $this->_request->getParam('r'))
+                $test = 0;
+            else
+            {
+                // ... load triples into formula instance
+                $this->_data->fetchFormulaData($currentResource,$this->_form);
+                $this->_form->setMode ('edit');
+            }
+        }
+        
+        $this->view->form = $this->_form;
+        $this->view->formulaParameter = $this->_form->getFormulaParameter ();
     }
     
     
