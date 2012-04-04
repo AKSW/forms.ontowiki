@@ -2,7 +2,7 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>http://www.dispedia.de/o/Pet</targetclass>
+    <targetclass>http://www.dispedia.de/o/Patient</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
@@ -38,12 +38,12 @@
             
             <!-- Resource -->
 			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/hasEmployer</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Agent</resource>
-                </typeparameter>
+                            <mandatory>0</mandatory>
+                            <predicateuri>http://www.dispedia.de/o/hasEmployer</predicateuri>
+                            <type>resource</type>
+                            <typeparameter>
+                                <resource>http://www.dispedia.de/o/Agent</resource>
+                            </typeparameter>
 			</predicate>
             
             
