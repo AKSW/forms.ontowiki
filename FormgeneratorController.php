@@ -90,7 +90,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $file = null;
         
         $currentResource = '';
-        if ('' != $_SESSION['selectedPatientUri'])
+        if (isset($_SESSION['selectedPatientUri']) && '' != $_SESSION['selectedPatientUri'])
             $currentResource = $_SESSION['selectedPatientUri'];
         if ('' != $this->_request->getParam('r'))
             $currentResource = $this->_request->getParam('r');
@@ -180,7 +180,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // if resource set ...
         if ('' != $currentResource)
         {
-            if (false == isset($this->view->resourcesOfType) && '' != $_SESSION['selectedPatientUri'] && '' == $this->_request->getParam('r'))
+            if (false == isset($this->view->resourcesOfType) && isset($_SESSION['selectedPatientUri']) && '' != $_SESSION['selectedPatientUri'] && '' == $this->_request->getParam('r'))
                 $test = 0;
             else
             {
