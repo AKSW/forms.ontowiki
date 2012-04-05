@@ -1,0 +1,45 @@
+<?php 
+/**
+ * @category   OntoWiki
+ * @package    OntoWiki_extensions_formgenerator
+ * @author     Lars Eidam <larseidam@googlemail.com>
+ * @author     Konrad Abicht <konrad@inspirito.de>
+ * @copyright  Copyright (c) 2011
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */ 
+?>
+<?php 
+$classes = array ();
+
+$classes = $this->selectedModel->sparqlQuery(
+    'SELECT ?uri ?label 
+     WHERE {
+         ?uri <'. $element ['typeparameter']['relation'] .'> <'. $element ['typeparameter']['class'] .'>.
+         ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label.
+         FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
+     };'
+);
+?>
+<div class="predicateValue">
+    <select id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="predicateValue_Resource">
+
+        <option value=""><?php echo $this->_translate->_('please select'); ?></option>
+                    
+    <?php foreach ( $classes as $class ) { ?>
+
+    <?php if ($element['value'] == $class['uri']) { ?>
+    
+        <option value="<?php echo $class ['uri']; ?>" selected>
+            <?php echo $class ['label']; ?></option>
+    
+    <?php } else { ?>
+
+        <option value="<?php echo $class ['uri']; ?>">
+            <?php echo $class ['label']; ?></option>
+
+    <?php } ?>
+    
+    <?php } ?>
+
+    </select>
+</div>

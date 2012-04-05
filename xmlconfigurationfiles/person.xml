@@ -75,6 +75,20 @@
                 </typeparameter>
 			</predicate>
 		
+            <!-- TherapistClass -->
+			<predicate> 
+                            <mandatory>0</mandatory>
+                            <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+                            <title>
+                                <de>Therapeutenklasse</de>
+                                <en>therapist class</en>
+                            </title>        
+                            <type>class</type>
+                            <typeparameter>
+                                <class>http://www.dispedia.de/o/Therapist</class>
+                                <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                            </typeparameter>
+                        </predicate>
 		</item>
         
 	</sections>

@@ -184,6 +184,18 @@ class XmlConfig
                                             break;
                                         }
                                         break;
+                                        
+                                        // a simple list of classes of a given overclass
+                                    case 'class':
+                                        foreach ($predicate->typeparameter as $parameter)
+                                        {
+                                            $typeparameter = array (
+                                                'class' => (string) $parameter->class,
+                                                'relation' => (string) $parameter->relation 
+                                           );
+                                            break;
+                                        }
+                                        break;
                                     
                                     default: 
                                         break;

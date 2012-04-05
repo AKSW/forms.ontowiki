@@ -138,6 +138,12 @@
                     <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                     <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
                             
+                <?php } elseif ('class' == $element ['type']) { ?>
+                
+                    <!-- Predicate title -->        
+                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                    <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>            
+                            
                 <?php } elseif ('alsfrsquestion' == $element ['type']) { ?>
                 
                     <?php require $this->dirJsHtmlPlugins . 'alsfrsquestion.phtml'; ?>            
