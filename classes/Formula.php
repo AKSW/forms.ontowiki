@@ -160,7 +160,7 @@ class Formula
      */
     public function setSelectResourceOfType ($value)
     {
-        $this->_data ['selectResourceOfType'] = $this->replaceNamespaces ($value);
+        $this->_data ['selectResourceOfType'] = $value;
     }
     
     
@@ -179,7 +179,7 @@ class Formula
      */
     public function setTargetClass ($value)
     {
-        $this->_data ['targetclass'] = $this->replaceNamespaces ($value);
+        $this->_data ['targetclass'] = $value;
     }
     
     
@@ -259,7 +259,7 @@ class Formula
      */
     public function addLabelpart ($value)
     {
-        $this->_data ['labelparts'] [] = $this->replaceNamespaces ($value);
+        $this->_data ['labelparts'] [] = $value;
     }
     
     
@@ -639,29 +639,5 @@ class Formula
             } 
         }
         return '';
-    }
-    
-    
-    /**
-     * replace the architecture namespace string with the correct uri
-     * @param $s
-     * @return string
-     */
-    public function replaceNamespaces($s)
-    {
-        $namespaceUri = '';
-        
-        // fetch properties of a resource
-        $result = $this->_selectedModel->sparqlQuery(
-            'SELECT ?namespaceUri
-             WHERE {
-                ?namespaceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#Class> .
-                FILTER regex(?namespaceUri, "Address", "i")
-             }'
-        );
-        
-        $namespaceUri = str_replace('Address', '', $result[0]['namespaceUri']);
-        
-        return str_replace('architecture:', $namespaceUri, $s);
     }
 }

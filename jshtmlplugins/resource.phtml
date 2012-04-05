@@ -19,8 +19,8 @@ if (false !== strpos ($element ['typeparameter'], 'Patient') ||
         'SELECT ?uri ?firstname ?lastname 
          WHERE {
              ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
-             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'firstName> ?firstname.
-             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'lastName> ?lastname.
+             ?uri <http://www.dispedia.de/o/firstName> ?firstname.
+             ?uri <http://www.dispedia.de/o/lastName> ?lastname.
          };'
     );
     
@@ -33,33 +33,14 @@ if (false !== strpos ($element ['typeparameter'], 'Patient') ||
                 
     array_walk ( $resources, 'buildPersonPatientLabel' );
 }
-elseif (false !== strpos ($element ['typeparameter'], 'Pet') )
-{
-    $resources = $this->selectedModel->sparqlQuery(
-        'SELECT ?uri ?petName
-         WHERE {
-             ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
-             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'petName> ?petName.
-         };'
-    );
-    
-    if (false == function_exists('buildPetLabel')) {
-        // combines firstname and lastname to label
-        function buildPetLabel (&$item, $key){
-            $item['label'] = $item['petName'];
-        }
-    }
-                
-    array_walk ( $resources, 'buildPetLabel' );
-}
 elseif (false !== strpos ($element ['typeparameter'], 'Address') )
 {
     $resources = $this->selectedModel->sparqlQuery(
         'SELECT ?uri ?city ?street
          WHERE {
              ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
-             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'city> ?city.
-             ?uri <'. $this->form->replaceNamespaces ('architecture:') .'street> ?street.
+             ?uri <http://www.dispedia.de/o/city> ?city.
+             ?uri <http://www.dispedia.de/o/street> ?street.
          };'
     );
     

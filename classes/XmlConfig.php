@@ -138,7 +138,7 @@ class XmlConfig
                             foreach ($nodeValue->predicate as $predicate)
                             {	
                                 // get complete URI of predicate
-                                $p = $form->replaceNamespaces ($predicate->predicateuri);
+                                $p = $predicate->predicateuri;
                                 
                                                                 
                                 $type = $form->getFieldType ($p, $predicate->type);
@@ -180,7 +180,7 @@ class XmlConfig
                                     case 'resource':
                                         foreach ($predicate->typeparameter->resource as $resource)
                                         {
-                                            $typeparameter = $form->replaceNamespaces ( (string) $resource );
+                                            $typeparameter = (string) $resource;
                                             break;
                                         }
                                         break;
@@ -204,7 +204,7 @@ class XmlConfig
                                 $newSection [] = array (
                                     'index'         => $form->getIndex() . ',' . $entryIndex,
                                     'name'          => substr (md5 ($form->getIndex() . ',' . $entryIndex), 0, 10),
-                                    'predicateuri'  => $form->replaceNamespaces ((string) $predicate->predicateuri),
+                                    'predicateuri'  => (string) $predicate->predicateuri,
                                     'type' 		    => $type,
                                     'typeparameter' => $typeparameter,
                                     'title'	        => $title, 
@@ -234,7 +234,7 @@ class XmlConfig
                                 
                                 if (true === isset ($nestedconfig->relations))
                                     foreach ($nestedconfig->relations->item as $rel)
-                                        $relations [] = $form->replaceNamespaces((string) $rel);
+                                        $relations [] = (string) $rel;
                                  
                                 // Add entry to nestedconfig array.
                                 $newSection [] = array (
