@@ -465,6 +465,9 @@ class Formula
                 
                 if ('predicate' == $section ['sectiontype'])
                 {
+                    if (!isset($section ['value']) || '' == $section ['value'])
+                        continue;
+                    
                     $section ['value'] = str_replace (' ', '', $section ['value']);
                     
                     $newSection [] = array (
@@ -472,7 +475,7 @@ class Formula
                         'name'          => $section ['name'],
                         'value'         => $section ['value'],
                         'predicateuri'  => $section ['predicateuri'],
-                        'type' 		    => $section ['type'],
+                        'type' 		=> $section ['type'],
                         'typeparameter' => $section ['typeparameter'],
                         'title'	        => $section ['title'],
                         'mandatory'     => $section ['mandatory'],
@@ -516,19 +519,6 @@ class Formula
                 // extract title from array and delete it
                 // so there only predicate and nestedconfig elements in it
                 $title = array_shift($sectionEntries);
-                
-                foreach ($sectionEntries as $entry)
-                {
-                    if ('predicate' == $entry ['sectiontype'])
-                    {
-                        // check mandatory field value
-                        if ('mandatory' == $entry ['mandatory'])
-                        {
-                            $entry ['value'] = trim ($entry ['value']);
-                        }
-                        
-                    }
-                } 
             }
         }
         
