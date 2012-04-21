@@ -31,6 +31,20 @@ function setFormulaArrayFields (f)
             {
                 if ( "alsfrsquestion" == f.sections[i][j].type )
                     f.sections [i][j].value = $("input[name=" + f.sections [i][j].name + "]:checked").val();
+                else if ( "class" == f.sections[i][j].type )
+                {
+                    if (0 < $("input[name=" + f.sections [i][j].name + "]:checked").length)
+                    {
+                        values = new Array();
+                        $("input[name=" + f.sections [i][j].name + "]:checked").each(function(index) {
+                            values[index] = $(this).val();
+                        });
+                        
+                        console.log('values:');
+                        console.log(values);
+                        f.sections [i][j].value = values;
+                    }
+                }
                 else
                     f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
             }
@@ -118,7 +132,9 @@ function submitFormula (url, data, mode)
     // set values from formula into the formula instance 
     // which was loaded at the beginning
     form = setFormulaArrayFields (form);
-    
+    console.log ("formnew");
+    console.log (form);
+    console.log ("");
     // set mode from new to add
     form = setFormulaModeTo (form, mode);
     // formOld = setFormulaModeTo (formOld, mode);

@@ -183,7 +183,11 @@
                         
                             <?php } elseif ('resource' == $element ['type']) { ?>
                 
-                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
+                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
+                                
+                            <?php } elseif ('class' == $element ['type']) { ?>
+                
+                                <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>            
                             
                             <?php } else { ?>
                             
@@ -218,7 +222,11 @@
                                         
                                             <?php } elseif ('resource' == $element ['type']) { ?>
                 
-                                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
+                                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
+                                                
+                                            <?php } elseif ('class' == $element ['type']) { ?>
+                
+                                                <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>          
                                             
                                             <?php } else { ?>
                                             

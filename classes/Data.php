@@ -143,11 +143,21 @@ class Data
             foreach ($sectionEntries as $entry) {
                 // predicate
                 if ('predicate' == $entry ['sectiontype']) {
-                    $this->addStmt(
-                        $resource,
-                        $entry ['predicateuri'],
-                        $entry ['value'] 
-                   );
+                    if (is_array($entry ['value']))
+                    {
+                        foreach ($entry ['value'] as $value)
+                            $this->addStmt(
+                                $resource,
+                                $entry ['predicateuri'],
+                                $value
+                            );
+                    }
+                    else
+                        $this->addStmt(
+                            $resource,
+                            $entry ['predicateuri'],
+                            $entry ['value'] 
+                       );
                 // sub formula
                 } elseif ('nestedconfig' == $entry ['sectiontype']) {
                     $this->addFormulaData(
@@ -335,6 +345,7 @@ class Data
                 // predicate
                 if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
                     
+                    // TODO: mehrwertige Values werten hier falsch verglichen, also immer als unterschiedlich behandelt
                     if ($entry ['value'] != $oldValue) 
                     {
                         // if a sub formula resource not exists, create it on the fly
@@ -431,18 +442,42 @@ class Data
      */
     public function addStmt($s, $p, $o)
     {
-        // set type(uri or literal)
-        $type = true == Erfurt_Uri::check($o) 
-            ? 'uri'
-            : 'literal';
-        
-        // add a triple to datastore
-        return $this->_store->addStatement(
-            $this->_selectedModelUri, 
-            $s,
-            $p, 
-            array('value' => $o, 'type' => $type)
-       );
+        // TODO: hinzufügen von mehreren object values sollte nicht so statfinden, nur ne zwischenlösung.
+        // Diese Funktion sollte nur einmal pro Tripel aufgerufen werden
+        if (is_array($o))
+        {
+            foreach ($o as $object)
+            {
+                // set type(uri or literal)
+                $type = true == Erfurt_Uri::check($object) 
+                    ? 'uri'
+                    : 'literal';
+                
+                // add a triple to datastore
+                $this->_store->addStatement(
+                    $this->_selectedModelUri, 
+                    $s,
+                    $p, 
+                    array('value' => $object, 'type' => $type)
+                );
+            }
+            return;
+        }
+        else
+        {
+            // set type(uri or literal)
+            $type = true == Erfurt_Uri::check($o) 
+                ? 'uri'
+                : 'literal';
+            
+            // add a triple to datastore
+            return $this->_store->addStatement(
+                $this->_selectedModelUri, 
+                $s,
+                $p, 
+                array('value' => $o, 'type' => $type)
+            );
+        }
     }
     
     
@@ -451,18 +486,43 @@ class Data
      */
     public function removeStmt($s, $p, $o)
     {
-        // set type(uri or literal)
-        $type = true == Erfurt_Uri::check($o) 
-            ? 'uri'
-            : 'literal';
+        // TODO: löschen von mehreren object values sollte nicht so statfinden, nur ne zwischenlösung.
+        // Diese Funktion sollte nur einmal pro Tripel aufgerufen werden
+        if (is_array($o))
+        {
+            $deletedStatements = 0;
+            foreach ($o as $object)
+            {
+                // set type(uri or literal)
+                $type = true == Erfurt_Uri::check($object) 
+                    ? 'uri'
+                    : 'literal';
+                
+                // aremove a triple form datastore
+                $deletedStatements += $this->_store->deleteMatchingStatements(
+                    $this->_selectedModelUri,
+                    $s,
+                    $p,
+                    array('value' => $object, 'type' => $type)
+                );
+            }
+            return $deletedStatements;
+        }
+        else
+        {
+            // set type(uri or literal)
+            $type = true == Erfurt_Uri::check($o) 
+                ? 'uri'
+                : 'literal';
             
-        // aremove a triple form datastore
-        return $this->_store->deleteMatchingStatements(
-            $this->_selectedModelUri,
-            $s,
-            $p,
-            array('value' => $o, 'type' => $type)
-       );
+            // aremove a triple form datastore
+            return $this->_store->deleteMatchingStatements(
+                $this->_selectedModelUri,
+                $s,
+                $p,
+                array('value' => $o, 'type' => $type)
+            );
+        }
     }
     
     
@@ -485,13 +545,23 @@ class Data
         foreach ($results as $result)
         {
             // $properties[$result['property']] = $result['value'];
-            $properties[] = array ( 
-                'property' => $result['property'],
-                'value' => $result['value'],
-                'used' => false
-            );
+            if (isset($properties[$result['property']]))
+            {
+                if (is_array($properties[$result['property']]['value']))
+                    $properties[$result['property']]['value'][] = $result['value'];
+                else
+                    $properties[$result['property']]['value'] = array(
+                        0 => $properties[$result['property']]['value'],
+                        1 => $result['value']
+                    );
+            }
+            else
+                $properties[$result['property']] = array ( 
+                    'property' => $result['property'],
+                    'value' => $result['value'],
+                    'used' => false
+                );
         }
-
         return $properties;
     }
 
@@ -505,8 +575,6 @@ class Data
     {
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
-        
-        // echo '<pre>'; var_dump ( $properties ); echo '</pre>';
         
         if ( 0 == count($properties)) return;
         else
@@ -542,7 +610,7 @@ class Data
                     }
                 }
             }
-            
+
             // set forms resource
             $form->setResource ($resource);
         }
@@ -557,16 +625,14 @@ class Data
         if (0 == count($properties)) {
             return null;
         } else {
-            $i = 0;
-            foreach ($properties as $p) {
+            foreach ($properties as $index => $p) {
                 if ($p['property'] == $property && false == $p['used']){
                     
                     // this value can be only used one time
-                    $properties [$i]['used'] = true;
+                    $properties [$index]['used'] = true;
                     
                     return $p['value'];
                 }
-                $i++;
             }
         }
             

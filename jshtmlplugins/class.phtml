@@ -9,37 +9,26 @@
  */ 
 ?>
 <?php 
-$classes = array ();
+    $classes = array ();
+    
+    $classes = $this->selectedModel->sparqlQuery(
+        'SELECT ?uri ?label 
+         WHERE {
+             ?uri <'. $element ['typeparameter']['relation'] .'> <'. $element ['typeparameter']['class'] .'>.
+             ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label.
+             FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
+         };'
+    );
 
-$classes = $this->selectedModel->sparqlQuery(
-    'SELECT ?uri ?label 
-     WHERE {
-         ?uri <'. $element ['typeparameter']['relation'] .'> <'. $element ['typeparameter']['class'] .'>.
-         ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label.
-         FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
-     };'
-);
 ?>
 <div class="predicateValue">
-    <select id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="predicateValue_Resource">
-
-        <option value=""><?php echo $this->_translate->_('please select'); ?></option>
-                    
+    
+    <!-- if person are edit, the "type person" triple must set because the old one will deleted after upadte -->
+    <?php if ('edit' == $this->form->getMode()) { ?>
+        <input type="checkbox" class="hidden"  name="<?php echo $element ['name']; ?>" value="http://www.dispedia.de/o/Person" checked="checked"/>
+    <?php } ?> 
     <?php foreach ( $classes as $class ) { ?>
-
-    <?php if ($element['value'] == $class['uri']) { ?>
+        <input type="checkbox" class="predicateValue_Resource" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo (is_array($element['value']) && false != array_search($class['uri'], $element['value']) ? ' checked="checked"' : ''); ?>/> <?php echo $class ['label']; ?><br />
+    <?php } ?> 
     
-        <option value="<?php echo $class ['uri']; ?>" selected>
-            <?php echo $class ['label']; ?></option>
-    
-    <?php } else { ?>
-
-        <option value="<?php echo $class ['uri']; ?>">
-            <?php echo $class ['label']; ?></option>
-
-    <?php } ?>
-    
-    <?php } ?>
-
-    </select>
 </div>
