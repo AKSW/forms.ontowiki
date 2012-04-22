@@ -124,9 +124,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         
         // set standard language
-        $lang = true == isset ($_SESSION ['selectedLanguage'])
-            ? $_SESSION ['selectedLanguage']
-            : 'de';
+        $lang = $this->_lang = OntoWiki::getInstance()->config->languages->locale;
         
         // load xml configuration file
         $xmlconfig = new XmlConfig(
