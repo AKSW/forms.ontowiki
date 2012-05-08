@@ -10,16 +10,31 @@
 ?>
 <?php 
     $classes = array ();
-    
-    $classes = $this->selectedModel->sparqlQuery(
-        'SELECT ?uri ?label 
-         WHERE {
-             ?uri <'. $element ['typeparameter']['relation'] .'> <'. $element ['typeparameter']['class'] .'>.
-             ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label.
-             FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
-         };'
-    );
-
+    foreach ($element ['typeparameter'] as $item)
+    {
+        $classesResult = array();
+        if (isset($item['relation']))
+            $classesResult = $this->selectedModel->sparqlQuery(
+                'SELECT ?uri ?label 
+                 WHERE {
+                     ?uri <'. $item['relation'] .'> <'. $item['class'] .'>.
+                     ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label.
+                     FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
+                 };'
+            );
+        else
+        {
+            $classesResult = $this->selectedModel->sparqlQuery(
+                'SELECT ?label 
+                 WHERE {
+                     <'. $item['class'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label.
+                     FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
+                 };'
+            );
+            $classesResult[0]['uri'] = $item['class'];
+        }
+        $classes = array_merge($classes, $classesResult);
+    }
 ?>
 <div class="predicateValue">
     
@@ -28,7 +43,6 @@
         <input type="checkbox" class="hidden"  name="<?php echo $element ['name']; ?>" value="http://www.dispedia.de/o/Person" checked="checked"/>
     <?php } ?> 
     <?php foreach ( $classes as $class ) { ?>
-        <input type="checkbox" class="predicateValue_Resource" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo (is_array($element['value']) && false != array_search($class['uri'], $element['value']) ? ' checked="checked"' : ''); ?>/> <?php echo $class ['label']; ?><br />
-    <?php } ?> 
-    
+        <input type="checkbox" class="predicateValue_Resource" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo (is_array($element['value']) && false !== array_search($class['uri'], $element['value']) ? ' checked="checked"' : ''); ?>/> <?php echo $class ['label']; ?><br />
+    <?php } ?>
 </div>

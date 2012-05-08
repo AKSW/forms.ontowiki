@@ -187,12 +187,21 @@ class XmlConfig
                                         
                                         // a simple list of classes of a given overclass
                                     case 'class':
-                                        foreach ($predicate->typeparameter as $parameter)
+                                        foreach ($predicate->typeparameter as $item)
                                         {
-                                            $typeparameter = array (
-                                                'class' => (string) $parameter->class,
-                                                'relation' => (string) $parameter->relation 
-                                           );
+                                            $typeparameter = array();
+                                            foreach ($item as $parameter)
+                                                {
+                                                    if (isset($parameter->relation))
+                                                        $typeparameter[] = array (
+                                                            'class' => (string) $parameter->class,
+                                                            'relation' => (string) $parameter->relation 
+                                                        );
+                                                    else
+                                                        $typeparameter[] = array (
+                                                            'class' => (string) $parameter->class
+                                                        );
+                                                }
                                             break;
                                         }
                                         break;
@@ -217,9 +226,9 @@ class XmlConfig
                                     'index'         => $form->getIndex() . ',' . $entryIndex,
                                     'name'          => substr (md5 ($form->getIndex() . ',' . $entryIndex), 0, 10),
                                     'predicateuri'  => (string) $predicate->predicateuri,
-                                    'type' 		    => $type,
+                                    'type'          => $type,
                                     'typeparameter' => $typeparameter,
-                                    'title'	        => $title, 
+                                    'title'	    => $title, 
                                     'mandatory'     => (int) $predicate->mandatory,
                                     'value'         => '',
                                     'sectiontype'   => 'predicate'
