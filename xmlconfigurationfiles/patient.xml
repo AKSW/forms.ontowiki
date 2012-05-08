@@ -66,6 +66,23 @@
 				<mandatory>0</mandatory>
 				<predicateuri>http://www.dispedia.de/o/birthPlace</predicateuri>
 			</predicate>
+            
+            <!-- rolls -->
+			<predicate> 
+                            <mandatory>0</mandatory>
+                            <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+                            <title>
+                                <de>Patienttyp</de>
+                                <en>Patient type</en>
+                            </title>        
+                            <type>class</type>
+                            <typeparameter>
+                                <item>
+                                    <class>http://www.dispedia.de/o/Patient</class>
+                                    <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                                </item>
+                            </typeparameter>
+                        </predicate>
 		
 		</item>
 		
