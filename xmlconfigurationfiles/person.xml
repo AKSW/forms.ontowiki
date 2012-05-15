@@ -86,15 +86,11 @@
                             <type>class</type>
                             <typeparameter>
                                 <item>
-                                    <class>http://www.dispedia.de/o/Therapist</class>
-                                    <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                                    <class>http://www.dispedia.de/o/Patient</class>
                                 </item>
                                 <item>
                                     <class>http://www.dispedia.de/o/Patient</class>
                                     <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
-                                </item>
-                                <item>
-                                    <class>http://www.dispedia.de/o/Patient</class>
                                 </item>
                             </typeparameter>
                         </predicate>

@@ -1,0 +1,59 @@
+<!-- Create a new person. -->
+<form> 
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>http://www.dispedia.de/o/Organisation</targetclass>
+    
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>http://www.dispedia.de/o/name</item>
+    </labelparts>
+	
+    <!-- Headline of this formula. -->
+    <title>
+        <de>Organisation</de>
+        <en>Organisation</en>
+    </title>
+	
+    <!-- Introducing text to inform the user about the formula. -->
+    <description>
+        <de>Hier können Sie Daten zu einer Organisation erfassen.</de>
+        <en>Here you can insert organisation information.</en>
+    </description>
+	
+    <sections>
+        
+        <!-- A new section -->
+		<item>
+            
+            <!-- title of this section part -->
+			<title>
+                <de>Organisation Information</de>
+                <en>Organisation Information</en>
+            </title> 	
+						
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>1</mandatory>
+				<predicateuri>http://www.dispedia.de/o/name</predicateuri>
+			</predicate>
+            <!-- rolls -->
+			<predicate> 
+                            <mandatory>0</mandatory>
+                            <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+                            <title>
+                                <de>Rollen</de>
+                                <en>rolls</en>
+                            </title>        
+                            <type>class</type>
+                            <typeparameter>
+                                <item>
+                                    <class>http://www.dispedia.de/o/Organisation</class>
+                                    <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                                </item>
+                            </typeparameter>
+                        </predicate>
+		</item>
+        
+	</sections>
+</form>
