@@ -86,6 +86,9 @@
                             <type>class</type>
                             <typeparameter>
                                 <item>
+                                    <class>http://www.dispedia.de/o/Supporter</class>
+                                </item>
+                                <item>
                                     <class>http://www.dispedia.de/o/Patient</class>
                                 </item>
                                 <item>
