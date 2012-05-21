@@ -84,6 +84,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;
         $this->view->predicateType = $this->_predicateType;
         $this->view->selectedModel = $this->_selectedModel;
+        $this->view->dispediaModel = $this->_dispediaModel;
         $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_privateConfig->alsfrsModel);
         $this->view->url = $this->_url;
         
