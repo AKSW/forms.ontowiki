@@ -125,6 +125,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // If file was not set or not found
         if (null == $file || false == file_exists ($this->_dirXmlConfigurationFiles . $file .'.xml')) {
+            $this->_owApp->appendMessage(
+                new OntoWiki_Message(
+                    $this->_owApp->translate->_('noformularfound'),
+                    OntoWiki_Message::ERROR
+                )
+            );
             $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
         }
         
