@@ -36,22 +36,21 @@ if (false !== strpos ($element ['typeparameter'], 'Patient') ||
 elseif (false !== strpos ($element ['typeparameter'], 'Address') )
 {
     $resources = $this->selectedModel->sparqlQuery(
-        'SELECT ?uri ?city ?street
+        'SELECT ?uri ?label
          WHERE {
-             ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
-             ?uri <http://www.dispedia.de/o/city> ?city.
-             ?uri <http://www.dispedia.de/o/street> ?street.
+             ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $element ['typeparameter'] . '>.
+           ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label
          };'
     );
     
-    if (false == function_exists('buildAddressLabel')) {
-        // combines firstname and lastname to label
-        function buildAddressLabel (&$item, $key){
-            $item['label'] = $item['city'] .' '. $item['street'];
-        }
-    }
-                
-    array_walk ( $resources, 'buildAddressLabel' );
+    //if (false == function_exists('buildAddressLabel')) {
+    //    // combines firstname and lastname to label
+    //    function buildAddressLabel (&$item, $key){
+    //        $item['label'] = $item['label'] .' '. $item['street'];
+    //    }
+    //}
+    //            
+    //array_walk ( $resources, 'buildAddressLabel' );
 }
 ?>
 <div class="predicateValue">
