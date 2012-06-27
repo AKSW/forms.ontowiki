@@ -83,6 +83,10 @@ class XmlConfig
                         
                         break;
                         
+                    case 'modelnamespace':
+                        $form->setModelNamespace ((string) $nodeValue [0]);
+                        
+                        break;   
                         
                     case 'formulaType':
                         $form->setFormulaType ((string) $nodeValue [0]);

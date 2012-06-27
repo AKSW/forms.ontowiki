@@ -29,6 +29,7 @@ class Formula
         $this->setIndex ($index);       
         $this->_data ['targetclass'] = '';
         $this->_data ['targetmodel'] = ''; 
+        $this->_data ['modelnamespace'] = ''; 
         $this->_data ['labelparts'] = array (); 
         $this->_data ['title'] = '';
         $this->_data ['description'] = '';
@@ -211,6 +212,24 @@ class Formula
     
     
     /**
+     * @param $value URI of target model
+     * @return void 
+     */
+    public function setModelNamespace ($value)
+    {
+        $this->_data ['modelnamespace'] = $value;
+    }
+    
+    /**
+     * @return string 
+     */
+    public function getModelNamespace ()
+    {
+        return $this->_data ['modelnamespace'];
+    }
+    
+     
+    /**
      * @return void 
      */
     public function setTitle ($value)
@@ -357,6 +376,7 @@ class Formula
                 '<br/>- resource: '. implode (', ', $this->getResource ()) .
                 '<br/>- target class: '. $this->getTargetClass () .
                 '<br/>- target model: '. $this->getTargetModel () .
+                '<br/>- model namespace: '. $this->getModelNamespace () .
                 '<br/>- XML config: '. $this->getxmlfile () .
                 '<br/>- sections: ';
           
@@ -398,6 +418,7 @@ class Formula
             'resource'              => $this->getResource (),
             'targetclass'           => $this->getTargetClass (),
             'targetmodel'           => $this->getTargetModel (),
+            'modelnamespace'             => $this->getModelNamespace (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
        );
@@ -468,6 +489,8 @@ class Formula
         $form->setTargetClass ($formArray ['targetclass']);
         
         $form->setTargetModel ($formArray ['targetmodel']);
+        
+        $form->setModelNamespace ($formArray ['modelnamespace']);
         
         $form->setXmlFile ($formArray ['xmlfile']);
         

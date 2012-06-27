@@ -114,7 +114,16 @@ class Data
         $model = $this->_selectedModel;
         
         if ("" != $f->getTargetModel())
+        {
             $model = $f->getTargetModel();
+            $this->_selectedModel = new Erfurt_Rdf_Model ($model);
+            $this->_selectedModelUri = $model;
+
+        }
+        
+        if ("" != $f->getModelNamespace())
+            $model .= $f->getModelNamespace() . '/';
+        
         // generate a new unique resource uri based on the target class
         $resource = Resource::generateUniqueUri($f, $model, $this->_titleHelper, $this->_uriParts);
         
@@ -186,6 +195,13 @@ class Data
      */
     public function changeFormulaData($form, $formOld, $upperResource = '', $relations = array())
     {
+        // set model to write
+        if ("" != $form->getTargetModel())
+        {
+            $this->_selectedModel = new Erfurt_Rdf_Model ($form->getTargetModel());
+            $this->_selectedModelUri = $form->getTargetModel();
+        }
+        
         if ('' == $upperResource)
         {
             $json = array();
