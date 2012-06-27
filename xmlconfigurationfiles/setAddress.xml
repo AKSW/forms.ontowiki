@@ -30,16 +30,16 @@
         <item>
             
             <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/hasAddress</predicateuri>
+            <predicate> 
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/hasAddress</predicateuri>
                 <type>resource</type>
                 <typeparameter>
                     <resource>http://www.dispedia.de/o/Address</resource>
                 </typeparameter>
-			</predicate>
-            
-		</item> 
+            </predicate>
+
+	</item> 
         
 	</sections>
 </form>

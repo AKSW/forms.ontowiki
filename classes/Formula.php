@@ -418,7 +418,7 @@ class Formula
             'resource'              => $this->getResource (),
             'targetclass'           => $this->getTargetClass (),
             'targetmodel'           => $this->getTargetModel (),
-            'modelnamespace'             => $this->getModelNamespace (),
+            'modelnamespace'        => $this->getModelNamespace (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
        );
