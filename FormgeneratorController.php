@@ -218,7 +218,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                     $toolbar->appendButton(
                         OntoWiki_Toolbar :: EDITADD,
                         array('name' => ucfirst($className),
-                              'url' => 'http://localhost/ow_als/formgenerator/form/?file=' . $className)
+                              'url' => $this->_config->urlBase . 'formgenerator/form/?file=' . $className)
                     );
                     $this->view->placeholder('main.window.toolbar')->set($toolbar);
                 }
