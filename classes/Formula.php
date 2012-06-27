@@ -27,7 +27,8 @@ class Formula
         $this->_data = array ();
         
         $this->setIndex ($index);       
-        $this->_data ['targetclass'] = ''; 
+        $this->_data ['targetclass'] = '';
+        $this->_data ['targetmodel'] = ''; 
         $this->_data ['labelparts'] = array (); 
         $this->_data ['title'] = '';
         $this->_data ['description'] = '';
@@ -181,14 +182,31 @@ class Formula
     {
         $this->_data ['targetclass'] = $value;
     }
-    
-    
+
     /**
      * @return string 
      */
     public function getTargetClass ()
     {
         return $this->_data ['targetclass'];
+    }
+    
+    
+    /**
+     * @param $value URI of target model
+     * @return void 
+     */
+    public function setTargetModel ($value)
+    {
+        $this->_data ['targetmodel'] = $value;
+    }
+    
+    /**
+     * @return string 
+     */
+    public function getTargetModel ()
+    {
+        return $this->_data ['targetmodel'];
     }
     
     
@@ -338,6 +356,7 @@ class Formula
                 '<br/>- mode: '. $this->getMode () .
                 '<br/>- resource: '. implode (', ', $this->getResource ()) .
                 '<br/>- target class: '. $this->getTargetClass () .
+                '<br/>- target model: '. $this->getTargetModel () .
                 '<br/>- XML config: '. $this->getxmlfile () .
                 '<br/>- sections: ';
           
@@ -378,6 +397,7 @@ class Formula
             'mode'                  => $this->getMode (),
             'resource'              => $this->getResource (),
             'targetclass'           => $this->getTargetClass (),
+            'targetmodel'           => $this->getTargetModel (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
        );
@@ -446,6 +466,8 @@ class Formula
         $form->setResource ($formArray ['resource']);
         
         $form->setTargetClass ($formArray ['targetclass']);
+        
+        $form->setTargetModel ($formArray ['targetmodel']);
         
         $form->setXmlFile ($formArray ['xmlfile']);
         

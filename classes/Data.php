@@ -83,7 +83,7 @@ class Data
                 // build a formula instance
                 $this->_form = $this->_form->initByArray($form);
                 $formOld = $this->_form->initByArray($formOld);
-                                
+                
                 if (false === $this->_form->isValid($this->_form)) {
                     
                 } else {
@@ -110,9 +110,13 @@ class Data
         $targetClass = $f->getTargetClass();
         
         $this->_titleHelper->addResource($targetClass);
-                    
+        
+        $model = $this->_selectedModel;
+        
+        if ("" != $f->getTargetModel())
+            $model = $f->getTargetModel();
         // generate a new unique resource uri based on the target class
-        $resource = Resource::generateUniqueUri($f, $this->_selectedModel, $this->_titleHelper, $this->_uriParts);
+        $resource = Resource::generateUniqueUri($f, $model, $this->_titleHelper, $this->_uriParts);
         
         // add resource - rdf:type - targetclass
         $this->addStmt(

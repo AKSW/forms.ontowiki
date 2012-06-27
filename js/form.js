@@ -39,9 +39,7 @@ function setFormulaArrayFields (f)
                         $("input[name=" + f.sections [i][j].name + "]:checked").each(function(index) {
                             values[index] = $(this).val();
                         });
-                        
-                        console.log('values:');
-                        console.log(values);
+
                         f.sections [i][j].value = values;
                     }
                 }

@@ -78,6 +78,11 @@ class XmlConfig
                         
                         break;
                         
+                    case 'targetmodel':
+                        $form->setTargetModel ((string) $nodeValue [0]);
+                        
+                        break;
+                        
                         
                     case 'formulaType':
                         $form->setFormulaType ((string) $nodeValue [0]);
@@ -185,7 +190,7 @@ class XmlConfig
                                         }
                                         break;
                                         
-                                        // a simple list of classes of a given overclass
+                                    // a simple list of classes of a given overclass
                                     case 'class':
                                         foreach ($predicate->typeparameter as $item)
                                         {
@@ -205,7 +210,20 @@ class XmlConfig
                                             break;
                                         }
                                         break;
-                                    
+                                    // hidden input fields with a fix value
+                                    case 'hidden':
+                                        foreach ($predicate->typeparameter as $item)
+                                        {
+                                            $typeparameter = array();
+                                            foreach ($item as $parameter)
+                                                {
+                                                    $typeparameter[] = array (
+                                                        'value' => (string) $parameter->value
+                                                    );
+                                                }
+                                            break;
+                                        }
+                                        break;
                                     default: 
                                         break;
                                 }
