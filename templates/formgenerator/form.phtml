@@ -20,6 +20,9 @@
     $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
 </script>
 
+<!-- set the title of the action -->
+<?php $this->placeholder('main.window.title')->set($this->form->getTitle()); ?>
+
 <!-- formular select box -->
 <div align="right" class="messagebox">
     <form id="formformlist" method="get" action="">

@@ -66,7 +66,15 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         );
     }    
 
-
+    /**
+     * form action
+     */
+    public function newformAction()
+    {
+        unset($this->_owApp->selectedResource);
+        $this->formAction();
+        $this->render('form');
+    }
     /**
      * form action
      */
@@ -92,35 +100,38 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $currentResource = '';
         
-        
-        $dispediaSession = new Zend_Session_Namespace('Dispedia');
-        
-        if (isset($dispediaSession->selectedPatientUri) && '' != $dispediaSession->selectedPatientUri)
-            $currentResource = $dispediaSession->selectedPatientUri;
-        if ('' != $this->_request->getParam('r'))
-            $currentResource = $this->_request->getParam('r');
+        // get selectedResource if it is set
+        $selectedResource = $this->_owApp->__get("selectedResource");
+        if (isset($selectedResource))
+            $currentResource = $selectedResource->getIri();;
         
         $this->view->selectedResource = $currentResource;
+
+        // if parameter r was set, get the eligible classes of this resource
+        if ('' != $currentResource)
+        {
+            $currentClasses = $this->getEligibleFormFiles($currentResource);
+        }
+        else
+            $currentClasses = array();
         
         // set file to load, if parameter file was set
         if ('' != $this->_request->getParam('file'))
         {
             $file = $this->_request->getParam('file');
             $this->view->resourceSelected = true;
-        }
-        else
+        // set resource to load, if parameter r was set
+        } elseif ('' != $currentResource)
         {
-            // set resource to load, if parameter r was set
-            if ('' != $this->_request->getParam('r'))
+            if (false !== $currentClasses && 0 < count($currentClasses))
             {
-                $file = strtolower($this->_data->getResourceType ($currentResource));
+                $file = key($currentClasses);
             }
-            // set file based on selected class
-            elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
-            {
-                $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
-                $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
-            }
+        // set file based on selected class
+        } elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
+        {
+            $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
+            $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
         }
         
         // If file was not set or not found
@@ -196,6 +207,21 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // ... load triples into formula instance
                 $this->_data->fetchFormulaData($currentResource,$this->_form);
                 $this->_form->setMode ('edit');
+                
+                // delete the current file/class from the array, so only other eligible classes are in this array
+                unset($currentClasses[$file]);
+                
+                // set other eligible classes as buttons for simple switching
+                foreach ($currentClasses as $className => $fileName) {
+                    // build toolbar
+                    $toolbar = $this->_owApp->toolbar;
+                    $toolbar->appendButton(
+                        OntoWiki_Toolbar :: EDITADD,
+                        array('name' => ucfirst($className),
+                              'url' => 'http://localhost/ow_als/formgenerator/form/?file=' . $className)
+                    );
+                    $this->view->placeholder('main.window.toolbar')->set($toolbar);
+                }
             }
         }
         
@@ -203,6 +229,40 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->formulaParameter = $this->_form->getFormulaParameter ();
     }
     
+    /**
+     * Determined which formular files fit to a resource.
+     * Check the classes of a resource and the superclasses of these classes and
+     * compare this list with the existing form files.
+     * The matched class names will be returned as a list.
+     * @param $currentResource
+     * @return array of classnames
+     */
+    private function getEligibleFormFiles($currentResource)
+    {
+        $resourceClassesResult = $this->_store->sparqlQuery (
+            'SELECT ?class ?mainClass
+            WHERE {
+                <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.
+                OPTIONAL{
+                   ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?mainClass.
+                }
+            };'
+        );
+        
+        $resourceClasses = array();
+        $resourceHelper = new Resource();
+        foreach ($resourceClassesResult as $resourceClass) {
+            $newRessourceClassName = strtolower($resourceHelper->extractClassNameFromUri($resourceClass['class']));
+            $resourceClasses[$newRessourceClassName] = $newRessourceClassName . '.xml';
+            $newRessourceClassName = strtolower($resourceHelper->extractClassNameFromUri($resourceClass['mainClass']));
+            $resourceClasses[$newRessourceClassName] = $newRessourceClassName . '.xml';
+        }
+        $files = scandir($this->_dirXmlConfigurationFiles);
+        
+        $currentClasses = array_intersect($resourceClasses, $files);
+        
+        return $currentClasses;
+    }
     
     /**
      * submit action
