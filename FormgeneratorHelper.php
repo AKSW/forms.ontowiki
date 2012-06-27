@@ -34,7 +34,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                     array(
                         'controller' => 'formgenerator', 
                         'action'     => 'newform', 
-                        'name'       => 'New Instance'
+                        'name'       => 'NewInstance'
                     )
                 );
             }
@@ -48,7 +48,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                     array(
                         'controller' => 'formgenerator', 
                         'action'     => 'form', 
-                        'name'       => 'Edit Resource'
+                        'name'       => 'EditResource'
                     )
                 );
             }
