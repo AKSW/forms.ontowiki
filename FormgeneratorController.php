@@ -276,8 +276,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_helper->layout()->disableLayout();
         
         // processes a formula and output the result
-        $form = true == isset ($_REQUEST ['form']) ? $_REQUEST ['form'] : null;
-        $formOld =  true == isset ($_REQUEST ['formOld']) ? $_REQUEST ['formOld'] : null;
+        $form = $this->_request->getParam('form');
+        $formOld = $this->_request->getParam('formOld');
         
         echo $this->_data->submitFormula ($form, $formOld);
     }
