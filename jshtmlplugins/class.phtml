@@ -37,16 +37,7 @@
     }
 ?>
 <div class="predicateValue">
-    
-    <!-- TODO: this is a quickHack, better is that the formgenerator only write tripel that have changend and not to delete all triple of a type an write only the new and changend ones -->
-    <!-- if person/patient are edit, the "type person" triple must set because the old one will deleted after update, as well "type patient" -->
-    <?php if ('edit' == $this->form->getMode()) { ?>
-        <input type="checkbox" class="hidden"  name="<?php echo $element ['name']; ?>" value="http://www.dispedia.de/o/Person" checked="checked"/>
-        <?php if ('http://www.dispedia.de/o/Patient' == $this->form->getTargetClass()) { ?>
-            <input type="checkbox" class="hidden"  name="<?php echo $element ['name']; ?>" value="http://www.dispedia.de/o/Patient" checked="checked"/>
-        <?php } ?>
-    <?php } ?>
     <?php foreach ( $classes as $class ) { ?>
-        <input type="checkbox" class="predicateValue_Resource" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo (is_array($element['value']) && false !== array_search($class['uri'], $element['value']) ? ' checked="checked"' : ''); ?>/> <?php echo $class ['label']; ?><br />
+        <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo (is_array($element['value']) && false !== array_search($class['uri'], $element['value']) ? ' checked="checked"' : ''); ?>/> <?php echo $class ['label']; ?><br />
     <?php } ?>
 </div>

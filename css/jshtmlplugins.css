@@ -29,6 +29,13 @@
     font-weight: bold;
 }
 
+.predicateValue_Class {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 .mandatoryFieldEmpty {
     background-color: #FFBBBB !important;
 }
