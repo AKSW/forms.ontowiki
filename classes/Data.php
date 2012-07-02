@@ -592,7 +592,7 @@ class Data
         $properties = array();
         
         // fetch properties of a resource
-        $results = $this->_selectedModel->sparqlQuery(
+        $results = $this->_store->sparqlQuery(
             'SELECT ?property ?value 
             WHERE {<' . $resourceUri . '> ?property ?value.}'
         );
