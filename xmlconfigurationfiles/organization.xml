@@ -4,6 +4,9 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Organization</targetclass>
     
+    <targetmodel>http://hc.serviceOntology.org/</targetmodel>
+    <modelnamespace>provider</modelnamespace>
+    
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/Name</item>
@@ -20,40 +23,55 @@
         <de>Hier können Sie Daten zu einer Organisation erfassen.</de>
         <en>Here you can insert organization information.</en>
     </description>
-	
+    
     <sections>
         
         <!-- A new section -->
-		<item>
-            
+        <item>
             <!-- title of this section part -->
-			<title>
+            <title>
                 <de>Organisation Information</de>
                 <en>Organization Information</en>
             </title> 	
-						
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/Name</predicateuri>
-			</predicate>
-            <!-- rolls -->
-			<predicate> 
-                            <mandatory>0</mandatory>
-                            <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
-                            <title>
-                                <de>Rollen</de>
-                                <en>rolls</en>
-                            </title>        
-                            <type>class</type>
-                            <typeparameter>
-                                <item>
-                                    <class>http://www.dispedia.de/o/Organization</class>
-                                    <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
-                                </item>
-                            </typeparameter>
-                        </predicate>
-		</item>
+            <predicate> 
+                    <mandatory>1</mandatory>
+                    <predicateuri>http://www.dispedia.de/o/Name</predicateuri>
+            </predicate>
+            <!-- type -->
+            <predicate> 
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+                <title>
+                    <de>Typ</de>
+                    <en>Type</en>
+                </title>        
+                <type>class</type>
+                <typeparameter>
+                    <item>
+                        <class>http://www.dispedia.de/o/Organization</class>
+                        <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                    </item>
+                </typeparameter>
+            </predicate>
+            <!-- service -->
+            <predicate> 
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.heppnetz.de/ontologies/goodrelations/v1#offers</predicateuri>
+                <title>
+                    <de>Dienstleistung</de>
+                    <en>Service</en>
+                </title>        
+                <type>class</type>
+                <typeparameter>
+                    <item>
+                        <class>http://www.serviceOntology.org/Service</class>
+                        <relation>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</relation>
+                    </item>
+                </typeparameter>
+            </predicate>
+        </item>
         
 	</sections>
 </form>

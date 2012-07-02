@@ -5,54 +5,53 @@
     <targetclass>http://www.w3.org/2002/07/owl#Class</targetclass>
     
     <targetmodel>http://hc.serviceOntology.org/</targetmodel>
-    <modelnamespace>organisationcategory</modelnamespace>
+    <modelnamespace>provider</modelnamespace>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/Name</item>
     </labelparts>
-	
+    
     <!-- Headline of this formula. -->
     <title>
         <de>Organisationskategorie</de>
         <en>organisation category</en>
     </title>
-	
+    
     <!-- Introducing text to inform the user about the formula. -->
     <description>
         <de>Hier können Sie eine Organisationskategorie anlegen.</de>
         <en>Here you can insert information for a organisation category.</en>
     </description>
-	
+    
     <sections>
         
         <!-- A new section -->
-		<item>
+        <item>
             
             <!-- title of this section part -->
-			<title>
+            <title>
                 <de>Kategorie Information</de>
                 <en>category information</en>
-            </title> 	
-						
+            </title>     
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/Name</predicateuri>
-			</predicate>
-		
-            <!-- rolls -->
-			<predicate> 
-                            <mandatory>1</mandatory>
-                            <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>       
-                            <type>hidden</type>
-                            <typeparameter>
-                                <item>
-                                    <value>http://www.dispedia.de/o/Organization</value>
-                                </item>
-                            </typeparameter>
-                        </predicate>
-		</item>
+            <predicate> 
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.dispedia.de/o/Name</predicateuri>
+            </predicate>
         
-	</sections>
+            <!-- rolls -->
+            <predicate> 
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>       
+                <type>hidden</type>
+                <typeparameter>
+                    <item>
+                        <value>http://www.dispedia.de/o/Organization</value>
+                    </item>
+                </typeparameter>
+            </predicate>
+        </item>
+        
+    </sections>
 </form>
