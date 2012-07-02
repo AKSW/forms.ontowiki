@@ -2,23 +2,23 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>http://www.dispedia.de/o/Organisation</targetclass>
+    <targetclass>http://www.dispedia.de/o/Organization</targetclass>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>http://www.dispedia.de/o/name</item>
+        <item>http://www.dispedia.de/o/Name</item>
     </labelparts>
 	
     <!-- Headline of this formula. -->
     <title>
         <de>Organisation</de>
-        <en>Organisation</en>
+        <en>Organization</en>
     </title>
 	
     <!-- Introducing text to inform the user about the formula. -->
     <description>
         <de>Hier können Sie Daten zu einer Organisation erfassen.</de>
-        <en>Here you can insert organisation information.</en>
+        <en>Here you can insert organization information.</en>
     </description>
 	
     <sections>
@@ -29,7 +29,7 @@
             <!-- title of this section part -->
 			<title>
                 <de>Organisation Information</de>
-                <en>Organisation Information</en>
+                <en>Organization Information</en>
             </title> 	
 						
             <!-- Textfield -->
@@ -48,7 +48,7 @@
                             <type>class</type>
                             <typeparameter>
                                 <item>
-                                    <class>http://www.dispedia.de/o/Organisation</class>
+                                    <class>http://www.dispedia.de/o/Organization</class>
                                     <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
                                 </item>
                             </typeparameter>
