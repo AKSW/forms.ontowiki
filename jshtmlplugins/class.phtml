@@ -14,7 +14,7 @@
     {
         $classesResult = array();
         if (isset($item['relation']))
-            $classesResult = $this->dispediaModel->sparqlQuery(
+            $classesResult = $this->store->sparqlQuery(
                 'SELECT ?uri ?label 
                  WHERE {
                      ?uri <'. $item['relation'] .'> <'. $item['class'] .'>.
@@ -24,7 +24,7 @@
             );
         else
         {
-            $classesResult = $this->dispediaModel->sparqlQuery(
+            $classesResult = $this->store->sparqlQuery(
                 'SELECT ?label 
                  WHERE {
                      <'. $item['class'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label.
