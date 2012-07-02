@@ -137,7 +137,7 @@ class Data
         );
         
         // generate resource label
-        $resourceLabel = implode ('', $f->getLabelpartValues ());
+        $resourceLabel = implode (' ', $f->getLabelpartValues ());
         
         // add resource - rdfs:label - resourceLabel
         $this->_store->addStatement(
@@ -223,13 +223,36 @@ class Data
         }
         else
             $log = array ();
-            
+        
+        
+        // update label if needed
+        $resourceLabel = implode (' ', $form->getLabelpartValues ());
+        $resourceLabelOld = implode (' ', $formOld->getLabelpartValues ());
+        
+        if ($resourceLabel != $resourceLabelOld) {
+            $this->_store->deleteMatchingStatements(
+                $this->_selectedModelUri,
+                $form->getResource(),
+                "http://www.w3.org/2000/01/rdf-schema#label",
+                array('value' => $resourceLabelOld, 'type' => 'literal', 'lang' => $this->_lang)
+            );
+
+            $json['resourceLabel'] = "changed";
+            $this->_store->addStatement(
+                $this->_selectedModelUri, 
+                $form->getResource(),
+                "http://www.w3.org/2000/01/rdf-schema#label", 
+                array('value' => $resourceLabel, 'type' => 'literal', 'lang' => $this->_lang)
+            );
+        }
+        
         // -------------------------------------------------------------
         $para = $form->getFormulaParameter();
         
         if (0 < count ( $para ))
         {
             $selectedResource = $form->getResource();
+            
             $has = $para ['predicateToHealthState'];
             $healthState = $para ['healthState'];
             
