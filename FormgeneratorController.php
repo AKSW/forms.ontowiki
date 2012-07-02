@@ -29,6 +29,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     private $_titleHelper;
     private $_uriParts;
     private $_url;
+    private $_lang;
     
     /**
      * init controller
@@ -46,6 +47,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_selectedModel = $model;
         $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
+        $this->_lang = OntoWiki::getInstance()->config->languages->locale;
         
         $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_privateConfig->dispediaModel);
         $this->_titleHelper = new OntoWiki_Model_TitleHelper ($this->_dispediaModel);
@@ -53,16 +55,21 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_uriParts = $this->_privateConfig->uriParts;        
         $this->_url = $this->_componentUrlBase;
         
-        $this->_owApp->selectedModel = $model;
+        //$this->_owApp->selectedModel = $model;
         
         // main instance of a form
         $this->_form = new Formula(0, $this->_selectedModel);
         
         // instance of Data class for communicate with backend
         $this->_data = new Data (
-            $this->_predicateType, $this->_selectedModel, $this->_selectedModelUri,
-            $this->_store, $this->_titleHelper, $this->_uriParts,
-            $this->_form
+            $this->_predicateType,
+            $this->_selectedModel,
+            $this->_selectedModelUri,
+            $this->_store,
+            $this->_titleHelper,
+            $this->_uriParts,
+            $this->_form,
+            $this->_lang
         );
     }    
 
@@ -94,6 +101,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->selectedModel = $this->_selectedModel;
         $this->view->dispediaModel = $this->_dispediaModel;
         $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_privateConfig->alsfrsModel);
+        $this->view->store = $this->_store;
         $this->view->url = $this->_url;
         
         $file = null;

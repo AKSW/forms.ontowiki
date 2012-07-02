@@ -17,8 +17,9 @@ class Data
     private $_titleHelper;
     private $_uriParts;
     private $_form;
+    private $_lang;
     
-    public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts, &$form)
+    public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts, &$form, $lang)
     {
         $this->_predicateType = $predicateType;
         $this->_selectedModel = $selectedModel;
@@ -27,6 +28,7 @@ class Data
         $this->_titleHelper = $titleHelper;
         $this->_uriParts = $uriParts;
         $this->_form = $form;
+        $this->_lang = $lang;
     }
     
     
@@ -132,8 +134,19 @@ class Data
             $resource,
             $this->_predicateType,
             $targetClass 
-       );
+        );
         
+        // generate resource label
+        $resourceLabel = implode ('', $f->getLabelpartValues ());
+        
+        // add resource - rdfs:label - resourceLabel
+        $this->_store->addStatement(
+            $this->_selectedModelUri, 
+            $resource,
+            "http://www.w3.org/2000/01/rdf-schema#label", 
+            array('value' => $resourceLabel, 'type' => 'literal', 'lang' => $this->_lang)
+        );
+
         $f->setResource($resource);
         
         // add relations between a upper resource and a new resource 
