@@ -401,6 +401,7 @@ class Data
                 // predicate
                 if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
                     
+                    $json['oldvalues'][] = $oldValue;
                     // TODO: mehrwertige Values werten hier falsch verglichen, also immer als unterschiedlich behandelt
                     if ($entry ['value'] != $oldValue) 
                     {
@@ -600,6 +601,13 @@ class Data
         // build an assoziative array
         foreach ($results as $result)
         {
+            // TODO: muss das sein?
+            // little QuickHack that the targetclass type relation will not
+            // deleted by a form, this triple will be omitted
+            if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $result['property']
+                && $this->_form->getTargetClass() == $result['value'])
+                continue;
+            
             // $properties[$result['property']] = $result['value'];
             if (isset($properties[$result['property']]))
             {

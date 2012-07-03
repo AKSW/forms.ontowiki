@@ -42,6 +42,8 @@ function setFormulaArrayFields (f)
 
                         f.sections [i][j].value = values;
                     }
+                    else
+                        f.sections [i][j].value = "";
                 }
                 else
                     f.sections [i][j].value = $("#" + f.sections [i][j].name).val();

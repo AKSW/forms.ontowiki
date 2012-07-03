@@ -510,7 +510,7 @@ class Formula
                 
                 if ('predicate' == $section ['sectiontype'])
                 {
-                    if (!isset($section ['value']) || '' == $section ['value'])
+                    if (!isset($section ['value']))
                         continue;
                     
                     $newSection [] = array (
