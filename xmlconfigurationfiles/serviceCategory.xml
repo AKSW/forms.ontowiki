@@ -56,7 +56,7 @@
                 </typeparameter>
             </predicate>
         
-            <!-- rolls -->
+            <!-- always service class -->
             <predicate> 
                 <mandatory>1</mandatory>
                 <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>       
