@@ -50,6 +50,7 @@ class Resource
         $newUri = str_replace('%date%', date ('Ymd', $time), $newUri);
         $newUri = str_replace('%labelparts%', $label, $newUri);
         $newUri = str_replace('%classname%', $className, $newUri);
+        $newUri = str_replace(' ', '', $newUri);
                 
         return $newUri;
     }

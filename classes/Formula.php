@@ -513,8 +513,6 @@ class Formula
                     if (!isset($section ['value']) || '' == $section ['value'])
                         continue;
                     
-                    $section ['value'] = str_replace (' ', '', $section ['value']);
-                    
                     $newSection [] = array (
                         'index'         => $section ['index'],
                         'name'          => $section ['name'],
