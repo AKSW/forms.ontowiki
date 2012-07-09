@@ -35,6 +35,14 @@
     font-size: 12px;
     font-weight: bold;
 }
+.divClassPredicateValue {
+    padding-bottom: 10px;
+}
+.divClassPredicateValueInput {
+    float:left;
+    padding-right: 5px;
+    padding-top: 2px;
+}
 
 .mandatoryFieldEmpty {
     background-color: #FFBBBB !important;
