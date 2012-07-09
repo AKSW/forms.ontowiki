@@ -4,8 +4,7 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.serviceOntology.org/Service</targetclass>
 
-    <targetmodel>http://hc.serviceOntology.org/</targetmodel>
-    <modelnamespace>service</modelnamespace>
+    <targetmodel>http://hc.dispedia.de/</targetmodel>
 
     <!-- Needed by an URI generation function. -->
     <labelparts>
