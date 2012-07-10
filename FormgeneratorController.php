@@ -50,7 +50,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_lang = OntoWiki::getInstance()->config->languages->locale;
         
         $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_privateConfig->dispediaModel);
-        $this->_titleHelper = new OntoWiki_Model_TitleHelper ($this->_dispediaModel);
+        $this->_titleHelper = new OntoWiki_Model_TitleHelper();
         
         $this->_uriParts = $this->_privateConfig->uriParts;        
         $this->_url = $this->_componentUrlBase;
