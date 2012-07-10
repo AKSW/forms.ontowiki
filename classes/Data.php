@@ -179,11 +179,12 @@ class Data
                             );
                     }
                     else
-                        $this->addStmt(
-                            $resource,
-                            $entry ['predicateuri'],
-                            $entry ['value'] 
-                       );
+                        if ("" != $entry ['value'])
+                            $this->addStmt(
+                                $resource,
+                                $entry ['predicateuri'],
+                                $entry ['value'] 
+                            );
                 // sub formula
                 } elseif ('nestedconfig' == $entry ['sectiontype']) {
                     $this->addFormulaData(
@@ -237,7 +238,6 @@ class Data
                 array('value' => $resourceLabelOld, 'type' => 'literal', 'lang' => $this->_lang)
             );
 
-            $json['resourceLabel'] = "changed";
             $this->_store->addStatement(
                 $this->_selectedModelUri, 
                 $form->getResource(),
@@ -401,7 +401,6 @@ class Data
                 // predicate
                 if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
                     
-                    $json['oldvalues'][] = $oldValue;
                     // TODO: mehrwertige Values werten hier falsch verglichen, also immer als unterschiedlich behandelt
                     if ($entry ['value'] != $oldValue) 
                     {
@@ -457,7 +456,8 @@ class Data
                                 $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         }
                         
-                        $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
+                        if ("" != $entry ['value'])
+                            $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
                         if ('' == $upperResource)
                             $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
