@@ -730,8 +730,9 @@ class Data
      */
     public function getResourceTitle ($resource)
     {
-        $this->_titleHelper->addResource ($resource);
-        return $this->_titleHelper->getTitle ($resource);
+        $this->_titleHelper->reset();
+        $this->_titleHelper->addResource($resource);
+        return $this->_titleHelper->getTitle ($resource, $this->_lang);
     }
     
     

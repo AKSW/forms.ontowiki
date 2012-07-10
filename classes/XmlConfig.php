@@ -14,13 +14,15 @@ class XmlConfig
     private $_titleHelper;
     private $_dirXmlConfigurationFiles;
     private $_language;
+    private $_dataHelper;
     
-    public function __construct ($titleHelper, $dispediaModel, $dirXmlConfigurationFiles, $language)
+    public function __construct ($dataHelper, $titleHelper, $dispediaModel, $dirXmlConfigurationFiles, $language)
     {
         $this->_titleHelper = $titleHelper;
         $this->_dispediaModel = $dispediaModel;
         $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
         $this->_language = $language; // de, en
+        $this->_dataHelper = $dataHelper;
     }
     
     /**
@@ -149,7 +151,6 @@ class XmlConfig
                                 // get complete URI of predicate
                                 $p = $predicate->predicateuri;
                                 
-                                                                
                                 $type = $form->getFieldType ($p, $predicate->type);
                                 $typeparameter = array ();
 
@@ -237,8 +238,8 @@ class XmlConfig
                                 
                                 if ('' == $title)
                                 {
-                                    $title = Data::getResTitle ( $this->_dispediaModel, $p, $this->_language );
-                                    
+                                    $title = $this->_dataHelper->getResourceTitle((string) $predicate->predicateuri);
+
                                     if (true == Erfurt_Uri::check($title) || '' == $title)
                                         $title = Resource::extractClassNameFromUri ($p);
                                 }                                
@@ -264,8 +265,11 @@ class XmlConfig
                             {                                             
                                 // Load XML Config
                                 $xmlConfig = new XmlConfig(
-                                    $this->_titleHelper, $this->_dispediaModel, 
-                                    $this->_dirXmlConfigurationFiles, $this->_language
+                                    $this->_dataHelper,
+                                    $this->_titleHelper,
+                                    $this->_dispediaModel, 
+                                    $this->_dirXmlConfigurationFiles,
+                                    $this->_language
                                 );
                                 
                                 $f = $xmlConfig->loadFile(

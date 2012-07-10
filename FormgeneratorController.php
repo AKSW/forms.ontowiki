@@ -48,7 +48,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
         $this->_lang = OntoWiki::getInstance()->config->languages->locale;
-        
+
         $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_privateConfig->dispediaModel);
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
         
@@ -153,18 +153,16 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
         }
         
-        // set standard language
-        $lang = $this->_lang = OntoWiki::getInstance()->config->languages->locale;
-        
         // load xml configuration file
         $xmlconfig = new XmlConfig(
+            $this->_data,
             $this->_titleHelper,
             $this->_dispediaModel,
             $this->_dirXmlConfigurationFiles,
-            $lang 
+            $this->_lang
         );
         
-        $this->view->selectedLanguage = $lang;
+        $this->view->selectedLanguage = $this->_lang;
 
         // read the formlist to the view
         $this->view->formList = $xmlconfig->getFormList();
