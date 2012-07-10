@@ -50,7 +50,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
-                        <class>http://www.dispedia.de/o/Organization</class>
+                        <class>http://www.serviceOntology.org/Organization</class>
                         <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
                     </item>
                 </typeparameter>
