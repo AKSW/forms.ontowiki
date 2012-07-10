@@ -13,33 +13,34 @@
     foreach ($element ['typeparameter'] as $item)
     {
         $classesResult = array();
-        if (isset($item['relation']))
+        if (isset($item['relation'])) {
             $classesResult = $this->store->sparqlQuery(
-                'SELECT ?uri ?label 
+                'SELECT DISTINCT ?uri 
                  WHERE {
-                     ?uri <'. $item['relation'] .'> <'. $item['class'] .'>.
-                     ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label.
-                     FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
+                     {?uri <'. $item['relation'] .'> <'. $item['class'] .'>.}
+                   UNION{?subclass <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
+  ?uri <'. $item['relation'] .'> ?subclass.}
                  };'
             );
+            $classes = array_merge($classes, $classesResult);
+        }
         else
         {
-            $classesResult = $this->store->sparqlQuery(
-                'SELECT ?label 
-                 WHERE {
-                     <'. $item['class'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label.
-                     FILTER (langmatches(lang(?label), "'. $this->selectedLanguage .'"))
-                 };'
-            );
-            $classesResult[0]['uri'] = $item['class'];
+            $classes[]['uri'] = $item['class'];
         }
-        $classes = array_merge($classes, $classesResult);
     }
+    foreach ($classes as $class) {
+        $this->titleHelper->addResource($class['uri']);
+    }
+    foreach ($classes as $classNumber => $class) {
+        $classes[$classNumber]['label'] = $this->titleHelper->getTitle($class['uri'], $this->selectedLanguage);
+    }
+    
 ?>
 <div class="predicateValue">
     <?php foreach ( $classes as $class ) { ?>
-        <div class="divClassPredicateValueInput">
-            <div class="divClassPredicateValueInput"><input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/></div><div><?php echo $class ['label']; ?></div>
+        <div class="divClassPredicateValue">
+            <div class="divClassPredicateValueInput"><input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/></div><div class="clear"><?php echo $class ['label']; ?></div>
         </div>
     <?php } ?>
 </div>

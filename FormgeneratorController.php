@@ -233,6 +233,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             }
         }
         
+        $this->view->titleHelper = $this->_titleHelper;
         $this->view->form = $this->_form;
         $this->view->formulaParameter = $this->_form->getFormulaParameter ();
     }
