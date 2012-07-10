@@ -29,6 +29,7 @@
             $classes[]['uri'] = $item['class'];
         }
     }
+    $this->titleHelper->reset();
     foreach ($classes as $class) {
         $this->titleHelper->addResource($class['uri']);
     }
