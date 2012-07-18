@@ -58,10 +58,7 @@ class XmlConfig
                 switch ($nodeName)
                 {
                     case 'title':
-                        foreach ($nodeValue [0]->children() as $lang) {
-                            $form->setTitle ((string) $nodeValue [0]->{$this->_language});
-                            break;
-                        }
+                        $form->setTitle((string) $nodeValue [0]->{$this->_language});
                         break;
                         
                         
@@ -143,7 +140,7 @@ class XmlConfig
                         {
                             $newSection = array ();
                             
-                            $newSection ['title'] = (string) $nodeValue->title;
+                            $newSection ['title'] = (string) $nodeValue->title->{$this->_language};
                             
                             // Iterate over predicate entries.
                             foreach ($nodeValue->predicate as $predicate)
