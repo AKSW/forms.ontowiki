@@ -16,11 +16,28 @@
         if (isset($item['relation'])) {
             $classesResult = $this->store->sparqlQuery(
                 'SELECT DISTINCT ?uri 
-                 WHERE {
-                     {?uri <'. $item['relation'] .'> <'. $item['class'] .'>.}
-                   UNION{?subclass <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
-  ?uri <'. $item['relation'] .'> ?subclass.}
-                 };'
+                WHERE {
+                    {
+                        {
+                            {?uri <'. $item['relation'] .'> <'. $item['class'] .'>.}
+                            UNION{
+                                _:a <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
+                                ?uri <'. $item['relation'] .'> _:a.
+                            }
+                        }
+                        UNION{
+                            _:b <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
+                            _:c <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:b.
+                            ?uri <'. $item['relation'] .'> _:c.
+                        }
+                    }
+                    UNION{
+                        _:d <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
+                        _:e <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:d.
+                        _:f <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:e.
+                        ?uri <'. $item['relation'] .'> _:f.
+                    }
+                };'
             );
             $classes = array_merge($classes, $classesResult);
         }
