@@ -1,62 +1,62 @@
 <!-- Create a new person. -->
-<form> 
+<form>
 
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Person</targetclass>
-    
+
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/firstName</item>
         <item>http://www.dispedia.de/o/lastName</item>
     </labelparts>
-	
+
     <!-- Headline of this formula. -->
     <title>
         <de>Person</de>
         <en>Person</en>
     </title>
-	
+
     <!-- Introducing text to inform the user about the formula. -->
     <description>
         <de>Hier können Sie Daten zu einer Person erfassen.</de>
         <en>Here you can insert personal information.</en>
     </description>
-	
+
     <sections>
-        
+
         <!-- A new section -->
-		<item>
-            
+        <item>
+
             <!-- title of this section part -->
-			<title>
+            <title>
                 <de>Person information</de>
                 <en>Person information</en>
-            </title> 	
-						
+            </title>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
-			</predicate>
-			
+            <predicate>
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
+            </predicate>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
-			</predicate>
-			
+            <predicate>
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
+            </predicate>
+
             <!-- Date -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/birthdate</predicateuri>
-				<type>birthdate</type>
-			</predicate>
-            	
-            <!-- List -->		
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/gender</predicateuri>
-				<type>list</type>
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/birthdate</predicateuri>
+                <type>birthdate</type>
+            </predicate>
+
+            <!-- List -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/gender</predicateuri>
+                <type>list</type>
                 <typeparameter>
                     <item>
                         <label>
@@ -73,31 +73,56 @@
                         <value>http://xmlns.com/foaf/0.1/gender#male</value>
                     </item>
                 </typeparameter>
-			</predicate>
-		
+            </predicate>
+
             <!-- rolls -->
-			<predicate> 
-                            <mandatory>0</mandatory>
-                            <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
-                            <title>
-                                <de>Rollen</de>
-                                <en>rolls</en>
-                            </title>        
-                            <type>class</type>
-                            <typeparameter>
-                                <item>
-                                    <class>http://www.dispedia.de/o/Supporter</class>
-                                </item>
-                                <item>
-                                    <class>http://www.dispedia.de/o/Patient</class>
-                                </item>
-                                <item>
-                                    <class>http://www.dispedia.de/o/Patient</class>
-                                    <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
-                                </item>
-                            </typeparameter>
-                        </predicate>
-		</item>
-        
-	</sections>
+            <predicate>
+		<mandatory>0</mandatory>
+		<predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+		<title>
+		    <de>Rollen</de>
+		    <en>rolls</en>
+		</title>
+		<type>class</type>
+		<typeparameter>
+		    <item>
+			<class>http://www.dispedia.de/o/Supporter</class>
+		    </item>
+		    <item>
+			<class>http://www.dispedia.de/o/Patient</class>
+		    </item>
+		    <item>
+			<class>http://www.dispedia.de/o/Patient</class>
+			<relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+		    </item>
+		</typeparameter>
+	    </predicate>
+        </item>
+        <item>
+        <title>
+        <de>Adresse</de>
+        <en>Address</en>
+        </title>
+        <!-- Include a XML file -->
+        <nestedconfig>
+        <xmlfile>postalAdress.xml</xmlfile>
+        <relations>
+            <item>http://www.dispedia.de/o/hasAddress</item>
+        </relations>
+        </nestedconfig>
+    </item>
+    <item>
+        <title>
+        <de>Geokoordinaten</de>
+        <en>Geo Coordinates</en>
+        </title>
+        <!-- Include a XML file -->
+        <nestedconfig>
+        <xmlfile>geoCoordinates.xml</xmlfile>
+        <relations>
+            <item>http://www.serviceOntology.org/hasAddress</item>
+        </relations>
+        </nestedconfig>
+    </item>
+    </sections>
 </form>

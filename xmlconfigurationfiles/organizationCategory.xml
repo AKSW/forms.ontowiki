@@ -40,14 +40,31 @@
                 <predicateuri>http://www.dispedia.de/o/Name</predicateuri>
             </predicate>
         
-            <!-- rolls -->
+            <!-- parent class -->
+            <predicate> 
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>
+                <title>
+                    <de>Oberkategorie</de>
+                    <en>Upper category</en>
+                </title>        
+                <type>class</type>
+                <typeparameter>
+                    <item>
+                        <class>http://www.serviceOntology.org/Organization</class>
+                        <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                    </item>
+                </typeparameter>
+            </predicate>
+        
+            <!-- always organization class -->
             <predicate> 
                 <mandatory>1</mandatory>
                 <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>       
                 <type>hidden</type>
                 <typeparameter>
                     <item>
-                        <value>http://www.dispedia.de/o/Organization</value>
+                        <value>http://www.serviceOntology.org/Organization</value>
                     </item>
                 </typeparameter>
             </predicate>
