@@ -8,7 +8,7 @@
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>http://www.dispedia.de/o/Name</item>
+        <item>http://purl.org/goodrelations/v1#name</item>
     </labelparts>
 	
     <!-- Headline of this formula. -->
@@ -36,7 +36,7 @@
             <!-- Textfield -->
             <predicate> 
                     <mandatory>1</mandatory>
-                    <predicateuri>http://www.dispedia.de/o/Name</predicateuri>
+                    <predicateuri>http://purl.org/goodrelations/v1#name</predicateuri>
             </predicate>
             <!-- type -->
             <predicate> 
@@ -80,8 +80,9 @@
 	    <nestedconfig>
 		<xmlfile>postalAdress.xml</xmlfile>
 		<relations>
-			<item>http://www.serviceOntology.org/hasAddress</item>
+		    <item>http://www.serviceOntology.org/hasAddress</item>
 		</relations>
+		<targetclass>http://schema.org/PostalAddress</targetclass>
 	    </nestedconfig>
 	</item>
 	<item>
@@ -93,8 +94,9 @@
 	    <nestedconfig>
 		<xmlfile>geoCoordinates.xml</xmlfile>
 		<relations>
-			<item>http://www.serviceOntology.org/hasAddress</item>
+		    <item>http://www.serviceOntology.org/hasAddress</item>
 		</relations>
+		<targetclass>http://schema.org/geoCoordinates</targetclass>
 	    </nestedconfig>
 	</item>
     </sections>

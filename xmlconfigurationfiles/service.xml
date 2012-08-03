@@ -43,13 +43,13 @@
             <!-- Textfield -->
             <predicate>
                 <mandatory>1</mandatory>
-                <predicateuri>>http://purl.org/goodrelations/v1#description</predicateuri>
+                <predicateuri>http://purl.org/goodrelations/v1#description</predicateuri>
             </predicate>
 
             <!-- Textfield -->
             <predicate>
                 <mandatory>0</mandatory>
-                <predicateuri>>http://www.serviceOntology.org/fundedBy</predicateuri>
+                <predicateuri>http://www.serviceOntology.org/fundedBy</predicateuri>
             </predicate>
             
             <!-- type -->
