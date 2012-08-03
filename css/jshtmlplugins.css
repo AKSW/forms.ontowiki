@@ -40,6 +40,8 @@
 }
 .divClassPredicateValueInput {
     float:left;
+    width: 20px; 
+    height: 20px;
     padding-right: 5px;
     padding-top: 2px;
 }
