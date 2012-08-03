@@ -669,6 +669,20 @@ class Data
                         {
                             $value = $this->getPropertyValue($properties,$entry ['relations'] [0]);
                             
+                            if (is_array($value))
+                            {
+                                $values = $value;
+                                foreach ($values as $resource)
+                                {
+                                    if (false != in_array((string) $entry ['targetclass'], $this->getResourceTypeUris($resource)))
+                                    {
+                                        $value = $resource;
+                                        break;
+                                    }
+                                }
+                                
+                            }
+                            
                             if (false == isset ($value))
                                 continue;
                             else
@@ -695,8 +709,9 @@ class Data
             foreach ($properties as $index => $p) {
                 if ($p['property'] == $property && false == $p['used']){
                     
-                    // this value can be only used one time
-                    $properties [$index]['used'] = true;
+                    if (!is_array($p))
+                        // this value can be only used one time if it is not an array
+                        $properties [$index]['used'] = true;
                     
                     return $p['value'];
                 }
@@ -706,6 +721,23 @@ class Data
         return null;
     }
     
+    /**
+     * get type (targetclass) uris of a resource
+     * @param $resourceUri URI of the resource
+     * @return type uris of the resource
+     */
+    public function getResourceTypeUris($resourceUri)
+    {
+        $uris = array();
+        $properties = $this->getResourceProperties ($resourceUri);
+        $value = $this->getPropertyValue ($properties,$this->_predicateType);
+        if (!is_array($value))
+            $uris[] = $value;
+        else
+          $uris = $value;
+        
+        return $uris;
+    }
     
     /**
      * get type (targetclass) of a resource
@@ -714,12 +746,10 @@ class Data
      */
     public function getResourceType($resourceUri)
     {
-        $properties = $this->getResourceProperties ($resourceUri);
-        $value = $this->getPropertyValue ($properties,$this->_predicateType);
-        
+        $value = $this->getResourceTypeUris($resourceUri);
         // if a type was set
-        if (true == isset ($value)) {
-            return $this->getResourceTitle ($value);
+        if (true == isset ($value[0])) {
+            return $this->getResourceTitle ($value[0]);
         }
         else
             return null;
