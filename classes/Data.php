@@ -595,7 +595,10 @@ class Data
         // fetch properties of a resource
         $results = $this->_store->sparqlQuery(
             'SELECT ?property ?value 
-            WHERE {<' . $resourceUri . '> ?property ?value.}'
+            WHERE {
+                <' . $resourceUri . '> ?property ?value.
+                FILTER (langmatches(lang(?value), "de") || REGEX(lang(?value), "^$")
+            }'
         );
 
         // build an assoziative array
