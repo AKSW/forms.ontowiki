@@ -285,7 +285,7 @@ class XmlConfig
                                      'xmlfile'      => (string) $nestedconfig->xmlfile,
                                      'index'        => $form->getIndex() .','. $entryIndex,
                                      'relations'    => $relations,
-                                     'targetclass'  => isset ($nestedconfig->targetclass) ? $nestedconfig->targetclass : "",
+                                     'typeclass'    => isset ($nestedconfig->typeclass) ? $nestedconfig->typeclass : "",
                                      'form'         => $f, 
                                      'sectiontype'  => 'nestedconfig'
                                );

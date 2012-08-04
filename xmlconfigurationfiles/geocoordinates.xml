@@ -1,7 +1,7 @@
 <form> 
 
     <!-- All used predicate-tags are related to this class. -->
-    <targetclass>http://schema.org/geoCoordinates</targetclass>
+    <targetclass>http://schema.org/GeoCoordinates</targetclass>
     
     <targetmodel>http://hc.dispedia.de/</targetmodel>
     

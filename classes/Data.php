@@ -672,11 +672,11 @@ class Data
                             if (is_array($value))
                             {
                                 $values = $value;
-                                foreach ($values as $resource)
+                                foreach ($values as $relationValue)
                                 {
-                                    if (false != in_array((string) $entry ['targetclass'], $this->getResourceTypeUris($resource)))
+                                    if (false != in_array((string) $entry ['typeclass'], $this->getResourceTypeUris($relationValue)))
                                     {
-                                        $value = $resource;
+                                        $value = $relationValue;
                                         break;
                                     }
                                 }
