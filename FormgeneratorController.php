@@ -71,6 +71,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $this->_form,
             $this->_lang
         );
+        
+        $this->view->url = $this->_url;
     }    
 
     /**
@@ -92,6 +94,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->headLink()->appendStylesheet($this->_url .'css/jshtmlplugins.css');
         
         // include Javascript files
+        $this->view->headScript()->appendFile($this->_url .'js/edit.js');
         $this->view->headScript()->appendFile($this->_url .'js/form.js');           
         $this->view->headScript()->appendFile($this->_url .'libraries/jquery.json.min.js');
         
@@ -102,12 +105,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->dispediaModel = $this->_dispediaModel;
         $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_privateConfig->alsfrsModel);
         $this->view->store = $this->_store;
-        $this->view->url = $this->_url;
+        
+        $this->view->layout = $this->_request->getParam('layout');
         
         $file = null;
         
         $currentResource = '';
-        
+
         // get selectedResource if it is set
         $selectedResource = $this->_owApp->__get("selectedResource");
         if (isset($selectedResource))
@@ -122,7 +126,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         else
             $currentClasses = array();
-        
+
         // set file to load, if parameter file was set
         if ('' != $this->_request->getParam('file'))
         {
@@ -144,13 +148,26 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // If file was not set or not found
         if (null == $file || false == file_exists ($this->_dirXmlConfigurationFiles . $file .'.xml')) {
-            $this->_owApp->appendMessage(
-                new OntoWiki_Message(
-                    $this->_owApp->translate->_('noformularfound'),
-                    OntoWiki_Message::ERROR
-                )
-            );
-            $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
+            if ("box" != $this->view->layout)
+            {
+                $this->_owApp->appendMessage(
+                    new OntoWiki_Message(
+                        $this->_owApp->translate->_('noformularfound'),
+                        OntoWiki_Message::ERROR
+                    )
+                );
+                $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
+            }
+            else
+            {
+                // disable auto-rendering
+                $this->_helper->viewRenderer->setNoRender();
+        
+                // disable layout for Ajax requests
+                $this->_helper->layout()->disableLayout();
+                echo 'noformularfound';
+                return;
+            }
         }
         
         // load xml configuration file
@@ -202,7 +219,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         else
             $this->view->showForm = true;
-            
+        
         // if resource set ...
         if ('' != $currentResource)
         {
@@ -213,24 +230,54 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // ... load triples into formula instance
                 $this->_data->fetchFormulaData($currentResource,$this->_form);
                 $this->_form->setMode ('edit');
-                
+ 
                 // delete the current file/class from the array, so only other eligible classes are in this array
                 unset($currentClasses[$file]);
                 
-                // set other eligible classes as buttons for simple switching
-                foreach ($currentClasses as $className => $fileName) {
-                    // build toolbar
-                    $toolbar = $this->_owApp->toolbar;
-                    $toolbar->appendButton(
-                        OntoWiki_Toolbar :: EDITADD,
-                        array('name' => ucfirst($className),
-                              'url' => $this->_config->urlBase . 'formgenerator/form/?file=' . $className)
-                    );
-                    $this->view->placeholder('main.window.toolbar')->set($toolbar);
-                }
+                if ("box" != $this->view->layout)
+                    // set other eligible classes as buttons for simple switching
+                    foreach ($currentClasses as $className => $fileName) {
+                        // build toolbar
+                        $toolbar = $this->_owApp->toolbar;
+                        $toolbar->appendButton(
+                            OntoWiki_Toolbar :: EDITADD,
+                            array('name' => ucfirst($className),
+                                  'url' => $this->_config->urlBase . 'formgenerator/form/?file=' . $className)
+                        );
+                        $this->view->placeholder('main.window.toolbar')->set($toolbar);
+                    }
             }
         }
         
+
+        //add buttons to toolbar
+        $toolbar = $this->_owApp->toolbar;
+        
+        $toolbar->appendButton(OntoWiki_Toolbar :: SEPARATOR);
+        $toolbar->appendButton(OntoWiki_Toolbar :: SAVE, array(
+            'id'   => 'changeResource',
+            'class'=> ('new' == $this->_form->getMode() ? ' hidden' : ''),
+            'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'edit')"
+        ));
+        $toolbar->appendButton(OntoWiki_Toolbar :: ADD, array(
+            'id'   => 'addResource',
+            'class'=> ('' != $this->_form->getSelectResourceOfType() ? ' hidden' : ''),
+            'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'add')"
+        ));
+        if ("box" != $this->view->layout)
+        {
+            $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
+                    'url'  => 'javascript:history.back();'
+                ));
+            $this->view->placeholder('main.window.toolbar')->set($toolbar);
+        }
+        else
+        {
+            $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
+                    'url'  => 'javascript:closeBoxForm();'
+                ));
+            $this->view->boxtoolbar = $toolbar->__toString();
+        }
         $this->view->titleHelper = $this->_titleHelper;
         $this->view->form = $this->_form;
         $this->view->formulaParameter = $this->_form->getFormulaParameter ();
@@ -247,21 +294,34 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     private function getEligibleFormFiles($currentResource)
     {
         $resourceClassesResult = $this->_store->sparqlQuery (
-            'SELECT ?class ?mainClass
+            'SELECT ?class
             WHERE {
-                <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.
-                OPTIONAL{
-                   ?class <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?mainClass.
+                {
+                    {
+                        {<' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.}
+                        UNION{
+                            <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> _:a.
+                            _:a <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?class.
+                        }
+                    }
+                    UNION{
+                        <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> _:b.
+                        _:b <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:c.
+                        _:c <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?class.
+                    }
+                }
+                UNION{
+                    <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> _:d.
+                    _:d <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:e.
+                    _:e <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:f.
+                    _:f <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?class.
                 }
             };'
         );
-        
         $resourceClasses = array();
         $resourceHelper = new Resource();
         foreach ($resourceClassesResult as $resourceClass) {
             $newRessourceClassName = strtolower($resourceHelper->extractClassNameFromUri($resourceClass['class']));
-            $resourceClasses[$newRessourceClassName] = $newRessourceClassName . '.xml';
-            $newRessourceClassName = strtolower($resourceHelper->extractClassNameFromUri($resourceClass['mainClass']));
             $resourceClasses[$newRessourceClassName] = $newRessourceClassName . '.xml';
         }
         $files = scandir($this->_dirXmlConfigurationFiles);

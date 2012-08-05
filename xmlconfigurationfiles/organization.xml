@@ -67,6 +67,7 @@
                     <item>
                         <class>http://www.serviceOntology.org/Service</class>
                         <relation>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</relation>
+			<editable>1</editable>
                     </item>
                 </typeparameter>
             </predicate>

@@ -10,43 +10,69 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 ?>
-
+<?php if ("box" == $this->layout) { ?>
 <!-- important variables -->
-<script type="text/javascript">       
-    var url = '<?php echo $this->url; ?>';
-    var urlMvc = urlBase + 'formgenerator/';
+<script type="text/javascript">
+    var boxdata = {};
+    $.data(boxdata, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
+</script>
+<?php } ?>
+
+<!-- only if the form is no in box layout -->
+<?php if ("box" != $this->layout) { ?>
     
-    var data = {};
-    $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
-</script>
+    <!-- important variables -->
+    <script type="text/javascript">       
+        var url = '<?php echo $this->url; ?>';
+        var urlMvc = urlBase + 'formgenerator/';
+        
+        var data = {};
+        $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
+     </script>   
+    
+    <!-- set the title of the action -->
+    <?php $this->placeholder('main.window.title')->set($this->form->getTitle()); ?>
+    
+    <!-- #dialogbox for boxed forms -->
+    <a href="javascript:openBoxForm('#boxes', 'service')">Simple Modal Window</a>
+    
+    <!-- div for boxform -->
+    <div id="boxes"></div>
+    
+    <!-- Do not remove div#mask, because you'll need it to fill the whole screen --> 
+    <div id="mask"></div>
+    
+    
+    <!-- formular select box -->
+    <div align="right" class="messagebox">
+        <form id="formformlist" method="get" action="">
+    
+            <?php echo $this->_translate->_('Available forms:'); ?>
+    
+            <select id="selectformlist" name="file">
+                <?php
+                    // Read all XML files in formconfig folder and generate a list.
+                    foreach ( $this->formList as $file )
+                    {
+                        echo '<option value="'. $file .'" label="'. $file .'"' . ($this->form->getXmlFile() == $file ? ' selected="selected"' : "") . '>' .
+                        substr_replace($file, strtoupper(substr($file, 0, 1)), 0, 1) .'</option>' . "\n";
+                    }
+                ?>
+            </select>
+        </form>
+    </div>
+    
+    <script type="text/javascript">       
+        $('#selectformlist').change(function() {
+            $('#formformlist').submit();
+        });
+    </script>
 
-<!-- set the title of the action -->
-<?php $this->placeholder('main.window.title')->set($this->form->getTitle()); ?>
-
-<!-- formular select box -->
-<div align="right" class="messagebox">
-    <form id="formformlist" method="get" action="">
-
-        <?php echo $this->_translate->_('Available forms:'); ?>
-
-        <select id="selectformlist" name="file">
-            <?php
-                // Read all XML files in formconfig folder and generate a list.
-                foreach ( $this->formList as $file )
-                {
-                    echo '<option value="'. $file .'" label="'. $file .'"' . ($this->form->getXmlFile() == $file ? ' selected="selected"' : "") . '>' .
-                    substr_replace($file, strtoupper(substr($file, 0, 1)), 0, 1) .'</option>' . "\n";
-                }
-            ?>
-        </select>
-    </form>
-</div>
-
-<script type="text/javascript">       
-    $('#selectformlist').change(function() {
-        $('#formformlist').submit();
-    });
-</script>
+<?php } else { echo $this->boxtoolbar; ?>
+    <div class="clear"></div>
+    <div id="boxdialog">
+        <div>
+<?php } ?>
 
 <!-- formula -->
 <form id="mainform" method="post" action="">
@@ -275,19 +301,13 @@
     </div>
         
     <?php } ?>
-    
-    <a id="changeResource" class="button submit<?php if ( 'new' == $this->form->getMode () ) { echo ' hidden'; } ?>" onclick="submitFormula(urlMvc, data, 'edit');"/>
-        <span>Edit</span></a>
-    
-    <?php if ('' == $this->form->getSelectResourceOfType()) { ?>
-    
-    <a id="addResource" class="button submit" onclick="submitFormula(urlMvc, data, 'add');"/>
-            <span>Add New</span></a>
-            
-    <?php } ?>
             
     <div id="pleaseWaitBox" class="hidden">Please wait...</div>
     
     <?php } ?>
     
 </form>
+<?php if ("box" == $this->layout) { ?>
+        </div>
+    </div>
+<?php } ?>

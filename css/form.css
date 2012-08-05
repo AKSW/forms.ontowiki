@@ -7,7 +7,11 @@
  * @copyright  Copyright (c) 2011
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
- 
+
+.clear {
+    float:none;
+    clear:both;
+}
 .predicateTitle {
     float: left;
     width: 200px;
@@ -23,11 +27,41 @@
     margin: 0px 1%;
 }
 
-// Show after press "Add new" or "Edit"
 .pleaseWaitBox {
     text-align: center;
     font-weight: bold;
     width: 100px;
     height: 18px;
     background-color: #D3CCFF;
+}
+/**
+ * overwrite ontowiki hidden class, because the original dont work in box view
+ */
+.hidden {
+    display: none !important;
+}
+
+#mask {
+  position:fixed !important;
+  left:0px !important;
+  top:0px !important;
+  z-index:9000;
+  background-color:#000;
+  display:none;
+}
+
+#boxes {
+  background-color:#fff;
+  position:fixed;
+  display:none;
+  width:750px;
+  z-index:9999;
+  padding:20px;
+}
+
+#boxdialog {
+  overflow:auto;
+  position:fixed;
+  padding:20px;
+  width:710px;
 }

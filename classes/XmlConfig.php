@@ -198,17 +198,15 @@ class XmlConfig
                                         {
                                             $typeparameter = array();
                                             foreach ($item as $parameter)
-                                                {
-                                                    if (isset($parameter->relation))
-                                                        $typeparameter[] = array (
-                                                            'class' => (string) $parameter->class,
-                                                            'relation' => (string) $parameter->relation 
-                                                        );
-                                                    else
-                                                        $typeparameter[] = array (
-                                                            'class' => (string) $parameter->class
-                                                        );
-                                                }
+                                            {
+                                                $newTypeParamter = array();
+                                                $newTypeParamter['class'] = (string) $parameter->class;
+                                                if (isset($parameter->relation))
+                                                    $newTypeParamter['relation'] = (string) $parameter->relation;
+                                                if (isset($parameter->editable))
+                                                    $newTypeParamter['editalbe'] = (string) $parameter->editable;
+                                                $typeparameter[] = $newTypeParamter;
+                                            }
                                             break;
                                         }
                                         break;
