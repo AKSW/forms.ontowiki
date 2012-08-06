@@ -179,6 +179,8 @@ function submitFormula (url, data, mode)
         
         complete: function ()
         {
+            // close box view if submit complete
+            closeBoxForm();
             console.log ( "complete" );
         }
     });
