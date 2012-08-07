@@ -197,6 +197,7 @@ class Data
         }
         
         $json = array();
+        $json['newresources'] = array($targetClass => $resource, $resource => $resourceLabel);
         $json['status'] = 'ok';
         $json['form'] = $f->getDataAsArrays();
         

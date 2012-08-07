@@ -55,10 +55,10 @@
     }
     
 ?>
-<div class="predicateValue">
+<div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"service\"" : "") ?>>
     <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
         <div class="divClassPredicateValue">
-            <a class="button" href="javascript:openBoxForm('#boxes', 'service', '')">+</a>
+            <a class="button" href="javascript:openBoxForm('#boxes', 'service', '', 'add')">+</a>
         </div>
     <?php } ?>
     <?php foreach ( $classes as $class ) { ?>
@@ -69,7 +69,7 @@
                 <?php echo $class ['label']; ?>
                 
                 <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                    <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
+                    <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
                 <?php } ?>
                 <div class="clear"></div>
         </div>

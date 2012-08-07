@@ -12,9 +12,9 @@
 /**
 * 
 */
-function addEntity (entity, entityOverClass, context, resource)
+function addEntity (entity, entityOverClass, context, resource, mode)
 {
-    var return_value = 0;
+    var returnValue = 0;
     var action = 'newform';
     
     if ('' != resource)
@@ -38,12 +38,25 @@ function addEntity (entity, entityOverClass, context, resource)
             if ('noformularfound' == res)
             {
                 alert ('No Formular found');
-                return_value = -1;
+                returnValue = -1;
             }
             else
             {
                 $(this).append(res);
-                return_value = 1;
+                updateElements = new Array();
+                if ('add' == mode)
+                {
+                    updateElements[0]  = '<div class=\"divClassPredicateValue\">\n';
+                    updateElements[0] += '<div class=\"divClassPredicateValueInput\">';
+                    updateElements[0] += '<input type=\"checkbox\" class=\"predicateValue_Class\" name=\"93e7709cfd\" value=\"';
+                    updateElements[1]  = '\" checked="checked">';
+                    updateElements[1] += '</div>';
+                    updateElements[2]  = "<a href=\"javascript:openBoxForm('#boxes', 'service', ";
+                    updateElements[3]  = "')\"><img src=\"http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png\"></a>";
+                    updateElements[3] += '<div class=\"clear\"></div>'
+                    updateElements[3] += '</div>';
+                }
+                returnValue = 1;
             }
         },
         
@@ -52,10 +65,10 @@ function addEntity (entity, entityOverClass, context, resource)
             console.log (jqXHR);
             console.log (textStatus);
             console.log (errorThrown);
-            return_value = -1;
+            returnValue = -1;
         }
     });
-    return return_value;
+    return returnValue;
 }
 
 /**

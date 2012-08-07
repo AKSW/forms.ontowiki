@@ -164,6 +164,21 @@ function submitFormula (url, data, mode)
             // replace form with form instance from response
             jQ.data(_data, "form", res.form);
             
+            if (0 < updateElements.length)
+            {
+                newElement  = updateElements[0];
+                newElement += res.newresources['http://www.serviceOntology.org/Service'];
+                newElement += updateElements[1];
+                newElement += res.newresources[res.newresources['http://www.serviceOntology.org/Service']];
+                newElement += updateElements[2];
+                newElement += res.newresources['http://www.serviceOntology.org/Service'];
+                newElement += updateElements[3];
+                $('#service').append(newElement);
+                updateElements = new Array();
+            }
+            // close box view if submit complete
+            closeBoxForm();
+            
             $("#pleaseWaitBox").hide ();
             
             // show edit button
@@ -179,8 +194,6 @@ function submitFormula (url, data, mode)
         
         complete: function ()
         {
-            // close box view if submit complete
-            closeBoxForm();
             console.log ( "complete" );
         }
     });
@@ -231,13 +244,13 @@ function checkMandatoryFields (f)
     return returnValue;
 }
 
-function openBoxForm(id, form, resource) {
+function openBoxForm(id, form, resource, mode) {
     
     //Cancel the link behavior
     //e.preventDefault();
  
     // load the form from server
-    if (1 == addEntity (form, 'action', id, resource))
+    if (1 == addEntity (form, 'action', id, resource, mode))
     {
         //Get the screen height and width
         var maskHeight = $(window).height();
