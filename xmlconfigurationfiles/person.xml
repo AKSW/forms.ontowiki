@@ -48,14 +48,21 @@
             <!-- Date -->
             <predicate>
                 <mandatory>0</mandatory>
-                <predicateuri>http://www.dispedia.de/o/birthdate</predicateuri>
+                <predicateuri>http://schema.org/birthDate</predicateuri>
+                <type>birthdate</type>
+            </predicate>
+	    
+	    <!-- Date -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://schema.org/deathDate</predicateuri>
                 <type>birthdate</type>
             </predicate>
 
             <!-- List -->
             <predicate>
                 <mandatory>0</mandatory>
-                <predicateuri>http://www.dispedia.de/o/gender</predicateuri>
+                <predicateuri>http://schema.org/gender</predicateuri>
                 <type>list</type>
                 <typeparameter>
                     <item>
