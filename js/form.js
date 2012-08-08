@@ -244,13 +244,13 @@ function checkMandatoryFields (f)
     return returnValue;
 }
 
-function openBoxForm(id, form, resource, mode) {
+function openBoxForm(id, form, resource, name) {
     
     //Cancel the link behavior
     //e.preventDefault();
  
     // load the form from server
-    if (1 == addEntity (form, 'action', id, resource, mode))
+    if (1 == addEntity (form, 'action', id, resource, name))
     {
         //Get the screen height and width
         var maskHeight = $(window).height();

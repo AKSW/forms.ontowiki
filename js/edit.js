@@ -12,7 +12,7 @@
 /**
 * 
 */
-function addEntity (entity, entityOverClass, context, resource, mode)
+function addEntity (entity, entityOverClass, context, resource, name)
 {
     var returnValue = 0;
     var action = 'newform';
@@ -44,11 +44,11 @@ function addEntity (entity, entityOverClass, context, resource, mode)
             {
                 $(this).append(res);
                 updateElements = new Array();
-                if ('add' == mode)
+                if ('' != name)
                 {
                     updateElements[0]  = '<div class=\"divClassPredicateValue\">\n';
                     updateElements[0] += '<div class=\"divClassPredicateValueInput\">';
-                    updateElements[0] += '<input type=\"checkbox\" class=\"predicateValue_Class\" name=\"93e7709cfd\" value=\"';
+                    updateElements[0] += '<input type=\"checkbox\" class=\"predicateValue_Class\" name=\"' + name + '\" value=\"';
                     updateElements[1]  = '\" checked="checked">';
                     updateElements[1] += '</div>';
                     updateElements[2]  = "<a href=\"javascript:openBoxForm('#boxes', 'service', ";

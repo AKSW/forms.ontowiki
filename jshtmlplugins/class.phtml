@@ -58,7 +58,7 @@
 <div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"service\"" : "") ?>>
     <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
         <div class="divClassPredicateValue">
-            <a class="button" href="javascript:openBoxForm('#boxes', 'service', '', 'add')">+</a>
+            <a class="button" href="javascript:openBoxForm('#boxes', 'service', '', '<?php echo $element ['name']; ?>')">+</a>
         </div>
     <?php } ?>
     <?php foreach ( $classes as $class ) { ?>
