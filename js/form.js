@@ -244,44 +244,20 @@ function checkMandatoryFields (f)
     return returnValue;
 }
 
-function openBoxForm(id, form, resource, name) {
-    
-    //Cancel the link behavior
-    //e.preventDefault();
- 
+function openBoxForm(id, form, resource, name) {    
     // load the form from server
     if (1 == addEntity (form, 'action', id, resource, name))
     {
-        //Get the screen height and width
-        var maskHeight = $(window).height();
-        var maskWidth = $(window).width();
-     
-        //Set height and width to mask to fill up the whole screen
-        $('#mask').css({'width':maskWidth,'height':maskHeight});
-         
-        //transition effect    
-        $('#mask').fadeIn(1000);   
-        $('#mask').fadeTo("slow",0.8); 
-     
-        //Get the window height and width
-        var winH = $(window).height();
-        var winW = $(window).width();
-               
-        //Set the popup window to center
-        //$(id).css('top',  winH/2-$(id).height()/2);
+        // because firefox is slow
+        $('div.section-mainwindows').css('opacity', 'inherit');
         
-        $(id).css('width', winW * 0.66);
-        $('#boxdialog').css('width', winW * 0.66 - 60);
-        
-        $(id).css('top', '50px');
-        $(id).css('left', winW/2-$(id).width()/2);
-        $(id).css('height', winH-150);
-        $('#boxdialog').css('height', $(id).height() - $('.toolbar').height() - 40);
-        
-        $('div.section-sidewindows').css('z-index', '-1');
-        
-        //transition effect
-        $(id).fadeIn(2000);
+        $(id).modal({
+            'minWidth':750,
+            'close' : false,
+            'onClose' : function () { $('#boxes').empty(); $.modal.close(); },
+            'persist' : true,
+            'appendTo' : '.active-tab-content'
+        });
     }
 }
 
@@ -290,7 +266,6 @@ function openBoxForm(id, form, resource, name) {
  */
 function closeBoxForm() 
 {
-    $('div.section-sidewindows').css('z-index', 'auto');
     $('#boxes').empty();
-    $('#mask, #boxes').hide();
+    $.modal.close();
 }

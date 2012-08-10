@@ -274,7 +274,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         else
         {
             $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
-                    'url'  => 'javascript:closeBoxForm();'
+                    'url'  => 'javascript:closeBoxForm();',
+                    'class' => 'simplemodal-close'
                 ));
             $this->view->boxtoolbar = $toolbar->__toString();
         }

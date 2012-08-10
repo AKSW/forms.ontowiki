@@ -242,7 +242,7 @@ class XmlConfig
                                 // Build an entry instance.
                                 $newSection [] = array (
                                     'index'         => $form->getIndex() . ',' . $entryIndex,
-                                    'name'          => substr (md5 ($form->getIndex() . ',' . $entryIndex), 0, 10),
+                                    'name'          => substr (md5 ($file . ',' . $form->getIndex() . ',' . $entryIndex), 0, 10),
                                     'predicateuri'  => (string) $predicate->predicateuri,
                                     'type'          => $type,
                                     'typeparameter' => $typeparameter,

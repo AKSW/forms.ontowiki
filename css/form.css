@@ -41,27 +41,16 @@
     display: none !important;
 }
 
-#mask {
-  position:fixed !important;
-  left:0px !important;
-  top:0px !important;
-  z-index:9000;
+.simplemodal-overlay {
   background-color:#000;
-  display:none;
 }
 
-#boxes {
+.simplemodal-container {
   background-color:#fff;
-  position:fixed;
-  display:none;
-  width:750px;
-  z-index:9999;
-  padding:20px;
+  minWidth:750px;
 }
 
-#boxdialog {
-  overflow:auto;
-  position:fixed;
-  padding:20px;
-  width:710px;
+.simplemodal-data {
+  minWidth:750px;
+  padding:20px;  
 }
