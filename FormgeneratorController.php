@@ -95,8 +95,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // include Javascript files
         $this->view->headScript()->appendFile($this->_url .'js/edit.js');
-        $this->view->headScript()->appendFile($this->_url .'js/form.js');           
-        $this->view->headScript()->appendFile($this->_url .'libraries/jquery.json.min.js');
+        $this->view->headScript()->appendFile($this->_url .'js/form.js');
         
         // set form relevant variables
         $this->view->dirJsHtmlPlugins = $this->_dirJsHtmlPlugins;

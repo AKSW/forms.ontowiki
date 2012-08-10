@@ -164,7 +164,7 @@ function submitFormula (url, data, mode)
             // replace form with form instance from response
             jQ.data(_data, "form", res.form);
             
-            if (0 < updateElements.length)
+            if ('undefined' != typeof res.newresources && 0 < updateElements.length && 'undefined' != typeof res.newresources)
             {
                 newElement  = updateElements[0];
                 newElement += res.newresources['http://www.serviceOntology.org/Service'];
