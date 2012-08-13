@@ -33,6 +33,7 @@
         }
         $classesResult = array();
         $newCLasses = array();
+        $forbiddenObjects = array();
 
         $classesResult = $this->store->sparqlQuery(
             'SELECT DISTINCT ?uri1 ?uri2 ?uri3 ?uri4 ?instance0 ?instance1 ?instance2 ?instance3 ?instance4
@@ -49,6 +50,21 @@
         );
 
         $this->titleHelper->addResource($item['class']);
+         
+        if (isset($item['relation']) && 'unbound' == $item['filter'])
+        {
+            $filterResult = $this->store->sparqlQuery(
+                'SELECT DISTINCT ?subject ?object
+                WHERE {
+                  ?subject <' . $element['predicateuri'] . '> ?object.
+                  FILTER !regex(str(?subject), "' . ('' != $this->form->getResource () ? $this->form->getResource () : ' '). '", "i")
+                };'
+            );
+            foreach ($filterResult as $object)
+            {
+                $forbiddenObjects[$object['object']] = $object['object'];
+            }
+        }
         
         foreach ($classesResult as $class)
         {
@@ -81,35 +97,35 @@
             
             if (isset($item['relation']))
             {
-                if ("" != $class['instance0'])
+                if ("" != $class['instance0'] && !in_array($class['instance0'],$forbiddenObjects))
                 {
                     if (!isset($instances[$item['class']]))
                         $instances[$item['class']] = array();
                     $instances[$item['class']][$class['instance0']] = $class['instance0'];
                     $this->titleHelper->addResource($class['instance0']);
                 }
-                if ("" != $class['instance1'])
+                if ("" != $class['instance1'] && !in_array($class['instance1'],$forbiddenObjects))
                 {
                     if (!isset($instances[$class['uri1']]))
                         $instances[$class['uri1']] = array();
                     $instances[$class['uri1']][$class['instance1']] = $class['instance1'];
                     $this->titleHelper->addResource($class['instance1']);
                 }
-                if ("" != $class['instance2'])
+                if ("" != $class['instance2'] && !in_array($class['instance2'],$forbiddenObjects))
                 {
                     if (!isset($instances[$class['uri2']]))
                         $instances[$class['uri2']] = array();
                     $instances[$class['uri2']][$class['instance2']] = $class['instance2'];
                     $this->titleHelper->addResource($class['instance2']);
                 }
-                if ("" != $class['instance3'])
+                if ("" != $class['instance3'] && !in_array($class['instance3'],$forbiddenObjects))
                 {
                     if (!isset($instances[$class['uri3']]))
                         $instances[$class['uri3']] = array();
                     $instances[$class['uri3']][$class['instance3']] = $class['instance3'];
                     $this->titleHelper->addResource($class['instance3']);
                 }
-                if ("" != $class['instance4'])
+                if ("" != $class['instance4'] && !in_array($class['instance4'],$forbiddenObjects))
                 {
                     if (!isset($instances[$class['uri4']]))
                         $instances[$class['uri4']] = array();
@@ -117,7 +133,6 @@
                     $this->titleHelper->addResource($class['instance4']);
                 }
             }
-            
         }
         $classes = array_merge($classes, $newCLasses);
     }

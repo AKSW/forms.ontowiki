@@ -207,6 +207,8 @@ class XmlConfig
                                                     $newTypeParamter['editalbe'] = (string) $parameter->editable;
                                                 if (isset($parameter->shownooverclass))
                                                     $newTypeParamter['shownooverclass'] = (string) $parameter->shownooverclass;
+                                                if (isset($parameter->filter))
+                                                    $newTypeParamter['filter'] = (string) $parameter->filter;
                                                 $typeparameter[] = $newTypeParamter;
                                             }
                                             break;
