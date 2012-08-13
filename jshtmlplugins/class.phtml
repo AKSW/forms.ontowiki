@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @category   OntoWiki
  * @package    OntoWiki_extensions_formgenerator
@@ -6,54 +6,93 @@
  * @author     Konrad Abicht <konrad@inspirito.de>
  * @copyright  Copyright (c) 2011
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
- */ 
+ */
 ?>
-<?php 
+<?php
     $classes = array ();
+    $this->titleHelper->reset();
     foreach ($element ['typeparameter'] as $item)
     {
-        $classesResult = array();
-        if (isset($item['relation'])) {
+        if (isset($item['relation']))
+        {
+            $classesResult = array();
+            $newCLasses = array();
+
             $classesResult = $this->store->sparqlQuery(
-                'SELECT DISTINCT ?uri 
+                'SELECT DISTINCT ?uri1 ?uri2 ?uri3 ?uri4
                 WHERE {
-                    {
-                        {
-                            {?uri <'. $item['relation'] .'> <'. $item['class'] .'>.}
-                            UNION{
-                                _:a <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
-                                ?uri <'. $item['relation'] .'> _:a.
-                            }
-                        }
-                        UNION{
-                            _:b <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
-                            _:c <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:b.
-                            ?uri <'. $item['relation'] .'> _:c.
-                        }
-                    }
-                    UNION{
-                        _:d <http://www.w3.org/2000/01/rdf-schema#subClassOf> <'. $item['class'] .'>.
-                        _:e <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:d.
-                        _:f <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:e.
-                        ?uri <'. $item['relation'] .'> _:f.
-                    }
+                  {?uri1 <' . $item['relation'] . '> <' . $item['class'] . '>.}
+                  OPTIONAL{
+                    ?uri2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri1.}
+                  OPTIONAL{
+                    ?uri3 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri2.}
+                  OPTIONAL{
+                    ?uri4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri3.}
                 };'
             );
-            $classes = array_merge($classes, $classesResult);
+
+            foreach ($classesResult as $class)
+            {
+                if (!isset($newCLasses[$class['uri1']]))
+                {
+                    $newCLasses[$class['uri1']] = '';
+                    $this->titleHelper->addResource($class['uri1']);
+                }
+                if ("" != $class['uri2'] && !isset($newCLasses[$class['uri1']][$class['uri2']]))
+                {
+                    if (!is_array($newCLasses[$class['uri1']]))
+                        $newCLasses[$class['uri1']] = array();
+                    $newCLasses[$class['uri1']][$class['uri2']] = '';
+                    $this->titleHelper->addResource($class['uri2']);
+                }
+                if ("" != $class['uri3'] && !isset($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']]))
+                {
+                    if (!is_array($newCLasses[$class['uri1']][$class['uri2']]))
+                        $newCLasses[$class['uri1']][$class['uri2']] = array();
+                    $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']] = '';
+                    $this->titleHelper->addResource($class['uri3']);
+                }
+                if ("" != $class['uri4'] && !isset($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']][$class['uri4']]))
+                {
+                    if (!is_array($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']]))
+                        $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']] = array();
+                    $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']][$class['uri4']] = '';
+                    $this->titleHelper->addResource($class['uri4']);
+                }
+            }
+            $classes = array_merge($classes, $newCLasses);
         }
         else
         {
-            $classes[]['uri'] = $item['class'];
+            if (!isset($classes[$item['class']]))
+            {
+                $classes[$item['class']] = '';
+                $this->titleHelper->addResource($item['class']);
+            }
         }
     }
-    $this->titleHelper->reset();
-    foreach ($classes as $class) {
-        $this->titleHelper->addResource($class['uri']);
+    $classesList = array();
+
+    If (!function_exists('getClassList'))
+    {
+        function getClassList($classes, &$classesList, $titleHelper, $language, $depth = 1)
+        {
+            foreach ($classes as $classIndex => $class) {
+                $newClass = array();
+                $newClass['uri'] = $classIndex;
+                $newClass['label'] = $titleHelper->getTitle($classIndex, $language);
+                $newClass['depth'] = $depth;
+                if (!isset($classesList[$newClass['uri']]) || $classesList[$newClass['uri']]['depth'] < $newClass['depth'])
+                    $classesList[$newClass['uri']] = $newClass;
+                if (is_array($class))
+                {
+                    getClassList($class, $classesList, $titleHelper, $language, $depth + 1);
+                }
+            }
+        }
     }
-    foreach ($classes as $classNumber => $class) {
-        $classes[$classNumber]['label'] = $this->titleHelper->getTitle($class['uri'], $this->selectedLanguage);
-    }
-    
+    getClassList($classes, $classesList, $this->titleHelper, $this->selectedLanguage);
+
 ?>
 <div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"service\"" : "") ?>>
     <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
@@ -61,17 +100,20 @@
             <a class="button" href="javascript:openBoxForm('#boxes', 'service', '', '<?php echo $element ['name']; ?>')">+</a>
         </div>
     <?php } ?>
-    <?php foreach ( $classes as $class ) { ?>
+    <?php foreach ( $classesList as $class ) { ?>
+        <?php for ( $i = 1; $i <= $class ['depth']; $i++ ) { ?>
+            <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
+        <?php } ?>
         <div class="divClassPredicateValue">
             <div class="divClassPredicateValueInput">
                 <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/>
             </div>
-                <?php echo $class ['label']; ?>
-                
-                <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                    <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
-                <?php } ?>
-                <div class="clear"></div>
+            <?php echo $class ['label']; ?>
+
+            <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
+                <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
+            <?php } ?>
+            <div class="clear"></div>
         </div>
     <?php } ?>
 </div>

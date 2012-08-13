@@ -38,6 +38,14 @@
 .divClassPredicateValue {
     padding-bottom: 10px;
 }
+.divClassPredicateDepth {
+    width: 20px;
+    height: 10px;
+    float: left;
+}
+.divClassPredicateDepth1 {
+    width: 0px;
+}
 .divClassPredicateValueInput {
     float:left;
     width: 20px; 
