@@ -14,7 +14,10 @@
  * extracts value of formula fields and saves it in form
  * @param f json-serialized formula instance
  * @return array modified formula instance
- */ 
+ */
+
+var boxopen = false;
+
 function setFormulaArrayFields (f)
 {        
     var len = f.sections.length;
@@ -100,7 +103,8 @@ function setFormulaModeTo (f, newMode)
  * @param formData a json-serialized formula instance
  */
 function submitFormula (url, data, mode) 
-{   
+{
+    var reload = true;
     // show please wait box
     $("#pleaseWaitBox").show ();
     
@@ -176,6 +180,10 @@ function submitFormula (url, data, mode)
                 $('#service').append(newElement);
                 updateElements = new Array();
             }
+            
+            if (boxopen)
+                reload = false;
+            
             // close box view if submit complete
             closeBoxForm();
             
@@ -195,6 +203,8 @@ function submitFormula (url, data, mode)
         complete: function ()
         {
             console.log ( "complete" );
+            if (reload)
+                location.reload();
         }
     });
 }
@@ -244,7 +254,8 @@ function checkMandatoryFields (f)
     return returnValue;
 }
 
-function openBoxForm(id, form, resource, name) {    
+function openBoxForm(id, form, resource, name) {
+    boxopen = true;
     // load the form from server
     if (1 == addEntity (form, 'action', id, resource, name))
     {
@@ -268,4 +279,5 @@ function closeBoxForm()
 {
     $('#boxes').empty();
     $.modal.close();
+    boxopen = false;
 }

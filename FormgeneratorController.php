@@ -346,7 +346,14 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $form = $this->_request->getParam('form');
         $formOld = $this->_request->getParam('formOld');
         
-        echo $this->_data->submitFormula ($form, $formOld);
+        $response = $this->_data->submitFormula ($form, $formOld);
+        
+        if ('error' != $response['status'])
+            $message = new OntoWiki_Message('formsaved', OntoWiki_Message::SUCCESS);
+        else
+            $message = new OntoWiki_Message('formnotsaved', OntoWiki_Message::ERROR);
+        $this->_owApp->appendMessage($message);
+        echo $response;
     }
     
     

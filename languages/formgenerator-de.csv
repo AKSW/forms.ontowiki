@@ -6,3 +6,5 @@ Select;Auswählen
 noformularfound;Kein Formular für diese Klasse/Ressource gefunden
 NewInstance;Neue Instanz
 EditResource;Ressource bearbeiten
+formsaved;Formular wurde gespeichert.
+formnotsaved;Formular konnte nicht gespeichert werden.
