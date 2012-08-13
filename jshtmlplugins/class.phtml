@@ -10,90 +10,171 @@
 ?>
 <?php
     $classes = array ();
+    $instances = array();
+    
     $this->titleHelper->reset();
     foreach ($element ['typeparameter'] as $item)
     {
+        $relation = '';
         if (isset($item['relation']))
         {
-            $classesResult = array();
-            $newCLasses = array();
-
-            $classesResult = $this->store->sparqlQuery(
-                'SELECT DISTINCT ?uri1 ?uri2 ?uri3 ?uri4
-                WHERE {
-                  {?uri1 <' . $item['relation'] . '> <' . $item['class'] . '>.}
-                  OPTIONAL{
-                    ?uri2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri1.}
-                  OPTIONAL{
-                    ?uri3 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri2.}
-                  OPTIONAL{
-                    ?uri4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri3.}
-                };'
-            );
-
-            foreach ($classesResult as $class)
-            {
-                if (!isset($newCLasses[$class['uri1']]))
-                {
-                    $newCLasses[$class['uri1']] = '';
-                    $this->titleHelper->addResource($class['uri1']);
-                }
-                if ("" != $class['uri2'] && !isset($newCLasses[$class['uri1']][$class['uri2']]))
-                {
-                    if (!is_array($newCLasses[$class['uri1']]))
-                        $newCLasses[$class['uri1']] = array();
-                    $newCLasses[$class['uri1']][$class['uri2']] = '';
-                    $this->titleHelper->addResource($class['uri2']);
-                }
-                if ("" != $class['uri3'] && !isset($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']]))
-                {
-                    if (!is_array($newCLasses[$class['uri1']][$class['uri2']]))
-                        $newCLasses[$class['uri1']][$class['uri2']] = array();
-                    $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']] = '';
-                    $this->titleHelper->addResource($class['uri3']);
-                }
-                if ("" != $class['uri4'] && !isset($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']][$class['uri4']]))
-                {
-                    if (!is_array($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']]))
-                        $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']] = array();
-                    $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']][$class['uri4']] = '';
-                    $this->titleHelper->addResource($class['uri4']);
-                }
-            }
-            $classes = array_merge($classes, $newCLasses);
+            $relation = '
+                OPTIONAL{
+                    ?instance0 <' . $item['relation'] . '> <' . $item['class'] . '>.}
+                OPTIONAL{
+                    ?instance1 <' . $item['relation'] . '> ?uri1.}
+                OPTIONAL{
+                    ?instance2 <' . $item['relation'] . '> ?uri2.}
+                OPTIONAL{
+                    ?instance3 <' . $item['relation'] . '> ?uri3.}
+                OPTIONAL{
+                    ?instance4 <' . $item['relation'] . '> ?uri4.}
+            ';
         }
-        else
+        $classesResult = array();
+        $newCLasses = array();
+
+        $classesResult = $this->store->sparqlQuery(
+            'SELECT DISTINCT ?uri1 ?uri2 ?uri3 ?uri4 ?instance0 ?instance1 ?instance2 ?instance3 ?instance4
+            WHERE {
+              {?uri1 <http://www.w3.org/2000/01/rdf-schema#subClassOf> <' . $item['class'] . '>.}
+              OPTIONAL{
+                ?uri2 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri1.}
+              OPTIONAL{
+                ?uri3 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri2.}
+              OPTIONAL{
+                ?uri4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri3.}
+              ' . $relation . '  
+            };LIMIT 20​00'
+        );
+
+        $this->titleHelper->addResource($item['class']);
+        
+        foreach ($classesResult as $class)
         {
-            if (!isset($classes[$item['class']]))
+            if (!isset($newCLasses[$class['uri1']]))
             {
-                $classes[$item['class']] = '';
-                $this->titleHelper->addResource($item['class']);
+                $newCLasses[$class['uri1']] = '';
+                $this->titleHelper->addResource($class['uri1']);
             }
+            if ("" != $class['uri2'] && !isset($newCLasses[$class['uri1']][$class['uri2']]))
+            {
+                if (!is_array($newCLasses[$class['uri1']]))
+                    $newCLasses[$class['uri1']] = array();
+                $newCLasses[$class['uri1']][$class['uri2']] = '';
+                $this->titleHelper->addResource($class['uri2']);
+            }
+            if ("" != $class['uri3'] && !isset($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']]))
+            {
+                if (!is_array($newCLasses[$class['uri1']][$class['uri2']]))
+                    $newCLasses[$class['uri1']][$class['uri2']] = array();
+                $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']] = '';
+                $this->titleHelper->addResource($class['uri3']);
+            }
+            if ("" != $class['uri4'] && !isset($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']][$class['uri4']]))
+            {
+                if (!is_array($newCLasses[$class['uri1']][$class['uri2']][$class['uri3']]))
+                    $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']] = array();
+                $newCLasses[$class['uri1']][$class['uri2']][$class['uri3']][$class['uri4']] = '';
+                $this->titleHelper->addResource($class['uri4']);
+            }
+            
+            if (isset($item['relation']))
+            {
+                if ("" != $class['instance0'])
+                {
+                    if (!isset($instances[$item['class']]))
+                        $instances[$item['class']] = array();
+                    $instances[$item['class']][$class['instance0']] = $class['instance0'];
+                    $this->titleHelper->addResource($class['instance0']);
+                }
+                if ("" != $class['instance1'])
+                {
+                    if (!isset($instances[$class['uri1']]))
+                        $instances[$class['uri1']] = array();
+                    $instances[$class['uri1']][$class['instance1']] = $class['instance1'];
+                    $this->titleHelper->addResource($class['instance1']);
+                }
+                if ("" != $class['instance2'])
+                {
+                    if (!isset($instances[$class['uri2']]))
+                        $instances[$class['uri2']] = array();
+                    $instances[$class['uri2']][$class['instance2']] = $class['instance2'];
+                    $this->titleHelper->addResource($class['instance2']);
+                }
+                if ("" != $class['instance3'])
+                {
+                    if (!isset($instances[$class['uri3']]))
+                        $instances[$class['uri3']] = array();
+                    $instances[$class['uri3']][$class['instance3']] = $class['instance3'];
+                    $this->titleHelper->addResource($class['instance3']);
+                }
+                if ("" != $class['instance4'])
+                {
+                    if (!isset($instances[$class['uri4']]))
+                        $instances[$class['uri4']] = array();
+                    $instances[$class['uri4']][$class['instance4']] = $class['instance4'];
+                    $this->titleHelper->addResource($class['instance4']);
+                }
+            }
+            
+        }
+        $classes = array_merge($classes, $newCLasses);
+    }
+    
+    $classesList = array();
+    $uniqueInstances = array();
+    
+    $newClass = array();
+    $newClass['uri'] = $item['class'];
+    $newClass['label'] = $this->titleHelper->getTitle($item['class'], $this->selectedLanguage);
+    $newClass['depth'] = 0;
+    if (isset($instances[$item['class']]))
+    {
+        $newClass['instances'] = $instances[$item['class']];
+        foreach ($newClass['instances'] as $instanceUri => $instanceName)
+        {
+            $newClass['instances'][$instanceUri] = $this->titleHelper->getTitle($instanceUri, $this->selectedLanguage);
+            $uniqueInstances[$instanceUri] = array('depth' => 0, 'class' => $item['class']);
         }
     }
-    $classesList = array();
-
-    If (!function_exists('getClassList'))
+    $classesList[$newClass['uri']] = $newClass;
+    
+    if (!function_exists('getClassList'))
     {
-        function getClassList($classes, &$classesList, $titleHelper, $language, $depth = 1)
+        function getClassList($classes, &$classesList, $instances, &$uniqueInstances, $titleHelper, $language, $depth = 1)
         {
             foreach ($classes as $classIndex => $class) {
                 $newClass = array();
                 $newClass['uri'] = $classIndex;
                 $newClass['label'] = $titleHelper->getTitle($classIndex, $language);
                 $newClass['depth'] = $depth;
+                if (isset($instances[$classIndex]))
+                {
+                    $newClass['instances'] = $instances[$classIndex];
+                    foreach ($newClass['instances'] as $instanceUri => $instanceName)
+                    {
+                        $newClass['instances'][$instanceUri] = $titleHelper->getTitle($instanceUri, $language);
+                        if (isset($uniqueInstances[$instanceUri]) && $uniqueInstances[$instanceUri]['depth'] < $depth)
+                            unset($classesList[$uniqueInstances[$instanceUri]['class']]['instances'][$instanceUri]);
+                        $uniqueInstances[$instanceUri] = array('depth' => $depth, 'class' => $newClass['uri']);
+                    }
+                }
+                
                 if (!isset($classesList[$newClass['uri']]) || $classesList[$newClass['uri']]['depth'] < $newClass['depth'])
                     $classesList[$newClass['uri']] = $newClass;
+                    
                 if (is_array($class))
                 {
-                    getClassList($class, $classesList, $titleHelper, $language, $depth + 1);
+                    getClassList($class, $classesList, $instances, $uniqueInstances, $titleHelper, $language, $depth + 1);
                 }
             }
         }
     }
-    getClassList($classes, $classesList, $this->titleHelper, $this->selectedLanguage);
-
+    
+    getClassList($classes, $classesList, $instances, $uniqueInstances, $this->titleHelper, $this->selectedLanguage);
 ?>
+
 <div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"service\"" : "") ?>>
     <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
         <div class="divClassPredicateValue">
@@ -101,19 +182,39 @@
         </div>
     <?php } ?>
     <?php foreach ( $classesList as $class ) { ?>
-        <?php for ( $i = 1; $i <= $class ['depth']; $i++ ) { ?>
+        <?php for ( $i = 0; $i <= $class ['depth']; $i++ ) { ?>
             <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
         <?php } ?>
         <div class="divClassPredicateValue">
-            <div class="divClassPredicateValueInput">
-                <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/>
-            </div>
-            <?php echo $class ['label']; ?>
-
-            <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
+            <?php if (!(0 == $class ['depth'] && isset($item['shownooverclass']))) { ?>
+                <?php if (!isset($item['relation'])) { ?>
+                    <div class="divClassPredicateValueInput">
+                        <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/>
+                    </div>
+                <?php } ?>
+                <span<?php echo (isset($item['relation']) ? ' class="bold"' : ''); ?>><?php echo $class ['label']; ?></span>
+            <?php if(!isset($item['relation']) && isset($element ['typeparameter'][0]['editalbe'])) { ?>
                 <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
             <?php } ?>
             <div class="clear"></div>
+            <?php } ?>
+            <?php if (isset($item['relation']) && isset($class['instances']) && 0 < count($class['instances'])) { ?>
+                <?php foreach ( $class['instances'] as $instancesUri => $instancesLabel ) { ?>
+                
+                    <?php for ( $i = 0; $i <= $class ['depth'] + 1; $i++ ) { ?>
+                        <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
+                    <?php } ?>
+                    <div class="divClassPredicateValueInput">
+                        <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $instancesUri; ?>"<?php echo ((is_array($element['value']) && false !== array_search($instancesUri, $element['value'])) || ($instancesUri == $element['value']) ? ' checked="checked"' : ''); ?>/>
+                    </div>
+                    <?php echo $instancesLabel; ?>
+                    <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
+                        <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $instancesUri; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
+                    <?php } ?>
+                    <div class="clear"></div>
+                <?php } ?>
+                <div class="placeholder"></div>
+            <?php } ?>
         </div>
     <?php } ?>
 </div>

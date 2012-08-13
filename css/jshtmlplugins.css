@@ -8,6 +8,13 @@
  * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
  */
 
+span.bold {
+    font-weight: 900;
+}
+.placeholder {
+    width: 10px;
+    height: 10px;
+}
 .predicateValue_Textfield {
     width: 100%;
     height: 100%;
@@ -43,7 +50,7 @@
     height: 10px;
     float: left;
 }
-.divClassPredicateDepth1 {
+.divClassPredicateDepth0 {
     width: 0px;
 }
 .divClassPredicateValueInput {

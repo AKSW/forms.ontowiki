@@ -1,29 +1,29 @@
 <!-- Create a new person. -->
-<form> 
+<form>
 
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.w3.org/2002/07/owl#Class</targetclass>
-    
+
     <targetmodel>http://hc.serviceOntology.org/</targetmodel>
     <modelnamespace>service</modelnamespace>
-    
+
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/Name</item>
     </labelparts>
-	
+
     <!-- Headline of this formula. -->
     <title>
         <de>Servicekategorie</de>
         <en>service category</en>
     </title>
-	
+
     <!-- Introducing text to inform the user about the formula. -->
     <description>
         <de>Hier können Sie eine Servicekategorie anlegen.</de>
         <en>Here you can insert information for a service category.</en>
     </description>
-	
+
     <sections>
         <!-- A new section -->
         <item>
@@ -31,35 +31,35 @@
             <title>
                 <de>Kategorie Information</de>
                 <en>category information</en>
-            </title> 	
+            </title>
 
             <!-- Textfield -->
-            <predicate> 
+            <predicate>
                 <mandatory>1</mandatory>
                 <predicateuri>http://www.dispedia.de/o/Name</predicateuri>
             </predicate>
-            
+
             <!-- parent class -->
-            <predicate> 
+            <predicate>
                 <mandatory>0</mandatory>
                 <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>
                 <title>
                     <de>Oberkategorie</de>
                     <en>Upper category</en>
-                </title>        
+                </title>
                 <type>class</type>
                 <typeparameter>
                     <item>
                         <class>http://www.serviceOntology.org/Service</class>
-                        <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                        <shownooverclass>1</shownooverclass>
                     </item>
                 </typeparameter>
             </predicate>
-        
+
             <!-- always service class -->
-            <predicate> 
+            <predicate>
                 <mandatory>1</mandatory>
-                <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>       
+                <predicateuri>http://www.w3.org/2000/01/rdf-schema#subClassOf</predicateuri>
                 <type>hidden</type>
                 <typeparameter>
                     <item>

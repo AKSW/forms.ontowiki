@@ -39,7 +39,7 @@
                 <mandatory>1</mandatory>
                 <predicateuri>http://purl.org/goodrelations/v1#name</predicateuri>
             </predicate>
-            
+
             <!-- Textfield -->
             <predicate>
                 <mandatory>1</mandatory>
@@ -51,20 +51,20 @@
                 <mandatory>0</mandatory>
                 <predicateuri>http://www.serviceOntology.org/fundedBy</predicateuri>
             </predicate>
-            
+
             <!-- type -->
-            <predicate> 
+            <predicate>
                 <mandatory>0</mandatory>
                 <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
                 <title>
                     <de>Typ</de>
                     <en>Type</en>
-                </title>        
+                </title>
                 <type>class</type>
                 <typeparameter>
                     <item>
                         <class>http://www.serviceOntology.org/Service</class>
-                        <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                        <shownooverclass>1</shownooverclass>
                     </item>
                 </typeparameter>
             </predicate>

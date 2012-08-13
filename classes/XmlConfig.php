@@ -205,6 +205,8 @@ class XmlConfig
                                                     $newTypeParamter['relation'] = (string) $parameter->relation;
                                                 if (isset($parameter->editable))
                                                     $newTypeParamter['editalbe'] = (string) $parameter->editable;
+                                                if (isset($parameter->shownooverclass))
+                                                    $newTypeParamter['shownooverclass'] = (string) $parameter->shownooverclass;
                                                 $typeparameter[] = $newTypeParamter;
                                             }
                                             break;

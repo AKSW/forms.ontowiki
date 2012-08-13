@@ -51,8 +51,8 @@
                 <predicateuri>http://schema.org/birthDate</predicateuri>
                 <type>birthdate</type>
             </predicate>
-	    
-	    <!-- Date -->
+
+        <!-- Date -->
             <predicate>
                 <mandatory>0</mandatory>
                 <predicateuri>http://schema.org/deathDate</predicateuri>
@@ -84,51 +84,47 @@
 
             <!-- rolls -->
             <predicate>
-		<mandatory>0</mandatory>
-		<predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
-		<title>
-		    <de>Rollen</de>
-		    <en>rolls</en>
-		</title>
-		<type>class</type>
-		<typeparameter>
-		    <item>
-			<class>http://www.dispedia.de/o/Patient</class>
-		    </item>
-		    <item>
-			<class>http://www.dispedia.de/o/Patient</class>
-			<relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
-		    </item>
-		</typeparameter>
-	    </predicate>
+        <mandatory>0</mandatory>
+        <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+        <title>
+            <de>Rollen</de>
+            <en>rolls</en>
+        </title>
+        <type>class</type>
+        <typeparameter>
+            <item>
+            <class>http://www.dispedia.de/o/Patient</class>
+            </item>
+        </typeparameter>
+        </predicate>
         </item>
-	<item>
-	    <title>
-		<de>Adresse</de>
-		<en>Address</en>
-	    </title>
-	    <!-- Include a XML file -->
-	    <nestedconfig>
-		<xmlfile>postaladdress.xml</xmlfile>
-		<relations>
-		    <item>http://www.serviceOntology.org/hasAddress</item>
-		</relations>
-		<typeclass>http://schema.org/PostalAddress</typeclass>
-	    </nestedconfig>
-	</item>
-	<item>
-	    <title>
-		<de>Geokoordinaten</de>
-		<en>Geo Coordinates</en>
-	    </title>
-	    <!-- Include a XML file -->
-	    <nestedconfig>
-		<xmlfile>geocoordinates.xml</xmlfile>
-		<relations>
-		    <item>http://www.serviceOntology.org/hasAddress</item>
-		</relations>
-		<typeclass>http://schema.org/GeoCoordinates</typeclass>
-	    </nestedconfig>
-	</item>
+    <item>
+        <title>
+        <de>Adresse</de>
+        <en>Address</en>
+        </title>
+        <!-- Include a XML file -->
+        <nestedconfig>
+        <xmlfile>postaladdress.xml</xmlfile>
+        <relations>
+            <item>http://www.serviceOntology.org/hasAddress</item>
+        </relations>
+        <typeclass>http://schema.org/PostalAddress</typeclass>
+        </nestedconfig>
+    </item>
+    <item>
+        <title>
+        <de>Geokoordinaten</de>
+        <en>Geo Coordinates</en>
+        </title>
+        <!-- Include a XML file -->
+        <nestedconfig>
+        <xmlfile>geocoordinates.xml</xmlfile>
+        <relations>
+            <item>http://www.serviceOntology.org/hasAddress</item>
+        </relations>
+        <typeclass>http://schema.org/GeoCoordinates</typeclass>
+        </nestedconfig>
+    </item>
     </sections>
 </form>

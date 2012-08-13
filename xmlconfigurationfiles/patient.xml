@@ -1,90 +1,90 @@
 <!-- Create a new patient. -->
-<form> 
+<form>
 
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Patient</targetclass>
-    
+
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/firstName</item>
         <item>http://www.dispedia.de/o/lastName</item>
     </labelparts>
-	
+
     <!-- Headline of this formula -->
     <title>
         <de>Stammdaten zu einem Patienten</de>
         <en>Patient - Master data</en>
     </title>
-	
+
     <!-- Introducing text to inform the user about the formula -->
     <description>
         <de>Hier können Sie einen Patienten anlegen oder ändern.</de>
         <en>Here you can add / edit a patient.</en>
     </description>
-	
+
     <sections>
-        
+
         <!-- A new section -->
-		<item>
-            
+        <item>
+
             <!-- title of this section part -->
-			<title>Patient information</title> 	
-						
+            <title>Patient information</title>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/patientNumber</predicateuri>
-			</predicate>
-						
+            <predicate>
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.dispedia.de/o/patientNumber</predicateuri>
+            </predicate>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
-			</predicate>
-			
+            <predicate>
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
+            </predicate>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
-			</predicate>
-			
+            <predicate>
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
+            </predicate>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/birthName</predicateuri>
-			</predicate>
-			
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/birthName</predicateuri>
+            </predicate>
+
             <!-- Date -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/birthdate</predicateuri>
-				<type>date</type>
-			</predicate>
-			
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/birthdate</predicateuri>
+                <type>date</type>
+            </predicate>
+
             <!-- Textfield -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/birthPlace</predicateuri>
-			</predicate>
-            
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/birthPlace</predicateuri>
+            </predicate>
+
             <!-- rolls -->
-			<predicate> 
+            <predicate>
                             <mandatory>0</mandatory>
                             <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
                             <title>
                                 <de>Patienttyp</de>
                                 <en>Patient type</en>
-                            </title>        
+                            </title>
                             <type>class</type>
                             <typeparameter>
                                 <item>
                                     <class>http://www.dispedia.de/o/Patient</class>
-                                    <relation>http://www.w3.org/2000/01/rdf-schema#subClassOf</relation>
+                                    <shownooverclass>1</shownooverclass>
                                 </item>
                             </typeparameter>
                         </predicate>
-		
-		</item>
-		
-	</sections>
+
+        </item>
+
+    </sections>
 </form>
