@@ -51,7 +51,7 @@
 
         $this->titleHelper->addResource($item['class']);
          
-        if (isset($item['relation']) && 'unbound' == $item['filter'])
+        if (isset($item['relation']) && isset($item['filter']) && 'unbound' == $item['filter'])
         {
             $filterResult = $this->store->sparqlQuery(
                 'SELECT DISTINCT ?subject ?object
