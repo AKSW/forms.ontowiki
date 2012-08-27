@@ -1,0 +1,64 @@
+<!-- Create a new person. -->
+<form>
+
+    <!-- All used predicate-tags are related to this class. -->
+    <targetclass>http://www.dispedia.de/o/Proposal</targetclass>
+    
+    <targetmodel>http://als.dispedia.de/</targetmodel>
+
+    <!-- Needed by an URI generation function. -->
+    <labelparts>
+        <item>http://www.w3.org/2000/01/rdf-schema#label</item>
+    </labelparts>
+
+    <!-- Headline of this formula. -->
+    <title>
+        <de>Vorschlag</de>
+        <en>Proposal</en>
+    </title>
+
+    <!-- Introducing text to inform the user about the formula. -->
+    <description>
+        <de>Hier können Sie Daten zu einem Vorschlag erfassen.</de>
+        <en>Here you can insert proposal information.</en>
+    </description>
+
+    <sections>
+
+        <!-- A new section -->
+        <item>
+
+            <!-- title of this section part -->
+            <title>
+                <de>Vorschlag bearbeiten</de>
+                <en>Proposal edit</en>
+            </title>
+
+            <!-- Textfield -->
+            <predicate>
+                <mandatory>1</mandatory>
+                <predicateuri>http://www.w3.org/2000/01/rdf-schema#label</predicateuri>
+            </predicate>
+
+            <!-- service -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/containsProposalComponent</predicateuri>
+                <title>
+                    <de>Vorschlagskomponenten</de>
+                    <en>Proposal Components</en>
+                </title>
+                <type>multiple</type>
+                <typeparameter>
+                    <item>
+                        <order>1</order>
+                        <class>http://www.dispedia.de/o/ProposalComponent</class>
+                        <filter>unbound</filter>
+                        <successor>http://www.dispedia.de/o/successorOfProposalComponent</successor>
+                        <!--<predessor></predessor>-->
+                    </item>
+                </typeparameter>
+            </predicate>
+        </item>
+    </sections>
+</form>

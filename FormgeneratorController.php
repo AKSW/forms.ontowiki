@@ -94,6 +94,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->headLink()->appendStylesheet($this->_url .'css/jshtmlplugins.css');
         
         // include Javascript files
+        $this->view->headScript()->appendFile($this->_url .'js/json-template.js');
         $this->view->headScript()->appendFile($this->_url .'js/edit.js');
         $this->view->headScript()->appendFile($this->_url .'js/form.js');
         
@@ -248,7 +249,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             }
         }
         
-
+        // load all needed context data
+        $this->_data->loadContextData($this->_form);
+        
         //add buttons to toolbar
         $toolbar = $this->_owApp->toolbar;
         

@@ -46,7 +46,7 @@
               OPTIONAL{
                 ?uri4 <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?uri3.}
               ' . $relation . '  
-            };LIMIT 20​00'
+            } LIMIT 20​00;'
         );
 
         $this->titleHelper->addResource($item['class']);
@@ -163,17 +163,23 @@
         function getClassList($classes, &$classesList, $instances, &$uniqueInstances, $titleHelper, $language, $depth = 1)
         {
             $resultHasInstances = false;
+            
             foreach ($classes as $classIndex => $class) {
                 $newClass = array();
                 $newClass['uri'] = $classIndex;
                 $newClass['label'] = $titleHelper->getTitle($classIndex, $language);
                 $newClass['depth'] = $depth;
+                
+                // check if there are instances for the class
                 if (isset($instances[$classIndex]))
                 {
                     $newClass['instances'] = $instances[$classIndex];
                     foreach ($newClass['instances'] as $instanceUri => $instanceName)
                     {
+                        // get labels for instance uris
                         $newClass['instances'][$instanceUri] = $titleHelper->getTitle($instanceUri, $language);
+                        
+                        // if there already a instance in a upper class, delete it
                         if (isset($uniqueInstances[$instanceUri]) && $uniqueInstances[$instanceUri]['depth'] < $depth)
                             unset($classesList[$uniqueInstances[$instanceUri]['class']]['instances'][$instanceUri]);
                         $uniqueInstances[$instanceUri] = array('depth' => $depth, 'class' => $newClass['uri']);
@@ -183,12 +189,16 @@
                 else
                     $newClass['hasinstances'] = false;
                 
+                // if new class is not in the classlist or the had a higher depth then the existing one,
+                // write/overwrite the class in the classlist
                 if (!isset($classesList[$newClass['uri']]) || $classesList[$newClass['uri']]['depth'] < $newClass['depth'])
                     $classesList[$newClass['uri']] = $newClass;
-                    
+                
+                // if the class has lower classes
                 if (is_array($class))
                 {
-                    $classesList[$newClass['uri']]['hasinstances'] = $classesList[$newClass['uri']]['hasinstances'] || getClassList($class, $classesList, $instances, $uniqueInstances, $titleHelper, $language, $depth + 1);
+                    $hasinstances = getClassList($class, $classesList, $instances, $uniqueInstances, $titleHelper, $language, $depth + 1);
+                    $classesList[$newClass['uri']]['hasinstances'] = $classesList[$newClass['uri']]['hasinstances'] || $hasinstances;
                 }
                 $resultHasInstances = $resultHasInstances || $newClass['hasinstances'];
             }
@@ -196,13 +206,27 @@
         }
     }
     
-    $classesList[$newClass['uri']]['hasinstances'] = $classesList[$newClass['uri']]['hasinstances'] || getClassList($classes, $classesList, $instances, $uniqueInstances, $this->titleHelper, $this->selectedLanguage);
+        $hasinstances = getClassList($classes, $classesList, $instances, $uniqueInstances, $this->titleHelper, $this->selectedLanguage);
+        $classesList[$newClass['uri']]['hasinstances'] = $classesList[$newClass['uri']]['hasinstances'] || $hasinstances;
 ?>
 
-<div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"service\"" : "") ?>>
+<div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"" . $element ['typeparameter'][0]['classname']  . "\"" : "") ?>>
     <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
         <div class="divClassPredicateValue">
-            <a class="button" href="javascript:openBoxForm('#boxes', 'service', '', '<?php echo $element ['name']; ?>')">+</a>
+            <a class="button" href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '', '<?php echo $element ['name']; ?>')">+</a>
+        </div>
+        <div id="<?php echo $element ['typeparameter'][0]['classname']; ?>-template" style="display:none">
+            <div class="divClassPredicateValue">
+                <div class="divClassPredicateValueInput">
+                    <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="{resourceUri|htmltag}" {checked}>
+                </div>
+                {label}
+                <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '{resourceUri}', 'edit')">
+                    <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png">
+                </a>
+                <div class="clear"></div>
+                <div class="placeholder"></div>
+            </div>
         </div>
     <?php } ?>
     <?php foreach ( $classesList as $class ) { ?>
@@ -218,7 +242,7 @@
                 <?php } ?>
                 <span<?php echo (isset($item['relation']) ? ' class="bold"' : ''); ?>><?php echo $class ['label']; ?></span>
                 <?php if(!isset($item['relation']) && isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                    <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
+                    <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $class ['uri']; ?>', 'edit')"><img src="../themes/dispedia/images/icon-edit.png"></a>
                 <?php } ?>
                 <div class="clear"></div>
             <?php } ?>
@@ -233,7 +257,7 @@
                     </div>
                     <?php echo $instancesLabel; ?>
                     <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                        <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $instancesUri; ?>', 'edit')"><img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png"></a>
+                        <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instancesUri; ?>', 'edit')"><img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png"></a>
                     <?php } ?>
                     <div class="clear"></div>
                 <?php } ?>

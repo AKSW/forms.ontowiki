@@ -148,13 +148,19 @@
                 
                     <!-- Predicate title -->        
                     <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                    <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>            
+                    <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
                             
                 <?php } elseif ('class' == $element ['type']) { ?>
                 
                     <!-- Predicate title -->        
                     <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                    <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>            
+                    <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>
+                            
+                <?php } elseif ('multiple' == $element ['type']) { ?>
+                
+                    <!-- Predicate title -->        
+                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                    <?php require $this->dirJsHtmlPlugins . 'multiple.phtml'; ?>
                             
                 <?php } elseif ('hidden' == $element ['type']) { ?>
                 

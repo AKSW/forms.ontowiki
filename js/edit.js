@@ -12,7 +12,7 @@
 /**
 * 
 */
-function addEntity (entity, entityOverClass, context, resource, name)
+function addEntity (entity, context, resource, name)
 {
     var returnValue = 0;
     var action = 'newform';
@@ -43,19 +43,6 @@ function addEntity (entity, entityOverClass, context, resource, name)
             else
             {
                 $(this).append(res);
-                updateElements = new Array();
-                if ('' != name)
-                {
-                    updateElements[0]  = '<div class=\"divClassPredicateValue\">\n';
-                    updateElements[0] += '<div class=\"divClassPredicateValueInput\">';
-                    updateElements[0] += '<input type=\"checkbox\" class=\"predicateValue_Class\" name=\"' + name + '\" value=\"';
-                    updateElements[1]  = '\" checked="checked">';
-                    updateElements[1] += '</div>';
-                    updateElements[2]  = "<a href=\"javascript:openBoxForm('#boxes', 'service', ";
-                    updateElements[3]  = "')\"><img src=\"http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png\"></a>";
-                    updateElements[3] += '<div class=\"clear\"></div>'
-                    updateElements[3] += '</div>';
-                }
                 returnValue = 1;
             }
         },
