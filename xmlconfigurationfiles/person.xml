@@ -84,19 +84,37 @@
 
             <!-- rolls -->
             <predicate>
-        <mandatory>0</mandatory>
-        <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
-        <title>
-            <de>Rollen</de>
-            <en>rolls</en>
-        </title>
-        <type>class</type>
-        <typeparameter>
-            <item>
-            <class>http://www.dispedia.de/o/Patient</class>
-            </item>
-        </typeparameter>
-        </predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
+                <title>
+                    <de>Rollen</de>
+                    <en>rolls</en>
+                </title>
+                <type>class</type>
+                <typeparameter>
+                    <item>
+                    <class>http://www.dispedia.de/o/Patient</class>
+                    </item>
+                </typeparameter>
+            </predicate>
+            <!-- service -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.heppnetz.de/ontologies/goodrelations/v1#offers</predicateuri>
+                <title>
+                    <de>Dienstleistung</de>
+                    <en>Service</en>
+                </title>
+                <type>class</type>
+                <typeparameter>
+                    <item>
+                        <class>http://www.serviceOntology.org/Service</class>
+                            <relation>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</relation>
+                            <editable>1</editable>
+                            <filter>unbound</filter>
+                    </item>
+                </typeparameter>
+            </predicate>
         </item>
     <item>
         <title>

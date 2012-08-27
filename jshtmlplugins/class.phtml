@@ -208,13 +208,25 @@
     
         $hasinstances = getClassList($classes, $classesList, $instances, $uniqueInstances, $this->titleHelper, $this->selectedLanguage);
         $classesList[$newClass['uri']]['hasinstances'] = $classesList[$newClass['uri']]['hasinstances'] || $hasinstances;
-    
 ?>
 
-<div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"service\"" : "") ?>>
+<div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"" . $element ['typeparameter'][0]['classname']  . "\"" : "") ?>>
     <?php if(isset($element ['typeparameter'][0]['editalbe'])) { ?>
         <div class="divClassPredicateValue">
-            <a class="button" href="javascript:openBoxForm('#boxes', 'service', '', '<?php echo $element ['name']; ?>')">+</a>
+            <a class="button" href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '', '<?php echo $element ['name']; ?>')">+</a>
+        </div>
+        <div id="<?php echo $element ['typeparameter'][0]['classname']; ?>-template" style="display:none">
+            <div class="divClassPredicateValue">
+                <div class="divClassPredicateValueInput">
+                    <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="{resourceUri|htmltag}" {checked}>
+                </div>
+                {label}
+                <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '{resourceUri}', 'edit')">
+                    <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png">
+                </a>
+                <div class="clear"></div>
+                <div class="placeholder"></div>
+            </div>
         </div>
     <?php } ?>
     <?php foreach ( $classesList as $class ) { ?>
@@ -230,7 +242,7 @@
                 <?php } ?>
                 <span<?php echo (isset($item['relation']) ? ' class="bold"' : ''); ?>><?php echo $class ['label']; ?></span>
                 <?php if(!isset($item['relation']) && isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                    <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $class ['uri']; ?>', 'edit')"><img src="http://localhost/ow_als/extensions/themes/dispedia/images/icon-edit.png"></a>
+                    <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $class ['uri']; ?>', 'edit')"><img src="../themes/dispedia/images/icon-edit.png"></a>
                 <?php } ?>
                 <div class="clear"></div>
             <?php } ?>
@@ -245,7 +257,7 @@
                     </div>
                     <?php echo $instancesLabel; ?>
                     <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                        <a href="javascript:openBoxForm('#boxes', 'service', '<?php echo $instancesUri; ?>', 'edit')"><img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png"></a>
+                        <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instancesUri; ?>', 'edit')"><img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png"></a>
                     <?php } ?>
                     <div class="clear"></div>
                 <?php } ?>

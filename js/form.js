@@ -168,17 +168,10 @@ function submitFormula (url, data, mode)
             // replace form with form instance from response
             jQ.data(_data, "form", res.form);
             
-            if ('undefined' != typeof res.newresources && 'undefined' != typeof updateElements && 0 < updateElements.length && 'undefined' != typeof res.newresources)
+            if ('undefined' != typeof res.newresources && boxopen)
             {
-                newElement  = updateElements[0];
-                newElement += res.newresources['http://www.serviceOntology.org/Service'];
-                newElement += updateElements[1];
-                newElement += res.newresources[res.newresources['http://www.serviceOntology.org/Service']];
-                newElement += updateElements[2];
-                newElement += res.newresources['http://www.serviceOntology.org/Service'];
-                newElement += updateElements[3];
-                $('#service').append(newElement);
-                updateElements = new Array();
+                var tpl = jsontemplate.Template($('#' + res.newresources['className'] + '-template').html());
+                $('#' + res.newresources['className']).append(tpl.expand(res.newresources));
             }
             
             if (boxopen)
@@ -191,6 +184,14 @@ function submitFormula (url, data, mode)
             
             // show edit button
             $("#changeResource").show();
+            
+            if (reload)
+            {
+                if ('edit' == form.mode)
+                    location.reload();
+                else
+                    location = url + 'form/?r=' + encodeURI(res.newresources['resourceUri']);
+            }
         },
         
         error: function (jqXHR, textStatus, errorThrown)
@@ -203,8 +204,6 @@ function submitFormula (url, data, mode)
         complete: function ()
         {
             console.log ( "complete" );
-            if (reload)
-                location.reload();
         }
     });
 }
@@ -257,7 +256,7 @@ function checkMandatoryFields (f)
 function openBoxForm(id, form, resource, name) {
     boxopen = true;
     // load the form from server
-    if (1 == addEntity (form, 'action', id, resource, name))
+    if (1 == addEntity (form, id, resource, name))
     {
         // because firefox is slow
         $('div.section-mainwindows').css('opacity', 'inherit');

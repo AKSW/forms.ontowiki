@@ -18,6 +18,7 @@ class Data
     private $_uriParts;
     private $_form;
     private $_lang;
+    private $_resourceHelper;
     
     public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts, &$form, $lang)
     {
@@ -29,6 +30,7 @@ class Data
         $this->_uriParts = $uriParts;
         $this->_form = $form;
         $this->_lang = $lang;
+        $this->_resourceHelper = new Resource();
     }
     
     
@@ -197,7 +199,13 @@ class Data
         }
         
         $json = array();
-        $json['newresources'] = array($targetClass => $resource, $resource => $resourceLabel);
+        $json['newresources'] = array(
+            'classUri' => $targetClass,
+            'className' => strtolower($this->_resourceHelper->extractClassNameFromUri($targetClass)),
+            'resourceUri' => $resource,
+            'label' => $resourceLabel,
+            'checked' => 'checked="checked"'
+            );
         $json['status'] = 'ok';
         $json['form'] = $f->getDataAsArrays();
         
@@ -633,6 +641,82 @@ class Data
         return $properties;
     }
 
+    /**
+     * loads data they are needed by some plugins in the form
+     * @param $form Formula instance to be filled with fetched data
+     */
+    public function loadContextData (&$form)
+    {
+        // save sections
+        $sections = $form->getSections();
+        
+        // 
+        foreach ($sections as $sectionNumber => $sectionEntries) 
+        {
+            foreach ($sectionEntries as $entryNumber => $entry) 
+            {
+                if (true === is_array($entry))
+                {                        
+                    if ('predicate' == $entry ['sectiontype'])
+                    {
+                        
+                        if ('class' == $entry ['type'])
+                            // save classname from classuri
+                            $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
+                        if ('multiple' == $entry ['type'])
+                        {
+                            // save classname from classuri
+                            $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
+                            if ("" != $form->getResource())
+                            {
+                                if (isset($entry['typeparameter'][0]['filter']) && 'unbound' == $entry['typeparameter'][0]['filter'] )
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource());
+                                else
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class']);
+                            }
+                            else
+                                if (isset($entry['typeparameter'][0]['filter']) && 'unbound' == $entry['typeparameter'][0]['filter'] )
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = array();
+                                else
+                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class']);
+                        }
+                    }
+                    elseif ('nestedconfig' == $entry ['sectiontype'])
+                    {
+                        $this->loadContextData ($entry ['form']);
+                    }                    
+                }
+            }
+        }
+        $form->setSections($sections);
+    }
+    
+    /**
+     * loads all instances of a class
+     * @param $classUri uri of the class which instances are seearched
+     */
+    public function loadInstances ($classUri, $filterProperty = '', $filterResource = '')
+    {
+        $instances = array();
+        $filter = '';
+        if ('' != $filterProperty && '' != $filterResource)
+            $filter = '<' . $filterResource . '> <' . $filterProperty . '> ?instanceUri.';
+            
+        $instancesResult = $this->_store->sparqlQuery(
+            'SELECT ?instanceUri
+            WHERE {
+              ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $classUri . '>.
+              ' . $filter  . '
+            };'
+        );
+        $this->_titleHelper->reset();
+        $this->_titleHelper->addResources($instancesResult, "instanceUri");
+        foreach ($instancesResult as $instance)
+        {
+            $instances[$instance['instanceUri']] = $this->_titleHelper->getTitle($instance['instanceUri'], $this->_lang);
+        }
+        return $instances;
+    }
     
     /**
      * loads data from a given resource

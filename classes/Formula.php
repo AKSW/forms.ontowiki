@@ -165,6 +165,15 @@ class Formula
         $this->_data ['selectResourceOfType'] = $value;
     }
     
+    /**
+     * @param $sections $sections to add
+     * @return void 
+     */
+    public function setSections ($sections)
+    {
+        $this->_data ['sections'] = $sections;
+    }
+    
     
     /**
      * @return string 
@@ -518,7 +527,7 @@ class Formula
                         'name'          => $section ['name'],
                         'value'         => $section ['value'],
                         'predicateuri'  => $section ['predicateuri'],
-                        'type' 		=> $section ['type'],
+                        'type' 		    => $section ['type'],
                         'typeparameter' => $section ['typeparameter'],
                         'title'	        => $section ['title'],
                         'mandatory'     => $section ['mandatory'],
