@@ -214,6 +214,28 @@ class XmlConfig
                                             break;
                                         }
                                         break;
+                                    
+                                    // a simple list of instances
+                                    case 'multiple':
+                                        foreach ($predicate->typeparameter as $item)
+                                        {
+                                            $typeparameter = array();
+                                            foreach ($item as $parameter)
+                                            {
+                                                $newTypeParamter = array();
+                                                $newTypeParamter['class'] = (string) $parameter->class;
+                                                if (isset($parameter->order))
+                                                    $newTypeParamter['order'] = (string) $parameter->order;
+                                                if (isset($parameter->filter))
+                                                    $newTypeParamter['filter'] = (string) $parameter->filter;
+                                                if (isset($parameter->successor))
+                                                    $newTypeParamter['successor'] = (string) $parameter->successor;
+                                                $typeparameter[] = $newTypeParamter;
+                                            }
+                                            break;
+                                        }
+                                        break;
+                                    
                                     // hidden input fields with a fix value
                                     case 'hidden':
                                         foreach ($predicate->typeparameter as $item)

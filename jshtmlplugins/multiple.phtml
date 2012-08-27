@@ -1,0 +1,32 @@
+<?php
+/**
+ * @category   OntoWiki
+ * @package    OntoWiki_extensions_formgenerator
+ * @author     Lars Eidam <larseidam@googlemail.com>
+ * @author     Konrad Abicht <konrad@inspirito.de>
+ * @copyright  Copyright (c) 2011
+ * @license    http://opensource.org/licenses/gpl-license.php GNU General Public License (GPL)
+ */
+?>
+<?php
+
+    //TODO: remove this output
+    //echo "<pre>";
+    //var_dump($element);
+    //echo "</pre>";
+?>
+
+<div class="predicateValue">
+    <a class="button" href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '', '<?php echo $element ['name']; ?>')">+</a>
+    <?php foreach ( $element ['typeparameter'][0]['instances'] as $instanceuri => $instanceLabel ) { ?>
+        <div class="divClassPredicateValue" id="<?php echo md5($instanceuri); ?>">
+            <input type="checkbox" class="predicateValue_Instance hidden" name="<?php echo $element ['name']; ?>" value="<?php echo $instanceuri; ?>" checked="checked"); />
+            <span><?php echo $instanceLabel; ?></span>
+            <a href="javascript:elementUp('<?php echo md5($instanceuri); ?>')">up</a>
+            <a href="javascript:elementDown('<?php echo md5($instanceuri); ?>')">down</a>
+            
+            <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instanceuri; ?>', '<?php echo $element ['name']; ?>')">edit</a>
+            <div class="clear"></div>
+        </div>
+    <?php } ?>
+</div>

@@ -280,3 +280,19 @@ function closeBoxForm()
     $.modal.close();
     boxopen = false;
 }
+
+/**
+ * put an element up
+ */
+function elementUp(element)
+{
+    $('#' + element).insertBefore($('#' + element).prev());
+}
+
+/**
+ * put an element down
+ */
+function elementDown(element)
+{
+    $('#' + element).insertAfter($('#' + element).next());
+}
