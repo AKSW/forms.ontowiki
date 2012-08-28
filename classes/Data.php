@@ -173,12 +173,20 @@ class Data
                 if ('predicate' == $entry ['sectiontype'] && "http://www.w3.org/2000/01/rdf-schema#label" != $entry ['predicateuri']) {
                     if (is_array($entry ['value']))
                     {
-                        foreach ($entry ['value'] as $value)
+                        foreach ($entry ['value'] as $valueNumber => $value)
+                        {
+                            if (1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
+                                $this->addStmt(
+                                    $value,
+                                    $entry ['typeparameter'][0]['successor'],
+                                    $entry ['value'][$valueNumber - 1]
+                                );
                             $this->addStmt(
                                 $resource,
                                 $entry ['predicateuri'],
                                 $value
                             );
+                        }
                     }
                     else
                         if ("" != $entry ['value'])
@@ -412,7 +420,7 @@ class Data
                 if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
                     
                     // TODO: mehrwertige Values werten hier falsch verglichen, also immer als unterschiedlich behandelt
-                    if ($entry ['value'] != $oldValue) 
+                    if ($entry ['value'] != $oldValue || is_array($entry ['value']) || is_array($oldValue)) 
                     {
                         // if a sub formula resource not exists, create it on the fly
                         if ('' == $form->getResource())
@@ -459,6 +467,17 @@ class Data
                         else
                         {
                             $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
+                            if (is_array($oldValue))
+                            {
+                                foreach ($oldValue as $valueNumber => $value)
+                                {
+                                    $this->removeStmt(
+                                        $value,
+                                        $entry ['typeparameter'][0]['successor'],
+                                        null
+                                    );
+                                }
+                            }
                             
                             if ('' == $upperResource)
                                 $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
@@ -466,8 +485,26 @@ class Data
                                 $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         }
                         
-                        if ("" != $entry ['value'])
-                            $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
+                        if (is_array($entry ['value']))
+                        {
+                            foreach ($entry ['value'] as $valueNumber => $value)
+                            {
+                                if (1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
+                                    $this->addStmt(
+                                        $value,
+                                        $entry ['typeparameter'][0]['successor'],
+                                        $entry ['value'][$valueNumber - 1]
+                                    );
+                                $this->addStmt(
+                                    $form->getResource(),
+                                    $entry ['predicateuri'],
+                                    $value
+                                );
+                            }
+                        }
+                        else
+                            if ("" != $entry ['value'])
+                                $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
                         
                         if ('' == $upperResource)
                             $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
@@ -570,7 +607,7 @@ class Data
                     $this->_selectedModelUri,
                     $s,
                     $p,
-                    array('value' => $object, 'type' => $type)
+                    isset($o) ? array('value' => $object, 'type' => $type) : null
                 );
             }
             return $deletedStatements;
@@ -587,7 +624,7 @@ class Data
                 $this->_selectedModelUri,
                 $s,
                 $p,
-                array('value' => $o, 'type' => $type)
+                isset($o) ? array('value' => $o, 'type' => $type) : null
             );
         }
     }
@@ -666,20 +703,23 @@ class Data
                             $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
                         if ('multiple' == $entry ['type'])
                         {
+                            $order = "";
+                            if (1 == $entry['typeparameter'][0]['order'])
+                                $order = $entry['typeparameter'][0]['successor'];
                             // save classname from classuri
                             $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
                             if ("" != $form->getResource())
                             {
                                 if (isset($entry['typeparameter'][0]['filter']) && 'unbound' == $entry['typeparameter'][0]['filter'] )
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource());
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource(), $order);
                                 else
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class']);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
                             }
                             else
                                 if (isset($entry['typeparameter'][0]['filter']) && 'unbound' == $entry['typeparameter'][0]['filter'] )
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = array();
                                 else
-                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class']);
+                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
                         }
                     }
                     elseif ('nestedconfig' == $entry ['sectiontype'])
@@ -696,26 +736,50 @@ class Data
      * loads all instances of a class
      * @param $classUri uri of the class which instances are seearched
      */
-    public function loadInstances ($classUri, $filterProperty = '', $filterResource = '')
+    public function loadInstances ($classUri, $filterProperty = '', $filterResource = '', $order = '')
     {
         $instances = array();
         $filter = '';
         if ('' != $filterProperty && '' != $filterResource)
             $filter = '<' . $filterResource . '> <' . $filterProperty . '> ?instanceUri.';
-            
+        
+        if ('' != $order)
+            $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}';
+        
         $instancesResult = $this->_store->sparqlQuery(
-            'SELECT ?instanceUri
+            'SELECT ?instanceUri ' . ('' != $order ? '?successorUri' : '') . '
             WHERE {
               ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $classUri . '>.
               ' . $filter  . '
+              ' . $order . '
             };'
         );
+
         $this->_titleHelper->reset();
         $this->_titleHelper->addResources($instancesResult, "instanceUri");
+        $orderList = array();
+        $orderlyInstances = array();
+        $successorList = array();
         foreach ($instancesResult as $instance)
         {
             $instances[$instance['instanceUri']] = $this->_titleHelper->getTitle($instance['instanceUri'], $this->_lang);
+            $successorList[$instance['successorUri']] = $instance['instanceUri'];
+            if ("" != $order && "" == $instance['successorUri'])
+            {
+                $orderList[0] = $instance['instanceUri'];
+                $orderlyInstances[$instance['instanceUri']] = $instances[$instance['instanceUri']];
+            }
         }
+        if ("" != $order)
+        {
+            for ($i = 0; $i < count($successorList) - 1; $i++)
+            {
+                $orderList[$i + 1] = $successorList[$orderList[$i]];
+                $orderlyInstances[$successorList[$orderList[$i]]] = $instances[$successorList[$orderList[$i]]];
+            }
+            $instances = $orderlyInstances;
+        }
+        
         return $instances;
     }
     
