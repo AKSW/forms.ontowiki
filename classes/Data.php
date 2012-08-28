@@ -175,7 +175,7 @@ class Data
                     {
                         foreach ($entry ['value'] as $valueNumber => $value)
                         {
-                            if (1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
+                            if (isset($entry ['typeparameter'][0]['order']) && 1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
                                 $this->addStmt(
                                     $value,
                                     $entry ['typeparameter'][0]['successor'],
@@ -710,16 +710,23 @@ class Data
                             $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
                             if ("" != $form->getResource())
                             {
-                                if (isset($entry['typeparameter'][0]['filter']) && 'unbound' == $entry['typeparameter'][0]['filter'] )
+                                if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource(), $order);
                                 else
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
                             }
                             else
-                                if (isset($entry['typeparameter'][0]['filter']) && 'unbound' == $entry['typeparameter'][0]['filter'] )
+                            {
+                                if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = array();
                                 else
-                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
+                            }
+                            if (isset($entry['typeparameter'][0]['addotherinstances']) && 1 == $entry['typeparameter'][0]['addotherinstances'])
+                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['allinstances'] = array_diff_key(
+                                    $this->loadInstances($entry['typeparameter'][0]['class']),
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances']
+                                );
                         }
                     }
                     elseif ('nestedconfig' == $entry ['sectiontype'])
@@ -747,7 +754,7 @@ class Data
             $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}';
         
         $instancesResult = $this->_store->sparqlQuery(
-            'SELECT ?instanceUri ' . ('' != $order ? '?successorUri' : '') . '
+            'SELECT ?instanceUri ?successorUri
             WHERE {
               ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $classUri . '>.
               ' . $filter  . '

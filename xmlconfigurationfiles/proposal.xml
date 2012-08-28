@@ -54,8 +54,9 @@
                         <order>1</order>
                         <editable>1</editable>
                         <class>http://www.dispedia.de/o/ProposalComponent</class>
-                        <filter>unbound</filter>
+                        <filter>onlyBoundToThisResource</filter>
                         <successor>http://www.dispedia.de/o/successorOfProposalComponent</successor>
+                        <addotherinstances>1</addotherinstances>
                         <!--<predessor></predessor>-->
                     </item>
                 </typeparameter>

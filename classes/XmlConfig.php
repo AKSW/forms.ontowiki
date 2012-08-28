@@ -232,6 +232,8 @@ class XmlConfig
                                                     $newTypeParamter['successor'] = (string) $parameter->successor;
                                                 if (isset($parameter->editable))
                                                     $newTypeParamter['editalbe'] = (string) $parameter->editable;
+                                                if (isset($parameter->addotherinstances))
+                                                    $newTypeParamter['addotherinstances'] = (string) $parameter->addotherinstances;
                                                 $typeparameter[] = $newTypeParamter;
                                             }
                                             break;

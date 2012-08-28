@@ -45,9 +45,21 @@
 
 <div class="predicateValue">
     <div class="divMultiplePredicateValue">
-         <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '')">
-            <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-add.png">
-        </a>
+        <?php if (isset($element ['typeparameter'][0]['addotherinstances'])) { ?>
+            <select id="otherInstances">
+                <option value=""><?php echo $this->_translate->_('newInstance'); ?></option>
+                <?php foreach ($element ['typeparameter'][0]['allinstances'] as $instanceUri => $instanceLabel) { ?>
+                    <option id="<?php echo md5($instanceUri); ?>" value="<?php echo $instanceUri; ?>"><?php echo $instanceLabel; ?></option>
+                <?php } ?>
+            </select>
+            <a href="javascript:addElement('otherInstances', '<?php echo $element ['typeparameter'][0]['classname']; ?>')">
+                <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-add.png">
+            </a>
+        <?php } else { ?>
+            <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '')">
+                <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-add.png">
+            </a>
+        <?php } ?>
     </div>
     <div<?php echo (isset($element ['typeparameter'][0]['editalbe']) ? " id=\"" . $element ['typeparameter'][0]['classname']  . "\"" : "") ?>>
         <?php foreach ( $element ['typeparameter'][0]['instances'] as $instanceUri => $instanceLabel) { ?>

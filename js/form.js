@@ -307,6 +307,28 @@ function elementDown(element)
 }
 
 /**
+ * element add a element
+ */
+function addElement(selectBoxId, elementContainer)
+{
+    var option = $('#' + selectBoxId + ' option:selected');
+    if ("" == option.val())
+        openBoxForm('#boxes', elementContainer, '');
+    else{
+        var elementData = new Array();
+        elementData['resourceUri'] = option.val();
+        elementData['label'] = option.text();
+        elementData['checked'] = 'checked';
+        elementData['md5'] = option.attr('id');
+        
+        var tpl = jsontemplate.Template($('#' + elementContainer + '-template').html());
+        $('#' + elementContainer).append(tpl.expand(elementData));
+        
+        option.remove();
+    }
+}
+
+/**
  * remove an element
  */
 function removeElement(element)
