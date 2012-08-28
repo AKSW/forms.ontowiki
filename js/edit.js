@@ -12,7 +12,7 @@
 /**
 * 
 */
-function addEntity (entity, context, resource, name)
+function addEntity (entity, context, resource)
 {
     var returnValue = 0;
     var action = 'newform';

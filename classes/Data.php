@@ -169,8 +169,8 @@ class Data
             array_shift($sectionEntries);
             
             foreach ($sectionEntries as $entry) {
-                // predicate
-                if ('predicate' == $entry ['sectiontype']) {
+                // predicate, only if is it not the label predicate, this is writen above
+                if ('predicate' == $entry ['sectiontype'] && "http://www.w3.org/2000/01/rdf-schema#label" != $entry ['predicateuri']) {
                     if (is_array($entry ['value']))
                     {
                         foreach ($entry ['value'] as $value)
@@ -202,9 +202,10 @@ class Data
         $json['newresources'] = array(
             'classUri' => $targetClass,
             'className' => strtolower($this->_resourceHelper->extractClassNameFromUri($targetClass)),
+            'md5' => md5($resource),
             'resourceUri' => $resource,
             'label' => $resourceLabel,
-            'checked' => 'checked="checked"'
+            'checked' => 'checked'
             );
         $json['status'] = 'ok';
         $json['form'] = $f->getDataAsArrays();

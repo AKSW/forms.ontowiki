@@ -16,16 +16,32 @@
     //echo "</pre>";
 ?>
 
-<div class="predicateValue">
-    <a class="button" href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '', '<?php echo $element ['name']; ?>')">+</a>
+<!-- template for instance from boxed form -->
+<div id="<?php echo $element ['typeparameter'][0]['classname']; ?>-template" style="display:none">
+    <div class="divClassPredicateValue" id="{md5}">
+        <input type="checkbox" class="predicateValue_Instance" name="<?php echo $element ['name']; ?>" value="{resourceUri|htmltag}" {checked|htmltag}={checked|htmltag}>
+        <span>{label}</span>
+        <a href="javascript:elementUp('{md5}')">up</a>
+        <a href="javascript:elementDown('{md5}')">down</a>
+        <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '{resourceUri}')">edit
+            <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png">
+        </a>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="predicateValue" <?php echo (isset($element ['typeparameter'][0]['editalbe']) ? "id=\"" . $element ['typeparameter'][0]['classname']  . "\"" : "") ?>>
+    <a class="button" href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '')">+</a>
     <?php foreach ( $element ['typeparameter'][0]['instances'] as $instanceuri => $instanceLabel ) { ?>
         <div class="divClassPredicateValue" id="<?php echo md5($instanceuri); ?>">
-            <input type="checkbox" class="predicateValue_Instance hidden" name="<?php echo $element ['name']; ?>" value="<?php echo $instanceuri; ?>" checked="checked"); />
+            <input type="checkbox" class="predicateValue_Instance" name="<?php echo $element ['name']; ?>" value="<?php echo $instanceuri; ?>" checked="checked" />
             <span><?php echo $instanceLabel; ?></span>
             <a href="javascript:elementUp('<?php echo md5($instanceuri); ?>')">up</a>
             <a href="javascript:elementDown('<?php echo md5($instanceuri); ?>')">down</a>
             
-            <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instanceuri; ?>', '<?php echo $element ['name']; ?>')">edit</a>
+            <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
+                <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instanceuri; ?>')">edit</a>
+            <?php } ?>
             <div class="clear"></div>
         </div>
     <?php } ?>

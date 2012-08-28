@@ -52,6 +52,7 @@
                 <typeparameter>
                     <item>
                         <order>1</order>
+                        <editable>1</editable>
                         <class>http://www.dispedia.de/o/ProposalComponent</class>
                         <filter>unbound</filter>
                         <successor>http://www.dispedia.de/o/successorOfProposalComponent</successor>

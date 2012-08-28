@@ -34,7 +34,7 @@ function setFormulaArrayFields (f)
             {
                 if ( "alsfrsquestion" == f.sections[i][j].type )
                     f.sections [i][j].value = $("input[name=" + f.sections [i][j].name + "]:checked").val();
-                else if ( "class" == f.sections[i][j].type )
+                else if ( "class" == f.sections[i][j].type || "multiple" == f.sections[i][j].type )
                 {
                     if (0 < $("input[name=" + f.sections [i][j].name + "]:checked").length)
                     {
@@ -47,6 +47,15 @@ function setFormulaArrayFields (f)
                     }
                     else
                         f.sections [i][j].value = "";
+                }
+                else if (1 < $("input[name=" + f.sections [i][j].name + "]").length)
+                {
+                    values = new Array();
+                    $("input[name=" + f.sections [i][j].name + "]").each(function(index) {
+                        values[index] = $(this).val();
+                    });
+
+                    f.sections [i][j].value = values;
                 }
                 else
                     f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
@@ -253,10 +262,10 @@ function checkMandatoryFields (f)
     return returnValue;
 }
 
-function openBoxForm(id, form, resource, name) {
+function openBoxForm(id, form, resource) {
     boxopen = true;
     // load the form from server
-    if (1 == addEntity (form, id, resource, name))
+    if (1 == addEntity (form, id, resource))
     {
         // because firefox is slow
         $('div.section-mainwindows').css('opacity', 'inherit');

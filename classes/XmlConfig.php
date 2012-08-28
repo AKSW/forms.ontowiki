@@ -230,6 +230,8 @@ class XmlConfig
                                                     $newTypeParamter['filter'] = (string) $parameter->filter;
                                                 if (isset($parameter->successor))
                                                     $newTypeParamter['successor'] = (string) $parameter->successor;
+                                                if (isset($parameter->editable))
+                                                    $newTypeParamter['editalbe'] = (string) $parameter->editable;
                                                 $typeparameter[] = $newTypeParamter;
                                             }
                                             break;
