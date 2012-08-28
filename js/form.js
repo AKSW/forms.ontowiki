@@ -305,3 +305,11 @@ function elementDown(element)
 {
     $('#' + element).insertAfter($('#' + element).next());
 }
+
+/**
+ * remove an element
+ */
+function removeElement(element)
+{
+    $('#' + element).remove();
+}

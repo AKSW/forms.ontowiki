@@ -704,7 +704,7 @@ class Data
                         if ('multiple' == $entry ['type'])
                         {
                             $order = "";
-                            if (1 == $entry['typeparameter'][0]['order'])
+                            if (isset($entry['typeparameter'][0]['order']) && 1 == $entry['typeparameter'][0]['order'])
                                 $order = $entry['typeparameter'][0]['successor'];
                             // save classname from classuri
                             $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
