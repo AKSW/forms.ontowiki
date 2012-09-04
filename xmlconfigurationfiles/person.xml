@@ -93,7 +93,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
-                    <class>http://www.dispedia.de/o/Patient</class>
+						<class>http://www.dispedia.de/o/Patient</class>
                     </item>
                 </typeparameter>
             </predicate>
