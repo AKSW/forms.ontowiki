@@ -19,7 +19,7 @@
 
     <!-- Introducing text to inform the user about the formula. -->
     <description>
-        <de>Hier können Sie Daten zu einen Vorschlagkomponente erfassen.</de>
+        <de>Hier können Sie Daten zu einen Vorschlagskomponente erfassen.</de>
         <en>Here you can insert proposal component information.</en>
     </description>
 
@@ -51,9 +51,8 @@
                 <type>multiple</type>
                 <typeparameter>
                     <item>
-                        <!--<order>1</order>-->
                         <class>http://www.dispedia.de/o/ProposalDescription</class>
-                        <filter>unbound</filter>
+                        <filter>onlyBoundToThisResource</filter>
                     </item>
                 </typeparameter>
             </predicate>
