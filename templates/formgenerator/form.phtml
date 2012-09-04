@@ -166,7 +166,13 @@
                 
                     <!-- Predicate title -->        
                     <div class="predicateTitle hidden"><?php echo $element ['title']; ?></div>
-                    <?php require $this->dirJsHtmlPlugins . 'hidden.phtml'; ?>            
+                    <?php require $this->dirJsHtmlPlugins . 'hidden.phtml'; ?>
+                            
+                <?php } elseif ('textarea' == $element ['type']) { ?>
+                
+                    <!-- Predicate title -->        
+                    <div class="predicateTitle textarea"><?php echo $element ['title']; ?></div>
+                    <?php require $this->dirJsHtmlPlugins . 'textarea.phtml'; ?>           
                             
                 <?php } elseif ('alsfrsquestion' == $element ['type']) { ?>
                 
