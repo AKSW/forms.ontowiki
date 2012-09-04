@@ -417,7 +417,7 @@ class Data
                 }
                 
                 // predicate
-                if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue)) {
+                if ('predicate' == $entry ['sectiontype'] && false === is_object ($oldValue) && "http://www.w3.org/2000/01/rdf-schema#label" != $entry ['predicateuri']) {
                     
                     // TODO: mehrwertige Values werten hier falsch verglichen, also immer als unterschiedlich behandelt
                     if ($entry ['value'] != $oldValue || is_array($entry ['value']) || is_array($oldValue)) 
@@ -467,7 +467,7 @@ class Data
                         else
                         {
                             $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
-                            if (is_array($oldValue))
+                            if (is_array($oldValue) && isset($entry['typeparamter'][0]['order'])  && 1 == $entry ['typeparameter'][0]['order'])
                             {
                                 foreach ($oldValue as $valueNumber => $value)
                                 {
@@ -489,7 +489,7 @@ class Data
                         {
                             foreach ($entry ['value'] as $valueNumber => $value)
                             {
-                                if (1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
+                                if (isset($entry ['typeparameter'][0]['order']) && 1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
                                     $this->addStmt(
                                         $value,
                                         $entry ['typeparameter'][0]['successor'],
@@ -590,11 +590,11 @@ class Data
      */
     public function removeStmt($s, $p, $o)
     {
+        $deletedStatements = 0;
         // TODO: löschen von mehreren object values sollte nicht so statfinden, nur ne zwischenlösung.
         // Diese Funktion sollte nur einmal pro Tripel aufgerufen werden
         if (is_array($o))
         {
-            $deletedStatements = 0;
             foreach ($o as $object)
             {
                 // set type(uri or literal)
@@ -610,7 +610,6 @@ class Data
                     isset($o) ? array('value' => $object, 'type' => $type) : null
                 );
             }
-            return $deletedStatements;
         }
         else
         {
@@ -620,13 +619,15 @@ class Data
                 : 'literal';
             
             // aremove a triple form datastore
-            return $this->_store->deleteMatchingStatements(
+            $deletedStatements =  $this->_store->deleteMatchingStatements(
                 $this->_selectedModelUri,
                 $s,
                 $p,
                 isset($o) ? array('value' => $o, 'type' => $type) : null
             );
         }
+        
+        return $deletedStatements;
     }
     
     
