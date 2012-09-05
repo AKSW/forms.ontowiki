@@ -13,8 +13,8 @@
 <?php if ("box" == $this->layout) { ?>
 <!-- important variables -->
 <script type="text/javascript">
-    var boxdata = {};
-    $.data(boxdata, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
+    tempboxdata = {};
+    $.data(tempboxdata, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
 </script>
 <?php } ?>
 

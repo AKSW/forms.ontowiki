@@ -53,6 +53,7 @@
                     <item>
                         <class>http://www.dispedia.de/o/ProposalDescription</class>
                         <filter>onlyBoundToThisResource</filter>
+                        <editable>1</editable>
                     </item>
                 </typeparameter>
             </predicate>

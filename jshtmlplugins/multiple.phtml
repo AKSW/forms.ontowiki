@@ -31,7 +31,7 @@
         </div>       
         <div class="divMultipleButtons">
             <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '{resourceUri}')">
+                <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '{resourceUri}')">
                     <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png">
                 </a>
             <?php } ?>
@@ -56,7 +56,7 @@
                 <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-add.png">
             </a>
         <?php } else { ?>
-            <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '')">
+            <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '')">
                 <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-add.png">
             </a>
         <?php } ?>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="divMultipleButtons">
                     <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                        <a href="javascript:openBoxForm('#boxes', '<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instanceUri; ?>')">
+                        <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instanceUri; ?>')">
                             <img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png">
                         </a>
                     <?php } ?>

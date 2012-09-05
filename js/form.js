@@ -17,6 +17,9 @@
  */
 
 var boxopen = false;
+var boxnumber = 0;
+var boxdata = new Array();
+var tempboxdata =  {};
 
 function setFormulaArrayFields (f)
 {        
@@ -113,6 +116,11 @@ function setFormulaModeTo (f, newMode)
  */
 function submitFormula (url, data, mode) 
 {
+    if ((typeof data === 'object' && data && data instanceof Array))
+    {
+        data = boxdata[boxnumber-1];
+    }
+
     var reload = true;
     // show please wait box
     $("#pleaseWaitBox").show ();
@@ -184,10 +192,12 @@ function submitFormula (url, data, mode)
             }
             
             if (boxopen)
+            {
                 reload = false;
+                // close box view if submit complete
+                closeBoxForm();
+            }
             
-            // close box view if submit complete
-            closeBoxForm();
             
             $("#pleaseWaitBox").hide ();
             
@@ -262,22 +272,37 @@ function checkMandatoryFields (f)
     return returnValue;
 }
 
-function openBoxForm(id, form, resource) {
+function openBoxForm(form, resource) {
+    
     boxopen = true;
+    boxnumber++;
+    
+    $('#boxes').append('<div id="box' + boxnumber + '"></div>');
     // load the form from server
-    if (1 == addEntity (form, id, resource))
+    if (1 == addEntity (form, '#box' + boxnumber, resource))
     {
-        // because firefox is slow
-        $('div.section-mainwindows').css('opacity', 'inherit');
         
-        $(id).modal({
-            'minWidth':750,
-            'close' : false,
-            'onClose' : function () { $('#boxes').empty(); $.modal.close(); },
-            'persist' : true,
-            'appendTo' : '.active-tab-content'
-        });
+        if (1 == boxnumber){
+            // because firefox is slow
+            $('div.section-mainwindows').css('opacity', 'inherit');
+        }
+        else
+        {
+            $.modal.close();
+            $('#box' + (boxnumber - 1)).hide();
+        }
+        showModal();
     }
+    boxdata[boxnumber - 1] = tempboxdata;
+}
+function showModal()
+{
+    $('#boxes').modal({
+        minWidth:750,
+        persist : true,
+        appendTo : '.active-tab-content',
+        animation : 'fade'
+    });
 }
 
 /**
@@ -285,9 +310,18 @@ function openBoxForm(id, form, resource) {
  */
 function closeBoxForm() 
 {
-    $('#boxes').empty();
+    $('#box' + boxnumber).empty();
+    boxnumber--;
     $.modal.close();
-    boxopen = false;
+    if (0 != boxnumber)
+    {
+        $('#box' + boxnumber).show();
+        showModal();
+    }
+    
+    
+    if (0 == boxnumber)
+        boxopen = false;
 }
 
 /**
