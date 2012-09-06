@@ -36,7 +36,7 @@ class Resource
                        ? Resource::extractClassNameFromUri ($className)
                        : $className;
                     
-        $label       = urlencode(implode ('', $f->getLabelpartValues ()));
+        $label       = quoted_printable_decode(implode ('', $f->getLabelpartValues ()));
         
         $time = time ();
         
