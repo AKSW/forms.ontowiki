@@ -347,7 +347,7 @@ function addElement(selectBoxId, elementContainer)
 {
     var option = $('#' + selectBoxId + ' option:selected');
     if ("" == option.val())
-        openBoxForm('#boxes', elementContainer, '');
+        openBoxForm(elementContainer, '');
     else{
         var elementData = new Array();
         elementData['resourceUri'] = option.val();
