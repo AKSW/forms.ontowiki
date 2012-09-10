@@ -75,6 +75,14 @@ class XmlConfig
                     case 'targetclass':
                         $form->setTargetClass ((string) $nodeValue [0]);
                         
+                        // set title from targetclass if no title is set in xml
+                        $title = $this->_dataHelper->getResourceTitle((string) $form->getTargetClass());
+
+                        if (true == Erfurt_Uri::check($title) || '' == $title)
+                            $title = Resource::extractClassNameFromUri ($form->getTragetClass());
+                            
+                        $form->setTitle($title);
+                        
                         break;
                         
                     case 'targetmodel':
@@ -314,6 +322,8 @@ class XmlConfig
                                      'index'        => $form->getIndex() .','. $entryIndex,
                                      'relations'    => $relations,
                                      'typeclass'    => isset ($nestedconfig->typeclass) ? $nestedconfig->typeclass : "",
+                                    //TODO: use forms instead of form
+                                     'forms'        => array(),
                                      'form'         => $f, 
                                      'sectiontype'  => 'nestedconfig'
                                );

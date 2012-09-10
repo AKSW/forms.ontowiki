@@ -1,7 +1,7 @@
-<?php 
+<?php
 /**
  * Template for form action
- * 
+ *
  * @category   OntoWiki
  * @package    OntoWiki_extensions_formgenerator
  * @author     Lars Eidam <larseidam@googlemail.com>
@@ -20,28 +20,28 @@
 
 <!-- only if the form is no in box layout -->
 <?php if ("box" != $this->layout) { ?>
-    
+
     <!-- important variables -->
-    <script type="text/javascript">       
+    <script type="text/javascript">
         var url = '<?php echo $this->url; ?>';
         var urlMvc = urlBase + 'formgenerator/';
-        
+
         var data = {};
         $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
-     </script>   
-    
+     </script>
+
     <!-- set the title of the action -->
     <?php $this->placeholder('main.window.title')->set($this->form->getTitle()); ?>
-    
+
     <!-- div for boxform -->
     <div id="boxes"></div>
-    
+
     <!-- formular select box -->
     <div align="right" class="messagebox">
         <form id="formformlist" method="get" action="">
-    
+
             <?php echo $this->_translate->_('Available forms:'); ?>
-    
+
             <select id="selectformlist" name="file">
                 <?php
                     // Read all XML files in formconfig folder and generate a list.
@@ -54,8 +54,8 @@
             </select>
         </form>
     </div>
-    
-    <script type="text/javascript">       
+
+    <script type="text/javascript">
         $('#selectformlist').change(function() {
             $('#formformlist').submit();
         });
@@ -69,238 +69,261 @@
 
 <!-- formula -->
 <form id="mainform" method="post" action="">
-    
+
     <div class="content">
         <h2><?php echo $this->form->getTitle(); ?></h2>
     </div>
-    
+
     <?php if('' != $this->form->getDescription()) { ?>
-    
+
     <div class="content">
         <?php echo $this->form->getDescription(); ?>
-    </div>    
-    
+    </div>
+
     <?php } ?>
-        
+
     <!-- select a resource of a specific type -->
     <?php if (true == isset($this->resourcesOfType)) { ?>
-    
+
         <form method="post" action="<?php echo $this->url; ?>form/">
             <div class="content">
                 <div class="predicateTitle"><?php echo $this->_translate->_('Please select:'); ?></div>
-                
+
                 <div class="predicateValue">
                     <select name="r">
-                        
+
                         <option value=""><?php echo $this->_translate->_('please select'); ?></option>
-                
+
                     <?php foreach ($this->resourcesOfType as $resource) { ?>
-                    
+
                         <?php if ($this->selectedResource == $resource['uri']) { ?>
-                        
+
                             <option value="<?php echo $resource ['uri']; ?>" selected><?php echo $resource ['label']; ?></option>
-                            
+
                         <?php } else { ?>
-                            
+
                             <option value="<?php echo $resource ['uri']; ?>"><?php echo $resource ['label']; ?></option>
-                        
+
                         <?php } ?>
-                    
+
                     <?php } ?>
-                
+
                     </select>
                 </div>
             </div>
-            
-            
+
+
             <div class="content">
                 <div class="predicateTitle">&nbsp;</div>
                 <div class="predicateValue"><input type="submit" value="<?php echo $this->_translate->_('Select'); ?>"></div>
-            </div> 
+            </div>
         </form>
-    
+
     <?php } ?>
-    
+
     <?php if (false !== $this->showForm) { ?>
-    
+
     <hr>
-    
+
     <!-- sections (predicates and nestedconfigs) -->
     <?php foreach ($this->form->getSections () as $section) { ?>
 
     <div class="content">
-        
+
         <!-- Title -->
         <h3><?php echo $section ['title']; ?></h3>
-        
+
         <?php foreach ($section as $element) { if (false == isset($element ['sectiontype']) ) continue; ?>
-                    
+
             <?php if ('predicate' == $element ['sectiontype']) { ?>
             <!-- PREDICATE -->
+
+                <?php if ('report' != $this->form->getFormulaType()) { ?>
+                    <!-- Predicate title -->
+                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                <?php } ?>
                 
                 <?php if ('list' == $element ['type']) { ?>
-                    
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+
                     <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
-            
+
                 <?php } elseif ('resource' == $element ['type']) { ?>
-                
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+
                     <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
-                            
+
                 <?php } elseif ('class' == $element ['type']) { ?>
-                
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+
                     <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>
-                            
+
                 <?php } elseif ('multiple' == $element ['type']) { ?>
-                
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+
                     <?php require $this->dirJsHtmlPlugins . 'multiple.phtml'; ?>
-                            
+
                 <?php } elseif ('hidden' == $element ['type']) { ?>
-                
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle hidden"><?php echo $element ['title']; ?></div>
+
                     <?php require $this->dirJsHtmlPlugins . 'hidden.phtml'; ?>
-                            
+
                 <?php } elseif ('textarea' == $element ['type']) { ?>
-                
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle textarea"><?php echo $element ['title']; ?></div>
-                    <?php require $this->dirJsHtmlPlugins . 'textarea.phtml'; ?>           
-                            
+
+                    <?php require $this->dirJsHtmlPlugins . 'textarea.phtml'; ?>
+
                 <?php } elseif ('alsfrsquestion' == $element ['type']) { ?>
-                
-                    <?php require $this->dirJsHtmlPlugins . 'alsfrsquestion.phtml'; ?>            
-                
+
+                    <?php require $this->dirJsHtmlPlugins . 'alsfrsquestion.phtml'; ?>
+
                 <?php } else { ?>
-                
-                    <!-- Predicate title -->        
-                    <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+
                     <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
-                
+
                 <?php } ?>
                 
-                <br/>
-            
-            
+                <div class="clear"></div>
+
             <?php } elseif ('nestedconfig' == $element ['sectiontype']) { ?>
-            <!-- NESTEDCONFIG - level 2 ------------------------------------->            
-                       
+            <!-- NESTEDCONFIG - level 2 ------------------------------------->
+            
                 <?php $oldElement = $element; ?>
-                       
-                       
-                <?php foreach ($oldElement ['form']->getSections () as $section) { ?>
-                 
+                
+                <?php foreach ($element ['forms'] as $nestedform) { ?>
+                <div class="nestedconfig">
+                    
+                <?php foreach ($nestedform->getSections () as $section) { ?>
+
+                    <!-- Title -->
+                    <h3><?php echo $section ['title']; ?></h3>
+                    
                      <?php foreach ($section as $element) { ?>
-                     
+
                      <?php if (false == is_array($element)) continue; ?>
-                     
+
                         <?php if ('predicate' == $element ['sectiontype']) { ?>
                         <!-- PREDICATE -->
-                        
-                            <!-- Predicate title -->        
-                            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                            
+
+                            <?php if ('report' != $this->form->getFormulaType()) { ?>
+                                <!-- Predicate title -->
+                                <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+
+                            <?php } ?>
+
                             <?php if ('list' == $element ['type']) { ?>
-                            
+
                                 <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
-                        
+
                             <?php } elseif ('resource' == $element ['type']) { ?>
-                
+
                                 <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
-                                
+
                             <?php } elseif ('class' == $element ['type']) { ?>
-                
-                                <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>            
-                            
+
+                                <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>
+
+                            <?php } elseif ('multiple' == $element ['type']) { ?>
+
+                                <?php require $this->dirJsHtmlPlugins . 'multiple.phtml'; ?>
+
+                            <?php } elseif ('hidden' == $element ['type']) { ?>
+
+                                <?php require $this->dirJsHtmlPlugins . 'hidden.phtml'; ?>
+
+                            <?php } elseif ('textarea' == $element ['type']) { ?>
+
+                                <?php require $this->dirJsHtmlPlugins . 'textarea.phtml'; ?>
+
                             <?php } else { ?>
-                            
+
                                 <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
-                            
+
                             <?php } ?>
                             
-                            <br/><br/>
-                        
-                        
+                            <div class="clear"></div>
+
                         <?php } elseif ('nestedconfig' == $element ['sectiontype']) { ?>
                         <!-- NESTEDCONFIG - level 3 ------------------------------------->
-                        
-                            <!-- Title -->
-                            <h4><?php echo $element ['form']->getTitle (); ?></h4>
-                        
+
                             <?php $oldElement2 = $element; ?>
-                        
-                            <?php foreach ($oldElement2 ['form']->getSections () as $section) { ?>
+
+                            <?php foreach ($element ['forms'] as $nestedform2) { ?>
                             
+                            <div class="nestedconfig">
+                            <?php foreach ($nestedform2->getSections () as $section) { ?>
+
                                 <?php foreach ($section as $element) { ?>
-                                
-                                    <?php if ('predicate' == $element ['sectiontype']) { ?>
+
+                                    <?php if (isset($element ['sectiontype']) && 'predicate' == $element ['sectiontype']) { ?>
                                         <!-- PREDICATE -->
-                                        
-                                            <!-- Predicate title -->        
-                                            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
-                                            
-                                            <?php if ('list' == $element ['type']) { ?>
-                                            
-                                                <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
-                                        
-                                            <?php } elseif ('resource' == $element ['type']) { ?>
-                
-                                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
-                                                
-                                            <?php } elseif ('class' == $element ['type']) { ?>
-                
-                                                <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>          
-                                            
-                                            <?php } else { ?>
-                                            
-                                                <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
-                                            
+
+                                            <?php if ('report' != $this->form->getFormulaType()) { ?>
+                                                <!-- Predicate title -->
+                                                <div class="predicateTitle"><?php echo $element ['title']; ?></div>
                                             <?php } ?>
                                             
-                                            <br/><br/>
-                                        
-                                        
+                                            <?php if ('list' == $element ['type']) { ?>
+
+                                                <?php require $this->dirJsHtmlPlugins . 'list.phtml'; ?>
+
+                                            <?php } elseif ('resource' == $element ['type']) { ?>
+
+                                                <?php require $this->dirJsHtmlPlugins . 'resource.phtml'; ?>
+
+                                            <?php } elseif ('class' == $element ['type']) { ?>
+
+                                                <?php require $this->dirJsHtmlPlugins . 'class.phtml'; ?>
+
+                                            <?php } elseif ('multiple' == $element ['type']) { ?>
+                
+                                                <?php require $this->dirJsHtmlPlugins . 'multiple.phtml'; ?>
+                
+                                            <?php } elseif ('hidden' == $element ['type']) { ?>
+                
+                                                <?php require $this->dirJsHtmlPlugins . 'hidden.phtml'; ?>
+                
+                                            <?php } elseif ('textarea' == $element ['type']) { ?>
+                
+                                                <?php require $this->dirJsHtmlPlugins . 'textarea.phtml'; ?>
+
+                                            <?php } else { ?>
+
+                                                <?php require $this->dirJsHtmlPlugins . 'textfield.phtml'; ?>
+
+                                            <?php } ?>
+
+                                            <div class="clear"></div>
+
                                         <?php } ?>
-                                
+
                                 <?php } ?>
-                            
-                            <?php } ?>   
-                            
+
+                            <?php } ?>
+                            </div>
+                            <?php } ?>
+
                             <?php $element = $oldElement2; ?>
-                            
-                        <!-- NESTEDCONFIG - level 3 end -->                    
+
+                        <!-- NESTEDCONFIG - level 3 end -->
                         <?php } ?>
-                     
+                        
                     <?php } ?>
-                    
-                     
+
+
                 <?php } ?>
-                
+                </div>
+                <?php } ?>
                 <?php $element = $oldElement; ?>
-                
-            
+
+
             <!-- NESTEDCONFIG - level 2 end -->
             <?php } ?>
-            
-            <br/>
-                       
+
         <?php } ?>
-        
+
     </div>
-        
+
     <?php } ?>
-            
+
     <div id="pleaseWaitBox" class="hidden">Please wait...</div>
-    
+
     <?php } ?>
-    
+
 </form>
 <?php if ("box" == $this->layout) { ?>
         </div>

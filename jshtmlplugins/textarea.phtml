@@ -9,5 +9,14 @@
  */
 ?>
 <div class="predicateValue">
-    <textarea id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="text predicateValue_Textarea"><?php echo $element ['value']; ?></textarea>
+    
+    <?php if ('report' != $this->form->getFormulaType()) { ?>
+    
+        <textarea id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="text predicateValue_Textarea"><?php echo $element ['value']; ?></textarea>
+        
+    <?php } else { ?>
+    
+        <span id="<?php echo $element ['name']; ?>" class="predicateValue_Textarea_span"><?php echo $element ['value']; ?></span>
+
+    <?php } ?>
 </div>

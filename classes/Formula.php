@@ -174,6 +174,29 @@ class Formula
         $this->_data ['sections'] = $sections;
     }
     
+    /**
+     * @param $sectionNumber number of section
+     * @param $sectionEntryNumber number of section
+     * @param $key array key to change
+     * @param $value new value
+     * @return void 
+     */
+    public function setSectionKey ($sectionNumber, $sectionEntryNumber, $key, $value)
+    {
+        $this->_data ['sections'][$sectionNumber][$sectionEntryNumber][$key] = $value;
+    }
+    
+    /**
+     * @param $sectionNumber number of section
+     * @param $sectionEntryNumber number of section
+     * @param $key array key to change
+     * @return section value 
+     */
+    public function getSectionKey ($sectionNumber, $sectionEntryNumber, $key)
+    {
+        return $this->_data ['sections'][$sectionNumber][$sectionEntryNumber][$key];
+    }
+    
     
     /**
      * @return string 
@@ -382,16 +405,18 @@ class Formula
                 '<br/>- description: '. $this->getDescription () .
                 '<br/>- label parts: '. implode (', ', $this->getLabelparts ()) .
                 '<br/>- mode: '. $this->getMode () .
-                '<br/>- resource: '. implode (', ', $this->getResource ()) .
+                '<br/>- resource: '. $this->getResource () .
                 '<br/>- target class: '. $this->getTargetClass () .
                 '<br/>- target model: '. $this->getTargetModel () .
                 '<br/>- model namespace: '. $this->getModelNamespace () .
                 '<br/>- XML config: '. $this->getxmlfile () .
+                '<br/>- formtype: '. $this->getFormulaType () .
                 '<br/>- sections: ';
           
         foreach ($this->getSections () as $section)
+        {
             foreach ($section as $s)
-                if ('predicate' == $s ['sectiontype'])
+                if (isset($s['sectiontype']) && 'predicate' == $s['sectiontype'])
                 {
                     $return .= '<br/>&nbsp;&nbsp;+ predicate ';
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - index: '. $s ['index'];
@@ -399,13 +424,25 @@ class Formula
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - name: '. $s ['name'];
                     $return .= '<br/>&nbsp;&nbsp;&nbsp; - predicateuri: '. $s ['predicateuri'];
                 }
-                elseif ('nestedconfig' == $s ['sectiontype'])
+                elseif (isset($s['sectiontype']) && 'nestedconfig' == $s ['sectiontype'])
                 {
                     $return .= '<br/>&nbsp;&nbsp;+ nestedconfig ';
-                    $return .= '<br/>';
-                    $return .= $s ['form']->toString ();
+                    if (0 < count($s ['forms']))
+                    {
+                        $return .= '<br/>&nbsp;&nbsp;&nbsp; - forms: '. count($s ['forms']);
+                        foreach ($s ['forms'] as $nestedform)
+                        {
+                            $return .= '<br/>';
+                            $return .= $nestedform->toString ();
+                        }
+                    }
+                    else
+                    {
+                        $return .= '<br/>';
+                        $return .= $s ['form']->toString ();
+                    }
                 }
-                
+            }
         return $return;
     }
     
@@ -463,6 +500,8 @@ class Formula
                         'relations'     => $s ['relations'],
                         'index'         => $s ['index'],
                         'xmlfile'       => $s ['xmlfile'],
+                        //TODO: use forms instead of form
+                        'forms'         => array(),
                         'form'          => $s ['form']->getDataAsArrays ()
                    );
                 }
@@ -540,6 +579,8 @@ class Formula
                         'xmlfile'      => $section ['form']['xmlfile'],
                         'index'        => $section ['form']['index'],
                         'relations'    => $section ['relations'],
+                        //TODO: use forms instead of form
+                        'forms'        => array(),
                         'form'         => $this->initByArray ($section ['form']), 
                         'sectiontype'  => 'nestedconfig'
                    );

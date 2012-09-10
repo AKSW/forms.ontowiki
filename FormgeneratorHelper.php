@@ -40,7 +40,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
             }
             // If an Resource was selected
             else if ( (string) $owApp->selectedModel !== $selectedResource
-                        && ( 'properties' ==  $a  || 'form' == $a ) )
+                        && ( 'properties' ==  $a  || 'form' == $a || 'report' == $a ) )
             {
                 // Add entry in tab list
                 OntoWiki_Navigation::register (
@@ -51,6 +51,17 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                         'name'       => 'EditResource'
                     )
                 );
+                if (false !== stristr($selectedClass, 'proposal')) {
+                    // Add entry in tab list
+                    OntoWiki_Navigation::register (
+                       'formgenerator_report', 
+                       array(
+                           'controller' => 'formgenerator', 
+                           'action'     => 'report', 
+                           'name'       => 'ReportResource'
+                       )
+                   );
+                }
             }
         }
     }

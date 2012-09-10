@@ -231,39 +231,49 @@
     <?php } ?>
     <?php foreach ( $classesList as $class ) { ?>
         <?php if (!isset($item['relation']) || $class['hasinstances']) { ?>
-            <?php for ( $i = 0; $i <= $class ['depth']; $i++ ) { ?>
-                <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
-            <?php } ?>
-            <div class="divClassPredicateValue">
-                <?php if (!(0 == $class ['depth'] && isset($item['shownooverclass'])) && (!isset($item['relation']) || $class['hasinstances'])) { ?>
-                    <?php if (!isset($item['relation'])) { ?>
-                        <div class="divClassPredicateValueInput">
-                            <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/>
-                        </div>
-                    <?php } ?>
-                    <span<?php echo (isset($item['relation']) ? ' class="bold"' : ''); ?>><?php echo $class ['label']; ?></span>
-                    <?php if(!isset($item['relation']) && isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                        <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $class ['uri']; ?>')"><img src="../themes/dispedia/images/icon-edit.png"></a>
-                    <?php } ?>
-                    <div class="clear"></div>
+            <?php if ('report' != $this->form->getFormulaType()) { ?>
+                <?php for ( $i = 0; $i <= $class ['depth']; $i++ ) { ?>
+                    <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
                 <?php } ?>
-                <?php if (isset($item['relation']) && isset($class['instances']) && 0 < count($class['instances'])) { ?>
-                    <?php foreach ( $class['instances'] as $instancesUri => $instancesLabel ) { ?>
-                        <?php for ( $i = 0; $i <= $class ['depth'] + 1; $i++ ) { ?>
-                            <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
+                <div class="divClassPredicateValue">
+                    <?php if (!(0 == $class ['depth'] && isset($item['shownooverclass'])) && (!isset($item['relation']) || $class['hasinstances'])) { ?>
+                        <?php if (!isset($item['relation'])) { ?>
+                            <div class="divClassPredicateValueInput">
+                                <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $class ['uri']; ?>"<?php echo ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value']) ? ' checked="checked"' : ''); ?>/>
+                            </div>
                         <?php } ?>
-                        <div class="divClassPredicateValueInput">
-                            <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $instancesUri; ?>"<?php echo ((is_array($element['value']) && false !== array_search($instancesUri, $element['value'])) || ($instancesUri == $element['value']) ? ' checked="checked"' : ''); ?>/>
-                        </div>
-                        <?php echo $instancesLabel; ?>
-                        <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
-                            <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instancesUri; ?>')"><img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png"></a>
+                        <span<?php echo (isset($item['relation']) ? ' class="bold"' : ''); ?>><?php echo $class ['label']; ?></span>
+                        <?php if(!isset($item['relation']) && isset($element ['typeparameter'][0]['editalbe'])) { ?>
+                            <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $class ['uri']; ?>')"><img src="../themes/dispedia/images/icon-edit.png"></a>
                         <?php } ?>
                         <div class="clear"></div>
                     <?php } ?>
-                    <div class="placeholder"></div>
+                    <?php if (isset($item['relation']) && isset($class['instances']) && 0 < count($class['instances'])) { ?>
+                        <?php foreach ( $class['instances'] as $instancesUri => $instancesLabel ) { ?>
+                            <?php for ( $i = 0; $i <= $class ['depth'] + 1; $i++ ) { ?>
+                                <div class="divClassPredicateDepth<?php echo ' divClassPredicateDepth' . $i; ?>"></div>
+                            <?php } ?>
+                            <div class="divClassPredicateValueInput">
+                                <input type="checkbox" class="predicateValue_Class" name="<?php echo $element ['name']; ?>" value="<?php echo $instancesUri; ?>"<?php echo ((is_array($element['value']) && false !== array_search($instancesUri, $element['value'])) || ($instancesUri == $element['value']) ? ' checked="checked"' : ''); ?>/>
+                            </div>
+                            <?php echo $instancesLabel; ?>
+                            <?php if (isset($element ['typeparameter'][0]['editalbe'])) { ?>
+                                <a href="javascript:openBoxForm('<?php echo $element ['typeparameter'][0]['classname']; ?>', '<?php echo $instancesUri; ?>')"><img src="<?php echo $this->url; ?>../themes/dispedia/images/icon-edit.png"></a>
+                            <?php } ?>
+                            <div class="clear"></div>
+                        <?php } ?>
+                        <div class="placeholder"></div>
+                    <?php } ?>
+                </div>
+            <?php } else { ?>
+                <?php if (!(0 == $class ['depth'] && isset($item['shownooverclass'])) && (!isset($item['relation']) || $class['hasinstances'])) { ?>
+                    <?php if ((is_array($element['value']) && false !== array_search($class['uri'], $element['value'])) || ($class['uri'] == $element['value'])) { ?>
+                        <div class="divMultiplePredicateValue">
+                            <div><span><?php echo $class ['label']; ?></span></div>
+                        </div>
+                    <?php } ?>
                 <?php } ?>
-            </div>
+            <?php } ?>
         <?php } ?>
     <?php } ?>
 </div>

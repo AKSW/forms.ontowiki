@@ -12,17 +12,20 @@
     float:none;
     clear:both;
 }
+span.bold {
+    font-weight: 900;
+}
 .predicateTitle {
     float: left;
     width: 200px;
-    height: 30px;
+    padding-bottom: 10px;
     font-size: 13px;
     font-weight: bold;
     vertical-align: middle;
-    clear:both;
 }
 .predicateValue {
     float: left;
+    padding-bottom: 10px;
     width: 400px;
     margin: 0px 1%;
 }
@@ -34,6 +37,11 @@
     height: 18px;
     background-color: #D3CCFF;
 }
+
+.nestedconfig {
+    padding-left:20px;
+}
+
 /**
  * overwrite ontowiki hidden class, because the original dont work in box view
  */

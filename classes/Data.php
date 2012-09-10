@@ -800,7 +800,7 @@ class Data
     {
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
-        
+        $form->setMode('edit');
         if ( 0 == count($properties)) return;
         else
         {
@@ -808,9 +808,9 @@ class Data
             $sections = $form->getSections();
             
             // 
-            foreach ($sections as $sectionEntries) 
+            foreach ($sections as $sectionNumber => $sectionEntries) 
             {
-                foreach ($sectionEntries as $entry) 
+                foreach ($sectionEntries as $entryNumber => $entry) 
                 {
                     if (true === is_array($entry))
                     {                        
@@ -827,24 +827,44 @@ class Data
                         {
                             $value = $this->getPropertyValue($properties,$entry ['relations'] [0]);
                             
+                            $values = array();
+                            
                             if (is_array($value))
                             {
-                                $values = $value;
-                                foreach ($values as $relationValue)
+                                if ("" != $entry ['typeclass'])
                                 {
-                                    if (false != in_array((string) $entry ['typeclass'], $this->getResourceTypeUris($relationValue)))
+                                    foreach ($value as $relationValue)
                                     {
-                                        $value = $relationValue;
-                                        break;
+                                        if (false != in_array((string) $entry ['typeclass'], $this->getResourceTypeUris($relationValue)))
+                                        {
+                                            $values[] = $relationValue;
+                                        }
                                     }
                                 }
-                                
+                                else
+                                    $values = $value;
                             }
-                            
-                            if (false == isset ($value))
-                                continue;
                             else
-                                $this->fetchFormulaData ($value, $entry ['form']);
+                                $values[] = $value;
+
+                            foreach($values as $nestedValue)
+                            {
+                                if (false == isset ($nestedValue))
+                                    continue;
+                                else
+                                {
+                                    $newForm = clone $entry ['form'];
+                                    $this->fetchFormulaData ($nestedValue, $newForm);
+                                    $newForm->setFormulaType($form->getFormulaType());
+                                    $forms = $form->getSectionKey($sectionNumber, $entryNumber, 'forms');
+                                    $forms[] = clone $newForm;
+                                    $form->setSectionKey($sectionNumber, $entryNumber, 'forms', $forms);
+                                }
+                            }
+                            //setr old 'form' field
+                            $forms = $form->getSectionKey($sectionNumber, $entryNumber, 'forms');
+                            if (0 < count($forms))
+                                $entry ['form'] = $forms[0];
                         }                    
                     }
                 }

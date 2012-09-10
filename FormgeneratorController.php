@@ -73,10 +73,22 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         );
         
         $this->view->url = $this->_url;
-    }    
+    }
+    
+    /**
+     * report action
+     */
+    public function reportAction()
+    {
+        $currentResource = $this->_owApp->selectedResource;
+        $currentClasses = $this->getEligibleFormFiles($currentResource);
+        $this->_request->setParam('file', key($currentClasses) . 'report');
+        $this->formAction();
+        $this->render('form');
+    }
 
     /**
-     * form action
+     * newform action
      */
     public function newformAction()
     {
@@ -84,6 +96,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->formAction();
         $this->render('form');
     }
+    
     /**
      * form action
      */
@@ -229,7 +242,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             {
                 // ... load triples into formula instance
                 $this->_data->fetchFormulaData($currentResource,$this->_form);
-                $this->_form->setMode ('edit');
  
                 // delete the current file/class from the array, so only other eligible classes are in this array
                 unset($currentClasses[$file]);
@@ -346,6 +358,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         // processes a formula and output the result
         $form = $this->_request->getParam('form');
+        
         $formOld = $this->_request->getParam('formOld');
         
         $response = $this->_data->submitFormula ($form, $formOld);

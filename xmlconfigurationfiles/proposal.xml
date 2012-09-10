@@ -11,12 +11,6 @@
         <item>http://www.w3.org/2000/01/rdf-schema#label</item>
     </labelparts>
 
-    <!-- Headline of this formula. -->
-    <title>
-        <de>Vorschlag</de>
-        <en>Proposal</en>
-    </title>
-
     <!-- Introducing text to inform the user about the formula. -->
     <description>
         <de>Hier können Sie Daten zu einem Vorschlag erfassen.</de>
@@ -44,10 +38,6 @@
             <predicate>
                 <mandatory>0</mandatory>
                 <predicateuri>http://www.dispedia.de/o/containsProposalComponent</predicateuri>
-                <title>
-                    <de>Vorschlagskomponenten</de>
-                    <en>Proposal Components</en>
-                </title>
                 <type>multiple</type>
                 <typeparameter>
                     <item>
