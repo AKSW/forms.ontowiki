@@ -21,24 +21,24 @@
 <!-- only if the form is no in box layout -->
 <?php if ("box" != $this->layout) { ?>
 
-    <!-- important variables -->
-    <script type="text/javascript">
-        var url = '<?php echo $this->url; ?>';
-        var urlMvc = urlBase + 'formgenerator/';
-
-        var data = {};
-        $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
-     </script>
-
-    <!-- set the title of the action -->
-    <?php $this->placeholder('main.window.title')->set($this->form->getTitle()); ?>
-
-    <!-- div for boxform -->
-    <div id="boxes"></div>
-
-    
     <!-- formular select box, show only if form is no box and no report-->
     <?php if ("report" != $this->form->getFormulaType()) { ?>
+        <!-- important variables -->
+        <script type="text/javascript">
+            var url = '<?php echo $this->url; ?>';
+            var urlMvc = urlBase + 'formgenerator/';
+    
+            var data = {};
+            $.data(data, "form", <?php echo json_encode ($this->form->getDataAsArrays ()); ?>);
+         </script>
+    
+        <!-- set the title of the action -->
+        <?php $this->placeholder('main.window.title')->set($this->form->getTitle()); ?>
+    
+        <!-- div for boxform -->
+        <div id="boxes"></div>
+
+    
         <div align="right" class="messagebox">
             <form id="formformlist" method="get" action="">
     
@@ -56,13 +56,13 @@
                 </select>
             </form>
         </div>
-    <?php } ?>
 
-    <script type="text/javascript">
-        $('#selectformlist').change(function() {
-            $('#formformlist').submit();
-        });
-    </script>
+        <script type="text/javascript">
+            $('#selectformlist').change(function() {
+                $('#formformlist').submit();
+            });
+        </script>
+    <?php } ?>
 
 <?php } else { echo $this->boxtoolbar; ?>
     <div class="clear"></div>

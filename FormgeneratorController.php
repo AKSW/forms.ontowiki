@@ -127,10 +127,15 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $currentResource = '';
 
-        // get selectedResource if it is set
-        $selectedResource = $this->_owApp->__get("selectedResource");
-        if (isset($selectedResource))
-            $currentResource = $selectedResource->getIri();;
+        if ("" != $this->getParam('r'))
+            $currentResource = $this->getParam('r');
+        else
+        {
+            // get selectedResource if it is set
+            $selectedResource = $this->_owApp->__get("selectedResource");
+            if (isset($selectedResource))
+                $currentResource = $selectedResource->getIri();;
+        }
         
         $this->view->selectedResource = $currentResource;
 
