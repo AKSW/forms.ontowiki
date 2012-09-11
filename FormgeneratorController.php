@@ -27,6 +27,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     private $_selectedModelUri;
     private $_store;
     private $_titleHelper;
+    private $_resourceHelper;
     private $_uriParts;
     private $_url;
     private $_lang;
@@ -48,6 +49,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
         $this->_lang = OntoWiki::getInstance()->config->languages->locale;
+        $this->_resourceHelper = new Resource();
 
         $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_privateConfig->dispediaModel);
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
@@ -155,8 +157,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // set file based on selected class
         } elseif ('' != OntoWiki_Model_Instances::getSelectedClass ())
         {
-            $this->_titleHelper->addResource (OntoWiki_Model_Instances::getSelectedClass ());
-            $file = strtolower($this->_titleHelper->getTitle (OntoWiki_Model_Instances::getSelectedClass ()));
+            $file = strtolower($this->_resourceHelper->extractClassNameFromUri(OntoWiki_Model_Instances::getSelectedClass ()));
         }
         
         // If file was not set or not found

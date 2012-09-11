@@ -30,6 +30,53 @@
 				</relations>
                 <showallinstances>true</showallinstances>
 			</nestedconfig>
+        </item>
+        <!-- New section -->
+		<item>
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>assistiveproduct.xml</xmlfile>
+				<relations>
+					<item>http://www.dispedia.de/o/containsAssistiveProduct</item>
+				</relations>
+                <showallinstances>true</showallinstances>
+			</nestedconfig>
+			
+		</item> 
+        <!-- New section -->
+		<item>
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>medicaldevice.xml</xmlfile>
+				<relations>
+					<item>http://www.dispedia.de/o/containsMedicalDevice</item>
+				</relations>
+                <showallinstances>true</showallinstances>
+			</nestedconfig>
+			
+		</item> 
+        <!-- New section -->
+		<item>
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>formality.xml</xmlfile>
+				<relations>
+					<item>http://www.dispedia.de/o/containsFormality</item>
+				</relations>
+                <showallinstances>true</showallinstances>
+			</nestedconfig>
+			
+		</item> 
+        <!-- New section -->
+		<item>
+            <!-- Include a XML file -->
+			<nestedconfig>
+				<xmlfile>drug.xml</xmlfile>
+				<relations>
+					<item>http://www.dispedia.de/o/containsDrug</item>
+				</relations>
+                <showallinstances>true</showallinstances>
+			</nestedconfig>
 			
 		</item> 
     </sections>
