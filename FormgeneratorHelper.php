@@ -58,7 +58,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                        array(
                            'controller' => 'formgenerator', 
                            'action'     => 'report', 
-                           'name'       => 'ReportResource'
+                           'name'       => 'reportResource'
                        )
                    );
                 }
