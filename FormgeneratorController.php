@@ -247,7 +247,8 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // delete the current file/class from the array, so only other eligible classes are in this array
                 unset($currentClasses[$file]);
                 
-                if ("box" != $this->view->layout)
+                // add ohter possible form buttons if the form is no box and no report
+                if ("box" != $this->view->layout && "report" != $this->_form->getFormulaType())
                     // set other eligible classes as buttons for simple switching
                     foreach ($currentClasses as $className => $fileName) {
                         // build toolbar
@@ -265,34 +266,39 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // load all needed context data
         $this->_data->loadContextData($this->_form);
         
-        //add buttons to toolbar
-        $toolbar = $this->_owApp->toolbar;
+        // show toolbar only if the form is no report
+        if ("report" != $this->_form->getFormulaType())
+        {
+            //add buttons to toolbar
+            $toolbar = $this->_owApp->toolbar;
+            
+            $toolbar->appendButton(OntoWiki_Toolbar :: SEPARATOR);
+            $toolbar->appendButton(OntoWiki_Toolbar :: SAVE, array(
+                'id'   => 'changeResource',
+                'class'=> ('new' == $this->_form->getMode() ? ' hidden' : ''),
+                'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'edit')"
+            ));
+            $toolbar->appendButton(OntoWiki_Toolbar :: ADD, array(
+                'id'   => 'addResource',
+                'class'=> ('' != $this->_form->getSelectResourceOfType() ? ' hidden' : ''),
+                'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'add')"
+            ));
+            if ("box" != $this->view->layout)
+            {
+                $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
+                        'url'  => 'javascript:history.back();'
+                    ));
+                $this->view->placeholder('main.window.toolbar')->set($toolbar);
+            }
+            else
+            {
+                $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
+                        'url'  => 'javascript:closeBoxForm();'
+                    ));
+                $this->view->boxtoolbar = $toolbar->__toString();
+            }
+        }
         
-        $toolbar->appendButton(OntoWiki_Toolbar :: SEPARATOR);
-        $toolbar->appendButton(OntoWiki_Toolbar :: SAVE, array(
-            'id'   => 'changeResource',
-            'class'=> ('new' == $this->_form->getMode() ? ' hidden' : ''),
-            'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'edit')"
-        ));
-        $toolbar->appendButton(OntoWiki_Toolbar :: ADD, array(
-            'id'   => 'addResource',
-            'class'=> ('' != $this->_form->getSelectResourceOfType() ? ' hidden' : ''),
-            'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'add')"
-        ));
-        if ("box" != $this->view->layout)
-        {
-            $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
-                    'url'  => 'javascript:history.back();'
-                ));
-            $this->view->placeholder('main.window.toolbar')->set($toolbar);
-        }
-        else
-        {
-            $toolbar->appendButton(OntoWiki_Toolbar :: CANCEL, array(
-                    'url'  => 'javascript:closeBoxForm();'
-                ));
-            $this->view->boxtoolbar = $toolbar->__toString();
-        }
         $this->view->titleHelper = $this->_titleHelper;
         $this->view->form = $this->_form;
         $this->view->formulaParameter = $this->_form->getFormulaParameter ();
