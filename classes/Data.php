@@ -273,6 +273,8 @@ class Data
             
             $has = $para ['predicateToHealthState'];
             $healthState = $para ['healthState'];
+            $healthStateTime = time ();
+            $selectedReseourceName = $this->_resourceHelper->extractClassNameFromUri($selectedResource);
             
             /**
              * Creates following relations:
@@ -283,8 +285,8 @@ class Data
              */
                             
             // create a new healthState instance
-            $healthStateInstance = $para['healthStateInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
-            $this->addStmt( 
+            $healthStateInstance = $para['healthStateInstanceUri'] . 'HS' . $selectedReseourceName . date ( 'YmdHis', $healthStateTime );
+            $this->addStmt(
                 $healthStateInstance, 
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
                 $para['healthState']
@@ -293,8 +295,8 @@ class Data
             // Add a timestamp
             $this->addStmt( 
                 $healthStateInstance, 
-                'http://purl.org/dc/terms/created',
-                date ( 'Y-m-d H:i:s', time () )
+                'http://www.dispedia.de/o/hasDate',
+                date ( 'Y-m-d H:i:s', $healthStateTime )
             );
             
             // selectedResource  has  healthState instance
@@ -302,7 +304,7 @@ class Data
             
             
             // create a new propertySet instance
-            $propertySetInstance = $para['propertySetInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
+            $propertySetInstance = $para['propertySetInstanceUri'] . 'PS' . $selectedReseourceName . date ( 'YmdHis', $healthStateTime );
             $this->addStmt( 
                 $propertySetInstance,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -314,7 +316,7 @@ class Data
             
             
             // create a new propertySet instance
-            $symptomSetInstance = $para['symptomSetInstanceUri'] . substr ( md5 (rand(0,rand(500,2000))), 0, 8 );
+            $symptomSetInstance = $para['symptomSetInstanceUri'] . 'SS' . $selectedReseourceName . date ( 'YmdHis', $healthStateTime );
             $this->addStmt( 
                 $symptomSetInstance,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',

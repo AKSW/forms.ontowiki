@@ -22,22 +22,22 @@
     <formulaParameter>
         
         <!-- SelectedResource  has  healthStateInstance -->
-        <predicateToHealthState>has</predicateToHealthState>
+        <predicateToHealthState>http://www.dispedia.de/o/hasHealthState</predicateToHealthState>
         <healthState>http://www.dispedia.de/wrapper/alsfrs/ALSFRSHealthState</healthState>
         <!-- Prefix of a HealthState instance -->
-        <healthStateInstanceUri>http://www.dispedia.de/wrapper/alsfrs/</healthStateInstanceUri>
+        <healthStateInstanceUri>http://patients.dispedia.de/</healthStateInstanceUri>
         
         <!-- healthStateInstance  includesAffectedProperties  ALSFRSPropertySet-Instance -->
-        <predicateToPropertySet>http://www.dispedia.de/o/includesAffectedProperties</predicateToPropertySet>
+        <predicateToPropertySet>http://www.dispedia.de/o/includesHealthProperties</predicateToPropertySet>
         <propertySet>http://www.dispedia.de/wrapper/alsfrs/ALSFRSPropertySet</propertySet>
         <!-- Prefix of a PropertySet instance -->
-        <propertySetInstanceUri>http://www.dispedia.de/wrapper/alsfrs/</propertySetInstanceUri>
+        <propertySetInstanceUri>http://patients.dispedia.de/</propertySetInstanceUri>
         
         <!-- healthStateInstance  includesSymptoms  ALSFRSSymptomSet-Instance -->
         <predicateToSymptomSet>http://www.dispedia.de/o/includesSymptoms</predicateToSymptomSet>
         <symptomSet>http://www.dispedia.de/wrapper/alsfrs/ALSFRSSymptomSet</symptomSet>
         <!-- Prefix of a SymptomSet instance -->
-        <symptomSetInstanceUri>http://www.dispedia.de/wrapper/alsfrs/</symptomSetInstanceUri>
+        <symptomSetInstanceUri>http://patients.dispedia.de/</symptomSetInstanceUri>
         
         <!-- ALSFRSPropertySet-Instance  containsPropertyOption  Option-Instance -->
         <predicateToPropertyOption>http://www.dispedia.de/wrapper/alsfrs/containsPropertyOption</predicateToPropertyOption>
