@@ -564,7 +564,7 @@ class Data
                     $this->_selectedModelUri, 
                     $s,
                     $p, 
-                    array('value' => $object, 'type' => $type)
+                    array('value' => $object, 'type' => $type, 'lang' => $this->_lang)
                 );
             }
             return;
@@ -581,7 +581,7 @@ class Data
                 $this->_selectedModelUri, 
                 $s,
                 $p, 
-                array('value' => $o, 'type' => $type)
+                array('value' => $o, 'type' => $type, 'lang' => $this->_lang)
             );
         }
     }
