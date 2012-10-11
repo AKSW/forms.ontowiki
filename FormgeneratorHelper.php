@@ -29,7 +29,8 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                 && ( 'instances' ==  $a || 'newform' == $a ) )
             {
                 // Add entry in tab list
-                OntoWiki_Navigation::register (
+                $on = new OntoWiki_Navigation();
+                $on->register (
                     'formgenerator_form', 
                     array(
                         'controller' => 'formgenerator', 
@@ -43,7 +44,8 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                         && ( 'properties' ==  $a  || 'form' == $a || 'report' == $a ) )
             {
                 // Add entry in tab list
-                OntoWiki_Navigation::register (
+                $on = new OntoWiki_Navigation();
+                $on->register (
                     'formgenerator_form', 
                     array(
                         'controller' => 'formgenerator', 
@@ -53,7 +55,8 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                 );
                 if (false !== stristr($selectedClass, 'proposal')) {
                     // Add entry in tab list
-                    OntoWiki_Navigation::register (
+                    $on = new OntoWiki_Navigation();
+                    $on->register (
                        'formgenerator_report', 
                        array(
                            'controller' => 'formgenerator', 
