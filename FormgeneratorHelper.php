@@ -13,6 +13,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
     public function __construct()
     {
         $owApp = OntoWiki::getInstance();
+        $owNav = $owApp->getNavigation();
         $request = Zend_Controller_Front::getInstance()->getRequest();
         $c = $request->getControllerName();
         $a = $request->getActionName();
@@ -29,8 +30,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                 && ( 'instances' ==  $a || 'newform' == $a ) )
             {
                 // Add entry in tab list
-                $on = new OntoWiki_Navigation();
-                $on->register (
+                $owNav->register (
                     'formgenerator_form', 
                     array(
                         'controller' => 'formgenerator', 
@@ -44,8 +44,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                         && ( 'properties' ==  $a  || 'form' == $a || 'report' == $a ) )
             {
                 // Add entry in tab list
-                $on = new OntoWiki_Navigation();
-                $on->register (
+                $owNav->register (
                     'formgenerator_form', 
                     array(
                         'controller' => 'formgenerator', 
@@ -55,8 +54,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                 );
                 if (false !== stristr($selectedClass, 'proposal')) {
                     // Add entry in tab list
-                    $on = new OntoWiki_Navigation();
-                    $on->register (
+                    $owNav->register (
                        'formgenerator_report', 
                        array(
                            'controller' => 'formgenerator', 
