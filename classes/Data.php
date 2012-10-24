@@ -647,7 +647,7 @@ class Data
             'SELECT ?property ?value 
             WHERE {
                 <' . $resourceUri . '> ?property ?value.
-                FILTER (langmatches(lang(?value), "de") || REGEX(lang(?value), "^$")
+                FILTER (langmatches(lang(?value), "' . $this->_lang . '") || REGEX(lang(?value), "^$")
             }'
         );
 
