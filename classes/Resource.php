@@ -24,7 +24,7 @@ class Resource
      * @param $uriParts From default.ini
      * @return string
      */
-    public static function generateUniqueUri ($f, $selectedModel, $titleHelper, $uriParts)
+    public function generateUniqueUri ($f, $selectedModel, $titleHelper, $uriParts)
     {
         // set essential parts
         $targetClass = $f->getTargetClass ();
@@ -61,7 +61,7 @@ class Resource
      * @param classUri Uri of class
      * @return classname as a string
      */
-    public static function extractClassNameFromUri($classUri)
+    public function extractClassNameFromUri($classUri)
     {
         if (strrpos ($classUri, '/') < strrpos ($classUri, '#'))
             $seperator = '#';

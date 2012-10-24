@@ -17,20 +17,21 @@ require_once 'classes/XmlConfig.php';
  */ 
 class FormgeneratorController extends OntoWiki_Controller_Component
 {
-    private $_form;
-    private $_data;
-    private $_dirXmlConfigurationFiles;
-    private $_dirJsHtmlPlugins;
-    private $_predicateType;
-    private $_dispediaModel;
-    private $_selectedModel;
-    private $_selectedModelUri;
-    private $_store;
-    private $_titleHelper;
-    private $_resourceHelper;
-    private $_uriParts;
-    private $_url;
-    private $_lang;
+    protected $_form;
+    protected $_data;
+    protected $_dirXmlConfigurationFiles;
+    protected $_dirJsHtmlPlugins;
+    protected $_predicateType;
+    protected $_dispediaModel;
+    protected $_selectedModel;
+    protected $_selectedModelUri;
+    protected $_store;
+    protected $_titleHelper;
+    protected $_resourceHelper;
+    protected $_uriParts;
+    protected $_url;
+    protected $_lang;
+    protected $_configuration;
     
     /**
      * init controller
@@ -38,23 +39,23 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     public function init()
     {
         parent::init();
-        
+        $this->_configuration = $this->_privateConfig->toArray();
         // sets default model
-        $model = new Erfurt_Rdf_Model ($this->_privateConfig->defaultModel);
-        
-        $this->_dirXmlConfigurationFiles = dirname (__FILE__) . '/' . $this->_privateConfig->dirXmlConfigurationFiles;
-        $this->_dirJsHtmlPlugins = dirname (__FILE__) . '/' . $this->_privateConfig->dirJsHtmlPlugins;
-        $this->_predicateType = $this->_privateConfig->predicateType;
+        $model = new Erfurt_Rdf_Model ($this->_configuration['uris']['defaultModel']);
+
+        $this->_dirXmlConfigurationFiles = dirname (__FILE__) . '/' . $this->_configuration['uris']['dirXmlConfigurationFiles'];
+        $this->_dirJsHtmlPlugins = dirname (__FILE__) . '/' . $this->_configuration['uris']['dirJsHtmlPlugins'];
+        $this->_predicateType = $this->_configuration['uris']['predicateType'];
         $this->_selectedModel = $model;
         $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
         $this->_lang = OntoWiki::getInstance()->config->languages->locale;
         $this->_resourceHelper = new Resource();
 
-        $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_privateConfig->dispediaModel);
+        $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_configuration['uris']['dispediaModel']);
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
         
-        $this->_uriParts = $this->_privateConfig->uriParts;        
+        $this->_uriParts = $this->_configuration['uris']['uriParts'];        
         $this->_url = $this->_componentUrlBase;
         
         //$this->_owApp->selectedModel = $model;
@@ -118,7 +119,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->predicateType = $this->_predicateType;
         $this->view->selectedModel = $this->_selectedModel;
         $this->view->dispediaModel = $this->_dispediaModel;
-        $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_privateConfig->alsfrsModel);
+        $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_configuration['uris']['alsfrsModel']);
         $this->view->store = $this->_store;
         
         $this->view->layout = $this->_request->getParam('layout');
@@ -192,6 +193,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // load xml configuration file
         $xmlconfig = new XmlConfig(
             $this->_data,
+            $this->_resourceHelper,
             $this->_titleHelper,
             $this->_dispediaModel,
             $this->_dirXmlConfigurationFiles,

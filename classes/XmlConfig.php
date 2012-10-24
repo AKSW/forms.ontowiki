@@ -15,14 +15,16 @@ class XmlConfig
     private $_dirXmlConfigurationFiles;
     private $_language;
     private $_dataHelper;
+    private $_resourceHelper;
     
-    public function __construct ($dataHelper, $titleHelper, $dispediaModel, $dirXmlConfigurationFiles, $language)
+    public function __construct ($dataHelper, $resourceHelper, $titleHelper, $dispediaModel, $dirXmlConfigurationFiles, $language)
     {
         $this->_titleHelper = $titleHelper;
         $this->_dispediaModel = $dispediaModel;
         $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
         $this->_language = $language; // de, en
         $this->_dataHelper = $dataHelper;
+        $this->_resourceHelper = $resourceHelper;
     }
     
     /**
@@ -79,7 +81,7 @@ class XmlConfig
                         $title = $this->_dataHelper->getResourceTitle((string) $form->getTargetClass());
 
                         if (true == Erfurt_Uri::check($title) || '' == $title)
-                            $title = Resource::extractClassNameFromUri ($form->getTragetClass());
+                            $title = $this->_resourceHelper->extractClassNameFromUri ($form->getTargetClass());
                             
                         $form->setTitle($title);
                         
@@ -274,7 +276,7 @@ class XmlConfig
                                     $title = $this->_dataHelper->getResourceTitle((string) $predicate->predicateuri);
 
                                     if (true == Erfurt_Uri::check($title) || '' == $title)
-                                        $title = Resource::extractClassNameFromUri ($p);
+                                        $title = $this->_resourceHelper->extractClassNameFromUri ($p);
                                 }                                
                                 
                                 // Build an entry instance.
@@ -299,6 +301,7 @@ class XmlConfig
                                 // Load XML Config
                                 $xmlConfig = new XmlConfig(
                                     $this->_dataHelper,
+                                    $this->_resourceHelper,
                                     $this->_titleHelper,
                                     $this->_dispediaModel, 
                                     $this->_dirXmlConfigurationFiles,
