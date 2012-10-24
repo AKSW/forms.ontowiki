@@ -128,15 +128,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $currentResource = '';
 
-        if ("" != $this->getParam('r'))
-            $currentResource = $this->getParam('r');
-        else
-        {
-            // get selectedResource if it is set
-            $selectedResource = $this->_owApp->__get("selectedResource");
-            if (isset($selectedResource))
-                $currentResource = $selectedResource->getIri();;
-        }
+        // get selectedResource if it is set
+        $selectedResource = $this->_owApp->__get("selectedResource");
+        if (isset($selectedResource))
+            $currentResource = $selectedResource->getIri();;
         
         $this->view->selectedResource = $currentResource;
 
@@ -244,7 +239,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // if resource set ...
         if ('' != $currentResource)
         {
-            if (false == isset($this->view->resourcesOfType) && isset($dispediaSession->selectedPatientUri) && '' != $dispediaSession->selectedPatientUri && '' == $this->_request->getParam('r'))
+            if (false == isset($this->view->resourcesOfType) && isset($dispediaSession->selectedPatientUri) && '' != $dispediaSession->selectedPatientUri && '' == $currentResource)
                 $test = 0;
             else
             {
