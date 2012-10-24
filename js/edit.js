@@ -16,20 +16,29 @@ function addEntity (entity, context, resource)
 {
     var returnValue = 0;
     var action = 'newform';
+    var data = '';
     
     if ('' != resource)
     {
         action = 'form';
-    };   
+        data = {
+            layout : 'box',
+            r : resource,
+            file : entity
+        };
+    }
+    else
+    {
+        data = {
+            layout : 'box',
+            file : entity
+        };
+    };
     $.ajax({
         async:false,
         dataType: "html",
         type: "GET",
-        data: {
-            layout : 'box',
-            r : resource,
-            file : entity
-        },
+        data: data,
         context: $(context),
         url: url + "formgenerator/" + action,
             // complete, no errors

@@ -38,6 +38,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      */     
     public function init()
     {
+        
         parent::init();
         $this->_configuration = $this->_privateConfig->toArray();
         // sets default model
@@ -76,6 +77,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         );
         
         $this->view->url = $this->_url;
+        
     }
     
     /**
@@ -131,7 +133,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // get selectedResource if it is set
         $selectedResource = $this->_owApp->__get("selectedResource");
         if (isset($selectedResource))
-            $currentResource = $selectedResource->getIri();;
+            $currentResource = $selectedResource->getIri();
         
         $this->view->selectedResource = $currentResource;
 
