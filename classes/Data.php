@@ -129,7 +129,7 @@ class Data
             $model .= $f->getModelNamespace() . '/';
         
         // generate a new unique resource uri based on the target class
-        $resource = Resource::generateUniqueUri($f, $model, $this->_titleHelper, $this->_uriParts);
+        $resource = $this->_resourceHelper->generateUniqueUri($f, $model, $this->_titleHelper, $this->_uriParts);
         
         // add resource - rdf:type - targetclass
         $this->addStmt(
@@ -433,7 +433,7 @@ class Data
                             // a birthday, gender and sub formula address 
                             
                             // generate a new unique resource uri based on the target class
-                            $resource = Resource::generateUniqueUri(
+                            $resource = $this->_resourceHelper->generateUniqueUri(
                                 $form, $this->_selectedModel, $this->_titleHelper, $this->_uriParts
                             );
                             
