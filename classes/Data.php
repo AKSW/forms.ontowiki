@@ -757,8 +757,8 @@ class Data
             $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}';
         
         $instancesResult = $this->_store->sparqlQuery(
-            'SELECT ?instanceUri ?successorUri
-            WHERE {
+            'SELECT ?instanceUri' . ('' != $order ? ' ?successorUri ' : ' ') .
+            'WHERE {
               ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $classUri . '>.
               ' . $filter  . '
               ' . $order . '
@@ -773,11 +773,14 @@ class Data
         foreach ($instancesResult as $instance)
         {
             $instances[$instance['instanceUri']] = $this->_titleHelper->getTitle($instance['instanceUri'], $this->_lang);
-            $successorList[$instance['successorUri']] = $instance['instanceUri'];
-            if ("" != $order && "" == $instance['successorUri'])
+            if ("" != $order)
             {
-                $orderList[0] = $instance['instanceUri'];
-                $orderlyInstances[$instance['instanceUri']] = $instances[$instance['instanceUri']];
+                $successorList[$instance['successorUri']] = $instance['instanceUri'];
+                if ("" == $instance['successorUri'])
+                {
+                    $orderList[0] = $instance['instanceUri'];
+                    $orderlyInstances[$instance['instanceUri']] = $instances[$instance['instanceUri']];
+                }
             }
         }
         if ("" != $order)
