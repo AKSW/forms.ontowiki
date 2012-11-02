@@ -56,9 +56,9 @@
             $filterResult = $this->store->sparqlQuery(
                 'SELECT DISTINCT ?subject ?object
                 WHERE {
-                  ?subject <' . $element['predicateuri'] . '> ?object.
-                  FILTER !regex(str(?subject), "' . ('' != $this->form->getResource () ? $this->form->getResource () : ' '). '", "i")
-                };'
+                  ?subject <' . $element['predicateuri'] . '> ?object.' .
+                   ('' != $this->form->getResource () ? 'FILTER (?subject != <' . $this->form->getResource () . '>)' : '') .
+                '};'
             );
             foreach ($filterResult as $object)
             {
