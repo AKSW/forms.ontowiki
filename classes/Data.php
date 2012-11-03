@@ -248,6 +248,12 @@ class Data
                 "http://www.w3.org/2000/01/rdf-schema#label",
                 array('value' => $resourceLabelOld, 'type' => 'literal', 'lang' => $this->_lang)
             );
+            //TODO: delete statement with and without language, later every propberty should have information about languge or not
+            $this->_selectedModel->deleteMatchingStatements(
+                $form->getResource(),
+                "http://www.w3.org/2000/01/rdf-schema#label",
+                array('value' => $resourceLabelOld, 'type' => 'literal')
+            );
 
             $this->_selectedModel->addStatement(
                 $form->getResource(),
