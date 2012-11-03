@@ -15,14 +15,13 @@ class Formula
      */
     private $_dataInstance;
     
-    private $_selectedModel;
     private $_architectureUri;
     
     
     /**
      * 
      */
-    public function __construct($index, $selectedModel)
+    public function __construct($index)
     {
         $this->_data = array ();
         
@@ -39,8 +38,6 @@ class Formula
         $this->_data ['selectResourceOfType'] = '';
         $this->_data ['formulaType'] = 'normal';
         $this->_data ['formulaParameter'] = array ();
-        
-        $this->_selectedModel = $selectedModel;
     }
     
     
@@ -387,15 +384,6 @@ class Formula
     }
     
     /**
-     * 
-     */
-    public function getSelectedModel()
-    {
-        return $this->_selectedModel;
-    }
-    
-    
-    /**
      * @return string
      */
     public function toString ()
@@ -520,7 +508,7 @@ class Formula
     public function initByArray ($formArray)
     {  
         // init a new Formula instance
-        $form = new Formula ($formArray ['index'], $this->_selectedModel);
+        $form = new Formula ($formArray ['index']);
 
         $form->setTitle ($formArray ['title']);
         

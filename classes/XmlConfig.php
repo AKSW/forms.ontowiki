@@ -310,7 +310,7 @@ class XmlConfig
                                 
                                 $f = $xmlConfig->loadFile(
                                     $nestedconfig->xmlfile,
-                                    new Formula($form->getIndex() .','. $entryIndex, $form->getSelectedModel())
+                                    new Formula($form->getIndex() .','. $entryIndex)
                                );
                                 
                                 $tmpRel = $relations = array ();

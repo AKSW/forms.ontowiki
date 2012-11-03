@@ -11,20 +11,19 @@
 class Data
 {
     private $_predicateType;
-    private $_selectedModel;
-    private $_selectedModelUri;
     private $_store;
     private $_titleHelper;
     private $_uriParts;
     private $_form;
     private $_lang;
     private $_resourceHelper;
+    private $_ontologies;
+    private $_selectedModel;
     
-    public function __construct($predicateType, $selectedModel, $selectedModelUri, $store, $titleHelper, $uriParts, &$form, $lang)
+    public function __construct($predicateType, $ontologies, $store, $titleHelper, $uriParts, &$form, $lang)
     {
         $this->_predicateType = $predicateType;
-        $this->_selectedModel = $selectedModel;
-        $this->_selectedModelUri = $selectedModelUri;
+        $this->_ontologies = $ontologies;
         $this->_store = $store;
         $this->_titleHelper = $titleHelper;
         $this->_uriParts = $uriParts;
@@ -115,35 +114,31 @@ class Data
         
         $this->_titleHelper->addResource($targetClass);
         
-        $model = $this->_selectedModel;
-        
         if ("" != $f->getTargetModel())
         {
-            $model = $f->getTargetModel();
-            $this->_selectedModel = new Erfurt_Rdf_Model ($model);
-            $this->_selectedModelUri = $model;
-
+            $this->_selectedModel = $this->_ontologies[$this->_ontologies['namespaces'][$f->getTargetModel()]]['instance'];
         }
         
         if ("" != $f->getModelNamespace())
-            $model .= $f->getModelNamespace() . '/';
+            $resourceNamespace .= $f->getTargetModel() . $f->getModelNamespace() . '/';
+        else
+            $resourceNamespace = $f->getTargetModel();
         
         // generate a new unique resource uri based on the target class
-        $resource = $this->_resourceHelper->generateUniqueUri($f, $model, $this->_titleHelper, $this->_uriParts);
+        $resource = $this->_resourceHelper->generateUniqueUri($f, $resourceNamespace, $this->_titleHelper, $this->_uriParts);
         
         // add resource - rdf:type - targetclass
-        $this->addStmt(
+        $this->_selectedModel->addStatement(
             $resource,
-            $this->_predicateType,
-            $targetClass 
+            $this->_predicateType, 
+            array('value' => $targetClass, 'type' => 'uri')
         );
         
         // generate resource label
         $resourceLabel = implode (' ', $f->getLabelpartValues ());
         
         // add resource - rdfs:label - resourceLabel
-        $this->_store->addStatement(
-            $this->_selectedModelUri, 
+        $this->_selectedModel->addStatement(
             $resource,
             "http://www.w3.org/2000/01/rdf-schema#label", 
             array('value' => $resourceLabel, 'type' => 'literal', 'lang' => $this->_lang)
@@ -228,12 +223,11 @@ class Data
     public function changeFormulaData($form, $formOld, $upperResource = '', $relations = array())
     {
         // set model to write
-        if ("" != $form->getTargetModel())
+        if ("" != $formOld->getTargetModel())
         {
-            $this->_selectedModel = new Erfurt_Rdf_Model ($form->getTargetModel());
-            $this->_selectedModelUri = $form->getTargetModel();
+            $this->_selectedModel = $this->_ontologies[$this->_ontologies['namespaces'][$formOld->getTargetModel()]]['instance'];
         }
-        
+
         if ('' == $upperResource)
         {
             $json = array();
@@ -249,15 +243,13 @@ class Data
         $resourceLabelOld = implode (' ', $formOld->getLabelpartValues ());
         
         if ($resourceLabel != $resourceLabelOld) {
-            $this->_store->deleteMatchingStatements(
-                $this->_selectedModelUri,
+            $this->_selectedModel->deleteMatchingStatements(
                 $form->getResource(),
                 "http://www.w3.org/2000/01/rdf-schema#label",
                 array('value' => $resourceLabelOld, 'type' => 'literal', 'lang' => $this->_lang)
             );
 
-            $this->_store->addStatement(
-                $this->_selectedModelUri, 
+            $this->_selectedModel->addStatement(
                 $form->getResource(),
                 "http://www.w3.org/2000/01/rdf-schema#label", 
                 array('value' => $resourceLabel, 'type' => 'literal', 'lang' => $this->_lang)
@@ -469,6 +461,7 @@ class Data
                         else
                         {
                             $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
+                            
                             if (is_array($oldValue) && isset($entry['typeparamter'][0]['order'])  && 1 == $entry ['typeparameter'][0]['order'])
                             {
                                 foreach ($oldValue as $valueNumber => $value)
@@ -560,8 +553,7 @@ class Data
                     : 'literal';
                 
                 // add a triple to datastore
-                $this->_store->addStatement(
-                    $this->_selectedModelUri, 
+                $this->_selectedModel->addStatement(
                     $s,
                     $p, 
                     array('value' => $object, 'type' => $type, 'lang' => $this->_lang)
@@ -577,8 +569,7 @@ class Data
                 : 'literal';
             
             // add a triple to datastore
-            return $this->_store->addStatement(
-                $this->_selectedModelUri, 
+            return $this->_selectedModel->addStatement(
                 $s,
                 $p, 
                 array('value' => $o, 'type' => $type, 'lang' => $this->_lang)
@@ -605,8 +596,13 @@ class Data
                     : 'literal';
                 
                 // aremove a triple form datastore
-                $deletedStatements += $this->_store->deleteMatchingStatements(
-                    $this->_selectedModelUri,
+                $deletedStatements += $this->_selectedModel->deleteMatchingStatements(
+                    $s,
+                    $p,
+                    isset($o) ? array('value' => $object, 'type' => $type, 'lang' => $this->_lang) : null
+                );
+                //TODO: delete statement with and without language, later every propberty should have information about languge or not
+                $deletedStatements += $this->_selectedModel->deleteMatchingStatements(
                     $s,
                     $p,
                     isset($o) ? array('value' => $object, 'type' => $type) : null
@@ -621,14 +617,18 @@ class Data
                 : 'literal';
             
             // aremove a triple form datastore
-            $deletedStatements =  $this->_store->deleteMatchingStatements(
-                $this->_selectedModelUri,
+            $deletedStatements =  $this->_selectedModel->deleteMatchingStatements(
+                $s,
+                $p,
+                isset($o) ? array('value' => $o, 'type' => $type, 'lang' => $this->_lang) : null
+            );
+            //TODO: delete statement with and without language, later every propberty should have information about languge or not
+            $deletedStatements =  $this->_selectedModel->deleteMatchingStatements(
                 $s,
                 $p,
                 isset($o) ? array('value' => $o, 'type' => $type) : null
             );
         }
-        
         return $deletedStatements;
     }
     

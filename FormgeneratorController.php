@@ -33,6 +33,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
     protected $_lang;
     protected $_configuration;
     
+    // array for ontologie namespaces and instances
+    protected $_ontologies;
+    
+    // array for output messages
+    private $_messages;
+    
     /**
      * init controller
      */     
@@ -41,19 +47,30 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         parent::init();
         $this->_configuration = $this->_privateConfig->toArray();
-        // sets default model
-        $model = new Erfurt_Rdf_Model ($this->_configuration['uris']['defaultModel']);
+        
+        // get all models
+        $this->_ontologies = $this->_config->ontologies->toArray();
+        $this->_ontologies = $this->_ontologies['models'];
+        $namespaces = array();
+        // make model instances
+        foreach ($this->_ontologies as $modelName => $model) {
+            $this->_ontologies[$modelName]['instance'] = new Erfurt_Rdf_Model($model['namespace']);
+            $namespaces[$model['namespace']] = $modelName;
+        }
+        $this->_ontologies['namespaces'] = $namespaces;
 
+        
+        $this->_selectedModel = $this->_ontologies['dispediaPatient']['instance'];
+        $this->_selectedModelUri = $this->_ontologies['dispediaPatient']['namespace'];
+        $this->_dispediaModel = $this->_ontologies['dispediaCore']['namespace'];
+        
         $this->_dirXmlConfigurationFiles = dirname (__FILE__) . '/' . $this->_configuration['uris']['dirXmlConfigurationFiles'];
         $this->_dirJsHtmlPlugins = dirname (__FILE__) . '/' . $this->_configuration['uris']['dirJsHtmlPlugins'];
         $this->_predicateType = $this->_configuration['uris']['predicateType'];
-        $this->_selectedModel = $model;
-        $this->_selectedModelUri = (string) $model;
         $this->_store = Erfurt_App::getInstance()->getStore();
         $this->_lang = OntoWiki::getInstance()->config->languages->locale;
         $this->_resourceHelper = new Resource();
 
-        $this->_dispediaModel = new Erfurt_Rdf_Model ($this->_configuration['uris']['dispediaModel']);
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
         
         $this->_uriParts = $this->_configuration['uris']['uriParts'];        
@@ -62,13 +79,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         //$this->_owApp->selectedModel = $model;
         
         // main instance of a form
-        $this->_form = new Formula(0, $this->_selectedModel);
+        $this->_form = new Formula(0);
         
         // instance of Data class for communicate with backend
         $this->_data = new Data (
             $this->_predicateType,
-            $this->_selectedModel,
-            $this->_selectedModelUri,
+            $this->_ontologies,
             $this->_store,
             $this->_titleHelper,
             $this->_uriParts,
