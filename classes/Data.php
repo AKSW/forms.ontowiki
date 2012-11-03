@@ -648,43 +648,50 @@ class Data
     {
         $properties = array();
         
-        // fetch properties of a resource
-        $results = $this->_store->sparqlQuery(
-            'SELECT ?property ?value 
-            WHERE {
-                <' . $resourceUri . '> ?property ?value.
-                FILTER (langmatches(lang(?value), "' . $this->_lang . '") || REGEX(lang(?value), "^$"))
-            }'
-        );
-
-        // build an assoziative array
-        foreach ($results as $result)
+        $model = new OntoWiki_Model_Resource($this->_store, $this->_selectedModel, $resourceUri);
+        $modelValues = $model->getValues();
+        
+        foreach ($modelValues[$this->_selectedModel->getModelIri()] as $property => $values)
         {
-            // TODO: muss das sein?
-            // little QuickHack that the targetclass type relation will not
-            // deleted by a form, this triple will be omitted
-            if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $result['property']
-                && $this->_form->getTargetClass() == $result['value'])
-                continue;
-            
-            // $properties[$result['property']] = $result['value'];
-            if (isset($properties[$result['property']]))
+            foreach ($values as $value)
             {
-                if (is_array($properties[$result['property']]['value']))
-                    $properties[$result['property']]['value'][] = $result['value'];
+                // TODO: muss das sein?
+                // little QuickHack that the targetclass type relation will not
+                // deleted by a form, this triple will be omitted
+                if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $property
+                    && $this->_form->getTargetClass() == $value['uri'])
+                    continue;
+                
+                $tempValue = '';
+                
+                if (null != $value['uri'])
+                    $tempValue = $value['uri'];
+                else if (null != $value['content'])
+                    $tempValue = $value['content'];
+                
+                if (null != $value['lang'] && $value['lang'] != $this->_lang)
+                    continue;
+                
+                // $properties[$result['property']] = $result['value'];
+                if (isset($properties[$property]))
+                {
+                    if (is_array($properties[$property]['value']))
+                        $properties[$property]['value'][] = $tempValue;
+                    else
+                        $properties[$property]['value'] = array(
+                            0 => $properties[$property]['value'],
+                            1 => $tempValue
+                        );
+                }
                 else
-                    $properties[$result['property']]['value'] = array(
-                        0 => $properties[$result['property']]['value'],
-                        1 => $result['value']
+                    $properties[$property] = array ( 
+                        'property' => $property,
+                        'value' => $tempValue,
+                        'used' => false
                     );
             }
-            else
-                $properties[$result['property']] = array ( 
-                    'property' => $result['property'],
-                    'value' => $result['value'],
-                    'used' => false
-                );
         }
+        
         return $properties;
     }
 
@@ -809,6 +816,12 @@ class Data
      */
     public function fetchFormulaData ($resource, &$form)
     {
+        // set model to write
+        if ("" != $form->getTargetModel())
+        {
+            $this->_selectedModel = $this->_ontologies[$this->_ontologies['namespaces'][$form->getTargetModel()]]['instance'];
+        }
+        
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
         $form->setMode('edit');
