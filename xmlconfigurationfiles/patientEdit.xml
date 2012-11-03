@@ -4,6 +4,8 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Patient</targetclass>
     
+	<targetmodel>http://patients.dispedia.de/</targetmodel>
+	
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/firstName</item>

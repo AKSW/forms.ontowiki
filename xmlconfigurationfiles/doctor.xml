@@ -2,6 +2,8 @@
 <form> 
     <targetclass>http://www.dispedia.de/o/Person</targetclass>				
 	
+    <targetmodel>http://hc.dispedia.de/</targetmodel>
+    
     <labelparts>
         <item>http://www.dispedia.de/o/firstName</item>
         <item>http://www.dispedia.de/o/lastName</item>

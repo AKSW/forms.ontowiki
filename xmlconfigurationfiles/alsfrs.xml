@@ -1,5 +1,6 @@
 <form> 
-	
+	<targetmodel>http://patients.dispedia.de/</targetmodel>
+    
     <!-- Headline of this formula. -->
     <title>
         <de>ALSFRS Klassifikation</de>
