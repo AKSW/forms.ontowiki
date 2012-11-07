@@ -4,7 +4,7 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Person</targetclass>
 
-    <targetmodel>http://hc.dispedia.de/</targetmodel>
+    <targetmodel>http://patients.dispedia.de/</targetmodel>
 	
     <!-- Needed by an URI generation function. -->
     <labelparts>
