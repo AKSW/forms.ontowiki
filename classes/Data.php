@@ -651,44 +651,47 @@ class Data
         $model = new OntoWiki_Model_Resource($this->_store, $this->_selectedModel, $resourceUri);
         $modelValues = $model->getValues();
         
-        foreach ($modelValues[$this->_selectedModel->getModelIri()] as $property => $values)
+        if (isset($modelValues[$this->_selectedModel->getModelIri()]))
         {
-            foreach ($values as $value)
+            foreach ($modelValues[$this->_selectedModel->getModelIri()] as $property => $values)
             {
-                // TODO: muss das sein?
-                // little QuickHack that the targetclass type relation will not
-                // deleted by a form, this triple will be omitted
-                if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $property
-                    && $this->_form->getTargetClass() == $value['uri'])
-                    continue;
-                
-                $tempValue = '';
-                
-                if (null != $value['uri'])
-                    $tempValue = $value['uri'];
-                else if (null != $value['content'])
-                    $tempValue = $value['content'];
-                
-                if (null != $value['lang'] && $value['lang'] != $this->_lang)
-                    continue;
-                
-                // $properties[$result['property']] = $result['value'];
-                if (isset($properties[$property]))
+                foreach ($values as $value)
                 {
-                    if (is_array($properties[$property]['value']))
-                        $properties[$property]['value'][] = $tempValue;
+                    // TODO: muss das sein?
+                    // little QuickHack that the targetclass type relation will not
+                    // deleted by a form, this triple will be omitted
+                    if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $property
+                        && $this->_form->getTargetClass() == $value['uri'])
+                        continue;
+                    
+                    $tempValue = '';
+                    
+                    if (null != $value['uri'])
+                        $tempValue = $value['uri'];
+                    else if (null != $value['content'])
+                        $tempValue = $value['content'];
+                    
+                    if (null != $value['lang'] && $value['lang'] != $this->_lang)
+                        continue;
+                    
+                    // $properties[$result['property']] = $result['value'];
+                    if (isset($properties[$property]))
+                    {
+                        if (is_array($properties[$property]['value']))
+                            $properties[$property]['value'][] = $tempValue;
+                        else
+                            $properties[$property]['value'] = array(
+                                0 => $properties[$property]['value'],
+                                1 => $tempValue
+                            );
+                    }
                     else
-                        $properties[$property]['value'] = array(
-                            0 => $properties[$property]['value'],
-                            1 => $tempValue
+                        $properties[$property] = array ( 
+                            'property' => $property,
+                            'value' => $tempValue,
+                            'used' => false
                         );
                 }
-                else
-                    $properties[$property] = array ( 
-                        'property' => $property,
-                        'value' => $tempValue,
-                        'used' => false
-                    );
             }
         }
         
