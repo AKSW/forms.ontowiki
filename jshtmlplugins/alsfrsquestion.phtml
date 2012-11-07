@@ -12,7 +12,7 @@ $element ['outputOptions'] = array ();
 
 // get information about the topic
 $topic = $this->alsfrsModel->sparqlQuery(
-    'SELECT ?topicUri ?label ?suggestedQuestion
+    'SELECT ?label ?suggestedQuestion
      WHERE {
          <'. $element ['predicateuri'] .'> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://als.dispedia.de/frs/o/Topic> .
          <'. $element ['predicateuri'] .'> <http://www.w3.org/2000/01/rdf-schema#label> ?label .
