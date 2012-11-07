@@ -3,6 +3,8 @@
 
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Proposal</targetclass>
+    
+    <targetmodel>http://als.dispedia.de/</targetmodel>
 
     <formulaType>report</formulaType>
 
