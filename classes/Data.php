@@ -730,20 +730,20 @@ class Data
                             if ("" != $form->getResource())
                             {
                                 if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource(), $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource(), $order);
                                 else
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class'], null, null, $order);
                             }
                             else
                             {
                                 if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = array();
                                 else
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($entry['typeparameter'][0]['class'], $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class'], null, null, $order);
                             }
                             if (isset($entry['typeparameter'][0]['addotherinstances']) && 1 == $entry['typeparameter'][0]['addotherinstances'])
                                 $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['allinstances'] = array_diff_key(
-                                    $this->loadInstances($entry['typeparameter'][0]['class']),
+                                    $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class']),
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances']
                                 );
                         }
@@ -762,7 +762,7 @@ class Data
      * loads all instances of a class
      * @param $classUri uri of the class which instances are seearched
      */
-    public function loadInstances ($classUri, $filterProperty = '', $filterResource = '', $order = '')
+    public function loadInstances ($modelIri, $classUri, $filterProperty = '', $filterResource = '', $order = '')
     {
         $instances = array();
         $filter = '';
@@ -772,10 +772,22 @@ class Data
         if ('' != $order)
             $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}';
         
+        // get the closure
+        $closureResults = $this->_store->getTransitiveClosure($modelIri, 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $classUri);
+        $closureFilter = 'FILTER (';
+        
+        foreach ($closureResults as $closureUri => $closureResult)
+        {
+            $closureFilter .= '?classUri = <'. $closureUri .'> OR ';
+        }
+        
+        $closureFilter .= 'FALSE)';
+        
         $instancesResult = $this->_store->sparqlQuery(
             'SELECT ?instanceUri' . ('' != $order ? ' ?successorUri ' : ' ') .
             'WHERE {
-              ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $classUri . '>.
+              ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?classUri.
+              ' . $closureFilter . '
               ' . $filter  . '
               ' . $order . '
             };'
