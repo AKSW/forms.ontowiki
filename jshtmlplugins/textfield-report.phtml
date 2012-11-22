@@ -9,5 +9,5 @@
  */
 ?>
 <div class="predicateValue">
-        <input type="text" id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" value="<?php echo $element ['value']; ?>" class="text predicateValue_Textfield"/>
+    <span id="<?php echo $element ['name']; ?>" class="<?php echo ("http://www.w3.org/2000/01/rdf-schema#label" == $element ['predicateuri'] ? 'bold ' : '') ?>predicateValue_Textfield_span"><?php echo $element ['value']; ?></span>
 </div>

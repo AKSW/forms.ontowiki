@@ -118,33 +118,34 @@
                 </typeparameter>
             </predicate>
         </item>
-    <item>
-        <title>
-        <de>Adresse</de>
-        <en>Address</en>
-        </title>
-        <!-- Include a XML file -->
-        <nestedconfig>
-        <xmlfile>postaladdress.xml</xmlfile>
-        <relations>
-            <item>http://www.serviceOntology.org/hasAddress</item>
-        </relations>
-        <typeclass>http://schema.org/PostalAddress</typeclass>
-        </nestedconfig>
-    </item>
-    <item>
-        <title>
-        <de>Geokoordinaten</de>
-        <en>Geo Coordinates</en>
-        </title>
-        <!-- Include a XML file -->
-        <nestedconfig>
-        <xmlfile>geocoordinates.xml</xmlfile>
-        <relations>
-            <item>http://www.serviceOntology.org/hasAddress</item>
-        </relations>
-        <typeclass>http://schema.org/GeoCoordinates</typeclass>
-        </nestedconfig>
-    </item>
+        
+        <item>
+            <title>
+            <de>Adresse</de>
+            <en>Address</en>
+            </title>
+            <!-- Include a XML file -->
+            <nestedconfig>
+            <xmlfile>postaladdress.xml</xmlfile>
+            <relations>
+                <item>http://www.serviceOntology.org/hasAddress</item>
+            </relations>
+            <typeclass>http://schema.org/PostalAddress</typeclass>
+            </nestedconfig>
+        </item>
+        <item>
+            <title>
+                <de>Geokoordinaten</de>
+                <en>Geo Coordinates</en>
+            </title>
+            <!-- Include a XML file -->
+            <nestedconfig>
+                <xmlfile>geocoordinates.xml</xmlfile>
+                <relations>
+                    <item>http://www.serviceOntology.org/hasAddress</item>
+                </relations>
+                <typeclass>http://schema.org/GeoCoordinates</typeclass>
+            </nestedconfig>
+        </item>
     </sections>
 </form>

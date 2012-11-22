@@ -1,0 +1,82 @@
+<?php foreach (array_pop($this->forms) as $form) { ?>
+    <!-- sections (predicates and nestedconfigs) -->
+    <?php foreach ($form->getSections() as $section) { ?>
+
+        <div class="<?php echo $this->sectionClass; ?>">
+        
+            <!-- Title -->
+            <h3><?php echo $section ['title']; ?></h3>
+        
+            <?php foreach ($section as $element) { if (false == isset($element ['sectiontype']) ) continue; ?>
+        
+                <?php if ('predicate' == $element ['sectiontype']) { ?>
+                <!-- PREDICATE -->
+                    <?php if ('report' != $this->form->getFormulaType()) { ?>
+                        <?php $formTypeStr = ''; ?>
+                        <!-- Predicate title -->
+                        <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                    <?php } else { ?>
+                        <?php $formTypeStr = '-report'; ?>
+                    <?php } ?>
+                    
+                    <?php if ('list' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'list' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } elseif ('resource' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'resource' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } elseif ('class' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'class' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } elseif ('multiple' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'multiple' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } elseif ('hidden' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'hidden' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } elseif ('textarea' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'textarea' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } elseif ('alsfrsquestion' == $element ['type']) { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'alsfrsquestion' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } else { ?>
+        
+                        <?php require $this->dirJsHtmlPlugins . 'textfield' . $formTypeStr . '.phtml'; ?>
+        
+                    <?php } ?>
+                    
+                    <div class="clear"></div>
+        
+                <?php } elseif ('nestedconfig' == $element ['sectiontype']) { ?>
+                <!-- NESTEDCONFIG ------------------------------------->
+                
+                    <?php $this->sectionClass = 'nestedconfig'; ?>
+                    
+                    <?php
+                        if (0 < count($element ['forms']))
+                            array_push($this->forms, $element ['forms']);
+                        else
+                            array_push($this->forms, array($element ['form']));
+                    ?>
+                    
+                    <?php echo $this->render('formgenerator/formsections.phtml') ?>
+                    
+                    <?php $this->sectionClass = 'content'; ?>
+                    
+                <?php } ?>
+        
+            <?php } ?>
+        
+        </div>
+    
+    <?php } ?>
+    
+<?php } ?>
