@@ -49,6 +49,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
+                        <classOntology>http://hc.serviceOntology.org/</classOntology>
                         <class>http://www.serviceOntology.org/Organization</class>
                         <shownooverclass>1</shownooverclass>
                     </item>
@@ -65,7 +66,9 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
+                        <classOntology>http://hc.serviceOntology.org/</classOntology>
                         <class>http://www.serviceOntology.org/Service</class>
+                        <instanceOntology>http://hc.dispedia.de/</instanceOntology>
                         <relation>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</relation>
                         <editable>1</editable>
                         <filter>unbound</filter>

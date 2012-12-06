@@ -47,7 +47,6 @@
                         <filter>onlyBoundToThisResource</filter>
                         <successor>http://www.dispedia.de/o/successorOfProposalComponent</successor>
                         <addotherinstances>1</addotherinstances>
-                        <!--<predessor></predessor>-->
                     </item>
                 </typeparameter>
             </predicate>

@@ -63,6 +63,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
+                        <classOntology>http://hc.serviceOntology.org/</classOntology>
                         <class>http://www.serviceOntology.org/Service</class>
                         <shownooverclass>1</shownooverclass>
                     </item>

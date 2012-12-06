@@ -210,15 +210,10 @@ class XmlConfig
                                             foreach ($item as $parameter)
                                             {
                                                 $newTypeParamter = array();
-                                                $newTypeParamter['class'] = (string) $parameter->class;
-                                                if (isset($parameter->relation))
-                                                    $newTypeParamter['relation'] = (string) $parameter->relation;
-                                                if (isset($parameter->editable))
-                                                    $newTypeParamter['editalbe'] = (string) $parameter->editable;
-                                                if (isset($parameter->shownooverclass))
-                                                    $newTypeParamter['shownooverclass'] = (string) $parameter->shownooverclass;
-                                                if (isset($parameter->filter))
-                                                    $newTypeParamter['filter'] = (string) $parameter->filter;
+                                                
+                                                foreach (get_object_vars($parameter) as $name => $value)
+                                                    $newTypeParamter[$name] = (string) $value;
+                                                    
                                                 $typeparameter[] = $newTypeParamter;
                                             }
                                             break;
@@ -233,17 +228,10 @@ class XmlConfig
                                             foreach ($item as $parameter)
                                             {
                                                 $newTypeParamter = array();
-                                                $newTypeParamter['class'] = (string) $parameter->class;
-                                                if (isset($parameter->order))
-                                                    $newTypeParamter['order'] = (string) $parameter->order;
-                                                if (isset($parameter->filter))
-                                                    $newTypeParamter['filter'] = (string) $parameter->filter;
-                                                if (isset($parameter->successor))
-                                                    $newTypeParamter['successor'] = (string) $parameter->successor;
-                                                if (isset($parameter->editable))
-                                                    $newTypeParamter['editalbe'] = (string) $parameter->editable;
-                                                if (isset($parameter->addotherinstances))
-                                                    $newTypeParamter['addotherinstances'] = (string) $parameter->addotherinstances;
+                                                
+                                                foreach (get_object_vars($parameter) as $name => $value)
+                                                    $newTypeParamter[$name] = (string) $value;
+                                                
                                                 $typeparameter[] = $newTypeParamter;
                                             }
                                             break;

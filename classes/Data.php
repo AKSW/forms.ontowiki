@@ -699,6 +699,22 @@ class Data
     }
 
     /**
+     *recursiv generation of an closure array from an store closure array
+     */
+    public function generateClosureArray($closureArray, $currentEntry)
+    {
+        $resultArray = array();
+            
+        foreach ($closureArray as $entryName => $entry)
+        {
+            if ($currentEntry == $entry['parent'])
+                $resultArray[$entryName] = $this->generateClosureArray($closureArray, $entryName);
+        }
+        
+        return $resultArray;
+    }
+    
+    /**
      * loads data they are needed by some plugins in the form
      * @param $form Formula instance to be filled with fetched data
      */
@@ -718,8 +734,33 @@ class Data
                     {
                         
                         if ('class' == $entry ['type'])
+                        {
                             // save classname from classuri
                             $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classname'] = strtolower($this->_resourceHelper->extractClassNameFromUri($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['class']));
+                            
+                            //get all classes (transitive closure)
+                            $transitiveClosureClasses = $this->_store->getTransitiveClosure($entry['typeparameter'][0]['classOntology'], 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $entry['typeparameter'][0]['class']);
+                            $classes = $this->generateClosureArray($transitiveClosureClasses, $entry['typeparameter'][0]['class']);
+                            
+                            $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['classes'] = $classes;
+                            $this->_titleHelper->addResources(array_keys($transitiveClosureClasses));
+                            
+                            if (isset($entry['typeparameter'][0]['instanceOntology']))
+                            {
+                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances (
+                                    $entry['typeparameter'][0]['instanceOntology'],
+                                    $entry['typeparameter'][0]['class'],
+                                    isset($entry['typeparameter'][0]['filter']) ? $entry['typeparameter'][0]['filter'] : null,
+                                    $entry['predicateuri'],
+                                    $form->getResource(),
+                                    null,
+                                    true
+                                );
+                            }
+                            else
+                                $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = array();
+                            
+                        }
                         if ('multiple' == $entry ['type'])
                         {
                             $order = "";
@@ -730,20 +771,44 @@ class Data
                             if ("" != $form->getResource())
                             {
                                 if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class'], $entry['predicateuri'], $form->getResource(), $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances(
+                                        $form->getTargetModel(),
+                                        $entry['typeparameter'][0]['class'],
+                                        $entry['typeparameter'][0]['filter'],
+                                        $entry['predicateuri'],
+                                        $form->getResource(),
+                                        $order
+                                    );
                                 else
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class'], null, null, $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances(
+                                        $form->getTargetModel(),
+                                        $entry['typeparameter'][0]['class'],
+                                        $entry['typeparameter'][0]['filter'],
+                                        null,
+                                        null,
+                                        $order
+                                    );
                             }
                             else
                             {
                                 if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = array();
                                 else
-                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class'], null, null, $order);
+                                    $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances(
+                                        $form->getTargetModel(),
+                                        $entry['typeparameter'][0]['class'],
+                                        $entry['typeparameter'][0]['filter'],
+                                        null,
+                                        null,
+                                        $order
+                                    );
                             }
                             if (isset($entry['typeparameter'][0]['addotherinstances']) && 1 == $entry['typeparameter'][0]['addotherinstances'])
                                 $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['allinstances'] = array_diff_key(
-                                    $this->loadInstances($form->getTargetModel(), $entry['typeparameter'][0]['class']),
+                                    $this->loadInstances(
+                                        $form->getTargetModel(),
+                                        $entry['typeparameter'][0]['class']
+                                    ),
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances']
                                 );
                         }
@@ -762,12 +827,17 @@ class Data
      * loads all instances of a class
      * @param $classUri uri of the class which instances are seearched
      */
-    public function loadInstances ($modelIri, $classUri, $filterProperty = '', $filterResource = '', $order = '')
+    public function loadInstances ($modelIri, $classUri, $filterType = '', $filterProperty = '', $filterResource = '', $order = '', $classAsKey = false)
     {
         $instances = array();
         $filter = '';
-        if ('' != $filterProperty && '' != $filterResource)
+        if ('onlyBoundToThisResource' == $filterType && '' != $filterProperty && '' != $filterResource)
             $filter = '<' . $filterResource . '> <' . $filterProperty . '> ?instanceUri.';
+        else if ('unbound' == $filterType)
+        {
+            $filter = 'OPTIONAL {?subject <http://www.heppnetz.de/ontologies/goodrelations/v1#offers> ?instanceUri .}' .
+                      'FILTER (?subject = <' . $filterResource . '> OR !BOUND(?subject))';
+        }
         
         if ('' != $order)
             $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}';
@@ -784,15 +854,15 @@ class Data
         $closureFilter .= 'FALSE)';
         
         $instancesResult = $this->_store->sparqlQuery(
-            'SELECT ?instanceUri' . ('' != $order ? ' ?successorUri ' : ' ') .
+            'SELECT ?instanceUri ?classUri' . ('' != $order ? ' ?successorUri ' : ' ') .
             'WHERE {
-              ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?classUri.
-              ' . $closureFilter . '
-              ' . $filter  . '
-              ' . $order . '
-            };'
+              ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?classUri .' .
+              $filter .
+              $closureFilter .
+              $order .
+            '};'
         );
-
+        
         $this->_titleHelper->reset();
         $this->_titleHelper->addResources($instancesResult, "instanceUri");
         $orderList = array();
@@ -800,23 +870,32 @@ class Data
         $successorList = array();
         foreach ($instancesResult as $instance)
         {
-            $instances[$instance['instanceUri']] = $this->_titleHelper->getTitle($instance['instanceUri'], $this->_lang);
+            $title = $this->_titleHelper->getTitle($instance['instanceUri'], $this->_lang);
+            if (true == $classAsKey)
+                $instances[$instance['classUri']][$instance['instanceUri']] = $title;
+            else
+                $instances[$instance['instanceUri']] = $title;
+                
             if ("" != $order)
             {
                 $successorList[$instance['successorUri']] = $instance['instanceUri'];
                 if ("" == $instance['successorUri'])
                 {
                     $orderList[0] = $instance['instanceUri'];
-                    $orderlyInstances[$instance['instanceUri']] = $instances[$instance['instanceUri']];
+                    $orderlyInstances[$instance['instanceUri']] = $title;
                 }
             }
         }
+        
+        if (true == $classAsKey)
+            return $instances;
+        
         if ("" != $order)
         {
             for ($i = 0; $i < count($successorList) - 1; $i++)
             {
                 $orderList[$i + 1] = $successorList[$orderList[$i]];
-                $orderlyInstances[$successorList[$orderList[$i]]] = $instances[$successorList[$orderList[$i]]];
+                $orderlyInstances[][$successorList[$orderList[$i]]] = $instances[$successorList[$orderList[$i]]];
             }
             $instances = $orderlyInstances;
         }
