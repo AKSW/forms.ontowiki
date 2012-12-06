@@ -723,7 +723,6 @@ class Data
         // save sections
         $sections = $form->getSections();
         
-        // 
         foreach ($sections as $sectionNumber => $sectionEntries) 
         {
             foreach ($sectionEntries as $entryNumber => $entry) 
@@ -732,7 +731,6 @@ class Data
                 {                        
                     if ('predicate' == $entry ['sectiontype'])
                     {
-                        
                         if ('class' == $entry ['type'])
                         {
                             // save classname from classuri
@@ -751,7 +749,7 @@ class Data
                                     $entry['typeparameter'][0]['instanceOntology'],
                                     $entry['typeparameter'][0]['class'],
                                     isset($entry['typeparameter'][0]['filter']) ? $entry['typeparameter'][0]['filter'] : null,
-                                    $entry['predicateuri'],
+                                    isset($entry['typeparameter'][0]['filterProperty']) ? $entry['typeparameter'][0]['filterProperty'] : null,
                                     $form->getResource(),
                                     null,
                                     true
@@ -827,7 +825,15 @@ class Data
      * loads all instances of a class
      * @param $classUri uri of the class which instances are seearched
      */
-    public function loadInstances ($modelIri, $classUri, $filterType = '', $filterProperty = '', $filterResource = '', $order = '', $classAsKey = false)
+    public function loadInstances (
+        $modelIri,
+        $classUri,
+        $filterType = '',
+        $filterProperty = '',
+        $filterResource = '',
+        $order = '',
+        $classAsKey = false
+    )
     {
         $instances = array();
         $filter = '';
@@ -835,7 +841,7 @@ class Data
             $filter = '<' . $filterResource . '> <' . $filterProperty . '> ?instanceUri.';
         else if ('unbound' == $filterType)
         {
-            $filter = 'OPTIONAL {?subject <http://www.heppnetz.de/ontologies/goodrelations/v1#offers> ?instanceUri .}' .
+            $filter = 'OPTIONAL {?subject <' . $filterProperty . '> ?instanceUri .}' .
                       'FILTER (?subject = <' . $filterResource . '> OR !BOUND(?subject))';
         }
         

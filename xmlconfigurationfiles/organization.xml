@@ -72,6 +72,7 @@
                         <relation>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</relation>
                         <editable>1</editable>
                         <filter>unbound</filter>
+                        <filterProperty>http://www.heppnetz.de/ontologies/goodrelations/v1#offers</filterProperty>
                     </item>
                 </typeparameter>
             </predicate>

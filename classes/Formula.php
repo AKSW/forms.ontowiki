@@ -386,48 +386,56 @@ class Formula
     /**
      * @return string
      */
-    public function toString ()
+    public function toString ($offsetString = '')
     {        
-        $return = '<br/>- title: '. $this->getTitle () .
-                '<br/>- index: '. $this->getIndex () .
-                '<br/>- description: '. $this->getDescription () .
-                '<br/>- label parts: '. implode (', ', $this->getLabelparts ()) .
-                '<br/>- mode: '. $this->getMode () .
-                '<br/>- resource: '. $this->getResource () .
-                '<br/>- target class: '. $this->getTargetClass () .
-                '<br/>- target model: '. $this->getTargetModel () .
-                '<br/>- model namespace: '. $this->getModelNamespace () .
-                '<br/>- XML config: '. $this->getxmlfile () .
-                '<br/>- formtype: '. $this->getFormulaType () .
-                '<br/>- sections: ';
+        $return = '<br/>' . $offsetString . '- title: '. $this->getTitle () .
+                '<br/>' . $offsetString . '- index: '. $this->getIndex () .
+                '<br/>' . $offsetString . '- description: '. $this->getDescription () .
+                '<br/>' . $offsetString . '- label parts: '. implode (', ', $this->getLabelparts ()) .
+                '<br/>' . $offsetString . '- mode: '. $this->getMode () .
+                '<br/>' . $offsetString . '- resource: '. $this->getResource () .
+                '<br/>' . $offsetString . '- target class: '. $this->getTargetClass () .
+                '<br/>' . $offsetString . '- target model: '. $this->getTargetModel () .
+                '<br/>' . $offsetString . '- model namespace: '. $this->getModelNamespace () .
+                '<br/>' . $offsetString . '- XML config: '. $this->getxmlfile () .
+                '<br/>' . $offsetString . '- formtype: '. $this->getFormulaType () .
+                '<br/>' . $offsetString . '- sections: ';
           
         foreach ($this->getSections () as $section)
         {
             foreach ($section as $s)
                 if (isset($s['sectiontype']) && 'predicate' == $s['sectiontype'])
                 {
-                    $return .= '<br/>&nbsp;&nbsp;+ predicate ';
-                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - index: '. $s ['index'];
-                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - title: '. $s ['title'];
-                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - name: '. $s ['name'];
-                    $return .= '<br/>&nbsp;&nbsp;&nbsp; - predicateuri: '. $s ['predicateuri'];
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;+ predicate ';
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - index: '. $s ['index'];
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - title: '. $s ['title'];
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - name: '. $s ['name'];
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - predicateuri: '. $s ['predicateuri'];
+                    if (isset($s ['typeparameter'][0]))
+                    {
+                        $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - typeparameter:';
+                        foreach ($s ['typeparameter'][0] as $key => $value)
+                        {
+                            $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $key . ': ' . (true == is_array($value) ? implode($value, "; ") : $value);
+                        }
+                    }
                 }
                 elseif (isset($s['sectiontype']) && 'nestedconfig' == $s ['sectiontype'])
                 {
-                    $return .= '<br/>&nbsp;&nbsp;+ nestedconfig ';
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;+ nestedconfig ';
                     if (0 < count($s ['forms']))
                     {
-                        $return .= '<br/>&nbsp;&nbsp;&nbsp; - forms: '. count($s ['forms']);
+                        $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - forms: '. count($s ['forms']);
                         foreach ($s ['forms'] as $nestedform)
                         {
-                            $return .= '<br/>';
-                            $return .= $nestedform->toString ();
+                            $return .= '<br/>' . $offsetString;
+                            $return .= $nestedform->toString ($offsetString . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
                         }
                     }
                     else
                     {
-                        $return .= '<br/>';
-                        $return .= $s ['form']->toString ();
+                        $return .= '<br/>' . $offsetString;
+                        $return .= $s ['form']->toString ($offsetString . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'  );
                     }
                 }
             }
