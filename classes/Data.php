@@ -813,6 +813,9 @@ class Data
                     }
                     elseif ('nestedconfig' == $entry ['sectiontype'])
                     {
+                        foreach ($entry ['forms'] as $nestedForm)
+                            $this->loadContextData ($nestedForm);
+                            
                         $this->loadContextData ($entry ['form']);
                     }                    
                 }

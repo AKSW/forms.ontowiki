@@ -35,6 +35,20 @@
         </item>
         <!-- New section -->
 		<item>
+        <!-- Service -->
+            <predicate>
+                <predicateuri>http://www.dispedia.de/o/containsService</predicateuri>
+                <type>class</type>
+                <typeparameter>
+                    <item>
+                        <classOntology>http://hc.serviceOntology.org/</classOntology>
+                        <class>http://www.serviceOntology.org/Service</class>
+                    </item>
+                </typeparameter>
+            </predicate>
+        </item>
+        <!-- New section -->
+		<item>
             <!-- Include a XML file -->
 			<nestedconfig>
 				<xmlfile>assistiveproduct.xml</xmlfile>
