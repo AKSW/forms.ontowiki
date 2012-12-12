@@ -80,6 +80,7 @@
 				<type>class</type>
 				<typeparameter>
 					<item>
+                        <classOntology>http://www.dispedia.de/</classOntology>
 						<class>http://www.dispedia.de/o/Patient</class>
 						<shownooverclass>1</shownooverclass>
 					</item>

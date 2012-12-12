@@ -37,7 +37,8 @@
                 <predicateuri>http://www.dispedia.de/o/hasAddress</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>http://www.dispedia.de/o/Address</resource>
+                    <resourceOntology>http://www.dispedia.de/</resourceOntology>
+                    <resourceClass>http://www.dispedia.de/o/Address</resourceClass>
                 </typeparameter>
             </predicate>
 

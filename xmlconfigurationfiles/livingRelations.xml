@@ -38,57 +38,8 @@
 				<predicateuri>http://www.dispedia.de/o/isRelatedTo</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isRelatedTo</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isRelatedTo</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isRelatedTo</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isRelatedTo</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isRelatedTo</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
+                    <resourceOntology>http://www.dispedia.de/</resourceOntology>
+                    <resourceClass>http://www.dispedia.de/o/Person</resourceClass>
                 </typeparameter>
 			</predicate>
             

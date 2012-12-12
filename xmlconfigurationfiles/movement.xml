@@ -37,7 +37,8 @@
 				<predicateuri>http://www.dispedia.de/o/movementDescription</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>http://www.dispedia.de/o/HealthState</resource>
+                    <resourceOntology>http://www.dispedia.de/</resourceOntology>
+                    <resourceClass>http://www.dispedia.de/o/HealthState</resourceClass>
                 </typeparameter>
 			</predicate>
             

@@ -40,12 +40,14 @@
             
             <!-- Resource -->
 			<predicate> 
-                            <mandatory>0</mandatory>
-                            <predicateuri>http://www.dispedia.de/o/hasEmployer</predicateuri>
-                            <type>resource</type>
-                            <typeparameter>
-                                <resource>http://www.dispedia.de/o/Agent</resource>
-                            </typeparameter>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/hasEmployer</predicateuri>
+                <type>resource</type>
+                <typeparameter>
+                    <resourceOntology>http://www.dispedia.de/</resourceOntology>
+                    <resourceOntology>http://hc.serviceOntology.org/</resourceOntology>
+                    <resourceClass>http://purl.org/goodrelations/v1#BusinessEntity</resourceClass>
+                </typeparameter>
 			</predicate>
             
             
@@ -55,7 +57,8 @@
 				<predicateuri>http://www.dispedia.de/o/hasAddress</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>http://www.dispedia.de/o/Address</resource>
+                    <resourceOntology>http://www.dispedia.de/</resourceOntology>
+                    <resourceClass>http://www.dispedia.de/o/Address</resourceClass>
                 </typeparameter>
 			</predicate>
             

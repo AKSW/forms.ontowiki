@@ -9,7 +9,7 @@
 
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>http://www.dispedia.de/o/Name</item>
+        <item>http://www.w3.org/2000/01/rdf-schema#label</item>
     </labelparts>
 
     <!-- Headline of this formula. -->
@@ -37,7 +37,7 @@
             <!-- Textfield -->
             <predicate>
                 <mandatory>1</mandatory>
-                <predicateuri>http://www.dispedia.de/o/Name</predicateuri>
+                <predicateuri>http://www.w3.org/2000/01/rdf-schema#label</predicateuri>
             </predicate>
 
             <!-- parent class -->
@@ -51,6 +51,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
+                        <classOntology>http://hc.serviceOntology.org/</classOntology>
                         <class>http://www.serviceOntology.org/Organization</class>
                         <shownooverclass>1</shownooverclass>
                     </item>

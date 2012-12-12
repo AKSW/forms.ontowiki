@@ -52,6 +52,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
+                        <classOntology>http://www.dispedia.de/</classOntology>
                         <class>http://www.dispedia.de/o/ProposalDescription</class>
                         <shownooverclass>1</shownooverclass>
                     </item>
@@ -65,6 +66,7 @@
                 <type>class</type>
                 <typeparameter>
                     <item>
+                        <classOntology>http://hc.serviceOntology.org/</classOntology>
                         <class>http://www.serviceOntology.org/Organization</class>
                         <shownooverclass>1</shownooverclass>
                     </item>
