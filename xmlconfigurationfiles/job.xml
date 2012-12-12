@@ -34,7 +34,7 @@
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/education</predicateuri>
+				<predicateuri>http://schema.org/jobTitle</predicateuri>
 			</predicate>
             
             

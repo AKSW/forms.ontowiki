@@ -39,23 +39,23 @@
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:birthdate</predicateuri>
+				<predicateuri>http://schema.org/birthDate</predicateuri>
 				<type>birthdate</type>
 			</predicate>
             	
             <!-- List -->		
 			<predicate> 
 				<mandatory>0</mandatory>
-				<predicateuri>architecture:gender</predicateuri>
+				<predicateuri>http://schema.org/gender</predicateuri>
 				<type>list</type>
                 <typeparameter>
                     <item>
                         <label>female</label>
-                        <value>http://xmlns.com/foaf/0.1/gender#female</value>
+                        <value>female</value>
                     </item>
                     <item>
                         <label>male</label>
-                        <value>http://xmlns.com/foaf/0.1/gender#male</value>
+                        <value>male</value>
                     </item>
                 </typeparameter>
 			</predicate>

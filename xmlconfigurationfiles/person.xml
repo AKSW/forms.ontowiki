@@ -72,14 +72,14 @@
                             <de>weiblich</de>
                             <en>female</en>
                         </label>
-                        <value>http://xmlns.com/foaf/0.1/gender#female</value>
+                        <value>female</value>
                     </item>
                     <item>
                         <label>
                             <de>männlich</de>
                             <en>male</en>
                         </label>
-                        <value>http://xmlns.com/foaf/0.1/gender#male</value>
+                        <value>male</value>
                     </item>
                 </typeparameter>
             </predicate>

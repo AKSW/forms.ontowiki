@@ -14,7 +14,7 @@ Every XML config file is related to one class. All predicate fields will be inte
     <item>
         <predicate> 
             <mandatory>0</mandatory>
-            <predicateuri>architecture:birthdate</predicateuri>
+            <predicateuri>http://schema.org/birthDate</predicateuri>
             <type>birthdate</type>
         </predicate>
         <predicate>
@@ -58,8 +58,8 @@ The *target* is the filename to the XML config file. All config files are stored
 
             <!-- Needed by the URI generation function. -->
             <labelparts>
-                    <item>schema:givenName</item>
-                    <item>schema:familyName</item>
+                    <item>http://schema.org/givenName</item>
+                    <item>http://schema.org/amilyName</item>
             </labelparts>
         
             <!-- Headline of this formula -->
@@ -79,26 +79,26 @@ The *target* is the filename to the XML config file. All config files are stored
                         <!-- Textfield -->
                 <predicate> 
                     <mandatory>1</mandatory>
-                    <predicateuri>schema:givenName</predicateuri>
+                    <predicateuri>http://schema.org/givenName</predicateuri>
                 </predicate>
                 
                         <!-- Textfield -->
                 <predicate> 
                     <mandatory>1</mandatory>
-                    <predicateuri>schema:familyName</predicateuri>
+                    <predicateuri>http://schema.org/familyName</predicateuri>
                 </predicate>
                 
                         <!-- Textfield -->
                 <predicate> 
                     <mandatory>0</mandatory>
-                    <predicateuri>architecture:birthdate</predicateuri>
+                    <predicateuri>http://schema.org/birthDate</predicateuri>
                     <type>birthdate</type>
                 </predicate>
                     
                         <!-- Textfield -->		
                 <predicate> 
                     <mandatory>0</mandatory>
-                    <predicateuri>architecture:gender</predicateuri>
+                    <predicateuri>http://schema.org/gender</predicateuri>
                     <type>list</type>
                             <typeparameter>
                                     <item>- please select -</item>
@@ -142,7 +142,7 @@ A list is a simple collection. With *typeparameter* tag you are able to set the 
 	<!-- Textfield -->		
 	<predicate> 
 		<mandatory>0</mandatory>
-		<predicateuri>architecture:gender</predicateuri>
+		<predicateuri>http://schema.org/gender</predicateuri>
 		<type>list</type>
         	<typeparameter>
                 	<item>- please select -</item>
