@@ -9,66 +9,24 @@
  */ 
 ?>
 <?php 
-$resources = array ();
-
-// get a list of all resource which are type of a given class
-if (false !== strpos ($element ['typeparameter'], 'Patient') || 
-    false !== strpos ($element ['typeparameter'], 'Person') )
-{
-    $resources = $this->selectedModel->sparqlQuery(
-        'SELECT ?uri ?firstname ?lastname 
-         WHERE {
-             ?uri <'. $this->predicateType .'> <'. $element ['typeparameter'] .'>.
-             ?uri <http://www.dispedia.de/o/firstName> ?firstname.
-             ?uri <http://www.dispedia.de/o/lastName> ?lastname.
-         };'
-    );
-    
-    if (false == function_exists('buildPersonPatientLabel')) {
-        // combines firstname and lastname to label
-        function buildPersonPatientLabel (&$item, $key){
-            $item['label'] = $item['firstname'] .' '. $item['lastname'];
-        }
-    }
-                
-    array_walk ( $resources, 'buildPersonPatientLabel' );
-}
-elseif (false !== strpos ($element ['typeparameter'], 'Address') )
-{
-    $resources = $this->selectedModel->sparqlQuery(
-        'SELECT ?uri ?label
-         WHERE {
-             ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <' . $element ['typeparameter'] . '>.
-           ?uri <http://www.w3.org/2000/01/rdf-schema#label> ?label
-         };'
-    );
-    
-    //if (false == function_exists('buildAddressLabel')) {
-    //    // combines firstname and lastname to label
-    //    function buildAddressLabel (&$item, $key){
-    //        $item['label'] = $item['label'] .' '. $item['street'];
-    //    }
-    //}
-    //            
-    //array_walk ( $resources, 'buildAddressLabel' );
-}
+$resources = $element ['typeparameter']['resources'];
 ?>
 <div class="predicateValue">
     <select id="<?php echo $element ['name']; ?>" name="<?php echo $element ['name']; ?>" class="predicateValue_Resource">
 
         <option value=""><?php echo $this->_translate->_('please select'); ?></option>
                     
-    <?php foreach ( $resources as $resource ) { ?>
+    <?php foreach ( $resources as $resourceUri => $resourceLabel ) { ?>
 
-    <?php if ($element['value'] == $resource['uri']) { ?>
+    <?php if ($element['value'] == $resourceUri) { ?>
     
-        <option value="<?php echo $resource ['uri']; ?>" selected>
-            <?php echo $resource ['label']; ?></option>
+        <option value="<?php echo $resourceUri; ?>" selected>
+            <?php echo $resourceLabel; ?></option>
     
     <?php } else { ?>
 
-        <option value="<?php echo $resource ['uri']; ?>">
-            <?php echo $resource ['label']; ?></option>
+        <option value="<?php echo $resourceUri; ?>">
+            <?php echo $resourceLabel; ?></option>
 
     <?php } ?>
     

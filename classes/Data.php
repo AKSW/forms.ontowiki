@@ -810,6 +810,16 @@ class Data
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances']
                                 );
                         }
+                        if ('resource' == $entry ['type'])
+                        {
+                            $sections[$sectionNumber][$entryNumber]['typeparameter']['resources'] = $resources = OntoWiki_Utils::getClosureInstances(
+                                $entry ['typeparameter']['resourceOntology'],
+                                $this->_lang,
+                                'http://www.w3.org/2000/01/rdf-schema#subClassOf',
+                                array($entry ['typeparameter']['resourceClass']),
+                                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+                            );
+                        }
                     }
                     elseif ('nestedconfig' == $entry ['sectiontype'])
                     {
