@@ -81,15 +81,6 @@ class XmlConfigTest extends PHPUnit_Framework_TestCase
         $this->_xmlconfig->loadFile(dirname ( __FILE__ ) . '/testform.xml');
         
     }
-    public function testreplaceNamespace()
-    {
-        $newstr = $this->_xmlconfig->replaceNamespace('architecture:firstname');
-        $this->assertSame(
-            'http://als.dispedia.info/architecture/c/20110504/' . 'firstname',
-            $newstr,
-            "Replacing 'architecture:' are not correct."
-        );
-    }
 }
 
 // If this file is executed directly, execute the tests.

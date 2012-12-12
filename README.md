@@ -58,8 +58,8 @@ The *target* is the filename to the XML config file. All config files are stored
 
             <!-- Needed by the URI generation function. -->
             <labelparts>
-                    <item>architecture:firstName</item>
-                    <item>architecture:lastName</item>
+                    <item>schema:givenName</item>
+                    <item>schema:familyName</item>
             </labelparts>
         
             <!-- Headline of this formula -->
@@ -79,13 +79,13 @@ The *target* is the filename to the XML config file. All config files are stored
                         <!-- Textfield -->
                 <predicate> 
                     <mandatory>1</mandatory>
-                    <predicateuri>architecture:firstName</predicateuri>
+                    <predicateuri>schema:givenName</predicateuri>
                 </predicate>
                 
                         <!-- Textfield -->
                 <predicate> 
                     <mandatory>1</mandatory>
-                    <predicateuri>architecture:lastName</predicateuri>
+                    <predicateuri>schema:familyName</predicateuri>
                 </predicate>
                 
                         <!-- Textfield -->

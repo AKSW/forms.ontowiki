@@ -223,27 +223,25 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         // loading resource of type
         if ('' != $this->_form->getSelectResourceOfType ())
         {
-            // not dynamic! TODO find a solution to get a label for every resource!
+            //TODO: (not dynamic!) find a solution to get a label for every resource!
             if (false !== strpos ($this->_form->getSelectResourceOfType (), 'Patient') || 
                 false !== strpos ($this->_form->getSelectResourceOfType (), 'Person') )
             {
                 $this->view->resourcesOfType = $this->_selectedModel->sparqlQuery(
-                    'SELECT ?uri ?firstname ?lastname
+                    'SELECT ?uri
                      WHERE {
                          ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $this->_form->getSelectResourceOfType () .'>.
-                         ?uri <http://www.dispedia.de/o/firstName> ?firstname.
-                         ?uri <http://www.dispedia.de/o/lastName> ?lastname.
                      };'
                 );
                 
-                // combines firstname and lastname to label
-                if ( false == function_exists ('toSelectBox') ) {
-                    function toSelectBox (&$item, $key){
-                        $item['label'] = $item['firstname'] .' '. $item['lastname'];
-                    }
+                $this->_titleHelper->reset();
+                $this->_titleHelper->addResources($this->view->resourcesOfType, 'uri');
+                
+                foreach ($this->view->resourcesOfType as $resourceIndex => $resource)
+                {
+                    $this->view->resourcesOfType[$resourceIndex]['label'] = $this->_titleHelper->getTitle($resource['uri'], $this->_lang);
                 }
                 
-                array_walk ( $this->view->resourcesOfType, 'toSelectBox' );
             }
             
             if ( '' == $currentResource)
