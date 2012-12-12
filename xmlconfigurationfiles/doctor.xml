@@ -5,8 +5,8 @@
     <targetmodel>http://hc.dispedia.de/</targetmodel>
     
     <labelparts>
-        <item>http://www.dispedia.de/o/firstName</item>
-        <item>http://www.dispedia.de/o/lastName</item>
+        <item>http://schema.org/givenName</item>
+        <item>http://schema.org/familyName</item>
     </labelparts>
     
     <title>
@@ -25,12 +25,12 @@
 
             <predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/firstName</predicateuri>
+				<predicateuri>http://schema.org/givenName</predicateuri>
 			</predicate>
 			
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>http://www.dispedia.de/o/lastName</predicateuri>
+				<predicateuri>http://schema.org/familyName</predicateuri>
 			</predicate>
             
 		</item>

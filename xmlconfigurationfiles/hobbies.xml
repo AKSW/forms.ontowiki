@@ -8,7 +8,7 @@
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>http://www.dispedia.de/o/firstName</item>
+        <item>http://schema.org/givenName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->

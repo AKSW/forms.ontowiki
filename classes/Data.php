@@ -426,7 +426,7 @@ class Data
                         if ('' == $form->getResource())
                         {
                             // for example:
-                            // in case of create a doctor (firstname and lastname) but use
+                            // in case of create a doctor but use
                             // the main resource in a person formula, which has additionally 
                             // a birthday, gender and sub formula address 
                             

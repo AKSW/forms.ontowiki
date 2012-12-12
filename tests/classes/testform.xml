@@ -6,8 +6,8 @@
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>architecture:firstName</item>
-        <item>architecture:lastName</item>
+        <item>http://schema.org/givenName</item>
+        <item>http://schema.org/familyName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -27,13 +27,13 @@
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:firstName</predicateuri>
+				<predicateuri>http://schema.org/givenName</predicateuri>
 			</predicate>
 			
             <!-- Textfield -->
 			<predicate> 
 				<mandatory>1</mandatory>
-				<predicateuri>architecture:lastName</predicateuri>
+				<predicateuri>http://schema.org/familyName</predicateuri>
 			</predicate>
 			
             <!-- Textfield -->

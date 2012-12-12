@@ -8,8 +8,8 @@
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
-        <item>http://www.dispedia.de/o/firstName</item>
-        <item>http://www.dispedia.de/o/lastName</item>
+        <item>http://schema.org/givenName</item>
+        <item>http://schema.org/familyName</item>
     </labelparts>
 	
     <!-- Headline of this formula -->
@@ -38,27 +38,8 @@
 				<predicateuri>http://www.dispedia.de/o/isParentOf</predicateuri>
                 <type>resource</type>
                 <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isParentOf</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
-                </typeparameter>
-			</predicate>
-            
-            <!-- Resource -->
-			<predicate> 
-				<mandatory>0</mandatory>
-				<predicateuri>http://www.dispedia.de/o/isParentOf</predicateuri>
-                <type>resource</type>
-                <typeparameter>
-                    <resource>http://www.dispedia.de/o/Person</resource>
+                    <resourceOntology>http://www.dispedia.de/</resourceOntology>
+                    <resourceClass>http://www.dispedia.de/o/Person</resourceClass>
                 </typeparameter>
 			</predicate>
             
