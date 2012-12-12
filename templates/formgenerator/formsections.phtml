@@ -13,8 +13,10 @@
                 <!-- PREDICATE -->
                     <?php if ('report' != $this->form->getFormulaType()) { ?>
                         <?php $formTypeStr = ''; ?>
-                        <!-- Predicate title -->
-                        <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                        <?php if ('hidden' != $element ['type']) { ?>
+                            <!-- Predicate title -->
+                            <div class="predicateTitle"><?php echo $element ['title']; ?></div>
+                        <?php } ?>
                     <?php } else { ?>
                         <?php $formTypeStr = '-report'; ?>
                     <?php } ?>

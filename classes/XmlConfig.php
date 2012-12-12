@@ -196,7 +196,7 @@ class XmlConfig
                                     // TODO: extend it to use more than one class
                                     case 'resource':
                                         foreach (get_object_vars($predicate->typeparameter) as $name => $value)
-                                            $typeparameter[$name] = (string) $value;
+                                            $typeparameter[$name] = $value;
                                         break;
                                         
                                     // a simple list of classes of a given overclass
