@@ -3,13 +3,14 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://schema.org/PostalAddress</targetclass>
     
-    <targetmodel>http://hc.dispedia.de/</targetmodel>
+    <targetmodel>urn:dispedia:pn</targetmodel>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://schema.org/streetAddress</item>
         <item>http://schema.org/postalCode</item>
         <item>http://schema.org/addressLocality</item>
+        <option>notinuri</option>
     </labelparts>
     
     <!-- Headline of this formula. -->

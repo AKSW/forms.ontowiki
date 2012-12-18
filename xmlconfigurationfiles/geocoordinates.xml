@@ -3,7 +3,7 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://schema.org/GeoCoordinates</targetclass>
     
-    <targetmodel>http://hc.dispedia.de/</targetmodel>
+    <targetmodel>urn:dispedia:pn</targetmodel>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>

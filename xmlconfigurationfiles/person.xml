@@ -4,12 +4,13 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Person</targetclass>
 
-    <targetmodel>http://patients.dispedia.de/</targetmodel>
+    <targetmodel>urn:dispedia:pn</targetmodel>
 	
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://schema.org/givenName</item>
         <item>http://schema.org/familyName</item>
+        <option>notinuri</option>
     </labelparts>
 
     <!-- Headline of this formula. -->
@@ -20,8 +21,8 @@
 
     <!-- Introducing text to inform the user about the formula. -->
     <description>
-        <de>Hier können Sie Daten zu einer Person erfassen.</de>
-        <en>Here you can insert personal information.</en>
+        <de>Hier können Sie senible Daten zu einer Person erfassen.</de>
+        <en>Here you can insert senible personal information.</en>
     </description>
 
     <sections>
@@ -31,8 +32,8 @@
 
             <!-- title of this section part -->
             <title>
-                <de>Person information</de>
-                <en>Person information</en>
+                <de>sensible Person information</de>
+                <en>sensible Person information</en>
             </title>
 
             <!-- Textfield -->
@@ -47,6 +48,18 @@
                 <predicateuri>http://schema.org/familyName</predicateuri>
             </predicate>
 
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>http://www.dispedia.de/o/birthName</predicateuri>
+			</predicate>
+            
+            <!-- Textfield -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://www.dispedia.de/o/birthPlace</predicateuri>
+            </predicate>
+            
             <!-- Date -->
             <predicate>
                 <mandatory>0</mandatory>
@@ -54,73 +67,13 @@
                 <type>birthdate</type>
             </predicate>
 
-        <!-- Date -->
+            <!-- Date -->
             <predicate>
                 <mandatory>0</mandatory>
                 <predicateuri>http://schema.org/deathDate</predicateuri>
                 <type>birthdate</type>
             </predicate>
 
-            <!-- List -->
-            <predicate>
-                <mandatory>0</mandatory>
-                <predicateuri>http://schema.org/gender</predicateuri>
-                <type>list</type>
-                <typeparameter>
-                    <item>
-                        <label>
-                            <de>weiblich</de>
-                            <en>female</en>
-                        </label>
-                        <value>female</value>
-                    </item>
-                    <item>
-                        <label>
-                            <de>männlich</de>
-                            <en>male</en>
-                        </label>
-                        <value>male</value>
-                    </item>
-                </typeparameter>
-            </predicate>
-
-            <!-- rolls -->
-            <predicate>
-                <mandatory>0</mandatory>
-                <predicateuri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</predicateuri>
-                <title>
-                    <de>Rollen</de>
-                    <en>rolls</en>
-                </title>
-                <type>class</type>
-                <typeparameter>
-                    <item>
-                        <classOntology>http://www.dispedia.de/</classOntology>
-						<class>http://www.dispedia.de/o/Patient</class>
-                    </item>
-                </typeparameter>
-            </predicate>
-            <!-- service -->
-            <predicate>
-                <mandatory>0</mandatory>
-                <predicateuri>http://www.heppnetz.de/ontologies/goodrelations/v1#offers</predicateuri>
-                <title>
-                    <de>Dienstleistung</de>
-                    <en>Service</en>
-                </title>
-                <type>class</type>
-                <typeparameter>
-                    <item>
-                        <classOntology>http://hc.serviceOntology.org/</classOntology>
-                        <class>http://www.serviceOntology.org/Service</class>
-                        <instanceOntology>http://hc.dispedia.de/</instanceOntology>
-                        <relation>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</relation>
-                        <editable>1</editable>
-                        <filter>unbound</filter>
-                        <filterProperty>http://www.heppnetz.de/ontologies/goodrelations/v1#offers</filterProperty>
-                    </item>
-                </typeparameter>
-            </predicate>
         </item>
         
         <item>

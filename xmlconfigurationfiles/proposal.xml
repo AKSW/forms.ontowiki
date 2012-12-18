@@ -34,7 +34,7 @@
                 <predicateuri>http://www.w3.org/2000/01/rdf-schema#label</predicateuri>
             </predicate>
 
-            <!-- service -->
+            <!-- proposalcomponent -->
             <predicate>
                 <mandatory>0</mandatory>
                 <predicateuri>http://www.dispedia.de/o/containsProposalComponent</predicateuri>
