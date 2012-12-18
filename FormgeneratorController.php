@@ -208,7 +208,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $this->_data,
             $this->_resourceHelper,
             $this->_titleHelper,
-            $this->_dispediaModel,
             $this->_dirXmlConfigurationFiles,
             $this->_lang
         );
@@ -261,7 +260,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             {
                 // ... load triples into formula instance
                 $this->_data->fetchFormulaData($currentResource,$this->_form);
- 
+
                 // delete the current file/class from the array, so only other eligible classes are in this array
                 unset($currentClasses[$file]);
                 

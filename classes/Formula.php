@@ -29,7 +29,8 @@ class Formula
         $this->_data ['targetclass'] = '';
         $this->_data ['targetmodel'] = ''; 
         $this->_data ['modelnamespace'] = ''; 
-        $this->_data ['labelparts'] = array (); 
+        $this->_data ['labelparts'] = array ();
+        $this->_data ['labelpartsoption'] = '';
         $this->_data ['title'] = '';
         $this->_data ['description'] = '';
         $this->_data ['mode'] = 'new';
@@ -337,6 +338,14 @@ class Formula
         return $this->_data ['labelparts'];
     }
     
+    /**
+     * 
+     */
+    public function getLabelpartsOption ()
+    {
+        return $this->_data ['labelpartsoption'];
+    }
+    
     
     /**
      * 
@@ -354,6 +363,15 @@ class Formula
     public function setLabelparts ($value)
     {
         $this->_data ['labelparts'] = $value;
+    }
+    
+    /**
+     * @param $value String of option
+     * @return void 
+     */
+    public function setLabelpartsOption ($value)
+    {
+        $this->_data ['labelpartsoption'] = $value;
     }
     
     
@@ -392,6 +410,7 @@ class Formula
                 '<br/>' . $offsetString . '- index: '. $this->getIndex () .
                 '<br/>' . $offsetString . '- description: '. $this->getDescription () .
                 '<br/>' . $offsetString . '- label parts: '. implode (', ', $this->getLabelparts ()) .
+                '<br/>' . $offsetString . '- label parts option: '. $this->getLabelpartsOption () .
                 '<br/>' . $offsetString . '- mode: '. $this->getMode () .
                 '<br/>' . $offsetString . '- resource: '. $this->getResource () .
                 '<br/>' . $offsetString . '- target class: '. $this->getTargetClass () .
@@ -456,6 +475,7 @@ class Formula
             'description'           => $this->getDescription (),
             'selectResourceOfType'  => $this->getSelectResourceOfType (),
             'labelparts'            => $this->getLabelparts (),
+            'labelpartsoption'      => $this->getLabelpartsOption (),
             'mode'                  => $this->getMode (),
             'resource'              => $this->getResource (),
             'targetclass'           => $this->getTargetClass (),
@@ -525,6 +545,8 @@ class Formula
         $form->setSelectResourceOfType ($formArray ['selectResourceOfType']);
         
         $form->setLabelparts ($formArray ['labelparts']);
+        
+        $form->setLabelpartsOption ($formArray ['labelpartsoption']);
         
         $form->setMode ($formArray ['mode']);
         

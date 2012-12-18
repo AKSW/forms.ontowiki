@@ -17,10 +17,9 @@ class XmlConfig
     private $_dataHelper;
     private $_resourceHelper;
     
-    public function __construct ($dataHelper, $resourceHelper, $titleHelper, $dispediaModel, $dirXmlConfigurationFiles, $language)
+    public function __construct ($dataHelper, $resourceHelper, $titleHelper, $dirXmlConfigurationFiles, $language)
     {
         $this->_titleHelper = $titleHelper;
-        $this->_dispediaModel = $dispediaModel;
         $this->_dirXmlConfigurationFiles = $dirXmlConfigurationFiles;
         $this->_language = $language; // de, en
         $this->_dataHelper = $dataHelper;
@@ -138,6 +137,8 @@ class XmlConfig
                         {
                             $form->addLabelpart ((string) $nodeValue [0]);
                         }
+                        if (isset($xml->labelparts->option[0]))
+                            $form->setLabelpartsOption((string) $xml->labelparts->option[0]);
                             
                         break;
                         
@@ -288,7 +289,6 @@ class XmlConfig
                                     $this->_dataHelper,
                                     $this->_resourceHelper,
                                     $this->_titleHelper,
-                                    $this->_dispediaModel, 
                                     $this->_dirXmlConfigurationFiles,
                                     $this->_language
                                 );

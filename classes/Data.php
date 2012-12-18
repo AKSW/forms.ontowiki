@@ -938,6 +938,10 @@ class Data
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
         $form->setMode('edit');
+        
+        // set forms resource
+        $form->setResource ($resource);
+        
         if ( 0 == count($properties)) return;
         else
         {
@@ -1006,9 +1010,6 @@ class Data
                     }
                 }
             }
-
-            // set forms resource
-            $form->setResource ($resource);
         }
     }
     

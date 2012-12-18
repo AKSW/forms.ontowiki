@@ -35,8 +35,11 @@ class Resource
         $className   = true == Erfurt_Uri::check($className)
                        ? Resource::extractClassNameFromUri ($className)
                        : $className;
-                    
-        $label       = quoted_printable_decode(implode ('', $f->getLabelpartValues ()));
+        
+        if ('notinuri' == $f->getLabelpartsOption())
+            $label = '';
+        else
+            $label = quoted_printable_decode(implode ('', $f->getLabelpartValues ()));
         
         $time = time ();
         
@@ -46,7 +49,7 @@ class Resource
         
         // replace placeholders in $uriParts
         $newUri = str_replace('%modeluri%', $selectedModel, $uriParts);
-        $newUri = str_replace('%hash%', substr (md5 ($time . $className . rand()), 0, 4), $newUri);
+        $newUri = str_replace('%hash%', substr (md5 ($time . $className . rand()), 0, 10), $newUri);
         $newUri = str_replace('%date%', date ('Ymd', $time), $newUri);
         $newUri = str_replace('%labelparts%', $label, $newUri);
         $newUri = str_replace('%classname%', $className, $newUri);
