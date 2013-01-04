@@ -14,10 +14,10 @@
         <option value=""><?php echo $this->_translate->_('please select'); ?></option>
                     
     <?php foreach ( $element ['typeparameter'] as $par ) { ?>
+    
+    <?php if ( $par ['value'] == $element ['value'] ) { ?>
 
-    <?php if ( str_replace (' ', '', $par ['value']) == $element ['value'] ) { ?>
-
-        <option value="<?php echo $par ['value']; ?>" selected><?php echo $par ['label']; ?></option>
+        <option value="<?php echo $par ['value']; ?>" selected="selected"><?php echo $par ['label']; ?></option>
         
     <?php } else { ?>
         
