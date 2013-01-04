@@ -3,23 +3,24 @@
     <!-- All used predicate-tags are related to this class. -->
     <targetclass>http://www.dispedia.de/o/Address</targetclass>
     
-    <targetmodel>http://patients.dispedia.de/</targetmodel>
+    <targetmodel>urn:dispedia:pn</targetmodel>
     
     <!-- Needed by an URI generation function. -->
     <labelparts>
         <item>http://www.dispedia.de/o/street</item>
         <item>http://www.dispedia.de/o/city</item>
+        <option>notinuri</option>
     </labelparts>
 	
     <!-- Headline of this formula. -->
     <title>
-        <de>Addresse</de>
+        <de>Adresse</de>
         <en>Address</en>
     </title>
 	
     <!-- Introducing text to inform the user about the formula. -->
     <description>
-        <de>Erstellen Sie eine neue Addresse oder ändern Sie eine bestehende ab.</de>
+        <de>Erstellen Sie eine neue Adresse oder ändern Sie eine bestehende ab.</de>
         <en>Add a new / edit an existing address.</en>
     </description>
 	

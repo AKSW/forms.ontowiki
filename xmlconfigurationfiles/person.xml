@@ -83,11 +83,11 @@
             </title>
             <!-- Include a XML file -->
             <nestedconfig>
-            <xmlfile>postaladdress.xml</xmlfile>
+            <xmlfile>address.xml</xmlfile>
             <relations>
-                <item>http://www.serviceOntology.org/hasAddress</item>
+                <item>http://www.dispedia.de/o/hasAddress</item>
             </relations>
-            <typeclass>http://schema.org/PostalAddress</typeclass>
+            <typeclass>http://www.dispedia.de/o/Address</typeclass>
             </nestedconfig>
         </item>
         <item>
