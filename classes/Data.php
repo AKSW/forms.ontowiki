@@ -192,11 +192,14 @@ class Data
                             );
                 // sub formula
                 } elseif ('nestedconfig' == $entry ['sectiontype']) {
-                    $this->addFormulaData(
-                        $entry ['form'],
-                        $resource,
-                        $entry ['relations'] 
-                   );
+                    foreach ($entry ['forms'] as $nestedForm)
+                    {
+                        $this->addFormulaData(
+                            $nestedForm,
+                            $resource,
+                            $entry ['relations'] 
+                        );
+                    }
                 }
             } 
         }
@@ -520,14 +523,19 @@ class Data
                             $log [] = 'nothing to do for '. $form->getResource() .' > '. $entry ['predicateuri'] .' > new:'. $entry ['value'] .' = old:'. $oldValue . ' (index='. $entry ['index'] .')';
                     }
                 } 
-                
                 // sub formula
-                elseif ('nestedconfig' == $entry ['sectiontype'] && true === is_object ($oldValue)) 
+                elseif ('nestedconfig' == $entry ['sectiontype']) 
                 {
-                    if ('' == $upperResource) 
-                        $json ['log'] [] = $this->changeFormulaData ($entry['form'], $oldValue, $form->getResource(), $entry['relations']);
-                    else
-                        $log = array_merge ($log, $this->changeFormulaData ($entry ['form'], $oldValue, $form->getResource(), $entry['relations']));
+                    foreach ($entry['forms'] as $nestedFormKey => $nestedForm)
+                    {
+                        if (true === is_object ($oldValue[$nestedFormKey]))
+                        {
+                            if ('' == $upperResource) 
+                                $json ['log'] [] = $this->changeFormulaData ($nestedForm, $oldValue[$nestedFormKey], $form->getResource(), $entry['relations']);
+                            else
+                                $log = array_merge ($log, $this->changeFormulaData ($nestedForm, $oldValue[$nestedFormKey], $form->getResource(), $entry['relations']));
+                        }
+                    }
                 }
             }
         }
@@ -825,8 +833,6 @@ class Data
                     {
                         foreach ($entry ['forms'] as $nestedForm)
                             $this->loadContextData ($nestedForm);
-                            
-                        $this->loadContextData ($entry ['form']);
                     }                    
                 }
             }
@@ -988,24 +994,17 @@ class Data
                             else
                                 $values[] = $value;
 
+                            $forms = array();
                             foreach($values as $nestedValue)
                             {
-                                if (false == isset ($nestedValue))
-                                    continue;
-                                else
-                                {
-                                    $newForm = clone $entry ['form'];
-                                    $this->fetchFormulaData ($nestedValue, $newForm);
-                                    $newForm->setFormulaType($form->getFormulaType());
-                                    $forms = $form->getSectionKey($sectionNumber, $entryNumber, 'forms');
-                                    $forms[] = clone $newForm;
-                                    $form->setSectionKey($sectionNumber, $entryNumber, 'forms', $forms);
-                                }
+                                $newNestedForm = clone $entry ['forms'][0];
+                                $this->fetchFormulaData ($nestedValue, $newNestedForm);
+                                $newNestedForm->setFormulaType($form->getFormulaType());
+                                $forms[] = $newNestedForm;
                             }
-                            //setr old 'form' field
-                            $forms = $form->getSectionKey($sectionNumber, $entryNumber, 'forms');
+                            
                             if (0 < count($forms))
-                                $entry ['form'] = $forms[0];
+                                $form->setSectionKey($sectionNumber, $entryNumber, 'forms', $forms);
                         }                    
                     }
                 }

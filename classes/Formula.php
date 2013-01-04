@@ -443,6 +443,11 @@ class Formula
                 elseif (isset($s['sectiontype']) && 'nestedconfig' == $s ['sectiontype'])
                 {
                     $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;+ nestedconfig ';
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp;- typeclass: ' . $s ['typeclass'];
+                    
+                    foreach ($s ['relations'] as $relation)
+                        $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp;- relation: ' . $relation;
+                        
                     if (0 < count($s ['forms']))
                     {
                         $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - forms: '. count($s ['forms']);
@@ -451,11 +456,6 @@ class Formula
                             $return .= '<br/>' . $offsetString;
                             $return .= $nestedform->toString ($offsetString . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
                         }
-                    }
-                    else
-                    {
-                        $return .= '<br/>' . $offsetString;
-                        $return .= $s ['form']->toString ($offsetString . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'  );
                     }
                 }
             }
@@ -512,14 +512,17 @@ class Formula
                 }
                 elseif ('nestedconfig' == $s ['sectiontype'])
                 {
+                    $forms = array();
+                    foreach ($s ['forms'] as $form)
+                        $forms[] = $form->getDataAsArrays ();
+                    
                     $newSection [] = array (
                         'sectiontype'   => $s ['sectiontype'],
                         'relations'     => $s ['relations'],
                         'index'         => $s ['index'],
                         'xmlfile'       => $s ['xmlfile'],
                         //TODO: use forms instead of form
-                        'forms'         => array(),
-                        'form'          => $s ['form']->getDataAsArrays ()
+                        'forms'         => $forms
                    );
                 }
             }
@@ -594,13 +597,16 @@ class Formula
                 }
                 elseif ('nestedconfig' == $section ['sectiontype'])
                 {                                
+                    $forms = array();
+                    foreach ($section ['forms'] as $nestedForm)
+                        $forms[] = $this->initByArray ($nestedForm);
+                    
                     $newSection [] = array (
-                        'xmlfile'      => $section ['form']['xmlfile'],
-                        'index'        => $section ['form']['index'],
+                        'xmlfile'      => $section ['forms'][0]['xmlfile'],
+                        'index'        => $section ['forms'][0]['index'],
                         'relations'    => $section ['relations'],
                         //TODO: use forms instead of form
-                        'forms'        => array(),
-                        'form'         => $this->initByArray ($section ['form']), 
+                        'forms'        => $forms,
                         'sectiontype'  => 'nestedconfig'
                    );
                 }    
@@ -726,16 +732,19 @@ class Formula
                 
                 elseif ('nestedconfig' == $entry ['sectiontype'] && $index == $entry ['index'])
                 {
-                    return $entry ['form'];
+                    return $entry ['forms'];
                 } 
                 
                 // sub formula
                 elseif ('nestedconfig' == $entry ['sectiontype'])
-                {                    
-                    $result = $entry ['form']->getPredicateValue($index);
-                    
-                    if ('' != $result)
-                        return $result;
+                {
+                    foreach ($entry ['forms'] as $nestedForm)
+                    {
+                        $result = $nestedForm->getPredicateValue($index);
+                        
+                        if ('' != $result)
+                            return $result;
+                    }
                 }
                 
             } 

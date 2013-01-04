@@ -22,7 +22,7 @@ var boxdata = new Array();
 var tempboxdata =  {};
 
 function setFormulaArrayFields (f)
-{        
+{
     var len = f.sections.length;
     var i, j = 0;
     
@@ -67,7 +67,11 @@ function setFormulaArrayFields (f)
             // recursive call of this function 
             else if ("nestedconfig" == f.sections [i][j].sectiontype)
             {
-                setFormulaArrayFields (f.sections [i][j].form);
+                var formCount = f.sections [i][j].forms.length;
+                for (k = 0; k < formCount; ++k)
+                {
+                    f.sections [i][j].forms[k] = setFormulaArrayFields (f.sections [i][j].forms[k]);
+                }
             }
         }
     }
@@ -97,10 +101,14 @@ function setFormulaModeTo (f, newMode)
             // recursive call of this function 
             else if ("nestedconfig" == f.sections [i][j].sectiontype)
             {
-                f.sections [i][j].form = setFormulaModeTo (
-                    f.sections [i][j].form, 
-                    newMode 
-               );
+                var formCount = f.sections [i][j].forms.length;
+                for (k = 0; k < formCount; ++k)
+                {
+                    f.sections [i][j].forms[k] = setFormulaModeTo (
+                        f.sections [i][j].forms[k], 
+                        newMode 
+                    );
+                }
             }
         }
     }
@@ -263,9 +271,11 @@ function checkMandatoryFields (f)
             // recursive call of this function 
             else if ("nestedconfig" == f.sections [i][j].sectiontype)
             {
-                returnValue &= checkMandatoryFields (
-                    f.sections [i][j].form
-               );
+                var formCount = f.sections [i][j].forms.length;
+                for (k = 0; k < formCount; ++k)
+                {
+                    returnValue &= checkMandatoryFields (f.sections [i][j].forms[k]);
+                }
             }
         }
     }

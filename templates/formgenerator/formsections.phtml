@@ -65,8 +65,6 @@
                     <?php
                         if (0 < count($element ['forms']))
                             array_push($this->forms, $element ['forms']);
-                        else
-                            array_push($this->forms, array($element ['form']));
                     ?>
                     
                     <?php echo $this->render('formgenerator/formsections.phtml') ?>

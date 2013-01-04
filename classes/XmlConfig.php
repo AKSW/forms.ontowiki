@@ -311,8 +311,7 @@ class XmlConfig
                                      'relations'    => $relations,
                                      'typeclass'    => isset ($nestedconfig->typeclass) ? $nestedconfig->typeclass : "",
                                     //TODO: use forms instead of form
-                                     'forms'        => array(),
-                                     'form'         => $f, 
+                                     'forms'        => array($f),
                                      'sectiontype'  => 'nestedconfig'
                                );
                                 
