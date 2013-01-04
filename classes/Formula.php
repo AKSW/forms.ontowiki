@@ -438,6 +438,7 @@ class Formula
                             $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ' . $key . ': ' . (true == is_array($value) ? implode($value, "; ") : $value);
                         }
                     }
+                    $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;&nbsp; - value: '. $this->getPredicateValue($s ['index']);
                 }
                 elseif (isset($s['sectiontype']) && 'nestedconfig' == $s ['sectiontype'])
                 {
