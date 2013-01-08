@@ -41,6 +41,7 @@
 }
 .divClassPredicateValue {
     padding-bottom: 10px;
+    float:left;
 }
 .divClassPredicateDepth {
     width: 20px;
