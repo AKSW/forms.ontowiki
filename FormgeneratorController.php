@@ -290,6 +290,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $toolbar = $this->_owApp->toolbar;
             
             $toolbar->appendButton(OntoWiki_Toolbar :: SEPARATOR);
+            
             $toolbar->appendButton(OntoWiki_Toolbar :: SAVE, array(
                 'id'   => 'changeResource',
                 'class'=> ('new' == $this->_form->getMode() ? ' hidden' : ''),
@@ -297,7 +298,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             ));
             $toolbar->appendButton(OntoWiki_Toolbar :: ADD, array(
                 'id'   => 'addResource',
-                'class'=> ('' != $this->_form->getSelectResourceOfType() ? ' hidden' : ''),
+                'class'=> (('' != $this->_form->getSelectResourceOfType() || 'edit' == $this->_form->getMode()) ? ' hidden' : ''),
                 'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'add')"
             ));
             if ("box" != $this->view->layout)
