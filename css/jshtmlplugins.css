@@ -63,13 +63,11 @@
 }
 .divMultipleLabel {
     float:left;
-    height: 20px;
-    width: 70%;
 }
 .divMultipleButtons {
     float:left;
-    height: 20px;
-    width: 15%;
+    margin-left:15px;
+    line-height: 15px;
 }
 
 .mandatoryFieldEmpty {
