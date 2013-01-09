@@ -61,7 +61,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
 
         
         $this->_selectedModel = $this->_ontologies['dispediaPatient']['instance'];
-        $this->_selectedModelUri = $this->_ontologies['dispediaPatient']['namespace'];
         $this->_dispediaModel = $this->_ontologies['dispediaCore']['namespace'];
         
         $this->_dirXmlConfigurationFiles = dirname (__FILE__) . '/' . $this->_configuration['uris']['dirXmlConfigurationFiles'];
@@ -336,32 +335,21 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $resourceClassesResult = $this->_store->sparqlQuery (
             'SELECT ?class
             WHERE {
-                {
-                    {
-                        {<' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.}
-                        UNION{
-                            <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> _:a.
-                            _:a <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?class.
-                        }
-                    }
-                    UNION{
-                        <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> _:b.
-                        _:b <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:c.
-                        _:c <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?class.
-                    }
-                }
-                UNION{
-                    <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> _:d.
-                    _:d <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:e.
-                    _:e <http://www.w3.org/2000/01/rdf-schema#subClassOf> _:f.
-                    _:f <http://www.w3.org/2000/01/rdf-schema#subClassOf> ?class.
-                }
+                <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.
             };'
         );
         $resourceClasses = array();
+        foreach ($resourceClassesResult as $resourceClass)
+        {
+            $resourceClasses[] = $resourceClass['class'];
+        }
+        $resourceClassesResult = $this->_store->getTransitiveClosure($this->_selectedModel->getModelUri(), 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $resourceClasses, true);
+        $resourceClassesResult = array_merge($resourceClassesResult, $this->_store->getTransitiveClosure($this->_selectedModel->getModelUri(), 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $resourceClasses, false));
+
+        $resourceClasses = array();
         $resourceHelper = new Resource();
-        foreach ($resourceClassesResult as $resourceClass) {
-            $newRessourceClassName = strtolower($resourceHelper->extractClassNameFromUri($resourceClass['class']));
+        foreach ($resourceClassesResult as $resourceClassUri => $resourceClass) {
+            $newRessourceClassName = strtolower($resourceHelper->extractClassNameFromUri($resourceClassUri));
             $resourceClasses[$newRessourceClassName] = $newRessourceClassName . '.xml';
         }
         $files = scandir($this->_dirXmlConfigurationFiles);
