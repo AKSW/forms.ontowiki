@@ -300,7 +300,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $toolbar->appendButton(OntoWiki_Toolbar :: SAVE, array(
                 'id'   => 'changeResource',
                 'class'=> ('new' == $this->_form->getMode() ? ' hidden' : ''),
-                'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'edit')"
+                'url'  => "javascript:submitFormula(urlMvc, " . ("box" == $this->view->layout ? 'boxdata' : 'data') . ", 'changed')"
             ));
             $toolbar->appendButton(OntoWiki_Toolbar :: ADD, array(
                 'id'   => 'addResource',
@@ -322,7 +322,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 $this->view->boxtoolbar = $toolbar->__toString();
             }
         }
-        
+
         $this->view->urlBase = $this->_config->urlBase;
         $this->view->titleHelper = $this->_titleHelper;
         $this->view->form = $this->_form;

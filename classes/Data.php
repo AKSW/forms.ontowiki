@@ -94,7 +94,7 @@ class Data
                     if ('add' == $this->_form->getMode())
                         $json = $this->addFormulaData($this->_form);
                         
-                    elseif ('edit' == $this->_form->getMode())
+                    elseif ('changed' == $this->_form->getMode())
                         $json = $this->changeFormulaData($this->_form, $formOld);
                 }
             }
@@ -530,10 +530,47 @@ class Data
                     {
                         if (true === is_object ($oldValue[$nestedFormKey]))
                         {
-                            if ('' == $upperResource) 
-                                $json ['log'] [] = $this->changeFormulaData ($nestedForm, $oldValue[$nestedFormKey], $form->getResource(), $entry['relations']);
-                            else
-                                $log = array_merge ($log, $this->changeFormulaData ($nestedForm, $oldValue[$nestedFormKey], $form->getResource(), $entry['relations']));
+                            if ('add' == $nestedForm->getMode())
+                            {
+                                foreach ($entry ['forms'] as $nestedForm)
+                                {
+                                    if ('' == $upperResource) 
+                                        $json ['log'] [] = $this->addFormulaData(
+                                            $nestedForm,
+                                            $form->getResource(),
+                                            $entry ['relations'] 
+                                        );
+                                    else
+                                        $log = array_merge (
+                                            $log,
+                                            $this->addFormulaData(
+                                                $nestedForm,
+                                                $form->getResource(),
+                                                $entry ['relations'] 
+                                            )
+                                        );
+                                }
+                            }
+                            elseif ('changed' == $nestedForm->getMode())
+                            {
+                                if ('' == $upperResource) 
+                                    $json ['log'] [] = $this->changeFormulaData (
+                                        $nestedForm,
+                                        $oldValue[$nestedFormKey],
+                                        $form->getResource(),
+                                        $entry['relations']
+                                    );
+                                else
+                                    $log = array_merge (
+                                        $log,
+                                        $this->changeFormulaData (
+                                            $nestedForm,
+                                            $oldValue[$nestedFormKey],
+                                            $form->getResource(),
+                                            $entry['relations']
+                                            )
+                                        );
+                            }
                         }
                     }
                 }
@@ -943,8 +980,13 @@ class Data
         
         // fetch direct neighbours of the resource
         $properties = $this->getResourceProperties($resource);
-        $form->setMode('edit');
-        
+        if (!isset($resource) || "" == $resource)
+        {
+            $form->setMode('new');
+            $resource = "";
+        }
+        else
+            $form->setMode('edit');
         // set forms resource
         $form->setResource ($resource);
         

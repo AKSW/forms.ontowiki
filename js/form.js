@@ -21,7 +21,7 @@ var boxnumber = 0;
 var boxdata = new Array();
 var tempboxdata =  {};
 
-function setFormulaArrayFields (f)
+function setFormulaArrayFields (f, newMode)
 {
     var len = f.sections.length;
     var i, j = 0;
@@ -36,7 +36,10 @@ function setFormulaArrayFields (f)
             else if ("predicate" == f.sections [i][j].sectiontype)
             {
                 if ( "alsfrsquestion" == f.sections[i][j].type )
-                    f.sections [i][j].value = $("input[name=" + f.sections [i][j].name + "]:checked").val();
+                {
+                    if (checkFormValues(f, newMode, f.sections [i][j].value, $("input[name=" + f.sections [i][j].name + "]:checked").val()))
+                        f.sections [i][j].value = $("input[name=" + f.sections [i][j].name + "]:checked").val();
+                }
                 else if ( "class" == f.sections[i][j].type || "multiple" == f.sections[i][j].type )
                 {
                     if (0 < $("input[name=" + f.sections [i][j].name + "]:checked").length)
@@ -45,11 +48,14 @@ function setFormulaArrayFields (f)
                         $("input[name=" + f.sections [i][j].name + "]:checked").each(function(index) {
                             values[index] = $(this).val();
                         });
-
-                        f.sections [i][j].value = values;
+                        if (checkFormValues(f, newMode, f.sections [i][j].value, values))
+                            f.sections [i][j].value = values;
                     }
                     else
-                        f.sections [i][j].value = "";
+                    {
+                        if (checkFormValues(f, newMode, f.sections [i][j].value, ""))
+                            f.sections [i][j].value = "";
+                    }
                 }
                 else if (1 < $("input[name=" + f.sections [i][j].name + "]").length)
                 {
@@ -58,10 +64,17 @@ function setFormulaArrayFields (f)
                         values[index] = $(this).val();
                     });
 
-                    f.sections [i][j].value = values;
+                    if (checkFormValues(f, newMode, f.sections [i][j].value, values))
+                        f.sections [i][j].value = values;
                 }
                 else
-                    f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
+                {
+                    if (f.sections [i][j].value != $("#" + f.sections [i][j].name).val())
+                    {
+                        if (checkFormValues(f, newMode, f.sections [i][j].value, $("#" + f.sections [i][j].name).val()))
+                            f.sections [i][j].value = $("#" + f.sections [i][j].name).val();
+                    }
+                }
             }
             
             // recursive call of this function 
@@ -70,7 +83,9 @@ function setFormulaArrayFields (f)
                 var formCount = f.sections [i][j].forms.length;
                 for (k = 0; k < formCount; ++k)
                 {
-                    f.sections [i][j].forms[k] = setFormulaArrayFields (f.sections [i][j].forms[k]);
+                    oldNestedFormMode = f.sections [i][j].forms[k].mode;
+                    f.sections [i][j].forms[k] = setFormulaArrayFields (f.sections [i][j].forms[k], newMode);
+                    checkFormValues(f, newMode, oldNestedFormMode, f.sections [i][j].forms[k].mode);
                 }
             }
         }
@@ -80,42 +95,57 @@ function setFormulaArrayFields (f)
 }
 
 /**
- * sets formula mode for f and all sub formulas
+ * funktion checks if to values are the same and change the formular mode in this way
  * @param f formula instance
  * @param newMode new formula mode
- * @return void
+ * @param oldValue old value
+ * @param newValue new value
+ * @return false if values the same, else true
  */
-function setFormulaModeTo (f, newMode)
+function checkFormValues(f, newMode, oldValue, newValue)
 {
-    f.mode = newMode;
-    var len = f.sections.length;
-    var i, j = 0;
+    returnValue = false;
     
-    for (i = 0; i < len; ++i)
-    {       
-        for (j = 0;;++j)
+    if (oldValue instanceof Array)
+    {
+        if (newValue instanceof Array)
         {
-            if (undefined == f.sections [i][j]) 
-                break;
-         
-            // recursive call of this function 
-            else if ("nestedconfig" == f.sections [i][j].sectiontype)
+            if (oldValue.length != newValue.length)
+                returnValue = true;
+            else
             {
-                var formCount = f.sections [i][j].forms.length;
-                for (k = 0; k < formCount; ++k)
+                for (i = 0; i < oldValue; i++)
                 {
-                    f.sections [i][j].forms[k] = setFormulaModeTo (
-                        f.sections [i][j].forms[k], 
-                        newMode 
-                    );
+                    if (oldValue[i] != newValue[i])
+                        returnValue = true;
                 }
             }
         }
+        else
+            returnValue = true;
+    }
+    else
+    {
+        if (newValue instanceof Array)
+            returnValue = true;
+        else
+        {
+            if (oldValue != newValue)
+                returnValue = true;
+        }
     }
     
-    return f;
-} 
-
+    //set form mode
+    if (returnValue)
+    {
+        console.log("CHANGE: old: "+ oldValue + " to new: " + newValue);
+        if ("new" == f.mode)
+            f.mode = "add";
+        else
+            f.mode = newMode;
+    }
+    return returnValue;
+}
    
 /**
  * sends a complete json-serialzed formula instance and add/edit resources
@@ -128,7 +158,7 @@ function submitFormula (url, data, mode)
     {
         data = boxdata[boxnumber-1];
     }
-
+    
     var reload = true;
     // show please wait box
     $("#pleaseWaitBox").show ();
@@ -160,13 +190,10 @@ function submitFormula (url, data, mode)
     
     // set values from formula into the formula instance 
     // which was loaded at the beginning
-    form = setFormulaArrayFields (form);
+    form = setFormulaArrayFields (form, mode);
     console.log ("formnew");
     console.log (form);
     console.log ("");
-    // set mode from new to add
-    form = setFormulaModeTo (form, mode);
-    // formOld = setFormulaModeTo (formOld, mode);
 
     var _data = data;
     var jQ = jQuery;
@@ -212,7 +239,7 @@ function submitFormula (url, data, mode)
             // show edit button
             $("#changeResource").show();
             
-            if (reload)
+            if (false)//reload)
             {
                 if ('edit' == form.mode)
                     location.reload();

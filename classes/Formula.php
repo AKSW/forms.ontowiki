@@ -484,8 +484,7 @@ class Formula
             'modelnamespace'        => $this->getModelNamespace (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
-       );
-                  
+        );
         
         foreach ($this->getSections () as $entry)
         {
@@ -521,7 +520,6 @@ class Formula
                         'relations'     => $s ['relations'],
                         'index'         => $s ['index'],
                         'xmlfile'       => $s ['xmlfile'],
-                        //TODO: use forms instead of form
                         'forms'         => $forms
                    );
                 }
