@@ -165,6 +165,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         {
             $file = $this->_request->getParam('file');
             $this->view->resourceSelected = true;
+            
+            // if file is not in eligible classes array then redirect to new plain form
+            if ('' != $currentResource && !array_key_exists($file, $currentClasses))
+            {
+                $this->_redirect("formgenerator/newform?file=" . $file);
+                return;
+            }
         // set resource to load, if parameter r was set
         } elseif ('' != $currentResource)
         {
