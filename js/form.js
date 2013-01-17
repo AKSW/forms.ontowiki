@@ -138,7 +138,6 @@ function checkFormValues(f, newMode, oldValue, newValue)
     //set form mode
     if (returnValue)
     {
-        console.log("CHANGE: old: "+ oldValue + " to new: " + newValue);
         if ("new" == f.mode)
             f.mode = "add";
         else
@@ -239,9 +238,9 @@ function submitFormula (url, data, mode)
             // show edit button
             $("#changeResource").show();
             
-            if (false)//reload)
+            if (reload)
             {
-                if ('edit' == form.mode)
+                if ('changed' == form.mode)
                     location.reload();
                 else
                     location = url + 'form/?r=' + encodeURI(res.newresources['resourceUri']);

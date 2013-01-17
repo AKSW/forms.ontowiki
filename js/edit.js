@@ -40,7 +40,7 @@ function addEntity (entity, context, resource)
         type: "GET",
         data: data,
         context: $(context),
-        url: url + "formgenerator/" + action,
+        url: urlBase + "formgenerator/" + action,
             // complete, no errors
         success: function ( res ) 
         {
