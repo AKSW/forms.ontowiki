@@ -27,28 +27,34 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
         {
             // A class was selected
             if ( -1 !== $selectedClass
-                && ( 'instances' ==  $a || 'newform' == $a ) )
+                && ( 'instances' ==  OntoWiki::getInstance()->lastRoute || 'newform' == $a ) )
             {
+                $action = 'newform';
+                if ('xmlfilenotfound' == $a)
+                    $action = 'xmlfilenotfound';
                 // Add entry in tab list
                 $owNav->register (
                     'formgenerator_form', 
                     array(
                         'controller' => 'formgenerator', 
-                        'action'     => 'newform', 
+                        'action'     => $action, 
                         'name'       => 'NewInstance'
                     )
                 );
             }
             // If an Resource was selected
             else if ( (string) $owApp->selectedModel !== $selectedResource
-                        && ( 'properties' ==  $a  || 'form' == $a || 'report' == $a ) )
+                        && ( 'properties' ==  OntoWiki::getInstance()->lastRoute  || 'form' == $a || 'report' == $a ) )
             {
+                $action = 'form';
+                if ('xmlfilenotfound' == $a)
+                    $action = 'xmlfilenotfound';
                 // Add entry in tab list
                 $owNav->register (
                     'formgenerator_form', 
                     array(
                         'controller' => 'formgenerator', 
-                        'action'     => 'form', 
+                        'action'     => $action, 
                         'name'       => 'EditResource'
                     )
                 );
