@@ -894,34 +894,34 @@ class Data
         $instances = array();
         $filter = '';
         if ('onlyBoundToThisResource' == $filterType && '' != $filterProperty && '' != $filterResource)
-            $filter = '<' . $filterResource . '> <' . $filterProperty . '> ?instanceUri.';
+            $filter = '  <' . $filterResource . '> <' . $filterProperty . '> ?instanceUri.';
         else if ('unbound' == $filterType)
         {
-            $filter = 'OPTIONAL {?subject <' . $filterProperty . '> ?instanceUri .}' .
-                      'FILTER (?subject = <' . $filterResource . '> OR !BOUND(?subject))';
+            $filter = '  OPTIONAL {?subject <' . $filterProperty . '> ?instanceUri .}' . "\n" .
+                      '  FILTER (?subject = <' . $filterResource . '> OR !BOUND(?subject))';
         }
         
         if ('' != $order)
-            $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}';
+            $order = 'OPTIONAL {?instanceUri <' . $order . '> ?successorUri.}' . "\n";
         
         // get the closure
         $closureResults = $this->_store->getTransitiveClosure($modelIri, 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $classUri);
-        $closureFilter = 'FILTER (';
+        $closureFilter = '  FILTER (' . "\n";
         
         foreach ($closureResults as $closureUri => $closureResult)
         {
-            $closureFilter .= '?classUri = <'. $closureUri .'> OR ';
+            $closureFilter .= '    ?classUri = <'. $closureUri .'> OR ' . "\n";
         }
         
-        $closureFilter .= 'FALSE)';
-        
+        $closureFilter .= '    FALSE' . "\n" . '  )';
+
         $instancesResult = $this->_store->sparqlQuery(
-            'SELECT ?instanceUri ?classUri' . ('' != $order ? ' ?successorUri ' : ' ') .
-            'WHERE {
-              ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?classUri .' .
-              $filter .
-              $closureFilter .
-              $order .
+            'SELECT ?instanceUri ?classUri' . ('' != $order ? ' ?successorUri ' : ' ') . "\n" .
+            'WHERE {' . "\n" .
+            '  ?instanceUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?classUri .' . "\n" .
+              $filter . "\n" .
+              $closureFilter . "\n" .
+              $order . "\n" .
             '};'
         );
         
