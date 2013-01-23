@@ -114,7 +114,7 @@ function checkFormValues(f, newMode, oldValue, newValue)
                 returnValue = true;
             else
             {
-                for (i = 0; i < oldValue; i++)
+                for (i = 0; i < oldValue.length; i++)
                 {
                     if (oldValue[i] != newValue[i])
                         returnValue = true;
@@ -181,18 +181,16 @@ function submitFormula (url, data, mode)
         
     console.log ("form");
     console.log (form);
-    console.log ("");
     
     console.log ("formOld");
     console.log (formOld);
-    console.log ("");
     
     // set values from formula into the formula instance 
     // which was loaded at the beginning
     form = setFormulaArrayFields (form, mode);
+
     console.log ("formnew");
     console.log (form);
-    console.log ("");
 
     var _data = data;
     var jQ = jQuery;
@@ -240,7 +238,7 @@ function submitFormula (url, data, mode)
             
             if (reload)
             {
-                if ('changed' == form.mode)
+                if ('changed' == form.mode || 'edit' == form.mode)
                     location.reload();
                 else
                     location = url + 'form/?r=' + encodeURI(res.newresources['resourceUri']);

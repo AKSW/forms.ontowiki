@@ -469,24 +469,44 @@ class Data
                         }
                         else
                         {
-                            $this->removeStmt($form->getResource(), $entry ['predicateuri'], $oldValue);
                             
-                            if (is_array($oldValue) && isset($entry['typeparamter'][0]['order'])  && 1 == $entry ['typeparameter'][0]['order'])
-                            {
+                            if (is_array($oldValue)) {
                                 foreach ($oldValue as $valueNumber => $value)
                                 {
+                                    if (isset($entry['typeparameter'][0]['order']) && 1 == $entry ['typeparameter'][0]['order'])
+                                    {
+                                        $this->removeStmt(
+                                            $value,
+                                            $entry ['typeparameter'][0]['successor'],
+                                            null
+                                        );
+                                        if ('' == $upperResource)
+                                            $json['log'][] = 'remove ' . $value .' > '. $entry ['typeparameter'][0]['successor'] .' > '. null;
+                                        else
+                                            $log [] = 'remove ' . $value .' > '. $entry ['typeparameter'][0]['successor'] .' > '. null;
+                                    }
                                     $this->removeStmt(
-                                        $value,
-                                        $entry ['typeparameter'][0]['successor'],
-                                        null
+                                        $form->getResource(),
+                                        $entry ['predicateuri'],
+                                        $value
                                     );
+                                    if ('' == $upperResource)
+                                        $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $value;
+                                    else
+                                        $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $value;
                                 }
+                            } else {
+                                $this->removeStmt(
+                                    $form->getResource(),
+                                    $entry ['predicateuri'],
+                                    $oldValue
+                                );
+                                
+                                if ('' == $upperResource)
+                                    $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
+                                else
+                                    $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                             }
-                            
-                            if ('' == $upperResource)
-                                $json['log'][] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue;
-                            else
-                                $log [] = 'remove ' . $form->getResource() . ' > '. $entry ['predicateuri']  . ' > '. $oldValue .' (index='. $entry ['index'] .')';
                         }
                         
                         if (is_array($entry ['value']))
@@ -494,26 +514,42 @@ class Data
                             foreach ($entry ['value'] as $valueNumber => $value)
                             {
                                 if (isset($entry ['typeparameter'][0]['order']) && 1 == $entry ['typeparameter'][0]['order'] && 0 < $valueNumber)
+                                {
                                     $this->addStmt(
                                         $value,
                                         $entry ['typeparameter'][0]['successor'],
                                         $entry ['value'][$valueNumber - 1]
                                     );
+                                    if ('' == $upperResource)
+                                        $json['log'][] = 'add ' . $value .' > '. $entry ['typeparameter'][0]['successor'] .' > '. $entry ['value'][$valueNumber - 1];
+                                    else
+                                        $log [] = 'add ' . $value .' > '. $entry ['typeparameter'][0]['successor'] .' > '. $entry ['value'][$valueNumber - 1];
+                                }
                                 $this->addStmt(
                                     $form->getResource(),
                                     $entry ['predicateuri'],
                                     $value
                                 );
+                                
+                                if ('' == $upperResource)
+                                    $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $value;
+                                else
+                                    $log [] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $value;
                             }
                         }
                         else
+                        {
                             if ("" != $entry ['value'])
+                            {
                                 $this->addStmt($form->getResource(), $entry ['predicateuri'], $entry ['value']);
+                                
+                                if ('' == $upperResource)
+                                    $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
+                                else
+                                    $log [] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'] .' (index='. $entry ['index'] .')';
+                            }
+                        }
                         
-                        if ('' == $upperResource)
-                            $json['log'][] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'];
-                        else
-                            $log [] = 'add ' . $form->getResource() .' > '. $entry ['predicateuri'] .' > '. $entry ['value'].' (index='. $entry ['index'] .')';
                     }
                     else
                     {
@@ -814,6 +850,7 @@ class Data
                             if ("" != $form->getResource())
                             {
                                 if (isset($entry['typeparameter'][0]['filter']) && 'onlyBoundToThisResource' == $entry['typeparameter'][0]['filter'] )
+                                {
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances(
                                         $form->getTargetModel(),
                                         $entry['typeparameter'][0]['class'],
@@ -822,6 +859,9 @@ class Data
                                         $form->getResource(),
                                         $order
                                     );
+                                    //overwrite the values of the entry because of there orderng is not correct
+                                    $sections[$sectionNumber][$entryNumber]['value'] = array_keys($sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances']);
+                                }
                                 else
                                     $sections[$sectionNumber][$entryNumber]['typeparameter'][0]['instances'] = $this->loadInstances(
                                         $form->getTargetModel(),
@@ -927,6 +967,7 @@ class Data
         
         $this->_titleHelper->reset();
         $this->_titleHelper->addResources($instancesResult, "instanceUri");
+        
         $orderList = array();
         $orderlyInstances = array();
         $successorList = array();
@@ -951,17 +992,17 @@ class Data
         
         if (true == $classAsKey)
             return $instances;
-        
+
         if ("" != $order)
         {
             for ($i = 0; $i < count($successorList) - 1; $i++)
             {
                 $orderList[$i + 1] = $successorList[$orderList[$i]];
-                $orderlyInstances[][$successorList[$orderList[$i]]] = $instances[$successorList[$orderList[$i]]];
+                $orderlyInstances[$successorList[$orderList[$i]]] = $instances[$successorList[$orderList[$i]]];
             }
             $instances = $orderlyInstances;
         }
-        
+
         return $instances;
     }
     
