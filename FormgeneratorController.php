@@ -122,6 +122,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      */
     public function formAction()
     {
+        //show modules
+        $this->addModuleContext('extension.formgenerator.form');
+        
         // include CSS files
         $this->view->headLink()->appendStylesheet($this->_url .'css/form.css');
         $this->view->headLink()->appendStylesheet($this->_url .'css/jshtmlplugins.css');

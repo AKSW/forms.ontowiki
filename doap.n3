@@ -13,6 +13,7 @@
   owconfig:privateNamespace <http://ns.ontowiki.net/Extensions/formgenerator/> ;
   owconfig:templates "templates" ;
   owconfig:languages "languages" ;
+  owconfig:hasModule :Switchform ;
   owconfig:enabled "true"^^xsd:boolean ;
   rdfs:label "Form Generator" ;
   doap:description "A parser for parsing XML configuration files." ;
@@ -21,6 +22,11 @@
   doap:release :v1-0 .
 :v1-0 a doap:Version ;
   doap:revision "1.0" .
+  
+:Switchform a owconfig:Module ;
+  rdfs:label "Formulare" ;
+  owconfig:priority "1" ;
+  owconfig:context "extension.formgenerator.form" .
  
 :this
 	owconfig:config [

@@ -1,0 +1,15 @@
+<form id="switchFormForm" method="get" action="">
+    
+    <?php echo $this->_translate->_('Available forms:'); ?>
+
+    <select id="switchFormSelect" name="file">
+        <option></option>
+        <?php
+            // Read all XML files in formconfig folder and generate a list.
+            foreach ( $this->enabledForms as $enabledForm ) { ?>
+                <option value="<?php echo $enabledForm['fileName'] ?>" label="<?php echo $enabledForm['label'] ?>"<?php echo ($this->currentForm == $enabledForm['fileName'] ? ' selected="selected"' : "") ?>>
+                    <?php echo $enabledForm['label'] ?>
+                </option>
+        <?php } ?>
+    </select>
+</form>
