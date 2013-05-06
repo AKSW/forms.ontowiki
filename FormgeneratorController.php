@@ -195,7 +195,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         OntoWiki_Message::ERROR
                     )
                 );
-                $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
+                
+                return $this->render('templates/formgenerator/xmlfilenotfound');
+                //$this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
             }
             else
             {

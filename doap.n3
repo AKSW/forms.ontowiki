@@ -10,6 +10,7 @@
 <> foaf:primaryTopic :this .
 :this a doap:Project ;
   doap:name "formgenerator" ;
+  owconfig:helperEvent event:onRouteStartup ;
   owconfig:privateNamespace <http://ns.ontowiki.net/Extensions/formgenerator/> ;
   owconfig:templates "templates" ;
   owconfig:languages "languages" ;
