@@ -25,8 +25,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
         if ($owApp->selectedModel != null)
         {
             // A class was selected
-            if ( -1 !== $selectedClass
-                && ( 'instances' == $a || 'newform' == $a ) )
+            if ( 'instances' == $a || 'newform' == $a )
             {
                 $action = 'newform';
                 // Add entry in tab list
