@@ -77,6 +77,34 @@
         </item>
         
         <item>
+            <!-- Textfield -->
+			<predicate> 
+				<mandatory>0</mandatory>
+				<predicateuri>http://schema.org/jobTitle</predicateuri>
+			</predicate>
+        </item>
+        
+        <item>
+            <!-- parent -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://schema.org/parent</predicateuri>
+            </predicate>
+            
+            <!-- children -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://schema.org/children</predicateuri>
+            </predicate>
+            
+            <!-- sibling -->
+            <predicate>
+                <mandatory>0</mandatory>
+                <predicateuri>http://schema.org/sibling</predicateuri>
+            </predicate>
+        </item>
+        
+        <item>
             <title>
             <de>Adresse</de>
             <en>Address</en>
