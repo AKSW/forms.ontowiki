@@ -26,7 +26,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
         {
             // A class was selected
             if ( -1 !== $selectedClass
-                && ( 'instances' == OntoWiki::getInstance()->lastRoute || 'newform' == $a ) )
+                && ( 'instances' == $a || 'newform' == $a ) )
             {
                 $action = 'newform';
                 // Add entry in tab list
@@ -41,7 +41,7 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
             }
             // If an Resource was selected
             else if ( (string) $owApp->selectedModel !== $selectedResource
-                        && ( 'properties' ==  OntoWiki::getInstance()->lastRoute  || 'form' == $a || 'report' == $a )
+                        && ( 'properties' ==  $a || 'form' == $a || 'report' == $a )
                         && isset($selectedResource)
                         && "" != $selectedResource)
             {
@@ -55,7 +55,9 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                         'name'       => 'EditResource'
                     )
                 );
-                if (false !== stristr($selectedClass, 'proposal')) {
+                $currentResourceDescription = $selectedResource->getDescription();
+                $selectedResourceClass = $currentResourceDescription[$selectedResource->getIri()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0]['value'];
+                if (false !== stristr($selectedResourceClass, 'proposal')) {
                     // Add entry in tab list
                     $owNav->register (
                        'formgenerator_report', 
