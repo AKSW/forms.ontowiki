@@ -37,5 +37,5 @@
       # resourceUri - predicateType - targetClass
       :predicateType "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
       :dirJsHtmlPlugins "jshtmlplugins/";
-      :dirXmlConfigurationFiles "xmlconfigurationfiles/"
+      :dirXmlConfigurationFiles "../../htdocs/dispedia/formconfigs/"
 	] .
