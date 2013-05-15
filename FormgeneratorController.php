@@ -169,8 +169,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $file = $this->_request->getParam('file');
             $this->view->resourceSelected = true;
             
+            $request = Zend_Controller_Front::getInstance()->getRequest();
+            
+            $currentAction = $request->getActionName();
             // if file is not in eligible classes array then redirect to new plain form
-            if ('' != $currentResource && !array_key_exists($file, $currentClasses))
+            if (!array_key_exists($file, $currentClasses)
+                && $currentAction != 'newform')
             {
                 $this->_redirect("formgenerator/newform?file=" . $file);
                 return;
@@ -198,7 +202,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                         OntoWiki_Message::ERROR
                     )
                 );
-                $this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
+                
+                return $this->render('templates/formgenerator/xmlfilenotfound');
+                //$this->_redirect($this->_config->urlBase . 'formgenerator/xmlfilenotfound/', array());
             }
             else
             {

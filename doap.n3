@@ -10,6 +10,7 @@
 <> foaf:primaryTopic :this .
 :this a doap:Project ;
   doap:name "formgenerator" ;
+  owconfig:helperEvent event:onRouteStartup ;
   owconfig:privateNamespace <http://ns.ontowiki.net/Extensions/formgenerator/> ;
   owconfig:templates "templates" ;
   owconfig:languages "languages" ;
@@ -42,5 +43,5 @@
       # resourceUri - predicateType - targetClass
       :predicateType "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
       :dirJsHtmlPlugins "jshtmlplugins/";
-      :dirXmlConfigurationFiles "xmlconfigurationfiles/"
+      :dirXmlConfigurationFiles "../../htdocs/dispedia/formconfigs/"
 	] .
