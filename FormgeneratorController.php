@@ -139,6 +139,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->view->alsfrsModel = new Erfurt_Rdf_Model ($this->_configuration['uris']['alsfrsModel']);
         $this->view->store = $this->_store;
         
+        // set debug mode
+        $this->view->debug = defined('_OWDEBUG');
+        
         $this->view->layout = $this->_request->getParam('layout');
         
         $file = null;
