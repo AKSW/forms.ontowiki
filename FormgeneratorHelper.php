@@ -55,17 +55,19 @@ class FormgeneratorHelper extends OntoWiki_Component_Helper
                     )
                 );
                 $currentResourceDescription = $selectedResource->getDescription();
-                $selectedResourceClass = $currentResourceDescription[$selectedResource->getIri()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0]['value'];
-                if (false !== stristr($selectedResourceClass, 'proposal')) {
-                    // Add entry in tab list
-                    $owNav->register (
-                       'formgenerator_report', 
-                       array(
-                           'controller' => 'formgenerator', 
-                           'action'     => 'report', 
-                           'name'       => 'reportResource'
-                       )
-                   );
+                if (isset($currentResourceDescription[$selectedResource->getIri()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0]['value'])) {
+                    $selectedResourceClass = $currentResourceDescription[$selectedResource->getIri()]["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"][0]['value'];
+                    if (false !== stristr($selectedResourceClass, 'proposal')) {
+                        // Add entry in tab list
+                        $owNav->register (
+                           'formgenerator_report', 
+                           array(
+                               'controller' => 'formgenerator', 
+                               'action'     => 'report', 
+                               'name'       => 'reportResource'
+                           )
+                       );
+                    }
                 }
             }
         }

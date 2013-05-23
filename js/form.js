@@ -81,11 +81,13 @@ function setFormulaArrayFields (f, newMode)
             else if ("nestedconfig" == f.sections [i][j].sectiontype)
             {
                 var formCount = f.sections [i][j].forms.length;
-                for (k = 0; k < formCount; ++k)
+                for (var k = 0; k < formCount; ++k)
                 {
-                    oldNestedFormMode = f.sections [i][j].forms[k].mode;
                     f.sections [i][j].forms[k] = setFormulaArrayFields (f.sections [i][j].forms[k], newMode);
-                    checkFormValues(f, newMode, oldNestedFormMode, f.sections [i][j].forms[k].mode);
+                    if ("add" == f.sections [i][j].forms[k].mode
+                        && "edit" == f.mode) {
+                        f.mode = "changed";
+                    }
                 }
             }
         }
