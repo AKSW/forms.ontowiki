@@ -90,6 +90,11 @@ class XmlConfig
                         $form->setTargetModel ((string) $nodeValue [0]);
                         
                         break;
+                    
+                    case 'requestmodel':
+                        $form->setRequestModel ((string) $nodeValue [0]);
+                        
+                        break;
                         
                     case 'modelnamespace':
                         $form->setModelNamespace ((string) $nodeValue [0]);

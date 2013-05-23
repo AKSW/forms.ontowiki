@@ -27,7 +27,8 @@ class Formula
         
         $this->setIndex ($index);       
         $this->_data ['targetclass'] = '';
-        $this->_data ['targetmodel'] = ''; 
+        $this->_data ['targetmodel'] = '';
+        $this->_data ['requestmodel'] = '';
         $this->_data ['modelnamespace'] = ''; 
         $this->_data ['labelparts'] = array ();
         $this->_data ['labelpartsoption'] = '';
@@ -233,11 +234,28 @@ class Formula
     }
     
     /**
+     * @param $value URI of request model
+     * @return void 
+     */
+    public function setRequestModel ($value)
+    {
+        $this->_data ['requestmodel'] = $value;
+    }
+
+    /**
      * @return string 
      */
     public function getTargetModel ()
     {
         return $this->_data ['targetmodel'];
+    }
+    
+    /**
+     * @return string 
+     */
+    public function getRequestModel ()
+    {
+        return $this->_data ['requestmodel'];
     }
     
     
@@ -415,6 +433,7 @@ class Formula
                 '<br/>' . $offsetString . '- resource: '. $this->getResource () .
                 '<br/>' . $offsetString . '- target class: '. $this->getTargetClass () .
                 '<br/>' . $offsetString . '- target model: '. $this->getTargetModel () .
+                '<br/>' . $offsetString . '- request model: '. $this->getRequestModel () .
                 '<br/>' . $offsetString . '- model namespace: '. $this->getModelNamespace () .
                 '<br/>' . $offsetString . '- XML config: '. $this->getxmlfile () .
                 '<br/>' . $offsetString . '- formtype: '. $this->getFormulaType () .

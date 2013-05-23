@@ -729,12 +729,17 @@ class Data
     {
         $properties = array();
         
-        $model = new OntoWiki_Model_Resource($this->_store, $this->_selectedModel, $resourceUri);
-        $modelValues = $model->getValues();
-        
-        if (isset($modelValues[$this->_selectedModel->getModelIri()]))
+        if ("" != $this->_form->getRequestModel())
+            $requestModel = $this->_ontologies[$this->_ontologies['namespaces'][$this->_form->getRequestModel()]]['instance'];
+        else
+            $requestModel = $this->_ontologies[$this->_ontologies['namespaces'][$this->_form->getTargetModel()]]['instance'];
+
+        $resource = new OntoWiki_Resource($resourceUri, $requestModel);
+        $resourceValues = $resource->getDescription();
+
+        if (isset($resourceValues[$resourceUri]))
         {
-            foreach ($modelValues[$this->_selectedModel->getModelIri()] as $property => $values)
+            foreach ($resourceValues[$resourceUri] as $property => $values)
             {
                 foreach ($values as $value)
                 {
@@ -742,34 +747,28 @@ class Data
                     // little QuickHack that the targetclass type relation will not
                     // deleted by a form, this triple will be omitted
                     if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $property
-                        && $this->_form->getTargetClass() == $value['uri'])
+                        && $this->_form->getTargetClass() == $value['value'])
                         continue;
+                
                     
-                    $tempValue = '';
-                    
-                    if (null != $value['uri'])
-                        $tempValue = $value['uri'];
-                    else if (null != $value['content'])
-                        $tempValue = $value['content'];
-                    
-                    if (null != $value['lang'] && $value['lang'] != $this->_lang)
+                    if (isset ($value['lang']) && null != $value['lang'] && $value['lang'] != $this->_lang)
                         continue;
                     
                     // $properties[$result['property']] = $result['value'];
                     if (isset($properties[$property]))
                     {
                         if (is_array($properties[$property]['value']))
-                            $properties[$property]['value'][] = $tempValue;
+                            $properties[$property]['value'][] = $value['value'];
                         else
                             $properties[$property]['value'] = array(
                                 0 => $properties[$property]['value'],
-                                1 => $tempValue
+                                1 => $value['value']
                             );
                     }
                     else
                         $properties[$property] = array ( 
                             'property' => $property,
-                            'value' => $tempValue,
+                            'value' => $value['value'],
                             'used' => false
                         );
                 }
