@@ -172,8 +172,9 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $request = Zend_Controller_Front::getInstance()->getRequest();
             
             $currentAction = $request->getActionName();
+            
             // if file is not in eligible classes array then redirect to new plain form
-            if (!array_key_exists($file, $currentClasses)
+            if (!array_key_exists(str_replace('report', '', $file), $currentClasses)
                 && $currentAction != 'newform')
             {
                 $this->_redirect("formgenerator/newform?file=" . $file);
