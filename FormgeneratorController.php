@@ -163,15 +163,20 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         else
             $currentClasses = array();
 
+            
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        
+        $currentAction = $request->getActionName();
+        
+        // TODO: delete this, see issus https://github.com/AKSW/forms.ontowiki/issues/27
+        // set module context
+        $this->addModuleContext('extensions.formgenerator.' . $request->getActionName());
+        
         // set file to load, if parameter file was set
         if ('' != $this->_request->getParam('file'))
         {
             $file = $this->_request->getParam('file');
             $this->view->resourceSelected = true;
-            
-            $request = Zend_Controller_Front::getInstance()->getRequest();
-            
-            $currentAction = $request->getActionName();
             
             // if file is not in eligible classes array then redirect to new plain form
             if (!array_key_exists(str_replace('report', '', $file), $currentClasses)
