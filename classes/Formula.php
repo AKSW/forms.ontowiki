@@ -29,7 +29,8 @@ class Formula
         $this->_data ['targetclass'] = '';
         $this->_data ['targetmodel'] = '';
         $this->_data ['requestmodel'] = '';
-        $this->_data ['modelnamespace'] = ''; 
+        $this->_data ['modelnamespace'] = '';
+        $this->_data ['events'] = array();
         $this->_data ['labelparts'] = array ();
         $this->_data ['labelpartsoption'] = '';
         $this->_data ['title'] = '';
@@ -154,6 +155,31 @@ class Formula
         return $this->_data ['resource'];
     }
     
+    /**
+     * @return array
+     */
+    public function getEvents ()
+    {
+        return $this->_data ['events'];
+    }
+    
+    /**
+     * @param $value event name
+     * @return void 
+     */
+    public function setEvent ($value)
+    {
+        $this->_data ['events'][] = $value;
+    }
+    
+    /**
+     * @param $value array with event
+     * @return void 
+     */
+    public function setEvents ($value)
+    {
+        $this->_data ['events'] = $value;
+    }
     
     /**
      * @param $value URI of target class
@@ -436,8 +462,14 @@ class Formula
                 '<br/>' . $offsetString . '- request model: '. $this->getRequestModel () .
                 '<br/>' . $offsetString . '- model namespace: '. $this->getModelNamespace () .
                 '<br/>' . $offsetString . '- XML config: '. $this->getxmlfile () .
-                '<br/>' . $offsetString . '- formtype: '. $this->getFormulaType () .
-                '<br/>' . $offsetString . '- sections: ';
+                '<br/>' . $offsetString . '- formtype: '. $this->getFormulaType ();
+                
+        $return .= '<br/>' . $offsetString . '- events: ';
+        foreach ($this->getEvents () as $eventName)
+        {
+            $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;- ' . $eventName;
+        }
+        $return .= '<br/>' . $offsetString . '- sections: ';
           
         foreach ($this->getSections () as $section)
         {
@@ -501,6 +533,7 @@ class Formula
             'targetclass'           => $this->getTargetClass (),
             'targetmodel'           => $this->getTargetModel (),
             'modelnamespace'        => $this->getModelNamespace (),
+            'events'                => $this->getEvents (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
         );
@@ -578,6 +611,8 @@ class Formula
         $form->setTargetModel ($formArray ['targetmodel']);
         
         $form->setModelNamespace ($formArray ['modelnamespace']);
+        
+        $form->setEvents ($formArray ['events']);
         
         $form->setXmlFile ($formArray ['xmlfile']);
         

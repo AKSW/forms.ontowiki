@@ -285,6 +285,20 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 // delete the current file/class from the array, so only other eligible classes are in this array
                 unset($currentClasses[$file]);
                 
+                // fire form events
+                foreach ($this->_form->getEvents() as $eventName)
+                {
+                    // create erfurt event
+                    $event = new Erfurt_Event($eventName);
+        
+                    // attach some information to the event
+                    $event->currentResource = $currentResource;
+                    $event->form = $this->_form;
+        
+                    // trigger the event
+                    $event->trigger();
+                }
+                
                 // add ohter possible form buttons if the form is no box and no report
                 if ("box" != $this->view->layout && "report" != $this->_form->getFormulaType())
                     // set other eligible classes as buttons for simple switching

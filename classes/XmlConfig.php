@@ -71,7 +71,11 @@ class XmlConfig
                     case 'selectResourceOfType':
                         $form->setSelectResourceOfType ((string) $nodeValue [0]);
                         break;
-                        
+                    
+                    case 'events':
+                        foreach ($nodeValue [0] as $trigger)
+                            $form->setEvent((string) $trigger);
+                        break;
                         
                     case 'targetclass':
                         $form->setTargetClass ((string) $nodeValue [0]);
