@@ -168,10 +168,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         
         $currentAction = $request->getActionName();
         
-        // TODO: delete this, see issus https://github.com/AKSW/forms.ontowiki/issues/27
-        // set module context
-        $this->addModuleContext('extensions.formgenerator.' . $request->getActionName());
-        
         // set file to load, if parameter file was set
         if ('' != $this->_request->getParam('file'))
         {
@@ -271,6 +267,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         else
             $this->view->showForm = true;
+
+        // set module context
+        foreach ($this->_form->getModuleContexts() as $contextName)
+        {
+            $this->addModuleContext('extensions.formgenerator.' . $contextName . '.' . $request->getActionName());
+        }
         
         // if resource set ...
         if ('' != $currentResource)

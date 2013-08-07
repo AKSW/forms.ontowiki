@@ -76,6 +76,11 @@ class XmlConfig
                         foreach ($nodeValue [0] as $trigger)
                             $form->setEvent((string) $trigger);
                         break;
+                    
+                    case 'module':
+                        foreach ($nodeValue [0] as $contextName)
+                            $form->setModuleContext((string) $contextName);
+                        break;
                         
                     case 'targetclass':
                         $form->setTargetClass ((string) $nodeValue [0]);
