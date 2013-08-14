@@ -81,53 +81,12 @@
 
     <?php if('' != $this->form->getDescription()) { ?>
 
-    <div class="content">
-        <?php echo $this->form->getDescription(); ?>
-    </div>
+        <div class="content">
+            <?php echo $this->form->getDescription(); ?>
+        </div>
 
     <?php } ?>
 
-    <!-- select a resource of a specific type -->
-    <?php if (true == isset($this->resourcesOfType)) { ?>
-
-        <form method="post" action="<?php echo $this->url; ?>form/">
-            <div class="content">
-                <div class="predicateTitle"><?php echo $this->_translate->_('Please select:'); ?></div>
-
-                <div class="predicateValue">
-                    <select name="r">
-
-                        <option value=""><?php echo $this->_translate->_('please select'); ?></option>
-
-                    <?php foreach ($this->resourcesOfType as $resource) { ?>
-
-                        <?php if ($this->selectedResource == $resource['uri']) { ?>
-
-                            <option value="<?php echo $resource ['uri']; ?>" selected><?php echo $resource ['label']; ?></option>
-
-                        <?php } else { ?>
-
-                            <option value="<?php echo $resource ['uri']; ?>"><?php echo $resource ['label']; ?></option>
-
-                        <?php } ?>
-
-                    <?php } ?>
-
-                    </select>
-                </div>
-            </div>
-
-            <div class="content">
-                <div class="predicateTitle">&nbsp;</div>
-                <div class="predicateValue"><input type="submit" value="<?php echo $this->_translate->_('Select'); ?>"></div>
-            </div>
-        </form>
-
-    <?php } ?>
-
-    <?php if (false !== $this->showForm) { ?>
-
-    <hr>
     <?php $this->forms = array(); ?>
     <?php $this->sectionClass = 'content'; ?>
     
@@ -136,8 +95,6 @@
     <?php echo $this->render('formgenerator/formsections.phtml') ?>
 
     <div id="pleaseWaitBox" class="hidden">Please wait...</div>
-
-    <?php } ?>
 
 </form>
 <?php if ("box" == $this->layout) { ?>

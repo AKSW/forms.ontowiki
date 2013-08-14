@@ -59,7 +59,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         }
         $this->_ontologies['namespaces'] = $namespaces;
 
-        
         $this->_selectedModel = $this->_ontologies['dispediaPatient']['instance'];
         $this->_dispediaModel = $this->_ontologies['dispediaCore']['namespace'];
         
@@ -75,7 +74,7 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         $this->_uriParts = $this->_configuration['uris']['uriParts'];        
         $this->_url = $this->_componentUrlBase;
         
-        //$this->_owApp->selectedModel = $model;
+        $this->view->selectedLanguage = $this->_lang;
         
         // main instance of a form
         $this->_form = new Formula(0);
@@ -163,7 +162,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         else
             $currentClasses = array();
 
-            
         $request = Zend_Controller_Front::getInstance()->getRequest();
         
         $currentAction = $request->getActionName();
@@ -173,12 +171,12 @@ class FormgeneratorController extends OntoWiki_Controller_Component
         {
             $file = $this->_request->getParam('file');
             $this->view->resourceSelected = true;
-            
             // if file is not in eligible classes array then redirect to new plain form
             if (!array_key_exists(str_replace('report', '', $file), $currentClasses)
-                && $currentAction != 'newform')
+                && $currentAction != 'newform'
+                && $file != 'alsfrs')
             {
-                $this->_redirect("formgenerator/newform?file=" . $file);
+                //$this->_redirect("formgenerator/newform?file=" . $file);
                 return;
             }
         // set resource to load, if parameter r was set
@@ -228,45 +226,11 @@ class FormgeneratorController extends OntoWiki_Controller_Component
             $this->_dirXmlConfigurationFiles,
             $this->_lang
         );
-        
-        $this->view->selectedLanguage = $this->_lang;
 
         // read the formlist to the view
         $this->view->formList = $xmlconfig->getFormList();
         
         $this->_form = $xmlconfig->loadFile($file . '.xml', $this->_form);
-        
-        // loading resource of type
-        if ('' != $this->_form->getSelectResourceOfType ())
-        {
-            //TODO: (not dynamic!) find a solution to get a label for every resource!
-            if (false !== strpos ($this->_form->getSelectResourceOfType (), 'Patient') || 
-                false !== strpos ($this->_form->getSelectResourceOfType (), 'Person') )
-            {
-                $this->view->resourcesOfType = $this->_selectedModel->sparqlQuery(
-                    'SELECT ?uri
-                     WHERE {
-                         ?uri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <'. $this->_form->getSelectResourceOfType () .'>.
-                     };'
-                );
-                
-                $this->_titleHelper->reset();
-                $this->_titleHelper->addResources($this->view->resourcesOfType, 'uri');
-                
-                foreach ($this->view->resourcesOfType as $resourceIndex => $resource)
-                {
-                    $this->view->resourcesOfType[$resourceIndex]['label'] = $this->_titleHelper->getTitle($resource['uri'], $this->_lang);
-                }
-                
-            }
-            
-            if ( '' == $currentResource)
-                $this->view->showForm = false;
-            else
-                $this->view->showForm = true;
-        }
-        else
-            $this->view->showForm = true;
 
         // set module context
         foreach ($this->_form->getModuleContexts() as $contextName)
