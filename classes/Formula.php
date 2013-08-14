@@ -31,7 +31,7 @@ class Formula
         $this->_data ['requestmodel'] = '';
         $this->_data ['modelnamespace'] = '';
         $this->_data ['events'] = array();
-        $this->_data ['modulContexts'] = array();
+        $this->_data ['moduleContexts'] = array();
         $this->_data ['labelparts'] = array ();
         $this->_data ['labelpartsoption'] = '';
         $this->_data ['title'] = '';
@@ -187,7 +187,7 @@ class Formula
      */
     public function getModuleContexts ()
     {
-        return $this->_data ['modulContexts'];
+        return $this->_data ['moduleContexts'];
     }
     
     /**
@@ -196,7 +196,7 @@ class Formula
      */
     public function setModuleContext ($value)
     {
-        $this->_data ['modulContexts'][] = $value;
+        $this->_data ['moduleContexts'][] = $value;
     }
     
     /**
@@ -205,7 +205,7 @@ class Formula
      */
     public function setModuleContexts ($value)
     {
-        $this->_data ['modulContexts'] = $value;
+        $this->_data ['moduleContexts'] = $value;
     }
     /**
      * @param $value URI of target class
