@@ -297,7 +297,7 @@ class Data
             $this->addStmt( 
                 $healthStateInstance, 
                 'http://www.dispedia.de/o/hasDate',
-                date ( 'Y-m-d H:i:s', $healthStateTime )
+                date ( 'c', $healthStateTime )
             );
             
             // selectedResource  has  healthState instance
@@ -344,76 +344,20 @@ class Data
                 {
                     if ( 'PropertySet' == $entry ['typeparameter']['pertainsTo'] )
                     {
-                        // check that is a relation between propertySet instance
-                        // and this option value
-                        $result = $this->_selectedModel->sparqlQuery(
-                            'SELECT ?score
-                             WHERE {
-                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> ?score .
-                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> <'. $oldValue .'> .
-                             };'
+                        $this->addStmt(
+                            $propertySetInstance,
+                            $para['predicateToPropertyOption'],
+                            $entry ['value']
                         );
-                        
-                        if ( 0 == count ( $result ) ) {
-                            $this->addStmt(
-                                $propertySetInstance,
-                                $para['predicateToPropertyOption'],
-                                $entry ['value']
-                            );
-                        } else {
-                            
-                            // delete old value
-                            $this->removeStmt(
-                                $propertySetInstance,
-                                $para['predicateToPropertyOption'],
-                                $oldValue
-                            );
-                            
-                            // add new one
-                            $this->addStmt(
-                                $propertySetInstance,
-                                $para['predicateToPropertyOption'],
-                                $entry ['value']
-                            );
-                        }
                     }
-                    
-                    // -------------------------------------------------
                     
                     elseif ( 'SymptomSet' == $entry ['typeparameter']['pertainsTo'] )
                     {
-                        // check that is a relation between symptomSet instance
-                        // and this option value
-                        $result = $this->_selectedModel->sparqlQuery(
-                            'SELECT ?score
-                             WHERE {
-                                 <'. $symptomSetInstance .'> <'. $para['predicateToSymptomOption'] .'> ?score .
-                                 <'. $symptomSetInstance .'> <'. $para['predicateToSymptomOption'] .'> <'. $oldValue .'> .
-                             };'
+                        $this->addStmt(
+                            $symptomSetInstance,
+                            $para['predicateToSymptomOption'],
+                            $entry ['value']
                         );
-                        
-                        if ( 0 == count ( $result ) ) {
-                            $this->addStmt(
-                                $symptomSetInstance,
-                                $para['predicateToSymptomOption'],
-                                $entry ['value']
-                            );
-                        } else {
-                            
-                            // delete old value
-                            $this->removeStmt(
-                                $symptomSetInstance,
-                                $para['predicateToSymptomOption'],
-                                $oldValue
-                            );
-                            
-                            // add new one
-                            $this->addStmt(
-                                $symptomSetInstance,
-                                $para['predicateToSymptomOption'],
-                                $entry ['value']
-                            );
-                        }
                     }
                     
                     continue;

@@ -565,7 +565,7 @@ class Formula
             'targetmodel'           => $this->getTargetModel (),
             'modelnamespace'        => $this->getModelNamespace (),
             'events'                => $this->getEvents (),
-            'moduleContects'        => $this->getModuleContexts (),
+            'moduleContexts'        => $this->getModuleContexts (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
         );

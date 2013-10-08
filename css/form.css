@@ -16,12 +16,7 @@ span.bold {
     font-weight: 900;
 }
 .predicateTitle {
-    float: left;
-    width: 200px;
-    padding-bottom: 10px;
-    font-size: 13px;
-    font-weight: bold;
-    vertical-align: middle;
+    font-size: 2em;
 }
 .predicateValue {
     float: left;
@@ -29,6 +24,16 @@ span.bold {
     margin: 0px 1%;
 }
 
+/**
+ * ALSFRS
+ */
+.alsfrsquestion {
+    font-size: 1.3em;
+    margin: 5px 10px;
+}
+.alsfrsradiobuttons {
+    margin: 10px 0 15px 15px;
+}
 .pleaseWaitBox {
     text-align: center;
     font-weight: bold;
