@@ -267,20 +267,6 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                     // trigger the event
                     $event->trigger();
                 }
-                
-                // add ohter possible form buttons if the form is no box and no report
-                if ("box" != $this->view->layout && "report" != $this->_form->getFormulaType())
-                    // set other eligible classes as buttons for simple switching
-                    foreach ($currentClasses as $className => $fileName) {
-                        // build toolbar
-                        $toolbar = $this->_owApp->toolbar;
-                        $toolbar->appendButton(
-                            OntoWiki_Toolbar :: EDITADD,
-                            array('name' => ucfirst($className),
-                                  'url' => $this->_config->urlBase . 'formgenerator/form/?file=' . $className)
-                        );
-                        $this->view->placeholder('main.window.toolbar')->set($toolbar);
-                    }
             }
         }
         

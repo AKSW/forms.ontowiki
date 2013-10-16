@@ -1,15 +1,12 @@
-<form id="switchFormForm" method="get" action="">
+<form id="switchFormForm" method="get" action="">   
+    <?php echo $this->_translate->_('Alternative forms:'); ?>
     
-    <?php echo $this->_translate->_('Available forms:'); ?>
-
-    <select id="switchFormSelect" name="file">
-        <option></option>
-        <?php
-            // Read all XML files in formconfig folder and generate a list.
-            foreach ( $this->enabledForms as $enabledForm ) { ?>
-                <option value="<?php echo $enabledForm['fileName'] ?>" label="<?php echo $enabledForm['label'] ?>"<?php echo ($this->currentForm == $enabledForm['fileName'] ? ' selected="selected"' : "") ?>>
-                    <?php echo $enabledForm['label'] ?>
-                </option>
+    <div class="alternativeFormButtons">
+        <?php foreach ($this->alternativeForms as $alternativeForm) { ?>
+            <a class="button<?php echo $this->currentForm == $alternativeForm['fileName'] ? ' currentactive' : '' ?>" href="http://www.dispedia.local/formgenerator/form/?file=<?php echo $alternativeForm['fileName'] ?>">
+                <img src="<?php echo $this->themeUrlBase ?>images/icon-editadd.png">
+                <span> <?php echo $alternativeForm['label'] ?></span>
+            </a><br>
         <?php } ?>
-    </select>
+    </div>
 </form>

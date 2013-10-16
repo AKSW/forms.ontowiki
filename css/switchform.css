@@ -1,0 +1,14 @@
+.alternativeFormButtons {
+    text-align: center;
+}
+
+#switchFormSelect {
+    max-width: 18em;
+    min-width: 18em;
+}
+a.currentactive {
+    background-image: -moz-linear-gradient(center top , rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1)) !important;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.25) inset !important;
+    border-color: #9AA6AA #CDD7DD #CDD7DD #9AA6AA !important;
+    color: #333333 !important;
+}

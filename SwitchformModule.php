@@ -11,6 +11,7 @@
  */
 class SwitchformModule extends OntoWiki_Module
 {
+    protected $_owApp;
     protected $_ontologies;
     protected $_shouldShow = false;
     protected $_titleHelper;
@@ -21,7 +22,19 @@ class SwitchformModule extends OntoWiki_Module
     public function init(){
         parent::init();
         
+        $this->_owApp = OntoWiki::getInstance();
+        
+        // get all models
         $this->_ontologies = $this->_config->ontologies->toArray();
+        $this->_ontologies = $this->_ontologies['models'];
+        $namespaces = array();
+        // make model instances
+        foreach ($this->_ontologies as $modelName => $model) {
+            $this->_ontologies[$modelName]['instance'] = new Erfurt_Rdf_Model($model['namespace']);
+            $namespaces[$model['namespace']] = $modelName;
+        }
+        $this->_ontologies['namespaces'] = $namespaces;
+        
         $this->_titleHelper = new OntoWiki_Model_TitleHelper();
         
         // include javascript files
@@ -30,6 +43,8 @@ class SwitchformModule extends OntoWiki_Module
         
         $this->view->headScript()
             ->prependFile($baseJavascriptPath. 'switchform.js', 'text/javascript');
+        
+        $this->view->headLink()->appendStylesheet($basePath . 'css/switchform.css');
     }
 
     /**
@@ -76,22 +91,53 @@ class SwitchformModule extends OntoWiki_Module
         $request = new OntoWiki_Request();
         $this->view->currentForm = $request->getParam('file');
         
-        $enabledForms = $this->_owApp->Erfurt->getStore()->sparqlQuery(
-            'SELECT ?formUri ?fileName
+        $currentResource = $this->_owApp->__get('selectedResource');
+        
+        $resourceClassesResult = $this->_store->sparqlQuery (
+            'SELECT ?class
             WHERE {
+                <' . $currentResource . '> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?class.
+            };'
+        );
+        $resourceClasses = array();
+        foreach ($resourceClassesResult as $resourceClass)
+        {
+            $resourceClasses[] = $resourceClass['class'];
+        }
+        $resourceClassesResult = $this->_store->getTransitiveClosure($this->_ontologies['dispediaForms']['namespace'], 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $resourceClasses, true);
+        $resourceClassesResult = array_merge($resourceClassesResult, $this->_store->getTransitiveClosure($this->_ontologies['dispediaForms']['namespace'], 'http://www.w3.org/2000/01/rdf-schema#subClassOf', $resourceClasses, false));
+        
+        $statementStr = "";
+        foreach ($resourceClassesResult as $resourceClass) {
+            $this->_shouldShow = true;
+            if ("" == $statementStr)
+                $statementStr = '{?formUri <http://forms.dispedia.de/p/usefulForClass> <' . $resourceClass['node'] . '> .}';
+            else
+                $statementStr .= ' UNION {?formUri <http://forms.dispedia.de/p/usefulForClass> <' . $resourceClass['node'] . '> .}';
+        }
+
+        $alternativeForms = $this->_owApp->Erfurt->getStore()->sparqlQuery(
+            'SELECT DISTINCT ?formUri ?fileName
+            WHERE {
+            ' . $statementStr . '
                 ?formUri <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://forms.dispedia.de/c/Form> .
-                ?formUri <http://forms.dispedia.de/p/Filename> ?fileName
+                ?formUri <http://forms.dispedia.de/p/Filename> ?fileName .
             };
             '
         );
-        $this->_titleHelper->reset();
-        $this->_titleHelper->addResources($enabledForms, 'formUri');
-        foreach ($enabledForms as $enabledFormIndex => $enabledForm)
-        {
-            $enabledForms[$enabledFormIndex]['label'] = $this->_titleHelper->getTitle($enabledForm['formUri'], $this->_lang);
-        }
         
-        $this->view->enabledForms = $enabledForms;
+        $this->_titleHelper->reset();
+        $this->_titleHelper->addResources($alternativeForms, 'formUri');
+        
+        foreach ($alternativeForms as $alternativeFormIndex => $alternativeForm)
+        {
+            $alternativeForms[$alternativeFormIndex]['label'] = $this->_titleHelper->getTitle($alternativeForm['formUri'], $this->_lang);
+        }
+
+        $this->view->alternativeForms = $alternativeForms;
+        $this->view->themeUrlBase = $this->_owApp->getUrlBase()
+                                    . $this->_owApp->config->themes->path
+                                    . $this->_owApp->config->themes->default;
         
         return $this->render('templates/formgenerator/switchform_module');
     }
