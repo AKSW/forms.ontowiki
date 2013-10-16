@@ -16,7 +16,12 @@ span.bold {
     font-weight: 900;
 }
 .predicateTitle {
-    font-size: 2em;
+    float: left;
+    width: 200px;
+    padding-bottom: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    vertical-align: middle;
 }
 .predicateValue {
     float: left;
