@@ -29,6 +29,16 @@ span.bold {
     margin: 0px 1%;
 }
 
+/**
+ * ALSFRS
+ */
+.alsfrsquestion {
+    font-size: 1.3em;
+    margin: 5px 10px;
+}
+.alsfrsradiobuttons {
+    margin: 10px 0 15px 15px;
+}
 .pleaseWaitBox {
     text-align: center;
     font-weight: bold;

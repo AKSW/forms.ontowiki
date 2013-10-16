@@ -50,12 +50,13 @@ $setOptions = array ();
 
 // get latest timestamp
 $latestHealthState = $this->selectedModel->sparqlQuery(
-    'SELECT ?healthState
+    'PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
+     SELECT ?healthState
      WHERE {
          <'. $this->selectedResource .'> <'. $this->formulaParameter ['predicateToHealthState'] .'> ?healthState .
-         ?healthState <http://purl.org/dc/terms/created> ?dateTime .
+         ?healthState <http://www.dispedia.de/o/hasDate> ?dateTime .
      }
-     ORDER BY DESC(?dateTime)
+     ORDER BY DESC(xsd:dateTime(?dateTime))
      LIMIT 1;'
 ); 
 
@@ -103,29 +104,29 @@ if ('PropertySet' == $element ['typeparameter']['pertainsTo']) {
 }
 
 ?>
+<div class="clear"></div>
 <!-- suggested question -->
-<h2><?php echo $element ['suggestedQuestion']; ?></h2>
+<div class="alsfrsquestion"><?php echo $element ['suggestedQuestion']; ?></div>
 
+<div class="alsfrsradiobuttons">
 <!-- list of options -->
-<?php foreach ( $element ['outputOptions'] as $option ) { ?>
-
-    <br/>
-    
-    <?php if ( true == in_array ( $option ['optionValue'], $setOptions ) ) { ?>
-    
-    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked="checked"/>
-    
-    <?php } elseif ( false == $entrySelected ) { $entrySelected = true; ?>
-    
-    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked="checked"/>
-    
-    <?php } else { ?>
-    
-    <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>"/>
-    
+    <?php foreach ( $element ['outputOptions'] as $option ) { ?>
+        <div>
+            <?php if ( true == in_array ( $option ['optionValue'], $setOptions ) ) { ?>
+            
+            <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked="checked"/>
+            
+            <?php } elseif ( false == $entrySelected ) { $entrySelected = true; ?>
+            
+            <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>" checked="checked"/>
+            
+            <?php } else { ?>
+            
+            <input type="radio" name="<?php echo $element ['name'] ?>" value="<?php echo $option ['optionValue']; ?>"/>
+            
+            <?php } ?>
+            
+            &nbsp; <?php echo $option ['label']; ?>
+        </div>
     <?php } ?>
-    
-    &nbsp; <?php echo $option ['label']; ?>
-
-<?php } ?>
-    
+</div>

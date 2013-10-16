@@ -27,8 +27,11 @@ class Formula
         
         $this->setIndex ($index);       
         $this->_data ['targetclass'] = '';
-        $this->_data ['targetmodel'] = ''; 
-        $this->_data ['modelnamespace'] = ''; 
+        $this->_data ['targetmodel'] = '';
+        $this->_data ['requestmodel'] = '';
+        $this->_data ['modelnamespace'] = '';
+        $this->_data ['events'] = array();
+        $this->_data ['moduleContexts'] = array();
         $this->_data ['labelparts'] = array ();
         $this->_data ['labelpartsoption'] = '';
         $this->_data ['title'] = '';
@@ -153,7 +156,57 @@ class Formula
         return $this->_data ['resource'];
     }
     
+    /**
+     * @return array
+     */
+    public function getEvents ()
+    {
+        return $this->_data ['events'];
+    }
     
+    /**
+     * @param $value event name
+     * @return void 
+     */
+    public function setEvent ($value)
+    {
+        $this->_data ['events'][] = $value;
+    }
+    
+    /**
+     * @param $value array with event names
+     * @return void 
+     */
+    public function setEvents ($value)
+    {
+        $this->_data ['events'] = $value;
+    }
+    
+    /**
+     * @return array
+     */
+    public function getModuleContexts ()
+    {
+        return $this->_data ['moduleContexts'];
+    }
+    
+    /**
+     * @param $value context name
+     * @return void 
+     */
+    public function setModuleContext ($value)
+    {
+        $this->_data ['moduleContexts'][] = $value;
+    }
+    
+    /**
+     * @param $value array with context names
+     * @return void 
+     */
+    public function setModuleContexts ($value)
+    {
+        $this->_data ['moduleContexts'] = $value;
+    }
     /**
      * @param $value URI of target class
      * @return void 
@@ -233,11 +286,28 @@ class Formula
     }
     
     /**
+     * @param $value URI of request model
+     * @return void 
+     */
+    public function setRequestModel ($value)
+    {
+        $this->_data ['requestmodel'] = $value;
+    }
+
+    /**
      * @return string 
      */
     public function getTargetModel ()
     {
         return $this->_data ['targetmodel'];
+    }
+    
+    /**
+     * @return string 
+     */
+    public function getRequestModel ()
+    {
+        return $this->_data ['requestmodel'];
     }
     
     
@@ -415,10 +485,22 @@ class Formula
                 '<br/>' . $offsetString . '- resource: '. $this->getResource () .
                 '<br/>' . $offsetString . '- target class: '. $this->getTargetClass () .
                 '<br/>' . $offsetString . '- target model: '. $this->getTargetModel () .
+                '<br/>' . $offsetString . '- request model: '. $this->getRequestModel () .
                 '<br/>' . $offsetString . '- model namespace: '. $this->getModelNamespace () .
                 '<br/>' . $offsetString . '- XML config: '. $this->getxmlfile () .
-                '<br/>' . $offsetString . '- formtype: '. $this->getFormulaType () .
-                '<br/>' . $offsetString . '- sections: ';
+                '<br/>' . $offsetString . '- formtype: '. $this->getFormulaType ();
+                
+        $return .= '<br/>' . $offsetString . '- events: ';
+        foreach ($this->getEvents () as $eventName)
+        {
+            $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;- ' . $eventName;
+        }
+        $return .= '<br/>' . $offsetString . '- module contexts: ';
+        foreach ($this->getModuleContexts () as $contextName)
+        {
+            $return .= '<br/>' . $offsetString . '&nbsp;&nbsp;- ' . $contextName;
+        }
+        $return .= '<br/>' . $offsetString . '- sections: ';
           
         foreach ($this->getSections () as $section)
         {
@@ -482,6 +564,8 @@ class Formula
             'targetclass'           => $this->getTargetClass (),
             'targetmodel'           => $this->getTargetModel (),
             'modelnamespace'        => $this->getModelNamespace (),
+            'events'                => $this->getEvents (),
+            'moduleContexts'        => $this->getModuleContexts (),
             'xmlfile'               => $this->getXmlFile (),
             'sections'              => array ()
         );
@@ -559,6 +643,10 @@ class Formula
         $form->setTargetModel ($formArray ['targetmodel']);
         
         $form->setModelNamespace ($formArray ['modelnamespace']);
+        
+        $form->setEvents ($formArray ['events']);
+        
+        $form->setModuleContexts ($formArray ['moduleContexts']);
         
         $form->setXmlFile ($formArray ['xmlfile']);
         

@@ -297,7 +297,7 @@ class Data
             $this->addStmt( 
                 $healthStateInstance, 
                 'http://www.dispedia.de/o/hasDate',
-                date ( 'Y-m-d H:i:s', $healthStateTime )
+                date ( 'c', $healthStateTime )
             );
             
             // selectedResource  has  healthState instance
@@ -344,76 +344,20 @@ class Data
                 {
                     if ( 'PropertySet' == $entry ['typeparameter']['pertainsTo'] )
                     {
-                        // check that is a relation between propertySet instance
-                        // and this option value
-                        $result = $this->_selectedModel->sparqlQuery(
-                            'SELECT ?score
-                             WHERE {
-                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> ?score .
-                                 <'. $propertySetInstance .'> <'. $para['predicateToPropertyOption'] .'> <'. $oldValue .'> .
-                             };'
+                        $this->addStmt(
+                            $propertySetInstance,
+                            $para['predicateToPropertyOption'],
+                            $entry ['value']
                         );
-                        
-                        if ( 0 == count ( $result ) ) {
-                            $this->addStmt(
-                                $propertySetInstance,
-                                $para['predicateToPropertyOption'],
-                                $entry ['value']
-                            );
-                        } else {
-                            
-                            // delete old value
-                            $this->removeStmt(
-                                $propertySetInstance,
-                                $para['predicateToPropertyOption'],
-                                $oldValue
-                            );
-                            
-                            // add new one
-                            $this->addStmt(
-                                $propertySetInstance,
-                                $para['predicateToPropertyOption'],
-                                $entry ['value']
-                            );
-                        }
                     }
-                    
-                    // -------------------------------------------------
                     
                     elseif ( 'SymptomSet' == $entry ['typeparameter']['pertainsTo'] )
                     {
-                        // check that is a relation between symptomSet instance
-                        // and this option value
-                        $result = $this->_selectedModel->sparqlQuery(
-                            'SELECT ?score
-                             WHERE {
-                                 <'. $symptomSetInstance .'> <'. $para['predicateToSymptomOption'] .'> ?score .
-                                 <'. $symptomSetInstance .'> <'. $para['predicateToSymptomOption'] .'> <'. $oldValue .'> .
-                             };'
+                        $this->addStmt(
+                            $symptomSetInstance,
+                            $para['predicateToSymptomOption'],
+                            $entry ['value']
                         );
-                        
-                        if ( 0 == count ( $result ) ) {
-                            $this->addStmt(
-                                $symptomSetInstance,
-                                $para['predicateToSymptomOption'],
-                                $entry ['value']
-                            );
-                        } else {
-                            
-                            // delete old value
-                            $this->removeStmt(
-                                $symptomSetInstance,
-                                $para['predicateToSymptomOption'],
-                                $oldValue
-                            );
-                            
-                            // add new one
-                            $this->addStmt(
-                                $symptomSetInstance,
-                                $para['predicateToSymptomOption'],
-                                $entry ['value']
-                            );
-                        }
                     }
                     
                     continue;
@@ -729,12 +673,17 @@ class Data
     {
         $properties = array();
         
-        $model = new OntoWiki_Model_Resource($this->_store, $this->_selectedModel, $resourceUri);
-        $modelValues = $model->getValues();
-        
-        if (isset($modelValues[$this->_selectedModel->getModelIri()]))
+        if ("" != $this->_form->getRequestModel())
+            $requestModel = $this->_ontologies[$this->_ontologies['namespaces'][$this->_form->getRequestModel()]]['instance'];
+        else
+            $requestModel = $this->_ontologies[$this->_ontologies['namespaces'][$this->_form->getTargetModel()]]['instance'];
+
+        $resource = new OntoWiki_Resource($resourceUri, $requestModel);
+        $resourceValues = $resource->getDescription();
+
+        if (isset($resourceValues[$resourceUri]))
         {
-            foreach ($modelValues[$this->_selectedModel->getModelIri()] as $property => $values)
+            foreach ($resourceValues[$resourceUri] as $property => $values)
             {
                 foreach ($values as $value)
                 {
@@ -742,34 +691,28 @@ class Data
                     // little QuickHack that the targetclass type relation will not
                     // deleted by a form, this triple will be omitted
                     if ("http://www.w3.org/1999/02/22-rdf-syntax-ns#type" == $property
-                        && $this->_form->getTargetClass() == $value['uri'])
+                        && $this->_form->getTargetClass() == $value['value'])
                         continue;
+                
                     
-                    $tempValue = '';
-                    
-                    if (null != $value['uri'])
-                        $tempValue = $value['uri'];
-                    else if (null != $value['content'])
-                        $tempValue = $value['content'];
-                    
-                    if (null != $value['lang'] && $value['lang'] != $this->_lang)
+                    if (isset ($value['lang']) && null != $value['lang'] && $value['lang'] != $this->_lang)
                         continue;
                     
                     // $properties[$result['property']] = $result['value'];
                     if (isset($properties[$property]))
                     {
                         if (is_array($properties[$property]['value']))
-                            $properties[$property]['value'][] = $tempValue;
+                            $properties[$property]['value'][] = $value['value'];
                         else
                             $properties[$property]['value'] = array(
                                 0 => $properties[$property]['value'],
-                                1 => $tempValue
+                                1 => $value['value']
                             );
                     }
                     else
                         $properties[$property] = array ( 
                             'property' => $property,
-                            'value' => $tempValue,
+                            'value' => $value['value'],
                             'used' => false
                         );
                 }
