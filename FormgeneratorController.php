@@ -121,6 +121,10 @@ class FormgeneratorController extends OntoWiki_Controller_Component
      */
     public function formAction()
     {
+        // check if action is allowed for user
+        if (!$this->_erfurt->getAc()->isActionAllowed('Formgenerator')) {
+            $this->_redirect($this->_config->urlBase . 'index', array());
+        }
         // include CSS files
         $this->view->headLink()->appendStylesheet($this->_url .'css/form.css');
         $this->view->headLink()->appendStylesheet($this->_url .'css/jshtmlplugins.css');
@@ -176,8 +180,13 @@ class FormgeneratorController extends OntoWiki_Controller_Component
                 && $currentAction != 'newform'
                 && $file != 'alsfrs')
             {
-                //$this->_redirect("formgenerator/newform?file=" . $file);
+                $this->_redirect("formgenerator/newform?file=" . $file);
                 return;
+            } elseif ($file == 'alsfrs' && '' == $currentResource) {
+                // disable rendering
+                $this->_helper->viewRenderer->setNoRender();
+                $message = new OntoWiki_Message('pleaseChoosePatient', OntoWiki_Message::WARNING);
+                $this->_owApp->appendMessage($message);
             }
         // set resource to load, if parameter r was set
         } elseif ('' != $currentResource)

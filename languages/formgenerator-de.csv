@@ -1,4 +1,4 @@
-Available forms:;Vorhandene Formulare:
+Alternative forms:;Alternative Formulare:
 Formgenerator;Formular-Generator
 please select;bitte auswählen
 Please select:;Bitte auswählen:
@@ -10,3 +10,4 @@ formsaved;Formular wurde gespeichert.
 formnotsaved;Formular konnte nicht gespeichert werden.
 newInstance;neue Instanz
 reportResource;Bericht
+pleaseChoosePatient;Bitte wählen sie ein Patienten aus
