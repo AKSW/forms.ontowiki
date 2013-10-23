@@ -64,7 +64,7 @@ span.bold {
 }
 
 .simplemodal-container {
-  background-color:#fff;
+  background-color:#ccc;
   minWidth:750px;
   z-index: 100001 !important;
 }
