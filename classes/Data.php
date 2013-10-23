@@ -275,8 +275,10 @@ class Data
             $has = $para ['predicateToHealthState'];
             $healthState = $para ['healthState'];
             $healthStateTime = time ();
-            $selectedReseourceName = $this->_resourceHelper->extractClassNameFromUri($selectedResource);
-            
+            $selectedReseourceName = array();
+            $selectedReseourceName[1] = '';
+            preg_match('/urn:dispedia:pn\/([a-zA-Z0-9]+)\//', $selectedResource, $selectedReseourceName);
+
             /**
              * Creates following relations:
              * 
@@ -286,7 +288,7 @@ class Data
              */
                             
             // create a new healthState instance
-            $healthStateInstance = $para['healthStateInstanceUri'] . 'HS' . $selectedReseourceName . date ( 'YmdHis', $healthStateTime );
+            $healthStateInstance = $para['healthStateInstanceUri'] . 'HS.' . $selectedReseourceName[1] . '.' . date ( 'YmdHis', $healthStateTime );
             $this->addStmt(
                 $healthStateInstance, 
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -305,7 +307,7 @@ class Data
             
             
             // create a new propertySet instance
-            $propertySetInstance = $para['propertySetInstanceUri'] . 'PS' . $selectedReseourceName . date ( 'YmdHis', $healthStateTime );
+            $propertySetInstance = $para['propertySetInstanceUri'] . 'PS.' . $selectedReseourceName[1] . '.' . date ( 'YmdHis', $healthStateTime );
             $this->addStmt( 
                 $propertySetInstance,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
@@ -317,7 +319,7 @@ class Data
             
             
             // create a new propertySet instance
-            $symptomSetInstance = $para['symptomSetInstanceUri'] . 'SS' . $selectedReseourceName . date ( 'YmdHis', $healthStateTime );
+            $symptomSetInstance = $para['symptomSetInstanceUri'] . 'SS.' . $selectedReseourceName[1] . '.' . date ( 'YmdHis', $healthStateTime );
             $this->addStmt( 
                 $symptomSetInstance,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
