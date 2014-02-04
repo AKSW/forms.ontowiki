@@ -1,0 +1,195 @@
+@base <http://www.formgenerator.com/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ccns: <http://creativecommons.org/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<> a owl:Ontology ;
+    rdfs:label "Formgenerator Vocabulary"@en, "Formgenerator Vokabular"@de ;
+    owl:versionInfo "0.1.0.0001" ;
+    owl:comment "Die Ontologie enthält alle Schema Informationen um Formulare für den Formgenerator anzulegen."@de ;
+    owl:comment "This ontology has schema information to build forms for the Formgenerator."@en ;
+    dct:contributor "Lars Eidam" ;
+    dct:author "Lars Eidam" ;
+    ccns:license "http://creativecommons.org/licenses/by/3.0/" .
+
+######################## Classes ########################
+
+# use rdfs:label and owl:comment to describe the form
+<c/Form> a owl:Class ;
+    rdfs:label "Formular"@de, "Form"@en ;
+    owl:comment "Beschreibt ein Formular für den Formgenerator."@de ;
+    owl:comment "Description of a form for the Formgenerator."@en .
+    
+# use rdfs:label and owl:comment to describe the section
+<c/Section> a owl:Class ;
+    rdfs:label "Abschnitt"@de, "Section"@en ;
+    owl:comment "Beschreibt einen Abschnitt des Formulars."@de ;
+    owl:comment "Description of a section of th form."@en .
+    
+#----------------------- Property-Types -----------------------#
+
+# use rdfs:label and owl:comment to describe the property
+# use rdfs:value for the property uri
+<c/Property>    a owl:Class ;
+                rdfs:label "Eigenschaft"@de, "Property"@en ;
+                owl:comment "Beschreibt eine Eigenschaft in einem Abschnitt des Formulars."@de ;
+                owl:comment "Description one property in a section of th form."@en ;
+                rdfs:value "xsd:string" .
+
+###### List
+<c/Property/List>   a owl:Class ;
+                    rdfs:subClassOf <c/Property> ;
+                    rdfs:label "Liste"@de, "list"@en ;
+                    owl:comment "Liste von Eigenschaftswerten."@de ;
+                    owl:comment "list of property values."@en .
+
+<c/Property/FixedList>  a owl:Class ;
+                        rdfs:subClassOf <c/Property/List> ;
+                        rdfs:label "vorgegebene Liste"@de, "fixed list"@en ;
+                        owl:comment "Liste von vorgegebenen Eigenschaftswerten."@de ;
+                        owl:comment "list of predefined property values."@en .
+                        
+# use rdfs:label and rdfs:value to describe the entry
+<c/Property/List/Entry> a owl:Class ;
+                        rdfs:label "Eintrag in einer Liste"@de ;
+                        rdfs:label "Entry in a list"@en .
+<c/Property/FixedList/Entry>    a owl:Class ;
+                                rdfs:subClassOf <c/Property/List/Entry> ;
+                                rdfs:label "Eintrag in einer festen Liste"@de ;
+                                rdfs:label "Entry in a fixed list"@en .
+
+<p/hasEntry>    a owl:ObjectProperty ;
+                rdfs:label "hat Eintrag"@de, "has entry"@en ;
+                owl:comment "Verweist auf einen Eintrag einer Liste."@de ;
+                owl:comment "Link to a entry of a list"@en ;
+                rdfs:domain <c/Property/List> ;
+                rdfs:range <c/Property/List/Entry> .
+
+###### Date
+<c/Property/Date>   a owl:Class ;
+                    rdfs:subClassOf <c/Property> ;
+                    rdfs:label "Datum"@de, "date"@en ;
+                    owl:comment "Eigenschaftswert ist vom Typ xsd:date."@de ;
+                    owl:comment "The property values has a typ xsd:date."@en ;
+                    rdfs:value "xsd:date" .
+
+###### Class
+<c/Property/Class>  a owl:Class ;
+                    rdfs:subClassOf <c/Property> ;
+                    rdfs:label "Klasse"@de, "Class"@en ;
+                    owl:comment "Eigenschaftswert ist vom Typ owl:Class."@de ;
+                    owl:comment "The property values has a typ owl:Class."@en ;
+                    rdfs:value "owl:Class" .
+<p/useOntology>  a owl:ObjectProperty ;
+                rdfs:label "benutzt Ontology"@de, "use ontology"@en ;
+                owl:comment "Verweist auf eine Ontology, wo die Klasse definiert ist"@de ;
+                owl:comment "Link to a ontology where the class is defined"@en ;
+                rdfs:domain <c/Property/Class> ;
+                rdfs:range owl:Ontology .
+<p/useParentClass>  a owl:ObjectProperty ;
+                    rdfs:label "benutzt Oberklasse"@de, "use parent class"@en ;
+                    owl:comment "Verweist auf eine oberste Klasse in der Hierarchie"@de ;
+                    owl:comment "Link to the highest class in the hierarchy"@en ;
+                    rdfs:domain <c/Property/Class> ;
+                    rdfs:range owl:Class .
+<p/showParentClass>   a owl:ObjectProperty ;
+                    rdfs:label "zeige Oberklasse"@de, "show parent class"@en ;
+                    owl:comment "Soll oberste Klasse in der Hierarchie angezeigt werden?"@de ;
+                    owl:comment "Should the highest class in the hierarchy be shown?"@en ;
+                    rdfs:domain <c/Property/Class> ;
+                    rdfs:range xsd:boolean .
+
+###### Instance
+<c/Property/Instance>  a owl:Class ;
+                    rdfs:subClassOf <c/Property> ;
+                    rdfs:label "Instanz"@de, "Instance"@en ;
+                    owl:comment "Eigenschaftswert ist vom Typ uri."@de ;
+                    owl:comment "The property values has a typ uri."@en ;
+                    rdfs:value "uri" .
+<p/useClass>    a owl:ObjectProperty ;
+                rdfs:label "benutze Klasse"@de, "use class"@en ;
+                owl:comment "Instancen dieser Klasse sind Eigenschaftswerte."@de ;
+                owl:comment "Instaces of this class are property values."@en ;
+                rdfs:domain <c/Property/Instance> ;
+                rdfs:range owl:Class .
+<p/useFilter>   a owl:ObjectProperty ;
+                rdfs:label "benutze Filter"@de, "use filter"@en ;
+                owl:comment "Instancen müssen Filterkriterien erfüllen."@de ;
+                owl:comment "Instaces must pass filter criteria."@en ;
+                rdfs:domain <c/Property/Instance> ;
+                rdfs:range xsd:string .
+
+
+######################## Properties ########################
+
+<p/useFilename> a owl:DatatypeProperty ;
+    rdfs:label "benutzt Datei"@de, "use file"@en ;
+    owl:comment "xml-Datei des Formulars."@de ;
+    owl:comment "xml file of the form."@en ;
+    owl:comment "Is obsolete and shouldn't be used." ;
+    rdfs:domain <c/Form> .
+
+<p/usefulForClass> a owl:ObjectProperty ;
+    rdfs:label "nützlich für Klasse"@de, "useful for class"@en ;
+    owl:comment "Das Formular ist für diese Klasse nützlich, bzw. kann Instanzen dieser Klasse erzeugen bzw. bearbeiten."@de ;
+    owl:comment "The form is useful for this classes and can create or edit instances of this class."@en ;
+    rdfs:domain <c/Form> ;
+    rdfs:range owl:Class .
+    
+<p/hasTargetClass> a owl:ObjectProperty ;
+    rdfs:label "hat Zielklasse"@de, "has Target Class"@en ;
+    owl:comment "Die Resource, die das Formular erzeugt oder verändert, wird vom Typ dieser Klasse sein."@de ;
+    owl:comment "The resource, which the form is generating or changing, will be this typ of class."@en ;
+    rdfs:domain <c/Form> ;
+    rdfs:range owl:Class .
+    
+<p/hasTargetModel> a owl:ObjectProperty ;
+    rdfs:label "hat Zielmodell"@de, "has Target Model"@en ;
+    owl:comment "Die Resource soll sich in dieser Wissenbasis befinden."@de ;
+    owl:comment "The resouce should be in this knowledge base"@en ;
+    rdfs:domain <c/Form> ;
+    rdfs:range owl:Ontology .
+
+<p/useModule> a owl:DatatypeProperty ;
+    rdfs:label "benutzt OntoWiki Modul"@de, "use OntoWiki Module"@en ;
+    owl:comment "Dieses OntoWiki Modul soll bei diesem Formular angezeigt werden."@de ;
+    owl:comment "This OntoWiki module should be shown in this form."@en ;
+    rdfs:domain <c/Form> .
+
+<p/isMandatory> a owl:DatatypeProperty ;
+    rdfs:label "muss Eigenschaft verwendet werden"@de, "is this property mandatory"@en ;
+    owl:comment "Gibt an ob eine Eigenschaft angegeben werden muss oder nicht."@de ;
+    owl:comment "Describes if a property must be use or not."@en ;
+    rdfs:domain <c/Property> ;
+    rdfs:range xsd:boolean .
+    
+######################## List-Properties ########################
+
+<lp/section> a owl:ObjectProperty ;
+    rdfs:label "enthält Abschnitt"@de, "include section"@en ;
+    owl:comment "Verweist auf Abschnitt in einem Formular."@de ;
+    owl:comment "Link to a section in a form."@en ;
+    rdfs:domain <c/Form> ;
+    rdfs:range <c/Section> .
+
+<lp/section/_1> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <lp/section> .
+<lp/section/_2> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <lp/section> .
+<lp/section/_3> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <lp/section> .
+<lp/section/_4> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <lp/section> .
+    
+<lp/property> a owl:ObjectProperty ;
+    rdfs:label "enthält Eigenschaft"@de, "include property"@en ;
+    owl:comment "Verweist auf eine Eigenschaft in einem Abschnitt des Formulars."@de ;
+    owl:comment "Link to a property in a section of a form."@en ;
+    rdfs:domain <c/Section> ;
+    rdfs:range <c/Property> .
+
+<lp/property/_1> a owl:ObjectProperty ;
+    rdfs:subPropertyOf <lp/property> .
